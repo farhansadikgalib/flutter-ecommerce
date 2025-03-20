@@ -1,0 +1,47 @@
+name: turi
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+dependencies:
+  flutter:
+    sdk: flutter
+  get:
+  dio:
+  flutter_easyloading:
+  flutter_screenutil:
+  google_fonts:
+  logger:
+  connectivity_plus: ^4.0.2
+  url_launcher:
+  shared_value:
+  intl:
+  any_image_view:
+  easy_debounce:
+  water_drop_nav_bar:
+  font_awesome_flutter:
+  omni_datetime_picker:
+  delayed_display:
+  flutter_spinkit:
+  skeletonizer:
+  dropdown_search:
+  carousel_slider:
+  carousel_indicator:
+  flutter_staggered_animations:
+  dynamic_height_grid_view:
+  persistent_bottom_nav_bar:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/png/
+
