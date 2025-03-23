@@ -1,10 +1,11 @@
+import 'package:turi/app/data/remote/model/home/brands_response.dart';
 import 'package:turi/app/data/remote/model/home/category_response.dart';
 import 'package:turi/app/data/remote/model/home/home_response.dart';
 
 import '../../../../network_service/api_client.dart';
 import '../../../../network_service/api_end_points.dart';
-class HomeRepository {
 
+class HomeRepository {
   Future<HomeResponse> getHomeData() async {
     var response = await ApiClient().get(
       ApiEndPoints.home,
@@ -27,7 +28,14 @@ class HomeRepository {
     return categoryResponseFromJson(response.toString());
   }
 
+  Future<BrandsResponse> getBrandsData() async {
+    var response = await ApiClient().get(
+      ApiEndPoints.brands,
+      getBrandsData,
+      isHeaderRequired: false,
+      isLoaderRequired: false,
+    );
 
-
-
+    return brandsResponseFromJson(response.toString());
+  }
 }

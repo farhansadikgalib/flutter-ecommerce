@@ -9,6 +9,7 @@ class ApiEndPoints {
   //Home
   static String home = "home";
   static String categories = "categories";
+  static String brands = "brands";
   //Home
 
 
