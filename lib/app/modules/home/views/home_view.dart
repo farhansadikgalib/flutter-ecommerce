@@ -3,6 +3,7 @@ import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gallery_3d/gallery3d.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -36,9 +37,9 @@ class HomeView extends BaseView<HomeController> {
                 height: 40.h,
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
+                  // color: AppColors.gray,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.primaryColor, width: 1),
+                  border: Border.all(color: AppColors.gray, width: 1),
                 ),
                 child: Row(
                   children: [
@@ -109,6 +110,22 @@ class HomeView extends BaseView<HomeController> {
                       ),
             ),
             AppWidgets().gapH8(),
+
+            Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Categories',
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),],
+            ),
+
+
             controller.isCategoryLoading.value
                 ? Skeletonizer(
                   child: SizedBox(
@@ -171,6 +188,7 @@ class HomeView extends BaseView<HomeController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+
                           Container(
                             margin: REdgeInsets.symmetric(
                               horizontal: 8,
@@ -208,6 +226,72 @@ class HomeView extends BaseView<HomeController> {
                 ),
 
             AppWidgets().gapH8(),
+            Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Top Brands',
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            AppWidgets().gapH(4),
+
+            controller.isBrandLoading.value
+                ? Skeletonizer(
+              enabled: true,
+              child: SizedBox(
+                width: Get.width,
+                height: Get.width/3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(height: Get.width/3,width: Get.width/4,color:
+                    AppColors.gray,),Container(height: Get.width/3,width: Get
+                        .width/3,color:
+                    AppColors.gray,),Container(height: Get.width/3,width: Get
+                        .width/4,color:
+                    AppColors.gray,),
+
+                  ],
+                ),
+              ),
+            )
+                : SizedBox(
+              height: 175.h,
+              width: Get.width,
+              child: Center(
+                child: Gallery3D(
+                  width: Get.width,
+                  itemConfig: GalleryItemConfig(
+                    width: 175.h,
+                    height: 175.h,
+                    radius: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    final brand = controller.brandsData[index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            '${AppConfig.imageBasePath}${brand.image}',
+                          ),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                    );
+                  }, controller: Gallery3DController(itemCount: controller
+                    .brandsData.length),
+                ),
+              ),
+            ),
+            AppWidgets().gapH8(),
             Skeletonizer(
               enabled: controller.isLoading.value,
               child:
@@ -215,7 +299,7 @@ class HomeView extends BaseView<HomeController> {
                       ? ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: 8,
+                        itemCount: 1,
                         itemBuilder: (context, index) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,98 +329,94 @@ class HomeView extends BaseView<HomeController> {
                               ),
                               DynamicHeightGridView(
                                 crossAxisCount: 2,
-                                itemCount: 4,
+                                itemCount: 2,
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 builder: (context, index) {
-                                  return AnimationConfiguration.staggeredGrid(
-                                    position: index,
-                                    duration: const Duration(milliseconds: 375),
-                                    columnCount: 2,
-                                    child: ScaleAnimation(
-                                      child: FadeInAnimation(
-                                        child: Card(
-                                          margin: EdgeInsets.all(8.0),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(16.0),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  color:
-                                                      AppColors.secondaryColor,
-                                                  height: 125,
-                                                  width: 125,
-                                                ),
-                                                AppWidgets().gapH(4),
-                                                Text(
-                                                  'Product Title',
-                                                  textAlign: TextAlign.center,
+                                  return Card(
+                                    margin: EdgeInsets.all(8.0),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            color:
+                                            AppColors.secondaryColor,
+                                            height: 125,
+                                            width: 125,
+                                          ),
+                                          AppWidgets().gapH(4),
+                                          Text(
+                                            'Product Title',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color:
+                                              AppColors.primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          AppWidgets().gapH(4),
+                                          Text(
+                                            "Stock 00",
+                                            style: TextStyle(
+                                              color:
+                                              AppColors.primaryColor,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          AppWidgets().gapH(4),
+                                          RichText(
+                                            text: TextSpan(
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 24,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                  text: '9999',
                                                   style: TextStyle(
-                                                    fontSize: 15,
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14.0,
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    decoration:
+                                                    TextDecoration
+                                                        .lineThrough,
                                                   ),
                                                 ),
-                                                AppWidgets().gapH(4),
-                                                Text(
-                                                  "Stock 00",
+                                                TextSpan(
+                                                  text: "  99999 BDT",
                                                   style: TextStyle(
+                                                    fontSize: 14.0,
                                                     color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                AppWidgets().gapH(4),
-                                                RichText(
-                                                  text: TextSpan(
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 24,
-                                                    ),
-                                                    children: <TextSpan>[
-                                                      TextSpan(
-                                                        text: '9999',
-                                                        style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: "  99999 BDT",
-                                                        style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              AppColors
-                                                                  .primaryColor,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                AppWidgets().gapH8(),
-                                                ElevatedButton(
-                                                  onPressed: () {},
-                                                  child: Text(
-                                                    '+ Add to Bag',
-                                                    style: TextStyle(
-                                                      color:
-                                                          AppColors
-                                                              .primaryColor,
-                                                    ),
+                                                    AppColors
+                                                        .primaryColor,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ),
+                                          AppWidgets().gapH8(),
+                                          ElevatedButton(
+                                            onPressed: () {},
+                                            style: ElevatedButton.styleFrom(
+                                              side: BorderSide(color: Colors
+                                                  .transparent), // Set the border
+                                              // color to grey
+                                            ),
+                                            child: Text(
+                                              '+ Add to Bag',
+                                              style: TextStyle(
+                                                color:
+                                                AppColors
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   );
