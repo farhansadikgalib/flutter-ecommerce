@@ -20,9 +20,7 @@ dependencies:
   intl:
   any_image_view:
   easy_debounce:
-  water_drop_nav_bar:
   font_awesome_flutter:
-  omni_datetime_picker:
   delayed_display:
   flutter_spinkit:
   skeletonizer:
@@ -32,6 +30,9 @@ dependencies:
   flutter_staggered_animations:
   dynamic_height_grid_view:
   persistent_bottom_nav_bar:
+  flutter_gallery_3d:
+  badges:
+
 
 dev_dependencies:
   flutter_test:

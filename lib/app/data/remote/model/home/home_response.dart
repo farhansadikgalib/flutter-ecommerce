@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 HomeResponse homeResponseFromJson(String str) => HomeResponse.fromJson(json.decode(str));
 
 String homeResponseToJson(HomeResponse data) => json.encode(data.toJson());
@@ -194,6 +196,8 @@ class ProductCollection {
   dynamic price;
   dynamic endTime;
   Product? product;
+  bool? addToCart;
+  int? quantity;
 
   ProductCollection({
     this.id,
@@ -213,6 +217,8 @@ class ProductCollection {
     this.price,
     this.endTime,
     this.product,
+    this.addToCart,
+    this.quantity
   });
 
   factory ProductCollection.fromJson(Map<String, dynamic> json) => ProductCollection(
@@ -233,6 +239,8 @@ class ProductCollection {
     price: json["price"],
     endTime: json["end_time"],
     product: json["product"] == null ? null : Product.fromJson(json["product"]),
+    addToCart: true,
+    quantity:0
   );
 
   Map<String, dynamic> toJson() => {

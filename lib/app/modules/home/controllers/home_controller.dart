@@ -10,6 +10,7 @@ import 'package:turi/app/data/remote/repository/home/home_repository.dart';
 
 class HomeController extends BaseController {
   final currentIndex = 0.obs;
+  final cartCount = 0.obs;
   final imageList = <String>[].obs;
   final isLoading = true.obs;
   final isCategoryLoading = true.obs;
@@ -17,7 +18,9 @@ class HomeController extends BaseController {
   final homeElements = <HomeData>[].obs;
   final categoriesData = <CategoriesData>[].obs;
   final brandsData = <BrandsData>[].obs;
-  final Gallery3DController gallery3dController = Gallery3DController(itemCount: 5);
+  final Gallery3DController gallery3dController = Gallery3DController(
+    itemCount: 5,
+  );
 
   @override
   void onInit() {
@@ -25,6 +28,9 @@ class HomeController extends BaseController {
     getHomeData();
     getCategoriesData();
     getBrandsData();
+    ever(cartCount, (value) {
+      printLog("Cart count changed: $value");
+    });
   }
 
   getHomeData() async {
@@ -51,13 +57,9 @@ class HomeController extends BaseController {
     var response = await HomeRepository().getBrandsData();
     if (response.status == 200) {
       brandsData.addAll(response.data!.data ?? []);
-       isBrandLoading.value = false;
-      brandsData.forEach((element) {
-        printLog(element.image);
-      });
+      isBrandLoading.value = false;
     } else {
       AppWidgets().getSnackBar(title: 'Error', message: response.message);
     }
   }
-
 }

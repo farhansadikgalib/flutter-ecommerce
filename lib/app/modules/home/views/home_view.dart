@@ -3,6 +3,7 @@ import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gallery_3d/gallery3d.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,6 +12,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:turi/app/core/config/app_config.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:turi/app/core/helper/print_log.dart';
+import 'package:turi/app/routes/app_pages.dart';
 import '../../../core/base/base_view.dart';
 import '../../../core/style/app_colors.dart';
 import '../controllers/home_controller.dart';
@@ -33,29 +36,34 @@ class HomeView extends BaseView<HomeController> {
           children: [
             Skeletonizer(
               enabled: controller.isLoading.value,
-              child: Container(
-                height: 40.h,
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  // color: AppColors.gray,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.gray, width: 1),
-                ),
-                child: Row(
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.magnifyingGlass,
-                      color: AppColors.primaryColor,
-                    ),
-                    AppWidgets().gapW8(),
-                    Text(
-                      'What are you looking for?',
-                      style: TextStyle(
+              child: InkWell(
+                onTap: () {
+                  Get.toNamed(Routes.PRODUCT_SEARCH);
+                },
+                child: Container(
+                  height: 40.h,
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                    // color: AppColors.gray,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.gray, width: 1),
+                  ),
+                  child: Row(
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.magnifyingGlass,
                         color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w700,
                       ),
-                    ),
-                  ],
+                      AppWidgets().gapW8(),
+                      Text(
+                        'What are you looking for?',
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -112,8 +120,7 @@ class HomeView extends BaseView<HomeController> {
             AppWidgets().gapH8(),
 
             Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Categories',
@@ -122,9 +129,9 @@ class HomeView extends BaseView<HomeController> {
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
-                ),],
+                ),
+              ],
             ),
-
 
             controller.isCategoryLoading.value
                 ? Skeletonizer(
@@ -188,7 +195,6 @@ class HomeView extends BaseView<HomeController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-
                           Container(
                             margin: REdgeInsets.symmetric(
                               horizontal: 8,
@@ -227,8 +233,7 @@ class HomeView extends BaseView<HomeController> {
 
             AppWidgets().gapH8(),
             Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Top Brands',
@@ -244,53 +249,63 @@ class HomeView extends BaseView<HomeController> {
 
             controller.isBrandLoading.value
                 ? Skeletonizer(
-              enabled: true,
-              child: SizedBox(
-                width: Get.width,
-                height: Get.width/3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(height: Get.width/3,width: Get.width/4,color:
-                    AppColors.gray,),Container(height: Get.width/3,width: Get
-                        .width/3,color:
-                    AppColors.gray,),Container(height: Get.width/3,width: Get
-                        .width/4,color:
-                    AppColors.gray,),
-
-                  ],
-                ),
-              ),
-            )
-                : SizedBox(
-              height: 175.h,
-              width: Get.width,
-              child: Center(
-                child: Gallery3D(
-                  width: Get.width,
-                  itemConfig: GalleryItemConfig(
-                    width: 175.h,
-                    height: 175.h,
-                    radius: 10,
-                  ),
-                  itemBuilder: (context, index) {
-                    final brand = controller.brandsData[index];
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            '${AppConfig.imageBasePath}${brand.image}',
-                          ),
-                          fit: BoxFit.fitHeight,
+                  enabled: true,
+                  child: SizedBox(
+                    width: Get.width,
+                    height: Get.width / 3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          height: Get.width / 3,
+                          width: Get.width / 4,
+                          color: AppColors.gray,
                         ),
+                        Container(
+                          height: Get.width / 3,
+                          width: Get.width / 3,
+                          color: AppColors.gray,
+                        ),
+                        Container(
+                          height: Get.width / 3,
+                          width: Get.width / 4,
+                          color: AppColors.gray,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                : SizedBox(
+                  height: 175.h,
+                  width: Get.width,
+                  child: Center(
+                    child: Gallery3D(
+                      width: Get.width,
+                      itemConfig: GalleryItemConfig(
+                        width: 175.h,
+                        height: 175.h,
+                        radius: 10,
                       ),
-                    );
-                  }, controller: Gallery3DController(itemCount: controller
-                    .brandsData.length),
+                      itemBuilder: (context, index) {
+                        final brand = controller.brandsData[index];
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                '${AppConfig.imageBasePath}${brand.image}',
+                              ),
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
+                        );
+                      },
+                      controller: Gallery3DController(
+                        itemCount: controller.brandsData.length,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
             AppWidgets().gapH8(),
             Skeletonizer(
               enabled: controller.isLoading.value,
@@ -340,8 +355,7 @@ class HomeView extends BaseView<HomeController> {
                                       child: Column(
                                         children: [
                                           Container(
-                                            color:
-                                            AppColors.secondaryColor,
+                                            color: AppColors.secondaryColor,
                                             height: 125,
                                             width: 125,
                                           ),
@@ -351,8 +365,7 @@ class HomeView extends BaseView<HomeController> {
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 15,
-                                              color:
-                                              AppColors.primaryColor,
+                                              color: AppColors.primaryColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -360,8 +373,7 @@ class HomeView extends BaseView<HomeController> {
                                           Text(
                                             "Stock 00",
                                             style: TextStyle(
-                                              color:
-                                              AppColors.primaryColor,
+                                              color: AppColors.primaryColor,
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -378,11 +390,10 @@ class HomeView extends BaseView<HomeController> {
                                                   text: '9999',
                                                   style: TextStyle(
                                                     fontSize: 14.0,
-                                                    fontWeight:
-                                                    FontWeight.bold,
+                                                    fontWeight: FontWeight.bold,
                                                     decoration:
-                                                    TextDecoration
-                                                        .lineThrough,
+                                                        TextDecoration
+                                                            .lineThrough,
                                                   ),
                                                 ),
                                                 TextSpan(
@@ -390,10 +401,8 @@ class HomeView extends BaseView<HomeController> {
                                                   style: TextStyle(
                                                     fontSize: 14.0,
                                                     color:
-                                                    AppColors
-                                                        .primaryColor,
-                                                    fontWeight:
-                                                    FontWeight.bold,
+                                                        AppColors.primaryColor,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                               ],
@@ -403,16 +412,15 @@ class HomeView extends BaseView<HomeController> {
                                           ElevatedButton(
                                             onPressed: () {},
                                             style: ElevatedButton.styleFrom(
-                                              side: BorderSide(color: Colors
-                                                  .transparent), // Set the border
+                                              side: BorderSide(
+                                                color: Colors.transparent,
+                                              ), // Set the border
                                               // color to grey
                                             ),
                                             child: Text(
                                               '+ Add to Bag',
                                               style: TextStyle(
-                                                color:
-                                                AppColors
-                                                    .primaryColor,
+                                                color: AppColors.primaryColor,
                                               ),
                                             ),
                                           ),
@@ -461,13 +469,17 @@ class HomeView extends BaseView<HomeController> {
                                   ),
                                 ],
                               ),
-                              DynamicHeightGridView(
-                                crossAxisCount: 2,
+                              GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 0.62,
+                                    ),
                                 itemCount:
                                     collection.productCollections!.length,
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                builder: (context, index) {
+                                itemBuilder: (context, index) {
                                   final product =
                                       collection.productCollections![index];
                                   return AnimationConfiguration.staggeredGrid(
@@ -498,7 +510,7 @@ class HomeView extends BaseView<HomeController> {
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                AppWidgets().gapH(4),
+                                                /*AppWidgets().gapH(4),
                                                 Text(
                                                   "Stock ${product.product!.quantity}",
                                                   style: TextStyle(
@@ -507,13 +519,12 @@ class HomeView extends BaseView<HomeController> {
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.bold,
                                                   ),
-                                                ),
-                                                AppWidgets().gapH(4),
+                                                ),*/
+                                                AppWidgets().gapH(6),
                                                 RichText(
                                                   text: TextSpan(
                                                     style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 24,
                                                     ),
                                                     children: <TextSpan>[
                                                       TextSpan(
@@ -545,14 +556,132 @@ class HomeView extends BaseView<HomeController> {
                                                   ),
                                                 ),
                                                 AppWidgets().gapH8(),
-                                                ElevatedButton(
-                                                  onPressed: () {},
-                                                  child: Text(
-                                                    '+ Add to Bag',
-                                                    style: TextStyle(
-                                                      color:
-                                                          AppColors
-                                                              .primaryColor,
+                                                Visibility(
+                                                  visible: product.addToCart!,
+                                                  replacement: Container(
+                                                    margin:
+                                                        REdgeInsets.symmetric(
+                                                          horizontal: 14,
+                                                        ),
+                                                    height: 30.h,
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            8,
+                                                          ),
+                                                      border: Border.all(
+                                                        color:
+                                                            AppColors
+                                                                .primaryColor,
+                                                        width: 1,
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black
+                                                              .withOpacity(0.2),
+                                                          spreadRadius: 1,
+                                                          blurRadius: 2,
+                                                          offset: Offset(0, 1),
+                                                          // changes position of shadow
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        IconButton(
+                                                          onPressed: () {
+                                                            if (product
+                                                                    .quantity! >
+                                                                1) {
+                                                              product.quantity =
+                                                                  product
+                                                                      .quantity! -
+                                                                  1;
+                                                              controller
+                                                                  .homeElements
+                                                                  .refresh();
+                                                            } else {
+                                                              product.addToCart =
+                                                                  true;
+                                                              controller
+                                                                  .homeElements
+                                                                  .refresh();
+                                                              controller
+                                                                  .cartCount
+                                                                  .value--;
+                                                              controller.cartCount
+                                                                  .refresh();
+                                                            }
+                                                          },
+                                                          icon: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .minus,
+                                                            color:
+                                                                AppColors
+                                                                    .primaryColor,
+                                                            size: 14,
+                                                          ),
+                                                        ),
+
+                                                        Text(
+                                                          product.quantity!
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            color:
+                                                                AppColors
+                                                                    .primaryColor,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+
+                                                        IconButton(
+                                                          onPressed: () {
+                                                            product.quantity =
+                                                                product
+                                                                    .quantity! +
+                                                                1;
+                                                            controller
+                                                                .homeElements
+                                                                .refresh();
+                                                          },
+                                                          icon: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .plus,
+                                                            color:
+                                                                AppColors
+                                                                    .primaryColor,
+                                                            size: 14,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      product.quantity = 1;
+                                                      product.addToCart = false;
+                                                      controller.cartCount.value++;
+                                                      controller.cartCount
+                                                          .refresh();
+                                                      controller.homeElements
+                                                          .refresh();
+                                                    },
+                                                    child: Text(
+                                                      '+ Add to Bag',
+                                                      style: TextStyle(
+                                                        color:
+                                                            AppColors
+                                                                .primaryColor,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),

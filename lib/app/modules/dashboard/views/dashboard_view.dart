@@ -1,24 +1,117 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:turi/app/core/style/app_colors.dart';
+import 'package:turi/app/modules/home/controllers/home_controller.dart';
+import 'package:turi/app/modules/home/views/home_view.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
   const DashboardView({super.key});
+
+  List<Widget> _buildScreens() {
+    return [
+      HomeView(),
+      Center(child: Text('Search')),
+      Center(child: Text('Notifications')),
+      Center(child: Text('Messages')),
+      Center(child: Text('Profile')),
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.home),
+        title: ("Home"),
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.local_offer),
+        title: ("Deals"),
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: badges.Badge(
+          badgeAnimation: badges.BadgeAnimation.rotation(
+            animationDuration:1.seconds,
+            colorChangeAnimationDuration: 1.seconds,
+            loopAnimation: false,
+            curve: Curves.fastOutSlowIn,
+            colorChangeAnimationCurve: Curves.bounceIn,
+          ),
+          badgeContent: Obx(
+                () =>
+            Get
+                .find<HomeController>()
+                .cartCount
+                .value == 0
+                ? SizedBox()
+                : Text(
+              Get
+                  .find<HomeController>()
+                  .cartCount
+                  .value
+                  .toString(),
+              style: TextStyle(color: AppColors.primaryColor),
+            ),
+          ),
+
+          badgeStyle: badges.BadgeStyle(
+            badgeColor:
+            Get
+                .find<HomeController>()
+                .cartCount
+                .value == 0
+                ? Colors.transparent
+                : AppColors.white,
+          ),
+
+          child: Center(
+            child: Icon(Icons.shopping_cart, color: AppColors.secondaryColor),
+          ),
+        ),
+        title: ("Cart"),
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.message),
+        title: ("Notification"),
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.person),
+        title: ("Profile"),
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.grey,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('DashboardView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'DashboardView is working',
-          style: TextStyle(fontSize: 20),
+    return Obx(() {
+      return PersistentTabView(
+        context,
+        controller: PersistentTabController(initialIndex: 0),
+        screens: _buildScreens(),
+        items: _navBarsItems(),
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true,
+        stateManagement: true,
+        padding: EdgeInsets.zero,
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          colorBehindNavBar: Colors.white,
         ),
-      ),
-    );
+        navBarStyle: NavBarStyle.style15,
+      );
+    });
   }
 }
