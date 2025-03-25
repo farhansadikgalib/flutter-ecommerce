@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:turi/app/core/base/base_view.dart';
 
 import '../controllers/cart_controller.dart';
 
-class CartView extends GetView<CartController> {
-  const CartView({super.key});
+class CartView extends BaseView<CartController> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('CartView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'CartView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+  PreferredSizeWidget? appBar(BuildContext context) {
+    return AppBar(
+      title: Text('CartView'),
+      centerTitle: true,
     );
   }
+
+  @override
+  Widget body(BuildContext context) {
+    return ListView(
+      children: [
+
+
+
+      ],
+    );
+  }
+
 }

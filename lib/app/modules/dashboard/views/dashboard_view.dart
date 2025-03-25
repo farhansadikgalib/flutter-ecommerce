@@ -5,6 +5,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:turi/app/modules/home/views/home_view.dart';
+import '../../cart/views/cart_view.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
@@ -13,8 +14,8 @@ class DashboardView extends GetView<DashboardController> {
   List<Widget> _buildScreens() {
     return [
       HomeView(),
-      Center(child: Text('Search')),
       Center(child: Text('Notifications')),
+      CartView(),
       Center(child: Text('Messages')),
       Center(child: Text('Profile')),
     ];
