@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_view.dart';
+import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
@@ -13,13 +14,7 @@ import '../controllers/cart_controller.dart';
 class CartView extends BaseView<CartController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
-    return AppBar(
-      title: const Text('Cart', style: TextStyle(color: Colors.black)),
-      centerTitle: false,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      iconTheme: const IconThemeData(color: Colors.black),
-    );
+    return globalAppBar(context, 'Cart');
   }
 
   @override
@@ -37,8 +32,8 @@ class CartView extends BaseView<CartController> {
               BoxShadow(
                 color: Colors.grey.withOpacity(0.2),
                 spreadRadius: 1,
-                blurRadius: 5,
-                offset: const Offset(0, 3),
+                blurRadius: 3,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
@@ -92,7 +87,7 @@ class CartView extends BaseView<CartController> {
 
     return ListView(
       physics: AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.only(bottom: Get.height / 3),
+      padding: EdgeInsets.only(bottom: Get.height / 3,),
       children: [
         Obx(
           () => ListView.builder(
@@ -119,7 +114,7 @@ class CartView extends BaseView<CartController> {
                   Get.find<HomeController>().homeElements.refresh();
                 },
                 child: Container(
-                  margin: REdgeInsets.only(bottom: 4),
+                  margin: REdgeInsets.only(bottom: 6),
                   padding: REdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -127,9 +122,8 @@ class CartView extends BaseView<CartController> {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 1,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
+                        blurRadius: 1,
+                        offset: const Offset(0, 1),
                       ),
                     ],
                   ),
@@ -196,7 +190,7 @@ class CartView extends BaseView<CartController> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 2,
+                                    blurRadius: 1,
                                     offset: Offset(0, 1),
                                     // changes position of shadow
                                   ),
@@ -240,7 +234,7 @@ class CartView extends BaseView<CartController> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 2,
+                                    blurRadius: 1,
                                     offset: Offset(0, 1),
                                     // changes position of shadow
                                   ),
@@ -264,18 +258,22 @@ class CartView extends BaseView<CartController> {
         ),
 
         if (Get.find<HomeController>().cartCount.value == 0)
-          SizedBox(
-            height: Get.height / 2.5,
-            child: Text(
-              'No products in cart',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
+          Column(
+            children: [
+              SizedBox(height: Get.height/2.5,),
+              Text(
+                'No products in cart',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
+                ),
               ),
-            ),
-          ),
+            ],
+          )
+
+
       ],
     );
   }
