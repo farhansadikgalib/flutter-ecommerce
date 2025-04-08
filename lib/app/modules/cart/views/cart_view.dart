@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_view.dart';
+import 'package:turi/app/routes/app_pages.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
 import '../../home/controllers/home_controller.dart';
@@ -64,7 +65,7 @@ class CartView extends BaseView<CartController> {
               Spacer(),
 
               ElevatedButton(
-                onPressed: () {},
+                onPressed: ()=>Get.toNamed(Routes.CHECKOUT),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
                   shape: RoundedRectangleBorder(
