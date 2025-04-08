@@ -1,23 +1,11 @@
 import 'package:get/get.dart';
+import 'package:turi/app/core/base/base_controller.dart';
 
-class CheckoutController extends GetxController {
-  //TODO: Implement CheckoutController
+class CheckoutController extends BaseController {
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  final selectedShippingMethod = ''.obs;
+  final selectedPaymentMethod = ''.obs;
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
-  void increment() => count.value++;
 }
