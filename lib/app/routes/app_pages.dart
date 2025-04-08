@@ -48,7 +48,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CHECKOUT,
-      page: () => const CheckoutView(),
+      page: () =>  CheckoutView(),
       binding: CheckoutBinding(),
     ),
   ];
