@@ -29,7 +29,9 @@ class HomeController extends BaseController {
     getCategoriesData();
     getBrandsData();
     ever(cartCount, (value) {
+/*
       printLog("Cart count changed: $value");
+*/
     });
   }
 

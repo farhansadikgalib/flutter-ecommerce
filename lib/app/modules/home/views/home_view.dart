@@ -16,6 +16,7 @@ import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../../core/base/base_view.dart';
 import '../../../core/style/app_colors.dart';
+import '../../cart/controllers/cart_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends BaseView<HomeController> {
@@ -604,6 +605,24 @@ class HomeView extends BaseView<HomeController> {
                                                                   product
                                                                       .quantity! -
                                                                   1;
+
+                                                              Get.find<
+                                                                    CartController
+                                                                  >()
+                                                                  .cartProducts
+                                                                  .forEach((
+                                                                    element,
+                                                                  ) {
+                                                                    if (element
+                                                                            .id ==
+                                                                        product
+                                                                            .id) {
+                                                                      element.quantity =
+                                                                          product
+                                                                              .quantity;
+                                                                    }
+                                                                  });
+
                                                               controller
                                                                   .homeElements
                                                                   .refresh();
@@ -616,7 +635,27 @@ class HomeView extends BaseView<HomeController> {
                                                               controller
                                                                   .cartCount
                                                                   .value--;
-                                                              controller.cartCount
+
+                                                              Get.find<
+                                                                    CartController
+                                                                  >()
+                                                                  .cartProducts
+                                                                  .removeAt(
+                                                                    Get.find<
+                                                                          CartController
+                                                                        >()
+                                                                        .cartProducts
+                                                                        .indexWhere(
+                                                                          (
+                                                                            element,
+                                                                          ) =>
+                                                                              element.id ==
+                                                                              product.id,
+                                                                        ),
+                                                                  );
+
+                                                              controller
+                                                                  .cartCount
                                                                   .refresh();
                                                             }
                                                           },
@@ -649,6 +688,23 @@ class HomeView extends BaseView<HomeController> {
                                                                 product
                                                                     .quantity! +
                                                                 1;
+
+                                                            Get.find<
+                                                                  CartController
+                                                                >()
+                                                                .cartProducts
+                                                                .forEach((
+                                                                  element,
+                                                                ) {
+                                                                  if (element
+                                                                          .id ==
+                                                                      product
+                                                                          .id) {
+                                                                    element.quantity =
+                                                                        product
+                                                                            .quantity;
+                                                                  }
+                                                                });
                                                             controller
                                                                 .homeElements
                                                                 .refresh();
@@ -669,7 +725,12 @@ class HomeView extends BaseView<HomeController> {
                                                     onPressed: () {
                                                       product.quantity = 1;
                                                       product.addToCart = false;
-                                                      controller.cartCount.value++;
+                                                      controller
+                                                          .cartCount
+                                                          .value++;
+                                                      Get.find<CartController>()
+                                                          .cartProducts
+                                                          .add(product);
                                                       controller.cartCount
                                                           .refresh();
                                                       controller.homeElements
