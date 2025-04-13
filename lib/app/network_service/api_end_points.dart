@@ -13,6 +13,12 @@ class ApiEndPoints {
   //Home
 
 
+  //Product
+  static String productDetails({
+    required String productId,
+  }) =>
+      "product/$productId";
+
 
 
 
