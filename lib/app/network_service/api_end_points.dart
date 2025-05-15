@@ -20,7 +20,18 @@ class ApiEndPoints {
       "product/$productId";
 
 
+  static String productReview({
+    required String productId,
+  }) =>
+      "reviews/$productId?order_by=created_at&type=desc";
 
 
+
+
+
+  //Checkout
+  static String setShippingAddress = "user/address/action";
+  static String placeOrder = "order/action";
+  static String shippingRules = "shipping-rule/all-shipping-rules";
 
 }
