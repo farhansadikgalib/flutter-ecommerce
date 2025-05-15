@@ -60,7 +60,10 @@ class CartView extends BaseView<CartController> {
               Spacer(),
 
               ElevatedButton(
-                onPressed: ()=>Get.toNamed(Routes.CHECKOUT),
+                onPressed: ()=>Get.toNamed(Routes.CHECKOUT, arguments: {
+                  'subTotal': controller.totalPrice.value,
+                  'cartProducts': controller.cartProducts,
+                }),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
                   shape: RoundedRectangleBorder(
