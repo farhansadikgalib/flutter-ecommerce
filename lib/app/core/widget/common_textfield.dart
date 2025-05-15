@@ -5,14 +5,18 @@ import 'package:turi/app/core/style/app_colors.dart';
 Widget commonTextField({
   required String labelText,
   required IconData icon,
+  required TextEditingController controller,
   TextInputType keyboardType = TextInputType.text,
 }) {
   return SizedBox(
     height: 40.h,
     child: TextFormField(
+      controller: controller,
       keyboardType: keyboardType,
       cursorColor: AppColors.primaryColor,
+      cursorHeight: 15.h,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(vertical: 10.h), // Adjust padding
         labelText: labelText,
         prefixIconColor: AppColors.primaryColor,
         floatingLabelStyle: TextStyle(
