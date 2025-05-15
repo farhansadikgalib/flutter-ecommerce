@@ -68,7 +68,7 @@ class ProductDetails {
   dynamic wishlisted;
   List<Inventory>? inventory;
   List<dynamic>? vouchers;
-  List<Image>? images;
+  List<ProductImage>? images;
   String? timeZone;
   bool? inStock;
   List<Attribute>? attribute;
@@ -78,7 +78,7 @@ class ProductDetails {
   List<CurrentCategory>? currentCategories;
   Category? category;
   SubCategory? subCategory;
-  List<Image>? productImageNames;
+  List<ProductImage>? productImageNames;
   ShippingRule? shippingRule;
 
   ProductDetails({
@@ -167,7 +167,7 @@ class ProductDetails {
     wishlisted: json["wishlisted"],
     inventory: json["inventory"] == null ? [] : List<Inventory>.from(json["inventory"]!.map((x) => Inventory.fromJson(x))),
     vouchers: json["vouchers"] == null ? [] : List<dynamic>.from(json["vouchers"]!.map((x) => x)),
-    images: json["images"] == null ? [] : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
+    images: json["images"] == null ? [] : List<ProductImage>.from(json["images"]!.map((x) => ProductImage.fromJson(x))),
     timeZone: json["time_zone"],
     inStock: json["in_stock"],
     attribute: json["attribute"] == null ? [] : List<Attribute>.from(json["attribute"]!.map((x) => Attribute.fromJson(x))),
@@ -177,7 +177,7 @@ class ProductDetails {
     currentCategories: json["current_categories"] == null ? [] : List<CurrentCategory>.from(json["current_categories"]!.map((x) => CurrentCategory.fromJson(x))),
     category: json["category"] == null ? null : Category.fromJson(json["category"]),
     subCategory: json["sub_category"] == null ? null : SubCategory.fromJson(json["sub_category"]),
-    productImageNames: json["product_image_names"] == null ? [] : List<Image>.from(json["product_image_names"]!.map((x) => Image.fromJson(x))),
+    productImageNames: json["product_image_names"] == null ? [] : List<ProductImage>.from(json["product_image_names"]!.map((x) => ProductImage.fromJson(x))),
     shippingRule: json["shipping_rule"] == null ? null : ShippingRule.fromJson(json["shipping_rule"]),
   );
 
@@ -388,14 +388,14 @@ class CurrentCategory {
   };
 }
 
-class Image {
+class ProductImage {
   int? id;
   String? image;
   int? productId;
   dynamic createdAt;
   dynamic updatedAt;
 
-  Image({
+  ProductImage({
     this.id,
     this.image,
     this.productId,
@@ -403,7 +403,7 @@ class Image {
     this.updatedAt,
   });
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
     id: json["id"],
     image: json["image"],
     productId: json["product_id"],

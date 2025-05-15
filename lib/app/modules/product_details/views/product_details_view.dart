@@ -1,12 +1,16 @@
 import 'package:any_image_view/any_image_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_view.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
+import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:turi/app/modules/product_details/controllers/product_details_controller.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
+import '../../cart/controllers/cart_controller.dart';
 
 class ProductDetailsView extends BaseView<ProductDetailsController> {
   ProductDetailsView({super.key});
@@ -32,18 +36,18 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                     children: [
                       PageView.builder(
                         controller: controller.pageController,
-                        itemCount: controller.productDetails.first.images!.length,
+                        itemCount: controller.imageList.length,
                         onPageChanged: (index) {
                           controller.currentPage.value = index;
                         },
                         itemBuilder: (BuildContext context, int index) {
                           return AnyImageView(
-                            imagePath: '${AppConfig.imageBasePath}${controller.productDetails.first.images![index].image}',
+                            imagePath:
+                                '${AppConfig.imageBasePath}${controller.imageList[index].image}',
                             width: double.infinity,
                             height: 300,
                           );
                         },
-
                       ),
                       Positioned(
                         bottom: 10,
@@ -51,7 +55,10 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                         right: 0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(controller.productDetails.first.images!.length, // Number of images
+                          children: List.generate(
+                            controller.imageList.length, //
+                            // Number of
+                            // images
                             (index) => AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
                               margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -63,8 +70,8 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                               decoration: BoxDecoration(
                                 color:
                                     controller.currentPage.value == index
-                                        ? Colors.orange
-                                        : Colors.grey,
+                                        ? AppColors.primaryColor
+                                        : AppColors.secondaryColor,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
@@ -186,20 +193,32 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
 
                 // Expandable Sections
                 ExpansionTile(
+                  textColor: AppColors.black,
+                  iconColor: AppColors.black,
                   title: const Text('Specifications'),
-                  children: const [
+                  children: [
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        '• Size: Medium\n• Color: Red\n• Material: Cotton',
+                          controller.productDetails.isEmpty?'':
+                        controller.productDetails.first.metaDescription
+                            .toString(),
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ),
                   ],
                 ),
                 ExpansionTile(
+                  textColor: AppColors.black,
+                  iconColor: AppColors.black,
                   title: const Text('Reviews & Ratings'),
                   children: [
+                    Text(
+                      'No Review Found',
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                    /*
+
                     ListTile(
                       leading: const CircleAvatar(
                         backgroundImage: NetworkImage(
@@ -220,18 +239,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-                ExpansionTile(
-                  title: const Text('Seller Information'),
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        'Seller: ABC Store\nLocation: China\nRating: 4.5/5',
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                    ),
+*/
                   ],
                 ),
               ],
@@ -248,7 +256,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(
+                      /*child: ElevatedButton(
                         onPressed: () {
                           // Add to cart logic
                         },
@@ -256,18 +264,130 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                           backgroundColor: Colors.orange,
                         ),
                         child: const Text('Add to Cart'),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Buy now logic
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                      ),*/
+                      child: Visibility(
+                        visible: controller.product.addToCart!,
+                        replacement: Container(
+                          margin: REdgeInsets.symmetric(horizontal: 14),
+                          height: 30.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppColors.primaryColor,
+                              width: 1,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 2,
+                                offset: Offset(0, 1),
+                                // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  if (controller.product.quantity! > 1) {
+                                    controller.product.quantity =
+                                        controller.product.quantity! - 1;
+
+                                    Get.find<CartController>().cartProducts
+                                        .forEach((element) {
+                                          if (element.id ==
+                                              controller.product.id) {
+                                            element.quantity =
+                                                controller.product.quantity;
+                                          }
+                                        });
+
+                                    Get.find<HomeController>().homeElements
+                                        .refresh();
+                                  } else {
+                                    controller.product.addToCart = true;
+                                    Get.find<HomeController>().homeElements
+                                        .refresh();
+                                    Get.find<HomeController>()
+                                        .cartCount
+                                        .value--;
+
+                                    Get.find<CartController>().cartProducts
+                                        .removeAt(
+                                          Get.find<CartController>()
+                                              .cartProducts
+                                              .indexWhere(
+                                                (element) =>
+                                                    element.id ==
+                                                    controller.product.id,
+                                              ),
+                                        );
+
+                                    Get.find<HomeController>().cartCount
+                                        .refresh();
+                                  }
+                                },
+                                icon: FaIcon(
+                                  FontAwesomeIcons.minus,
+                                  color: AppColors.primaryColor,
+                                  size: 14,
+                                ),
+                              ),
+
+                              Text(
+                                controller.product.quantity!.toString(),
+                                style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              IconButton(
+                                onPressed: () {
+                                  controller.product.quantity =
+                                      controller.product.quantity! + 1;
+
+                                  Get.find<CartController>().cartProducts
+                                      .forEach((element) {
+                                        if (element.id ==
+                                            controller.product.id) {
+                                          element.quantity =
+                                              controller.product.quantity;
+                                        }
+                                      });
+                                  Get.find<HomeController>().homeElements
+                                      .refresh();
+                                },
+                                icon: FaIcon(
+                                  FontAwesomeIcons.plus,
+                                  color: AppColors.primaryColor,
+                                  size: 14,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        child: const Text('Buy Now'),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            controller.product.quantity = 1;
+                            controller.product.addToCart = false;
+                            Get.find<HomeController>().cartCount.value++;
+                            Get.find<CartController>().cartProducts.add(
+                              controller.product,
+                            );
+                            Get.find<HomeController>().cartCount.refresh();
+                            Get.find<HomeController>().homeElements.refresh();
+                          },
+                          child: Text(
+                            '+ Add to Cart',
+                            style: TextStyle(color: AppColors.primaryColor),
+                          ),
+                        ),
                       ),
                     ),
                   ],
