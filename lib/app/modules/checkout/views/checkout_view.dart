@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_view.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
+import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 
@@ -42,26 +43,78 @@ class CheckoutView extends BaseView<CheckoutController> {
                     ),
                   ),
                   Divider(color: AppColors.primaryColor),
-                  commonTextField(labelText: 'Your Name', icon: Icons.person),
+                  commonTextField(
+                    labelText: 'Your Name',
+                    icon: Icons.person,
+                    controller: controller.name.value,
+                  ),
                   AppWidgets().gapH8(),
                   commonTextField(
                     labelText: 'Mobile Number',
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
+                    controller: controller.mobile.value,
                   ),
                   AppWidgets().gapH8(),
                   commonTextField(
                     labelText: 'Email',
+                    controller: controller.email.value,
                     icon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
                   AppWidgets().gapH8(),
                   commonTextField(
+                    controller: controller.address.value,
                     labelText: 'Address',
                     icon: Icons.location_on,
                   ),
                   AppWidgets().gapH8(),
-                  commonTextField(labelText: 'City', icon: Icons.location_city),
+                  SizedBox(
+                    height: 40.h,
+                    child: DropdownButtonFormField<String>(
+                      padding: EdgeInsets.zero,
+                      iconEnabledColor: AppColors.primaryColor,
+                      iconDisabledColor: AppColors.primaryColor,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(right: 5),
+                        labelText: 'City',
+                        prefixIcon: Icon(
+                          Icons.location_city,
+                          color: AppColors.primaryColor,
+                        ),
+                        floatingLabelStyle: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 14.sp,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                      value: controller.city.value,
+                      items:
+                          controller.cityList.map((city) {
+                            return DropdownMenuItem<String>(
+                              value: city,
+                              child: Text(city),
+                            );
+                          }).toList(),
+                      onChanged: (value) {
+                        // Handle city selection
+                        printLog('Selected city: $value');
+                      },
+                    ),
+                  ),
                   AppWidgets().gapH8(),
                 ],
               ),
@@ -93,6 +146,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                     children: [
                       Expanded(
                         child: commonTextField(
+                          controller: controller.coupon.value,
                           labelText: 'Coupon Code',
                           icon: Icons.card_giftcard,
                         ),
@@ -103,7 +157,8 @@ class CheckoutView extends BaseView<CheckoutController> {
                           // Add coupon apply logic here
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(75, 40.h), // Set minimum size to zero
+                          minimumSize: Size(75, 40.h),
+                          // Set minimum size to zero
                           backgroundColor: AppColors.primaryColor,
                         ),
                         child: Text('Apply'),
@@ -111,7 +166,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                     ],
                   ),
                 ],
-              )
+              ),
             ),
           ),
 
@@ -138,41 +193,47 @@ class CheckoutView extends BaseView<CheckoutController> {
 
                   AppWidgets().gapH8(),
                   Obx(
-                    () => RadioListTile<String>(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      fillColor: MaterialStateProperty.all<Color>(
-                        AppColors.primaryColor,
-                      ),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(
-                        'Inside Manama City (0.50 BD)',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      value: 'Inside Manama City',
-                      groupValue: controller.selectedShippingMethod.value,
-                      onChanged: (value) {
-                        controller.selectedShippingMethod.value = value!;
-                      },
-                    ),
-                  ),
-                  Obx(
-                    () => RadioListTile<String>(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      fillColor: MaterialStateProperty.all<Color>(
-                        AppColors.primaryColor,
-                      ),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(
-                        'Outside Manama City (1.00 BD)',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      value: 'Outside Manama City',
-                      groupValue: controller.selectedShippingMethod.value,
-                      onChanged: (value) {
-                        controller.selectedShippingMethod.value = value!;
-                      },
+                    () => Column(
+                      children:
+                          controller.shippingInfo.map((shipping) {
+                            return RadioListTile<String>(
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              fillColor: MaterialStateProperty.all<Color>(
+                                AppColors.primaryColor,
+                              ),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    shipping.title.toString() ,
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                 Padding(padding: EdgeInsets.only(right: 20),
+                                   child:
+                                 Text(
+                                   '${shipping.price} BDT',
+                                   style: TextStyle(fontSize: 14,),
+                                 ),)
+                                ],
+                              ),
+                              value: shipping.title.toString(),
+                              groupValue:
+                                  controller.selectedShippingMethod.value,
+                              onChanged: (value) {
+                                controller.selectedShippingMethod.value =
+                                    value!;
+                                controller.delivery.value =
+                                    double.parse(shipping.price.toString());
+                                controller.shippingId.value =
+                                    int.parse(shipping.id.toString());
+
+                                printLog(
+                                    'Selected shipping id: ${shipping.id}');
+                              },
+                            );
+                          }).toList(),
                     ),
                   ),
                 ],
@@ -203,7 +264,10 @@ class CheckoutView extends BaseView<CheckoutController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Sub Total', style: TextStyle(fontSize: 14)),
-                      Text('3.05 BD', style: TextStyle(fontSize: 14)),
+                      Text('${controller.subTotal.value} BDT', style:
+                      TextStyle
+                        (fontSize:
+                      14,fontWeight: FontWeight.bold)),
                     ],
                   ),
                   SizedBox(height: 8),
@@ -211,7 +275,10 @@ class CheckoutView extends BaseView<CheckoutController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Shipping', style: TextStyle(fontSize: 14)),
-                      Text('0.50 BD', style: TextStyle(fontSize: 14)),
+                      Text('${controller.delivery.value} BDT', style:
+                      TextStyle
+                        (fontSize:
+                      14,fontWeight: FontWeight.bold)),
                     ],
                   ),
                   SizedBox(height: 8),
@@ -219,7 +286,10 @@ class CheckoutView extends BaseView<CheckoutController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Coupon', style: TextStyle(fontSize: 14)),
-                      Text('0.00 BD', style: TextStyle(fontSize: 14)),
+                      Text('${controller.couponAmount.value} BDT',
+                          style:
+                      TextStyle
+                        (fontSize: 14,fontWeight: FontWeight.bold)),
                     ],
                   ),
                   Divider(color: AppColors.primaryColor),
@@ -234,10 +304,12 @@ class CheckoutView extends BaseView<CheckoutController> {
                         ),
                       ),
                       Text(
-                        '3.55 BD',
+                        '${controller.subTotal.value+controller.delivery
+                            .value-controller.couponAmount.value} BDT',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColor
                         ),
                       ),
                     ],
@@ -277,10 +349,10 @@ class CheckoutView extends BaseView<CheckoutController> {
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
                       title: Text(
-                        'Cash on delivery',
+                        'Cash On Delivery',
                         style: TextStyle(fontSize: 14),
                       ),
-                      value: 'Cash on delivery',
+                      value: 'Cash On Delivery',
                       groupValue: controller.selectedPaymentMethod.value,
                       onChanged: (value) {
                         controller.selectedPaymentMethod.value = value!;
@@ -333,7 +405,9 @@ class CheckoutView extends BaseView<CheckoutController> {
           AppWidgets().gapH8(),
 
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              controller.setShippingInfo();
+            },
             style: ElevatedButton.styleFrom(
               minimumSize: Size(double.infinity, 40.h),
               backgroundColor: AppColors.primaryColor,
