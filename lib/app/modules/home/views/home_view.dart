@@ -12,6 +12,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:turi/app/core/config/app_config.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../../core/base/base_view.dart';
 import '../../../core/style/app_colors.dart';
@@ -190,42 +191,54 @@ class HomeView extends BaseView<HomeController> {
                     scrollDirection: Axis.horizontal,
                     itemCount: controller.categoriesData.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            margin: REdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 6,
+                      return InkWell(
+                        onTap: (){
+                          Get.toNamed(Routes.PRODUCT_CATEGORY,
+                              arguments: {
+                                'name': controller
+                                    .categoriesData[index].title,
+                                'slug': controller
+                                    .categoriesData[index].slug,
+                                'brandId': '',
+                              });
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: REdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.gray.withOpacity(0.5),
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: AnyImageView(
+                                imagePath:
+                                '${AppConfig.imageBasePath}${controller.categoriesData[index].image}',
+                                height: 75.h,
+                              ),
                             ),
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.gray.withOpacity(0.5),
-                                  blurRadius: 5,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
+                            AppWidgets().gapH(4),
+                            Text(
+                              '${controller.categoriesData[index].title}',
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            child: AnyImageView(
-                              imagePath:
-                                  '${AppConfig.imageBasePath}${controller.categoriesData[index].image}',
-                              height: 75.h,
-                            ),
-                          ),
-                          AppWidgets().gapH(4),
-                          Text(
-                            '${controller.categoriesData[index].title}',
-                            style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -281,6 +294,15 @@ class HomeView extends BaseView<HomeController> {
                   child: Center(
                     child: Gallery3D(
                       width: Get.width,
+                      onClickItem: (index) {
+                        printLog('${controller.brandsData[index].title}');
+                        Get.toNamed(Routes.PRODUCT_CATEGORY,
+                            arguments: {
+                              'name': controller.brandsData[index].title,
+                              'slug': '',
+                              'brandId': controller.brandsData[index].id.toString(),
+                            });
+                      },
                       itemConfig: GalleryItemConfig(
                         width: 175.h,
                         height: 175.h,
@@ -288,14 +310,25 @@ class HomeView extends BaseView<HomeController> {
                       ),
                       itemBuilder: (context, index) {
                         final brand = controller.brandsData[index];
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                '${AppConfig.imageBasePath}${brand.image}',
+                        return InkWell(
+                          onTap:() {
+                            printLog('${brand.title}');
+                            Get.toNamed(Routes.PRODUCT_CATEGORY,
+                                arguments: {
+                                  'name': brand.title,
+                                  'slug': brand.slug,
+                                  'brandId': brand.id,
+                                });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  '${AppConfig.imageBasePath}${brand.image}',
+                                ),
+                                fit: BoxFit.fitHeight,
                               ),
-                              fit: BoxFit.fitHeight,
                             ),
                           ),
                         );

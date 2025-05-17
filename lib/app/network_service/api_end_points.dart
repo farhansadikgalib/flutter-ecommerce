@@ -34,4 +34,16 @@ class ApiEndPoints {
   static String placeOrder = "order/action";
   static String shippingRules = "shipping-rule/all-shipping-rules";
 
+  //Checkout
+
+  //Category
+  static String categoryList({
+    required String productCategory,required String brandId, required String shippingId
+  }) =>
+      "all?category=&sub_category=$productCategory&sortby=&shipping=$shippingId&brand"
+          "=$brandId"
+          "&collection"
+          "=&rating=&max=&min=&page=1&sidebar_data=true";
+
+  //Category
 }
