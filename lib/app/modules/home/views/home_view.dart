@@ -545,8 +545,11 @@ class HomeView extends BaseView<HomeController> {
                                                   Text(
                                                     '${product.title}',
                                                     textAlign: TextAlign.center,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: 14,
                                                       color:
                                                           AppColors
                                                               .primaryColor,
@@ -576,7 +579,7 @@ class HomeView extends BaseView<HomeController> {
                                                               product.selling
                                                                   .toString(),
                                                           style: TextStyle(
-                                                            fontSize: 14.0,
+                                                            fontSize: 12.0,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             decoration:
@@ -588,7 +591,7 @@ class HomeView extends BaseView<HomeController> {
                                                           text:
                                                               "  ${product.offered.toString()} BDT",
                                                           style: TextStyle(
-                                                            fontSize: 14.0,
+                                                            fontSize: 12.0,
                                                             color:
                                                                 AppColors
                                                                     .primaryColor,
