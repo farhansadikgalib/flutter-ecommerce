@@ -38,12 +38,13 @@ class ApiEndPoints {
 
   //Category
   static String categoryList({
-    required String productCategory,required String brandId, required String shippingId
+    required String productCategory,required String brandId, required String
+    shippingId, required String maxPrice, required String minPrice,
   }) =>
       "all?category=&sub_category=$productCategory&sortby=&shipping=$shippingId&brand"
           "=$brandId"
           "&collection"
-          "=&rating=&max=&min=&page=1&sidebar_data=true";
+          "=&rating=&max=$maxPrice&min=$minPrice&page=1&sidebar_data=true";
 
   //Category
 }
