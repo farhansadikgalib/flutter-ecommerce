@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turi/app/data/remote/model/search/search_response.dart';
 import 'package:turi/app/data/remote/repository/category/category_repository.dart';
 
+import '../../../core/helper/debounce_helper.dart';
 import '../../../core/helper/print_log.dart';
 import '../../../data/remote/model/category/categorywiseproducts_response.dart';
 
 class ProductCategoryController extends GetxController {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final DebounceHelper debounceHelper = DebounceHelper();
   final priceRange = RangeValues(0, 1000).obs;
   final category = <Category>[].obs;
   final brands = <Brand>[].obs;
@@ -14,15 +18,32 @@ class ProductCategoryController extends GetxController {
   final categorySlug = Get.arguments['slug'];
   final categoryName = Get.arguments['name'];
   final brandId = Get.arguments['brandId'];
-
+  final fromSearch = Get.arguments['fromSearch'];
   final categoryProducts = <CategoryProducts>[].obs;
 
   final isLoading = false.obs;
 
+  //search
+  final FocusNode searchFocusNode = FocusNode(canRequestFocus: true);
+  final searchController = TextEditingController().obs;
+  final searchProductList = <SearchProducts>[];
+  //search
+
   @override
   void onInit() {
     super.onInit();
-    getCategoryWiseProducts(categorySlug, brandId, '', '', '');
+    if (fromSearch == false) {
+      getCategoryWiseProducts(categorySlug, brandId, '', '', '');
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      searchFocusNode.requestFocus(); // Request focus to show the keyboard
+    });
+  }
+
+  @override
+  void onClose() {
+    searchFocusNode.dispose();
+    super.onClose();
   }
 
   getCategoryWiseProducts(
@@ -54,7 +75,7 @@ class ProductCategoryController extends GetxController {
     } else {
       printLog(response.message);
     }
-    isLoading.value =false;
+    isLoading.value = false;
   }
 
   void filterProducts() async {
@@ -90,4 +111,46 @@ class ProductCategoryController extends GetxController {
       priceRange.value.end.toString(),
     );
   }
+
+  void searchProducts(String query) async {
+    if (query.isNotEmpty) {
+      var response = await CategoryRepository().getSearchItems(query);
+      if (response.status == 200) {
+        categoryProducts.clear();
+        response.data?.product?.forEach((element) {
+              categoryProducts.add(CategoryProducts(
+                id: element.id,
+                title: element.title,
+                image: element.image,
+                price: element.price,
+                rating: element.rating,
+                slug: element.slug,
+                addToCart: true,
+                reviewCount: element.reviewCount,
+                quantity: 0,
+                selling: element.selling,
+                offered: element.offered,
+              ));
+        });
+
+
+        printLog(categoryProducts.length);
+
+      } else {
+        printLog(response);
+      }
+    } else {
+      categoryProducts.value =
+          categoryProducts
+              .where(
+                (product) =>
+                    product.title?.toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ??
+                    false,
+              )
+              .toList();
+    }
+  }
+
 }
