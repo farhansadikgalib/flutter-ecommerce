@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:any_image_view/any_image_view.dart';
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -585,12 +584,12 @@ class HomeView extends BaseView<HomeController> {
                                                     AnyImageView(
                                                       imagePath:
                                                           '${AppConfig.imageBasePath}${product.image}',
-                                                      height: 125,
-                                                      width: 125,
+                                                      height: 125.h,
+                                                      width: 125.h,
                                                       cachedNetPlaceholderHeight:
-                                                          125,
+                                                          125.h,
                                                       cachedNetPlaceholderWidth:
-                                                          125,
+                                                          125.h,
                                                     ),
                                                     AppWidgets().gapH(4),
                                                     Text(

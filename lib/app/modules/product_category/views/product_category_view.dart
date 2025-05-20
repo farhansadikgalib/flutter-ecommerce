@@ -1,3 +1,4 @@
+import 'package:any_image_view/any_image_view.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -411,10 +412,15 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                             padding: EdgeInsets.all(16.0),
                                             child: Column(
                                               children: [
-                                                Image.network(
-                                                  '${AppConfig.imageBasePath}${product.image}',
-                                                  cacheHeight: 125,
-                                                  cacheWidth: 125,
+                                                AnyImageView(
+                                                  imagePath: '${AppConfig
+                                                    .imageBasePath}${product.image}',
+                                                  height: 125.h,
+                                                  width: 125.h,
+                                                  cachedNetPlaceholderHeight:
+                                                  125.h,
+                                                  cachedNetPlaceholderWidth:
+                                                  125.h,
                                                 ),
                                                 AppWidgets().gapH(4),
                                                 Text(
