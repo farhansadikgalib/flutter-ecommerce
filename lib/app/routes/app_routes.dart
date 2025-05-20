@@ -1,16 +1,15 @@
 part of 'app_pages.dart';
-// DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
 
 abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const AUTH = _Paths.AUTH;
   static const DASHBOARD = _Paths.DASHBOARD;
-  static const PRODUCT_SEARCH = _Paths.PRODUCT_SEARCH;
   static const CART = _Paths.CART;
   static const CHECKOUT = _Paths.CHECKOUT;
   static const PRODUCT_DETAILS = _Paths.PRODUCT_DETAILS;
   static const PRODUCT_CATEGORY = _Paths.PRODUCT_CATEGORY;
+  static const SPLASH = _Paths.SPLASH;
 }
 
 abstract class _Paths {
@@ -18,9 +17,9 @@ abstract class _Paths {
   static const HOME = '/home';
   static const AUTH = '/auth';
   static const DASHBOARD = '/dashboard';
-  static const PRODUCT_SEARCH = '/product-search';
   static const CART = '/cart';
   static const CHECKOUT = '/checkout';
   static const PRODUCT_DETAILS = '/product-details';
   static const PRODUCT_CATEGORY = '/product-category';
+  static const SPLASH = '/splash';
 }

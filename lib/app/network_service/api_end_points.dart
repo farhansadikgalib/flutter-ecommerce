@@ -47,4 +47,14 @@ class ApiEndPoints {
           "=&rating=&max=$maxPrice&min=$minPrice&page=1&sidebar_data=true";
 
   //Category
+
+
+// Search
+
+  static String searchProduct({
+    required String query,
+  }) =>
+      "search?q=$query";
+
+// Search
 }

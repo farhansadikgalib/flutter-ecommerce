@@ -14,15 +14,15 @@ import '../modules/product_category/bindings/product_category_binding.dart';
 import '../modules/product_category/views/product_category_view.dart';
 import '../modules/product_details/bindings/product_details_binding.dart';
 import '../modules/product_details/views/product_details_view.dart';
-import '../modules/product_search/bindings/product_search_binding.dart';
-import '../modules/product_search/views/product_search_view.dart';
+import '../modules/splash/bindings/splash_binding.dart';
+import '../modules/splash/views/splash_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.DASHBOARD;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(
@@ -39,11 +39,6 @@ class AppPages {
       name: _Paths.DASHBOARD,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
-    ),
-    GetPage(
-      name: _Paths.PRODUCT_SEARCH,
-      page: () => const ProductSearchView(),
-      binding: ProductSearchBinding(),
     ),
     GetPage(
       name: _Paths.CART,
@@ -64,6 +59,11 @@ class AppPages {
       name: _Paths.PRODUCT_CATEGORY,
       page: () => const ProductCategoryView(),
       binding: ProductCategoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => const SplashView(),
+      binding: SplashBinding(),
     ),
   ];
 }

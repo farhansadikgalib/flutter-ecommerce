@@ -27,7 +27,7 @@ class CustomImage extends StatelessWidget {
           errorBuilder: (context, error, stackTrace) {
             return Image.asset(
               placeholder.isNotEmpty ? placeholder : (isNotification ? Assets
-                  .imageNotificationPlaceholder : Assets.imagePlaceholder),
+                  .pngLogo : Assets.pngLogo),
               height: height, width: width, fit: fit,
             );
           })
@@ -35,12 +35,12 @@ class CustomImage extends StatelessWidget {
         imageUrl: image, height: height, width: width, fit: fit,
         placeholder: (context, url) => Image.asset(
           placeholder.isNotEmpty ? placeholder : (isNotification ? Assets
-              .imageNotificationPlaceholder :Assets.imagePlaceholder),
+              .pngLogo :Assets.pngLogo),
           height: height, width: width, fit: fit,
         ),
         errorWidget: (context, url, error) => Image.asset(
           placeholder.isNotEmpty ? placeholder : (isNotification ? Assets
-              .imageNotificationPlaceholder : Assets.imagePlaceholder),
+              .pngLogo : Assets.pngLogo),
           height: height, width: width, fit: fit,
         ),
       ),
