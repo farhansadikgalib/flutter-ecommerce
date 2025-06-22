@@ -12,6 +12,7 @@ class OderPlaceRequest {
   List<int>? shippingPlaceId;
   List<int>? shippingType;
   String? guestEmail;
+  String? userId;
 
   OderPlaceRequest({
     this.orderMethod,
@@ -21,6 +22,7 @@ class OderPlaceRequest {
     this.shippingPlaceId,
     this.shippingType,
     this.guestEmail,
+    this.userId
   });
 
   factory OderPlaceRequest.fromJson(Map<String, dynamic> json) => OderPlaceRequest(
@@ -31,6 +33,7 @@ class OderPlaceRequest {
     shippingPlaceId: json["shipping_place_id"] == null ? [] : List<int>.from(json["shipping_place_id"]!.map((x) => x)),
     shippingType: json["shipping_type"] == null ? [] : List<int>.from(json["shipping_type"]!.map((x) => x)),
     guestEmail: json["guest_email"],
+    userId: json["user_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -41,5 +44,6 @@ class OderPlaceRequest {
     "shipping_place_id": shippingPlaceId == null ? [] : List<dynamic>.from(shippingPlaceId!.map((x) => x)),
     "shipping_type": shippingType == null ? [] : List<dynamic>.from(shippingType!.map((x) => x)),
     "guest_email": guestEmail,
+    "user_id": userId,
   };
 }
