@@ -5,7 +5,7 @@ OrderResponse orderResponseFromJson(String str) => OrderResponse.fromJson(json.d
 String orderResponseToJson(OrderResponse data) => json.encode(data.toJson());
 
 class OrderResponse {
-  AllOrdersData? data;
+  Data? data;
   int? status;
   dynamic token;
   String? message;
@@ -18,7 +18,7 @@ class OrderResponse {
   });
 
   factory OrderResponse.fromJson(Map<String, dynamic> json) => OrderResponse(
-    data: json["data"] == null ? null : AllOrdersData.fromJson(json["data"]),
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
     status: json["status"],
     token: json["token"],
     message: json["message"],
@@ -32,9 +32,9 @@ class OrderResponse {
   };
 }
 
-class AllOrdersData {
+class Data {
   int? currentPage;
-  List<Datum>? data;
+  List<AllOrdersData>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -47,7 +47,7 @@ class AllOrdersData {
   int? to;
   int? total;
 
-  AllOrdersData({
+  Data({
     this.currentPage,
     this.data,
     this.firstPageUrl,
@@ -63,9 +63,9 @@ class AllOrdersData {
     this.total,
   });
 
-  factory AllOrdersData.fromJson(Map<String, dynamic> json) => AllOrdersData(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
     currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<AllOrdersData>.from(json["data"]!.map((x) => AllOrdersData.fromJson(x))),
     firstPageUrl: json["first_page_url"],
     from: json["from"],
     lastPage: json["last_page"],
@@ -96,7 +96,7 @@ class AllOrdersData {
   };
 }
 
-class Datum {
+class AllOrdersData {
   int? id;
   int? status;
   String? totalAmount;
@@ -115,7 +115,7 @@ class Datum {
   String? created;
   List<OrderedProduct>? orderedProducts;
 
-  Datum({
+  AllOrdersData({
     this.id,
     this.status,
     this.totalAmount,
@@ -135,7 +135,7 @@ class Datum {
     this.orderedProducts,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory AllOrdersData.fromJson(Map<String, dynamic> json) => AllOrdersData(
     id: json["id"],
     status: json["status"],
     totalAmount: json["total_amount"],
