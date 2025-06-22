@@ -65,6 +65,10 @@ class ApiEndPoints {
 
 //order
 static String allOrders = "order/by-user";
+  static String trackOrder({
+    required String orderId,
+  }) =>
+      "track-order?tracking_id=$orderId";
 //order
 
 
