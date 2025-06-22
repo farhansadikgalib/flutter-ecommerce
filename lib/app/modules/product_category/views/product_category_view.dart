@@ -23,6 +23,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(CartController);
     return Obx(() {
       return Scaffold(
         key: controller.scaffoldKey,
@@ -31,7 +32,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
             controller.fromSearch
                 ? AppBar(
               elevation: 0.0,
-              titleSpacing: -10,
+              titleSpacing: -20,
               centerTitle: false,
               backgroundColor: AppColors.white,
               leading: InkWell(
@@ -40,14 +41,14 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                     Icons.arrow_back_ios,
                     color: AppColors.primaryColor,
                   )),
-                  title:   Expanded(
-                    child: Container(
+                  title: Container(
                       margin: EdgeInsets.symmetric(vertical: 5),
                       height: 50.h,
+                      width: Get.width/1.10,
                       padding: REdgeInsets.symmetric(horizontal: 20,
                         vertical: 5),child: TextField(
                       cursorColor: AppColors.primaryColor,
-                      cursorHeight: 30,
+                      cursorHeight: 20,
                       controller: controller.searchController.value,
                       focusNode: controller.searchFocusNode,
                       decoration: InputDecoration(
@@ -70,7 +71,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                         );
                       },
                     ),)
-                  ),
+
                 )
                 : globalAppBar(context, controller.categoryName),
         drawer: Drawer(
@@ -789,10 +790,13 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                     padding: EdgeInsets.all(16.0),
                                     child: Column(
                                       children: [
-                                        Image.network(
-                                          '${AppConfig.imageBasePath}${product.image}',
-                                          cacheHeight: 125,
-                                          cacheWidth: 125,
+                                        AnyImageView(
+                                         imagePath:  '${AppConfig
+                                            .imageBasePath}${product.image}',
+                                          height: 125.h,
+                                          width: 125.h,
+                                          cachedNetPlaceholderWidth: 125.h,
+                                          cachedNetPlaceholderHeight: 125.h,
                                         ),
                                         AppWidgets().gapH(4),
                                         Text(

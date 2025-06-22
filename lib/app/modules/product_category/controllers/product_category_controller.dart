@@ -6,6 +6,7 @@ import 'package:turi/app/data/remote/repository/category/category_repository.dar
 import '../../../core/helper/debounce_helper.dart';
 import '../../../core/helper/print_log.dart';
 import '../../../data/remote/model/category/categorywiseproducts_response.dart';
+import '../../cart/controllers/cart_controller.dart';
 
 class ProductCategoryController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -38,6 +39,7 @@ class ProductCategoryController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       searchFocusNode.requestFocus(); // Request focus to show the keyboard
     });
+
   }
 
   @override
