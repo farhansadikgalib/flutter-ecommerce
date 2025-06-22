@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_controller.dart';
 
 import '../../../data/remote/model/home/home_response.dart';
+import '../../home/controllers/home_controller.dart';
 
 
 class CartController extends BaseController {
@@ -11,6 +12,19 @@ class CartController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    Get.find<HomeController>().reactive;
+    final homeController = Get.find<HomeController>();
+    ever(homeController.homeElements, (value) {
+      homeController.refresh();
+      cartCalculation();
+    });
+  }
+
+
+  @override
+  void onReady() {
+    super.onReady();
+    cartProducts.refresh();
   }
 
 

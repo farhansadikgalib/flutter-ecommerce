@@ -14,6 +14,7 @@ import 'package:turi/app/core/config/app_config.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:turi/app/core/helper/print_log.dart';
+import 'package:turi/app/core/helper/shared_value_helper.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../../core/base/base_view.dart';
 import '../../../core/helper/dialog_helper.dart';
@@ -827,22 +828,29 @@ class HomeView extends BaseView<HomeController> {
                                                       ),
                                                       child: ElevatedButton(
                                                         onPressed: () {
-                                                          product.quantity = 1;
-                                                          product.addToCart =
-                                                              false;
-                                                          controller
-                                                              .cartCount
-                                                              .value++;
-                                                          Get.find<
+
+                                                          if(!isLoggedIn.$){
+                                                            product.quantity = 1;
+                                                            product.addToCart =
+                                                            false;
+                                                            controller
+                                                                .cartCount
+                                                                .value++;
+                                                            Get.find<
                                                                 CartController
-                                                              >()
-                                                              .cartProducts
-                                                              .add(product);
-                                                          controller.cartCount
-                                                              .refresh();
-                                                          controller
-                                                              .homeElements
-                                                              .refresh();
+                                                            >()
+                                                                .cartProducts
+                                                                .add(product);
+                                                            controller.cartCount
+                                                                .refresh();
+                                                            controller
+                                                                .homeElements
+                                                                .refresh();
+                                                          } else{
+                                                            Get.toNamed
+                                                              (Routes.LOGIN);
+                                                          }
+
                                                         },
                                                         child: Text(
                                                           '+ Add to Bag',
