@@ -50,7 +50,7 @@ class LoginController extends GetxController {
     if(kDebugMode){
       nameController.text = 'coheraw';
       emailController.text = 'pocinap866@forcrack.com';
-      passwordController.text = 'pocinap866@forcrack.com';
+      passwordController.text = '123456';
     }
   }
 
@@ -143,9 +143,10 @@ class LoginController extends GetxController {
 
       if(response.status==200){
         AuthHelper().setUserData(response);
-        AuthHelper().loadItems();
         Get.back();
         AppWidgets().getSnackBar(message: response.message);
+        AuthHelper().loadItems();
+
       } else{
         AppWidgets().getSnackBar(message: response.message);
       }

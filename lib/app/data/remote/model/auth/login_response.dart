@@ -35,67 +35,51 @@ class LoginResponse {
 class Data {
   String? expiresIn;
   String? token;
-  Admin? admin;
+  User? user;
 
   Data({
     this.expiresIn,
     this.token,
-    this.admin,
+    this.user,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     expiresIn: json["expires_in"],
     token: json["token"],
-    admin: json["admin"] == null ? null : Admin.fromJson(json["admin"]),
+    user: json["user"] == null ? null : User.fromJson(json["user"]),
   );
 
   Map<String, dynamic> toJson() => {
     "expires_in": expiresIn,
     "token": token,
-    "admin": admin?.toJson(),
+    "user": user?.toJson(),
   };
 }
 
-class Admin {
+class User {
   int? id;
   String? name;
-  String? username;
   String? email;
-  dynamic code;
-  dynamic commission;
-  String? createdAt;
-  String? updatedAt;
+  int? cartCount;
 
-  Admin({
+  User({
     this.id,
     this.name,
-    this.username,
     this.email,
-    this.code,
-    this.commission,
-    this.createdAt,
-    this.updatedAt,
+    this.cartCount,
   });
 
-  factory Admin.fromJson(Map<String, dynamic> json) => Admin(
+  factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     name: json["name"],
-    username: json["username"],
     email: json["email"],
-    code: json["code"],
-    commission: json["commission"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
+    cartCount: json["cart_count"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
-    "username": username,
     "email": email,
-    "code": code,
-    "commission": commission,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
+    "cart_count": cartCount,
   };
 }
