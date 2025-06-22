@@ -49,7 +49,7 @@ class AppHelper {
 
   logout() {
     AuthHelper().clearUserData();
-    Get.offAndToNamed(Routes.AUTH);
+    Get.offAndToNamed(Routes.LOGIN);
   }
 
   refreshLogin() async {
