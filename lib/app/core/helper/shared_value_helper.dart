@@ -10,7 +10,7 @@ final SharedValue<String> accessToken = SharedValue(
 );
 
 
-final SharedValue<String> designation = SharedValue(
+final SharedValue<String> userEmail = SharedValue(
   value: "",
   key: "designation",
 );
@@ -19,7 +19,7 @@ final SharedValue<String> userName = SharedValue(
   key: "userName",
 );
 
-final SharedValue<String> staffID = SharedValue(
+final SharedValue<String> userId = SharedValue(
   value: "",
   key: "staffID",
 );
