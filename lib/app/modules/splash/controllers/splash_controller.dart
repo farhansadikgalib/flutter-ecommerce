@@ -7,7 +7,7 @@ class SplashController extends GetxController {
   initializeApp() async {
     await Future.delayed(2500.milliseconds).then((value) async {
           Get.offNamed(
-            Routes.HOME,
+            Routes.DASHBOARD,
           );
 
     });
