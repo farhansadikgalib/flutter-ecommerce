@@ -61,4 +61,12 @@ class ApiEndPoints {
       "search?q=$query";
 
 // Search
+
+
+//order
+static String allOrders = "order/by-user";
+//order
+
+
+
 }
