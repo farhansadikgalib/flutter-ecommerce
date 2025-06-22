@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_view.dart';
+import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:turi/app/modules/product_details/controllers/product_details_controller.dart';
@@ -382,9 +383,13 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                             );
                             Get.find<HomeController>().cartCount.refresh();
                             Get.find<HomeController>().homeElements.refresh();
+
+                            AppWidgets().getSnackBar(message: 'Added to cart!'
+                                ' View your cart or continue shopping.',);
+
                           },
                           child: Text(
-                            '+ Add to Cart',
+                            'Add to Cart',
                             style: TextStyle(color: AppColors.primaryColor),
                           ),
                         ),
