@@ -3,23 +3,23 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
-  static const AUTH = _Paths.AUTH;
   static const DASHBOARD = _Paths.DASHBOARD;
   static const CART = _Paths.CART;
   static const CHECKOUT = _Paths.CHECKOUT;
   static const PRODUCT_DETAILS = _Paths.PRODUCT_DETAILS;
   static const PRODUCT_CATEGORY = _Paths.PRODUCT_CATEGORY;
   static const SPLASH = _Paths.SPLASH;
+  static const LOGIN = _Paths.LOGIN;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
-  static const AUTH = '/auth';
   static const DASHBOARD = '/dashboard';
   static const CART = '/cart';
   static const CHECKOUT = '/checkout';
   static const PRODUCT_DETAILS = '/product-details';
   static const PRODUCT_CATEGORY = '/product-category';
   static const SPLASH = '/splash';
+  static const LOGIN = '/login';
 }
