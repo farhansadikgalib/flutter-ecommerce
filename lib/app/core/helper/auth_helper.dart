@@ -6,8 +6,8 @@ import '../../data/remote/model/auth/login_response.dart';
 
 
 class AuthHelper {
-  setUserData(
-      LoginResponse loginResponse, String getSRCode, String todayLoginTime) {
+  void setUserData(
+      LoginResponse loginResponse) {
     if (loginResponse.token != null) {
       isLoggedIn.$ = true;
       isLoggedIn.save();
@@ -15,42 +15,42 @@ class AuthHelper {
       accessToken.$ = "Bearer ${loginResponse.token}";
       accessToken.save();
 
-      userName.$ = loginResponse.name!;
-      userName.save();
-
-      staffID.$ = loginResponse.staffid!;
-      staffID.save();
-
-      designation.$ = loginResponse.designation!;
-      designation.save();
-
-      userRole.$ = loginResponse.role!;
-      userRole.save();
-
-      if (loginResponse.role?.toLowerCase() == "Manager".toLowerCase()) {
-        isManager.$ = true;
-        isSupervisor.$ = false;
-        isOperator.$ = false;
-      } else if (loginResponse.role?.toLowerCase() == "Supervisor".toLowerCase()) {
-        isManager.$ = false;
-        isSupervisor.$ = true;
-        isOperator.$ = false;
-      } else if (loginResponse.role?.toLowerCase() == "Operator".toLowerCase()) {
-        isManager.$ = false;
-        isSupervisor.$ = false;
-        isOperator.$ = true;
-      } else {
-        isManager.$ = true;
-        isSupervisor.$ = false;
-        isOperator.$ = false;
-      }
-      isManager.save();
-      isSupervisor.save();
-      isOperator.save();
+      // userName.$ = loginResponse.name!;
+      // userName.save();
+      //
+      // staffID.$ = loginResponse.staffid!;
+      // staffID.save();
+      //
+      // designation.$ = loginResponse.designation!;
+      // designation.save();
+      //
+      // userRole.$ = loginResponse.role!;
+      // userRole.save();
+      //
+      // if (loginResponse.role?.toLowerCase() == "Manager".toLowerCase()) {
+      //   isManager.$ = true;
+      //   isSupervisor.$ = false;
+      //   isOperator.$ = false;
+      // } else if (loginResponse.role?.toLowerCase() == "Supervisor".toLowerCase()) {
+      //   isManager.$ = false;
+      //   isSupervisor.$ = true;
+      //   isOperator.$ = false;
+      // } else if (loginResponse.role?.toLowerCase() == "Operator".toLowerCase()) {
+      //   isManager.$ = false;
+      //   isSupervisor.$ = false;
+      //   isOperator.$ = true;
+      // } else {
+      //   isManager.$ = true;
+      //   isSupervisor.$ = false;
+      //   isOperator.$ = false;
+      // }
+      // isManager.save();
+      // isSupervisor.save();
+      // isOperator.save();
     }
   }
 
-  clearUserData() {
+  void clearUserData() {
     isLoggedIn.$ = false;
     isLoggedIn.save();
 
