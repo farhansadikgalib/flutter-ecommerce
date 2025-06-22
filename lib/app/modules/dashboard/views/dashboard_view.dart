@@ -2,9 +2,11 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:turi/app/modules/home/views/home_view.dart';
+import 'package:turi/app/modules/order/controllers/order_controller.dart';
 import 'package:turi/app/modules/order/views/order_view.dart';
 import '../../cart/views/cart_view.dart';
 import '../controllers/dashboard_controller.dart';
@@ -83,7 +85,7 @@ class DashboardView extends GetView<DashboardController> {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.message),
-        title: ("Notification"),
+        title: ("Orders"),
         activeColorPrimary: AppColors.primaryColor,
         inactiveColorPrimary: Colors.grey,
       ),
@@ -104,6 +106,12 @@ class DashboardView extends GetView<DashboardController> {
         controller: PersistentTabController(initialIndex: 0),
         screens: _buildScreens(),
         items: _navBarsItems(),
+        onItemSelected: (int index) {
+          printLog(index);
+          if (index == 3) {
+            Get.find<OrderController>().getOrders();
+          }
+        },
         backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
