@@ -2,6 +2,7 @@ import 'package:flutter_gallery_3d/gallery3d.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_controller.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
+import 'package:turi/app/core/helper/auth_helper.dart';
 import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/data/remote/model/home/brands_response.dart';
 import 'package:turi/app/data/remote/model/home/category_response.dart';
@@ -29,6 +30,8 @@ class HomeController extends BaseController {
     getCategoriesData();
     getBrandsData();
     ever(cartCount, (value) {
+
+      AuthHelper().loadItems();
 /*
       printLog("Cart count changed: $value");
 */

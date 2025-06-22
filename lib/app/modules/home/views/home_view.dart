@@ -829,7 +829,7 @@ class HomeView extends BaseView<HomeController> {
                                                       child: ElevatedButton(
                                                         onPressed: () {
 
-                                                          if(!isLoggedIn.$){
+                                                          if(isLoggedIn.$){
                                                             product.quantity = 1;
                                                             product.addToCart =
                                                             false;
@@ -846,6 +846,11 @@ class HomeView extends BaseView<HomeController> {
                                                             controller
                                                                 .homeElements
                                                                 .refresh();
+                                                            AppWidgets()
+                                                                .getSnackBar
+                                                              (message: "${
+                                                                product.title} "
+                                                                "added to cart successfully");
                                                           } else{
                                                             Get.toNamed
                                                               (Routes.LOGIN);
