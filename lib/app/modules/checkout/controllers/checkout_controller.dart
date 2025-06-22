@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_controller.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:turi/app/core/helper/print_log.dart';
+import 'package:turi/app/core/helper/shared_value_helper.dart';
 import 'package:turi/app/routes/app_pages.dart';
 
 import '../../../data/remote/model/checkout/order_place_request.dart';
@@ -177,7 +178,8 @@ class CheckoutController extends BaseController {
       quantity: cartProducts.map((product) => product.quantity!).toList(),
       shippingPlaceId: List.generate(cartProducts.length, (index) => shippingId.value),
       shippingType: List.generate(cartProducts.length, (index) => shippingId.value),
-      guestEmail: email.value.text,
+      guestEmail: null,
+      userId: userId.$
     );
 
     var response = await CheckoutRepository().placeAnOrder(

@@ -264,7 +264,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Sub Total', style: TextStyle(fontSize: 14)),
-                      Text('${controller.subTotal.value} BDT', style:
+                      Text('${controller.subTotal.value.toStringAsFixed(2)} BDT', style:
                       TextStyle
                         (fontSize:
                       14,fontWeight: FontWeight.bold)),
@@ -304,8 +304,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                         ),
                       ),
                       Text(
-                        '${controller.subTotal.value+controller.delivery
-                            .value-controller.couponAmount.value} BDT',
+                        '${(controller.subTotal.value + controller.delivery.value - controller.couponAmount.value).toStringAsFixed(2)} BDT',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
