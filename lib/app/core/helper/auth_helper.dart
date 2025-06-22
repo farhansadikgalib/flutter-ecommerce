@@ -8,45 +8,23 @@ import '../../data/remote/model/auth/login_response.dart';
 class AuthHelper {
   void setUserData(
       LoginResponse loginResponse) {
-    if (loginResponse.token != null) {
+    if (loginResponse.data?.token != null) {
       isLoggedIn.$ = true;
       isLoggedIn.save();
 
       accessToken.$ = "Bearer ${loginResponse.token}";
       accessToken.save();
 
-      // userName.$ = loginResponse.name!;
-      // userName.save();
-      //
-      // staffID.$ = loginResponse.staffid!;
-      // staffID.save();
-      //
-      // designation.$ = loginResponse.designation!;
-      // designation.save();
-      //
-      // userRole.$ = loginResponse.role!;
-      // userRole.save();
-      //
-      // if (loginResponse.role?.toLowerCase() == "Manager".toLowerCase()) {
-      //   isManager.$ = true;
-      //   isSupervisor.$ = false;
-      //   isOperator.$ = false;
-      // } else if (loginResponse.role?.toLowerCase() == "Supervisor".toLowerCase()) {
-      //   isManager.$ = false;
-      //   isSupervisor.$ = true;
-      //   isOperator.$ = false;
-      // } else if (loginResponse.role?.toLowerCase() == "Operator".toLowerCase()) {
-      //   isManager.$ = false;
-      //   isSupervisor.$ = false;
-      //   isOperator.$ = true;
-      // } else {
-      //   isManager.$ = true;
-      //   isSupervisor.$ = false;
-      //   isOperator.$ = false;
-      // }
-      // isManager.save();
-      // isSupervisor.save();
-      // isOperator.save();
+      userName.$ = loginResponse.data!.user!.name!;
+      userName.save();
+
+      userId.$ = loginResponse.data!.user!.id!.toString();
+      userId.save();
+
+      userEmail.$ = loginResponse.data!.user!.email!;
+      userEmail.save();
+
+
     }
   }
 
@@ -58,8 +36,8 @@ class AuthHelper {
     accessToken.save();
 
 
-    staffID.$ = "";
-    staffID.save();
+    userId.$ = "";
+    userId.save();
 
     userName.$ = "";
     userName.save();
@@ -67,28 +45,17 @@ class AuthHelper {
     userRole.$ = "";
     userRole.save();
 
-    designation.$ = "";
-    designation.save();
+    userEmail.$ = "";
+    userEmail.save();
 
-    isManager.$ = false;
-    isManager.save();
-
-    isSupervisor.$ = false;
-    isSupervisor.save();
-
-    isOperator.$ = false;
-    isOperator.save();
   }
 
-  loadItems() {
+  void loadItems() {
     isLoggedIn.load();
     accessToken.load();
     userName.load();
-    staffID.load();
-    isManager.load();
-    isSupervisor.load();
-    isOperator.load();
-    designation.load();
+    userId.load();
+    userEmail.load();
     userRole.load();
   }
 }
