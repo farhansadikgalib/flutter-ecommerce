@@ -14,7 +14,7 @@ import '../controllers/cart_controller.dart';
 class CartView extends BaseView<CartController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
-    return globalAppBar(context, 'Cart');
+    return globalAppBar(context, 'Cart', showBackButton: false);
   }
 
   @override
