@@ -28,13 +28,11 @@ class CartController extends BaseController {
   }
 
 
-  cartCalculation() {
+  void cartCalculation() {
     totalPrice.value = 0.0;
-    cartProducts.forEach(
-      (element) {
+    for (var element in cartProducts) {
         totalPrice.value += double.parse(element.selling!) * element.quantity!;
-      },
-    );
+      }
   }
 
 
