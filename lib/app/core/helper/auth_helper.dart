@@ -42,8 +42,6 @@ class AuthHelper {
     userName.$ = "";
     userName.save();
 
-    userRole.$ = "";
-    userRole.save();
 
     userEmail.$ = "";
     userEmail.save();

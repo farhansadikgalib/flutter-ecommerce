@@ -71,6 +71,12 @@ static String allOrders = "order/by-user";
       "track-order?tracking_id=$orderId";
 //order
 
+//wishlist
+
+static String wishlistItems = "user/wishlist/all?order_by=created_at&type=desc";
+static String addToWishlist = "user/wishlist/action";
+
+//wishlist
 
 
 }
