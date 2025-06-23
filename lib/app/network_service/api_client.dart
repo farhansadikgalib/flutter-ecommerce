@@ -21,6 +21,7 @@ class ApiClient {
 
   final String _accessToken = accessToken.$;
 
+
   ApiClient({customBaseUrl = ''}) {
     BaseOptions options = BaseOptions(
       baseUrl: customBaseUrl != '' ? customBaseUrl : AppConfig.basePath,

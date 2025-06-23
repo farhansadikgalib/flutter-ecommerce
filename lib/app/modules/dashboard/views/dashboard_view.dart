@@ -11,6 +11,7 @@ import 'package:turi/app/modules/login/views/login_view.dart';
 import 'package:turi/app/modules/order/controllers/order_controller.dart';
 import 'package:turi/app/modules/order/views/order_view.dart';
 import 'package:turi/app/modules/profile/views/profile_view.dart';
+import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'package:turi/app/modules/wishlist/views/wishlist_view.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../cart/views/cart_view.dart';
@@ -103,6 +104,9 @@ class DashboardView extends GetView<DashboardController> {
         onItemSelected: (int index) {
           if (index == 3 && isLoggedIn.$) {
             Get.find<OrderController>().getOrders();
+          }
+          if (index == 1 && isLoggedIn.$) {
+            Get.find<WishlistController>().getWishlist();
           }
         },
         backgroundColor: Colors.white,
