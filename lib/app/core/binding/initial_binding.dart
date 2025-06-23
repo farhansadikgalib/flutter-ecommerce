@@ -11,7 +11,7 @@ class InitialBinding extends Bindings {
 
     Get.put(HomeController(), permanent: true);
     Get.put(CartController(), permanent: true);
+    Get.put(LoginController(), permanent: true);
 
-    Get.lazyPut(() => LoginController());
   }
 }
