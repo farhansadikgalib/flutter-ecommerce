@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:turi/app/core/helper/print_log.dart';
+import 'package:turi/app/core/helper/shared_value_helper.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:turi/app/modules/home/views/home_view.dart';
+import 'package:turi/app/modules/login/views/login_view.dart';
 import 'package:turi/app/modules/order/controllers/order_controller.dart';
 import 'package:turi/app/modules/order/views/order_view.dart';
 import 'package:turi/app/modules/profile/views/profile_view.dart';
 import 'package:turi/app/modules/wishlist/views/wishlist_view.dart';
+import 'package:turi/app/routes/app_pages.dart';
 import '../../cart/views/cart_view.dart';
 import '../controllers/dashboard_controller.dart';
 
@@ -19,11 +22,10 @@ class DashboardView extends GetView<DashboardController> {
   List<Widget> _buildScreens() {
     return [
       HomeView(),
-      WishlistView(),
-      CartView(),
-      OrderView(),
-      ProfileView()
-
+      if (isLoggedIn.$) WishlistView() else LoginView(),
+      if (isLoggedIn.$) CartView() else LoginView(),
+      if (isLoggedIn.$) OrderView() else LoginView(),
+      if (isLoggedIn.$) ProfileView() else LoginView(),
     ];
   }
 
@@ -44,37 +46,27 @@ class DashboardView extends GetView<DashboardController> {
       PersistentBottomNavBarItem(
         icon: badges.Badge(
           badgeAnimation: badges.BadgeAnimation.rotation(
-            animationDuration:1.seconds,
+            animationDuration: 1.seconds,
             colorChangeAnimationDuration: 1.seconds,
             loopAnimation: false,
             curve: Curves.fastOutSlowIn,
             colorChangeAnimationCurve: Curves.bounceIn,
           ),
           badgeContent: Obx(
-                () =>
-            Get
-                .find<HomeController>()
-                .cartCount
-                .value == 0
-                ? SizedBox()
-                : Text(
-              Get
-                  .find<HomeController>()
-                  .cartCount
-                  .value
-                  .toString(),
-              style: TextStyle(color: AppColors.primaryColor),
-            ),
+            () =>
+                Get.find<HomeController>().cartCount.value == 0
+                    ? SizedBox()
+                    : Text(
+                      Get.find<HomeController>().cartCount.value.toString(),
+                      style: TextStyle(color: AppColors.primaryColor),
+                    ),
           ),
 
           badgeStyle: badges.BadgeStyle(
             badgeColor:
-            Get
-                .find<HomeController>()
-                .cartCount
-                .value == 0
-                ? Colors.transparent
-                : AppColors.white,
+                Get.find<HomeController>().cartCount.value == 0
+                    ? Colors.transparent
+                    : AppColors.white,
           ),
 
           child: Center(
@@ -109,8 +101,7 @@ class DashboardView extends GetView<DashboardController> {
         screens: _buildScreens(),
         items: _navBarsItems(),
         onItemSelected: (int index) {
-          printLog(index);
-          if (index == 3) {
+          if (index == 3 && isLoggedIn.$) {
             Get.find<OrderController>().getOrders();
           }
         },
@@ -127,4 +118,5 @@ class DashboardView extends GetView<DashboardController> {
       );
     });
   }
+
 }

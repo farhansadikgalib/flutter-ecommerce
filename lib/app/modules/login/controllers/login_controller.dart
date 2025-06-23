@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
+import 'package:turi/app/routes/app_pages.dart';
 
 import '../../../core/helper/app_widgets.dart';
 import '../../../core/helper/auth_helper.dart';
@@ -143,7 +144,7 @@ class LoginController extends GetxController {
 
       if(response.status==200){
         AuthHelper().setUserData(response);
-        Get.back();
+        Get.offAllNamed(Routes.DASHBOARD);
         AppWidgets().getSnackBar(message: response.message);
         AuthHelper().loadItems();
 

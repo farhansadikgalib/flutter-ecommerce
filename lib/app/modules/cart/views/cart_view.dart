@@ -12,6 +12,8 @@ import '../../home/controllers/home_controller.dart';
 import '../controllers/cart_controller.dart';
 
 class CartView extends BaseView<CartController> {
+  CartView({super.key});
+
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return globalAppBar(context, 'Cart', showBackButton: false);
@@ -60,10 +62,14 @@ class CartView extends BaseView<CartController> {
               Spacer(),
 
               ElevatedButton(
-                onPressed: ()=>Get.toNamed(Routes.CHECKOUT, arguments: {
-                  'subTotal': controller.totalPrice.value,
-                  'cartProducts': controller.cartProducts,
-                }),
+                onPressed:
+                    () => Get.toNamed(
+                      Routes.CHECKOUT,
+                      arguments: {
+                        'subTotal': controller.totalPrice.value,
+                        'cartProducts': controller.cartProducts,
+                      },
+                    ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
                   shape: RoundedRectangleBorder(
@@ -88,9 +94,51 @@ class CartView extends BaseView<CartController> {
   Widget body(BuildContext context) {
     controller.cartCalculation();
 
-    return ListView(
+    return Obx(() => Get.find<HomeController>().cartCount.value == 0
+        ?Center(child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(
+          'assets/images/empty_order.png',
+          height: 120,
+          width: 120,
+          errorBuilder: (ctx, obj, stack) => Icon(
+            Icons.shopping_cart_outlined,
+            size: 80,
+            color: Colors.grey[400],
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'Your cart is empty',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey[800],
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Start adding products to your cart',
+          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+        ),
+        const SizedBox(height: 24),
+        ElevatedButton(
+          onPressed: () => Get.offAllNamed(Routes.DASHBOARD),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primaryColor,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 12,
+            ),
+          ),
+          child: const Text('Start Shopping'),
+        ),
+      ],
+    )): ListView(
       physics: AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.only(bottom: Get.height / 3,),
+      padding: EdgeInsets.only(bottom: Get.height / 3),
       children: [
         Obx(
           () => ListView.builder(
@@ -260,24 +308,9 @@ class CartView extends BaseView<CartController> {
           ),
         ),
 
-        if (Get.find<HomeController>().cartCount.value == 0)
-          Column(
-            children: [
-              SizedBox(height: Get.height/2.5,),
-              Text(
-                'No products in cart',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-            ],
-          )
 
 
       ],
-    );
+    ));
   }
 }
