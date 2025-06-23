@@ -10,7 +10,7 @@ import '../style/app_colors.dart';
 import 'auth_helper.dart';
 
 class AppHelper {
-  showLoader({bool dismissOnTap = true}) {
+  Future<void> showLoader({bool dismissOnTap = true}) {
     EasyLoading.instance
       ..indicatorWidget = Container(
         height: 120,
@@ -40,19 +40,19 @@ class AppHelper {
     return EasyLoading.show();
   }
 
-  hideLoader() {
+  void hideLoader() {
     if (EasyLoading.isShow) {
       EasyLoading.dismiss();
     }
     // Navigator.of(context, rootNavigator: true).pop();
   }
 
-  logout() {
+  void logout() {
     AuthHelper().clearUserData();
-    Get.offAndToNamed(Routes.LOGIN);
+    Get.offAllNamed(Routes.DASHBOARD);
   }
 
-  refreshLogin() async {
+  Future<void> refreshLogin() async {
     // if (kDebugMode) {
     //   print(expiredTime.$.toString());
     //   print(timeDifference(expiredTime: expiredTime.$).toString());
@@ -71,22 +71,22 @@ class AppHelper {
     return DateFormat('dd MMMM yyyy, EEEE').format(dateTime);
   }
 
-  timeDifference({expiredTime}) {
+  int timeDifference({expiredTime}) {
     final expiredTimeData = DateTime.parse(expiredTime);
     final todayTime = DateTime.now();
     final difference = expiredTimeData.difference(todayTime).inMinutes;
     return difference;
   }
 
-  getWidth(BuildContext context) {
+  double getWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
 
-  getHeight(BuildContext context) {
+  double getHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }
 
-  hideKeyboard() {
+  void hideKeyboard() {
     // FocusManager.instance.primaryFocus?.unfocus();
     FocusScopeNode currentFocus = FocusScope.of(Get.context!);
     if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
@@ -127,7 +127,7 @@ class AppHelper {
     return DateFormat('EEEE').format(dateTime);
   }
 
-  scrollFlightListToTop(scrollController) {
+  void scrollFlightListToTop(scrollController) {
     if (scrollController.hasClients) {
       scrollController.animateTo(
         scrollController.position.minScrollExtent,
