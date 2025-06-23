@@ -3,6 +3,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
+import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../routes/app_pages.dart';
@@ -48,6 +50,8 @@ class AppHelper {
   }
 
   void logout() {
+    Get.find<CartController>().cartProducts.clear();
+    Get.find<HomeController>().cartCount.value = 0;
     AuthHelper().clearUserData();
     Get.offAllNamed(Routes.DASHBOARD);
   }
