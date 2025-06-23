@@ -1,26 +1,33 @@
 import 'dart:convert';
 
-LogoutResponse logoutResponseFromJson(String str) =>
-    LogoutResponse.fromJson(json.decode(str));
+LogoutResponse logoutResponseFromJson(String str) => LogoutResponse.fromJson(json.decode(str));
 
 String logoutResponseToJson(LogoutResponse data) => json.encode(data.toJson());
 
 class LogoutResponse {
+  dynamic data;
+  int? status;
+  dynamic token;
   String? message;
-  String? status;
 
   LogoutResponse({
-    this.message,
+    this.data,
     this.status,
+    this.token,
+    this.message,
   });
 
   factory LogoutResponse.fromJson(Map<String, dynamic> json) => LogoutResponse(
-        message: json["message"],
-        status: json["status"],
-      );
+    data: json["data"],
+    status: json["status"],
+    token: json["token"],
+    message: json["message"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "message": message,
-        "status": status,
-      };
+    "data": data,
+    "status": status,
+    "token": token,
+    "message": message,
+  };
 }
