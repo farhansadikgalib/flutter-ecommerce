@@ -84,12 +84,11 @@ class AuthRepository {
 
 
   Future<LogoutResponse> getUserLogOut() async {
-    var response = await ApiClient().post(
+    var response = await ApiClient().get(
       ApiEndPoints.logout,
-      {},
       getUserLogOut,
       isHeaderRequired: true,
-      isLoaderRequired: true,
+      isLoaderRequired: false,
     );
 
     return logoutResponseFromJson(response.toString());
