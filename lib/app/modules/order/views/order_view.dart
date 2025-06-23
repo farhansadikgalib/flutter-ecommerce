@@ -108,14 +108,14 @@ class OrderView extends GetView<OrderController> {
                                 'ORDER PLACED',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.grey[600],
+                                  color:AppColors.white,
                                 ),
                               ),
                               Text(
                                 'TOTAL',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.grey[600],
+                                  color: AppColors.white,
                                 ),
                               ),
                             ],
@@ -128,12 +128,15 @@ class OrderView extends GetView<OrderController> {
                                 formattedDate,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
+                                  color: AppColors.white
                                 ),
                               ),
                               Text(
                                 '\$${order.totalAmount ?? '0.00'}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
+                                    color: AppColors.white
+
                                 ),
                               ),
                             ],
@@ -145,7 +148,7 @@ class OrderView extends GetView<OrderController> {
                                 'ORDER # ${order.id}',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.grey[600],
+                                  color: AppColors.white,
                                 ),
                               ),
                               const Spacer(),
@@ -392,14 +395,14 @@ class OrderView extends GetView<OrderController> {
                             'ORDER PLACED',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: AppColors.white,
                             ),
                           ),
                           Text(
                             'TOTAL',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: AppColors.white,
                             ),
                           ),
                         ],
@@ -429,7 +432,7 @@ class OrderView extends GetView<OrderController> {
                             'ORDER # 12345',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: AppColors.white,
                             ),
                           ),
                           const Spacer(),

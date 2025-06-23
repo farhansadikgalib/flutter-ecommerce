@@ -25,7 +25,7 @@ class OrderRepository{
       ApiEndPoints.trackOrder(orderId: orderId),
       trackOrder,
       isHeaderRequired: true,
-      isLoaderRequired: true,
+      isLoaderRequired: false,
     );
 
     return trackOrderResponseFromJson(response.toString());
