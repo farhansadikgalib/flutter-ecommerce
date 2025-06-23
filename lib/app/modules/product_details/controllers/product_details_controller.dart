@@ -17,6 +17,7 @@ class ProductDetailsController extends BaseController {
   final productDetails = <ProductDetails>[].obs;
   final imageList = <ProductImage>[].obs;
   final productReview = <ProductReview>[].obs;
+  final wishlistItem = false.obs;
 
   @override
   void onInit() {
@@ -44,6 +45,8 @@ class ProductDetailsController extends BaseController {
         ),
       );
       imageList.addAll(productDetails.first.images!);
+
+      wishlistItem.value = productDetails.first.wishlisted ==null?  false:true;
 
 
       printLog(imageList.length);
