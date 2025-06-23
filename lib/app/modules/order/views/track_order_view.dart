@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/modules/order/controllers/order_controller.dart';
 
 import '../../../data/remote/model/order/track_order_response.dart';
@@ -11,11 +12,7 @@ class TrackOrderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Track Order'),
-        centerTitle: true,
-        elevation: 0,
-      ),
+      appBar: globalAppBar(context, 'Track Your Order'),
       body: Obx(() {
 
         if (controller.trackOrderData.isEmpty) {
