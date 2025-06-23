@@ -829,32 +829,10 @@ class HomeView extends BaseView<HomeController> {
                                                       child: ElevatedButton(
                                                         onPressed: () {
 
-                                                          if(isLoggedIn.$){
-                                                            product.quantity = 1;
-                                                            product.addToCart =
-                                                            false;
-                                                            controller
-                                                                .cartCount
-                                                                .value++;
-                                                            Get.find<
-                                                                CartController
-                                                            >()
-                                                                .cartProducts
-                                                                .add(product);
-                                                            controller.cartCount
-                                                                .refresh();
-                                                            controller
-                                                                .homeElements
-                                                                .refresh();
-                                                            AppWidgets()
-                                                                .getSnackBar
-                                                              (message: "${
-                                                                product.title} "
-                                                                "added to cart successfully");
-                                                          } else{
-                                                            Get.toNamed
-                                                              (Routes.LOGIN);
-                                                          }
+                                                          controller
+                                                              .addToCart(product
+
+                                                          );
 
                                                         },
                                                         child: Text(

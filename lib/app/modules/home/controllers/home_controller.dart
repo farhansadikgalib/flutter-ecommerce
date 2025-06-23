@@ -9,6 +9,10 @@ import 'package:turi/app/data/remote/model/home/category_response.dart';
 import 'package:turi/app/data/remote/model/home/home_response.dart';
 import 'package:turi/app/data/remote/repository/home/home_repository.dart';
 
+import '../../../core/helper/shared_value_helper.dart';
+import '../../../routes/app_pages.dart';
+import '../../cart/controllers/cart_controller.dart';
+
 class HomeController extends BaseController {
   final currentIndex = 0.obs;
   final cartCount = 0.obs;
@@ -30,15 +34,13 @@ class HomeController extends BaseController {
     getCategoriesData();
     getBrandsData();
     ever(cartCount, (value) {
-
-      AuthHelper().loadItems();
-/*
+      /*
       printLog("Cart count changed: $value");
 */
     });
   }
 
-  getHomeData() async {
+  Future<void> getHomeData() async {
     var response = await HomeRepository().getHomeData();
     if (response.status == 200) {
       homeElements.add(response.data!);
@@ -48,7 +50,7 @@ class HomeController extends BaseController {
     }
   }
 
-  getCategoriesData() async {
+  Future<void> getCategoriesData() async {
     var response = await HomeRepository().getCategoriesData();
     if (response.status == 200) {
       categoriesData.addAll(response.data!.data ?? []);
@@ -58,7 +60,7 @@ class HomeController extends BaseController {
     }
   }
 
-  getBrandsData() async {
+  Future<void> getBrandsData() async {
     var response = await HomeRepository().getBrandsData();
     if (response.status == 200) {
       brandsData.addAll(response.data!.data ?? []);
@@ -67,4 +69,34 @@ class HomeController extends BaseController {
       AppWidgets().getSnackBar(title: 'Error', message: response.message);
     }
   }
-}
+
+void addToCart(ProductCollection product) {
+    if (isLoggedIn.$) {
+      var cartController = Get.find<CartController>();
+      // Check if product already exists in cart
+      int existingIndex = cartController.cartProducts.indexWhere((item) => item.id == product.id);
+
+      if (existingIndex >= 0) {
+        // Product already exists, increase quantity
+        cartController.cartProducts[existingIndex].quantity = (cartController.cartProducts[existingIndex].quantity ?? 0) + 1;
+        AppWidgets().getSnackBar(
+          message: "${product.title} quantity increased in cart",
+        );
+      } else {
+        // New product, add to cart
+        product.quantity = 1;
+        product.addToCart = false;
+        cartController.cartProducts.add(product);
+        cartCount.value++;
+        AppWidgets().getSnackBar(
+          message: "${product.title} added to cart successfully",
+        );
+      }
+
+      cartCount.refresh();
+      homeElements.refresh();
+      cartController.cartProducts.refresh();
+    } else {
+      Get.toNamed(Routes.LOGIN);
+    }
+  }}
