@@ -1,9 +1,11 @@
+import 'package:any_image_view/any_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/routes/app_pages.dart';
+import '../../../core/config/app_config.dart';
 import '../controllers/order_controller.dart';
 import 'package:intl/intl.dart';
 
@@ -25,14 +27,25 @@ class OrderView extends GetView<OrderController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/empty_order.png',
-                      height: 120,
-                      width: 120,
-                      errorBuilder: (ctx, obj, stack) => Icon(Icons.inventory_2_outlined, size: 80, color: Colors.grey[400])),
+                  Image.asset(
+                    'assets/images/empty_order.png',
+                    height: 120,
+                    width: 120,
+                    errorBuilder:
+                        (ctx, obj, stack) => Icon(
+                          Icons.inventory_2_outlined,
+                          size: 80,
+                          color: Colors.grey[400],
+                        ),
+                  ),
                   const SizedBox(height: 24),
                   Text(
                     'No orders yet',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey[800]),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -44,7 +57,10 @@ class OrderView extends GetView<OrderController> {
                     onPressed: () => Get.offAllNamed(Routes.DASHBOARD),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryColor,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                     ),
                     child: const Text('Start Shopping'),
                   ),
@@ -108,7 +124,7 @@ class OrderView extends GetView<OrderController> {
                                 'ORDER PLACED',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color:AppColors.white,
+                                  color: AppColors.white,
                                 ),
                               ),
                               Text(
@@ -128,15 +144,14 @@ class OrderView extends GetView<OrderController> {
                                 formattedDate,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.white
+                                  color: AppColors.white,
                                 ),
                               ),
                               Text(
                                 '\$${order.totalAmount ?? '0.00'}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                    color: AppColors.white
-
+                                  color: AppColors.white,
                                 ),
                               ),
                             ],
@@ -153,9 +168,14 @@ class OrderView extends GetView<OrderController> {
                               ),
                               const Spacer(),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: getStatusColor(orderStatus).withOpacity(0.1),
+                                  color: getStatusColor(
+                                    orderStatus,
+                                  ).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
@@ -174,11 +194,15 @@ class OrderView extends GetView<OrderController> {
                     ),
 
                     // Order items
-                    if (order.orderedProducts != null && order.orderedProducts!.isNotEmpty)
+                    if (order.orderedProducts != null &&
+                        order.orderedProducts!.isNotEmpty)
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         itemCount: order.orderedProducts!.length,
                         itemBuilder: (context, i) {
                           final product = order.orderedProducts![i];
@@ -196,7 +220,15 @@ class OrderView extends GetView<OrderController> {
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Center(
-                                    child: Icon(Icons.image, color: Colors.grey[400]),
+                                    child: AnyImageView(
+                                      imagePath:
+                                          '${AppConfig
+                                              .imageBasePath}${product
+                                              .product!.image}',
+                                      cachedNetPlaceholderHeight: 60,
+                                      cachedNetPlaceholderWidth: 60,
+                                      boxFit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -204,7 +236,8 @@ class OrderView extends GetView<OrderController> {
                                 // Product details
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         product.product?.title ?? 'Product',
@@ -226,10 +259,14 @@ class OrderView extends GetView<OrderController> {
                                           ),
                                           const SizedBox(width: 8),
                                           Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 6,
+                                              vertical: 2,
+                                            ),
                                             decoration: BoxDecoration(
                                               color: Colors.grey[200],
-                                              borderRadius: BorderRadius.circular(4),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
                                             ),
                                             child: Text(
                                               'Qty: ${product.quantity ?? 1}',
@@ -265,47 +302,67 @@ class OrderView extends GetView<OrderController> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                               ),
-                              child: const Text('Track Order',style:
-                              TextStyle(color: AppColors.primaryColor),),
+                              child: const Text(
+                                'Track Order',
+                                style: TextStyle(color: AppColors.primaryColor),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: orderStatus == "Delivered" || orderStatus == "Cancelled" ? null : () {
-                                // Add cancel order functionality
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: const Text('Cancel Order'),
-                                    content: const Text('Are you sure you want to cancel this order?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('No'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          // Add cancel logic here
-                                          // controller.cancelOrder(order.id);
-                                        },
-                                        child: const Text('Yes'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
+                              onPressed:
+                                  orderStatus == "Delivered" ||
+                                          orderStatus == "Cancelled"
+                                      ? null
+                                      : () {
+                                        // Add cancel order functionality
+                                        showDialog(
+                                          context: context,
+                                          builder:
+                                              (context) => AlertDialog(
+                                                title: const Text(
+                                                  'Cancel Order',
+                                                ),
+                                                content: const Text(
+                                                  'Are you sure you want to cancel this order?',
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed:
+                                                        () => Navigator.pop(
+                                                          context,
+                                                        ),
+                                                    child: const Text('No'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      // Add cancel logic here
+                                                      // controller.cancelOrder(order.id);
+                                                    },
+                                                    child: const Text('Yes'),
+                                                  ),
+                                                ],
+                                              ),
+                                        );
+                                      },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: orderStatus == "Delivered" || orderStatus == "Cancelled"
-                                    ? Colors.grey[300]
-                                    : Colors.red[400],
+                                backgroundColor:
+                                    orderStatus == "Delivered" ||
+                                            orderStatus == "Cancelled"
+                                        ? Colors.grey[300]
+                                        : Colors.red[400],
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                               ),
                               child: const Text('Cancel'),
                             ),
@@ -349,14 +406,14 @@ class OrderView extends GetView<OrderController> {
         return Colors.grey[700]!;
     }
   }
-  _buildLoadingSkeleton() {
+
+  Skeletonizer _buildLoadingSkeleton() {
     return Skeletonizer(
       enabled: true,
-      containersColor: Colors.grey[300],
       effect: const ShimmerEffect(),
       child: ListView.builder(
         padding: const EdgeInsets.all(12),
-        itemCount: 3, // Show 3 skeleton items
+        itemCount: 2, // Show 3 skeleton items
         itemBuilder: (context, index) {
           return Container(
             margin: const EdgeInsets.only(bottom: 16),
@@ -412,16 +469,8 @@ class OrderView extends GetView<OrderController> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Jan 1, 2023',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const Text(
                             '\$120.00',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -437,7 +486,10 @@ class OrderView extends GetView<OrderController> {
                           ),
                           const Spacer(),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.blue[700]!.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
@@ -461,8 +513,12 @@ class OrderView extends GetView<OrderController> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  itemCount: 2, // Show 2 items per order
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  itemCount: 2,
+                  // Show 2 items per order
                   itemBuilder: (context, i) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
@@ -490,9 +546,7 @@ class OrderView extends GetView<OrderController> {
                               children: [
                                 const Text(
                                   'Product Name Example',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: TextStyle(fontWeight: FontWeight.w500),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -508,7 +562,10 @@ class OrderView extends GetView<OrderController> {
                                     ),
                                     const SizedBox(width: 8),
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: Colors.grey[200],
                                         borderRadius: BorderRadius.circular(4),
@@ -547,7 +604,10 @@ class OrderView extends GetView<OrderController> {
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
-                          child: const Text('Track Order', style: TextStyle(color: AppColors.primaryColor)),
+                          child: const Text(
+                            'Track Order',
+                            style: TextStyle(color: AppColors.primaryColor),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -574,6 +634,4 @@ class OrderView extends GetView<OrderController> {
       ),
     );
   }
-
-
 }
