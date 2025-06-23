@@ -8,6 +8,8 @@ import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:turi/app/modules/home/views/home_view.dart';
 import 'package:turi/app/modules/order/controllers/order_controller.dart';
 import 'package:turi/app/modules/order/views/order_view.dart';
+import 'package:turi/app/modules/profile/views/profile_view.dart';
+import 'package:turi/app/modules/wishlist/views/wishlist_view.dart';
 import '../../cart/views/cart_view.dart';
 import '../controllers/dashboard_controller.dart';
 
@@ -17,11 +19,11 @@ class DashboardView extends GetView<DashboardController> {
   List<Widget> _buildScreens() {
     return [
       HomeView(),
-      Center(child: Text('Notifications')),
+      WishlistView(),
       CartView(),
       OrderView(),
+      ProfileView()
 
-      Center(child: Text('Profile')),
     ];
   }
 
@@ -34,8 +36,8 @@ class DashboardView extends GetView<DashboardController> {
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.local_offer),
-        title: ("Deals"),
+        icon: Icon(Icons.favorite),
+        title: ("Wishlist"),
         activeColorPrimary: AppColors.primaryColor,
         inactiveColorPrimary: Colors.grey,
       ),
