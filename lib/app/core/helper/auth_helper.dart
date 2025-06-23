@@ -12,7 +12,7 @@ class AuthHelper {
       isLoggedIn.$ = true;
       isLoggedIn.save();
 
-      accessToken.$ = "Bearer ${loginResponse.token}";
+      accessToken.$ = "Bearer ${loginResponse.data!.token}";
       accessToken.save();
 
       userName.$ = loginResponse.data!.user!.name!;
