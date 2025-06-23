@@ -27,7 +27,7 @@ class WishlistController extends GetxController {
     isLoading.value = false;
   }
 
-  void removeFromWishlist(String id)async {
+  void wishlistAction(String id)async {
     var response = await WishlistRepository().addToWishlist(id);
     if (response.status==200) {
       wishlistItems.clear();

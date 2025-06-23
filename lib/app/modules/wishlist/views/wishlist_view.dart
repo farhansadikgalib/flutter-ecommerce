@@ -5,6 +5,7 @@ import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../routes/app_pages.dart';
 
@@ -83,6 +84,9 @@ class WishlistView extends GetView<WishlistController> {
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      color: AppColors.primaryColor
+                    ),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(12),
@@ -92,7 +96,7 @@ class WishlistView extends GetView<WishlistController> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: CachedNetworkImage(
-                            imageUrl: item.product?.image ?? '',
+                            imageUrl: '${AppConfig.imageBasePath}${item.product?.image}' ?? '',
                             height: 100,
                             width: 100,
                             fit: BoxFit.cover,
@@ -127,7 +131,7 @@ class WishlistView extends GetView<WishlistController> {
                               const SizedBox(height: 8),
                               Text(
                                 ''
-                                '${item.product?.selling ?? 0}',
+                                '${item.product?.selling ?? 0} BDT',
                                 style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
@@ -136,30 +140,37 @@ class WishlistView extends GetView<WishlistController> {
                               ),
                               const SizedBox(height: 8),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   OutlinedButton.icon(
-                                    onPressed: () {
-                                      // Add to cart functionality
-                                    },
-                                    icon: const Icon(Icons.shopping_cart),
-                                    label: const Text('Add to Cart'),
                                     style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                        color: AppColors.primaryColor,
+                                      ),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
+
+                                    onPressed: () {
+                                      // Add to cart functionality
+                                    },
+                                    icon: const Icon(Icons.shopping_cart,
+                                      color: AppColors.primaryColor,),
+                                    label: const Text('Add to Cart',style:
+                                    TextStyle(color: AppColors.primaryColor),),
                                   ),
+                                  Spacer(),
                                   IconButton(
                                     onPressed: () {
-                                      controller.removeFromWishlist(
+                                      controller.wishlistAction(
                                         item.productId.toString(),
                                       );
                                     },
                                     icon: const Icon(
                                       Icons.favorite,
                                       color: Colors.red,
+                                      size: 35,
                                     ),
                                   ),
                                 ],
