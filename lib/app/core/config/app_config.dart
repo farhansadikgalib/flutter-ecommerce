@@ -1,14 +1,14 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class AppConfig {
-  static const currentVersion = '1.0.0';
-  static const bool https = true;
-  static const String publicFolder = "public";
-  static const String protocol = https ? "https://" : "http://";
-  static const String rawBaseUrl = "$protocol$domainPath";
-  static const String basePath = "$rawBaseUrl/$apiEndPath";
-  static const domainPath = "api.prabashibd.com/";
-  static const String apiEndPath = "api/v1/";
-
-  static const imageBasePath = "https://api.prabashibd.com/uploads/";
-  static const releaseDate = '050125';
-
+  static String get currentVersion => dotenv.get('CURRENT_VERSION', fallback: '1.0.0');
+  static bool get https => dotenv.get('HTTPS', fallback: 'true') == 'true';
+  static String get publicFolder => dotenv.get('PUBLIC_FOLDER', fallback: 'public');
+  static String get protocol => https ? "https://" : "http://";
+  static String get domainPath => dotenv.get('DOMAIN_PATH', fallback: '');
+  static String get apiEndPath => dotenv.get('API_END_PATH', fallback: '');
+  static String get rawBaseUrl => "$protocol$domainPath";
+  static String get basePath => "$rawBaseUrl/$apiEndPath";
+  static String get imageBasePath => dotenv.get('IMAGE_BASE_PATH', fallback: '');
+  static String get releaseDate => dotenv.get('RELEASE_DATE', fallback: '050125');
 }

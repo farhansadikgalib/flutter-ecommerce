@@ -35,6 +35,7 @@ dependencies:
   animations:
   pinput:
   timeline_tile:
+  flutter_dotenv:
 
 
 dev_dependencies:
@@ -48,4 +49,5 @@ flutter:
   assets:
     - assets/
     - assets/png/
+    - .env
 
