@@ -15,7 +15,6 @@ import '../../cart/controllers/cart_controller.dart';
 
 class HomeController extends BaseController {
   final currentIndex = 0.obs;
-  final cartCount = 0.obs;
   final imageList = <String>[].obs;
   final isLoading = true.obs;
   final isCategoryLoading = true.obs;
@@ -33,16 +32,17 @@ class HomeController extends BaseController {
     getHomeData();
     getCategoriesData();
     getBrandsData();
-    ever(cartCount, (value) {
-      /*
-      printLog("Cart count changed: $value");
-*/
-    });
+//     ever(, (value) {
+//       /*
+//       printLog("Cart count changed: $value");
+// */
+//     });
   }
 
   Future<void> getHomeData() async {
     var response = await HomeRepository().getHomeData();
     if (response.status == 200) {
+      homeElements.clear();
       homeElements.add(response.data!);
       isLoading.value = false;
     } else {
@@ -53,6 +53,7 @@ class HomeController extends BaseController {
   Future<void> getCategoriesData() async {
     var response = await HomeRepository().getCategoriesData();
     if (response.status == 200) {
+      categoriesData.clear();
       categoriesData.addAll(response.data!.data ?? []);
       isCategoryLoading.value = false;
     } else {
@@ -63,6 +64,7 @@ class HomeController extends BaseController {
   Future<void> getBrandsData() async {
     var response = await HomeRepository().getBrandsData();
     if (response.status == 200) {
+      brandsData.clear();
       brandsData.addAll(response.data!.data ?? []);
       isBrandLoading.value = false;
     } else {
@@ -70,33 +72,5 @@ class HomeController extends BaseController {
     }
   }
 
-void addToCart(ProductCollection product) {
-    if (isLoggedIn.$) {
-      var cartController = Get.find<CartController>();
-      // Check if product already exists in cart
-      int existingIndex = cartController.cartProducts.indexWhere((item) => item.id == product.id);
+}
 
-      if (existingIndex >= 0) {
-        // Product already exists, increase quantity
-        cartController.cartProducts[existingIndex].quantity = (cartController.cartProducts[existingIndex].quantity ?? 0) + 1;
-        AppWidgets().getSnackBar(
-          message: "${product.title} quantity increased in cart",
-        );
-      } else {
-        // New product, add to cart
-        product.quantity = 1;
-        product.addToCart = false;
-        cartController.cartProducts.add(product);
-        cartCount.value++;
-        AppWidgets().getSnackBar(
-          message: "${product.title} added to cart successfully",
-        );
-      }
-
-      cartCount.refresh();
-      homeElements.refresh();
-      cartController.cartProducts.refresh();
-    } else {
-      Get.toNamed(Routes.LOGIN);
-    }
-  }}

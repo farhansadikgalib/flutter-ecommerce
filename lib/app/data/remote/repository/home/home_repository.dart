@@ -10,7 +10,7 @@ class HomeRepository {
     var response = await ApiClient().get(
       ApiEndPoints.home,
       getHomeData,
-      isHeaderRequired: false,
+      isHeaderRequired: true,
       isLoaderRequired: false,
     );
 
