@@ -12,8 +12,6 @@ import 'app/core/config/app_config.dart';
 import 'app/core/style/app_colors.dart';
 import 'app/routes/app_pages.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
