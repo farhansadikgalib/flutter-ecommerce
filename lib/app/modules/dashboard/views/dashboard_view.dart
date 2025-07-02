@@ -5,6 +5,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/helper/shared_value_helper.dart';
 import 'package:turi/app/core/style/app_colors.dart';
+import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
 import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:turi/app/modules/home/views/home_view.dart';
 import 'package:turi/app/modules/login/views/login_view.dart';
@@ -55,17 +56,17 @@ class DashboardView extends GetView<DashboardController> {
           ),
           badgeContent: Obx(
             () =>
-                Get.find<HomeController>().cartCount.value == 0
+                Get.find<CartController>().cartCount.value == 0
                     ? SizedBox()
                     : Text(
-                      Get.find<HomeController>().cartCount.value.toString(),
+                      Get.find<CartController>().cartCount.value.toString(),
                       style: TextStyle(color: AppColors.primaryColor),
                     ),
           ),
 
           badgeStyle: badges.BadgeStyle(
             badgeColor:
-                Get.find<HomeController>().cartCount.value == 0
+                Get.find<CartController>().cartCount.value == 0
                     ? Colors.transparent
                     : AppColors.white,
           ),
@@ -107,6 +108,9 @@ class DashboardView extends GetView<DashboardController> {
           }
           if (index == 1 && isLoggedIn.$) {
             Get.find<WishlistController>().getWishlist();
+          }
+          if (index == 2 && isLoggedIn.$) {
+            Get.find<CartController>().getCartItems();
           }
         },
         backgroundColor: Colors.white,
