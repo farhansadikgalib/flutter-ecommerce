@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
+import 'package:turi/app/core/widget/product_card.dart';
 import 'package:turi/app/data/remote/model/home/home_response.dart';
 import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import '../../../core/config/app_config.dart';
@@ -31,22 +32,23 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
         appBar:
             controller.fromSearch
                 ? AppBar(
-              elevation: 0.0,
-              titleSpacing: -20,
-              centerTitle: false,
-              backgroundColor: AppColors.white,
-              leading: InkWell(
-                  onTap: () => Get.back(),
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: AppColors.primaryColor,
-                  )),
+                  elevation: 0.0,
+                  titleSpacing: -20,
+                  centerTitle: false,
+                  backgroundColor: AppColors.white,
+                  leading: InkWell(
+                    onTap: () => Get.back(),
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
                   title: Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      height: 50.h,
-                      width: Get.width/1.10,
-                      padding: REdgeInsets.symmetric(horizontal: 20,
-                        vertical: 5),child: TextField(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    height: 50.h,
+                    width: Get.width / 1.10,
+                    padding: REdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    child: TextField(
                       cursorColor: AppColors.primaryColor,
                       cursorHeight: 20,
                       controller: controller.searchController.value,
@@ -70,8 +72,8 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                           time: 500,
                         );
                       },
-                    ),)
-
+                    ),
+                  ),
                 )
                 : globalAppBar(context, controller.categoryName),
         drawer: Drawer(
@@ -371,360 +373,30 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: 0.62,
+                                     childAspectRatio: 0.66,
                                   ),
                               itemCount: controller.categoryProducts.length,
                               shrinkWrap: true,
                               physics: AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
-                                final product =
-                                    controller.categoryProducts[index];
-                                return InkWell(
-                                  onTap: () {
-                                    Get.toNamed(
-                                      Routes.PRODUCT_DETAILS,
-                                      arguments: {
-                                        'product': ProductCollection(
-                                          id: product.id,
-                                          title: product.title,
-                                          slug: product.slug,
-                                          image: product.image,
-                                          selling: product.selling,
-                                          offered: product.offered,
-                                          price: product.price,
-                                          reviewCount: product.reviewCount,
-                                          rating: product.rating,
-                                          quantity: 1,
-                                          endTime: product.endTime,
-                                          addToCart: true,
-                                        ),
-                                      },
-                                    );
-                                  },
-                                  child: AnimationConfiguration.staggeredGrid(
-                                    position: index,
-                                    duration: const Duration(milliseconds: 375),
-                                    columnCount: 2,
-                                    child: ScaleAnimation(
-                                      child: FadeInAnimation(
-                                        child: Card(
-                                          margin: EdgeInsets.all(8.0),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(16.0),
-                                            child: Column(
-                                              children: [
-                                                AnyImageView(
-                                                  imagePath: '${AppConfig
-                                                    .imageBasePath}${product.image}',
-                                                  height: 125.h,
-                                                  width: 125.h,
-                                                  cachedNetPlaceholderHeight:
-                                                  125.h,
-                                                  cachedNetPlaceholderWidth:
-                                                  125.h,
-                                                ),
-                                                AppWidgets().gapH(4),
-                                                Text(
-                                                  '${product.title}',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                /*AppWidgets().gapH(4),
-                                                    Text(
-                                                      "Stock ${product.product!.quantity}",
-                                                      style: TextStyle(
-                                                        color:
-                                                            AppColors.primaryColor,
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),*/
-                                                AppWidgets().gapH(6),
-                                                RichText(
-                                                  text: TextSpan(
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    ),
-                                                    children: <TextSpan>[
-                                                      TextSpan(
-                                                        text:
-                                                            product.selling
-                                                                .toString(),
-                                                        style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text:
-                                                            "  ${product.offered.toString()} BDT",
-                                                        style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              AppColors
-                                                                  .primaryColor,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                AppWidgets().gapH8(),
-                                                Visibility(
-                                                  visible: product.addToCart!,
-                                                  replacement: Container(
-                                                    margin:
-                                                        REdgeInsets.symmetric(
-                                                          horizontal: 14,
-                                                        ),
-                                                    height: 30.h,
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            8,
-                                                          ),
-                                                      border: Border.all(
-                                                        color:
-                                                            AppColors
-                                                                .primaryColor,
-                                                        width: 1,
-                                                      ),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.black
-                                                              .withOpacity(0.2),
-                                                          spreadRadius: 1,
-                                                          blurRadius: 2,
-                                                          offset: Offset(0, 1),
-                                                          // changes position of shadow
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        IconButton(
-                                                          onPressed: () {
-                                                            if (product
-                                                                    .quantity! >
-                                                                1) {
-                                                              product.quantity =
-                                                                  product
-                                                                      .quantity! -
-                                                                  1;
-
-                                                              Get.find<
-                                                                    CartController
-                                                                  >()
-                                                                  .cartProducts
-                                                                  .forEach((
-                                                                    element,
-                                                                  ) {
-                                                                    if (element
-                                                                            .id ==
-                                                                        product
-                                                                            .id) {
-                                                                      element.quantity =
-                                                                          product
-                                                                              .quantity;
-                                                                    }
-                                                                  });
-
-                                                              Get.find<
-                                                                    HomeController
-                                                                  >()
-                                                                  .homeElements
-                                                                  .refresh();
-                                                            } else {
-                                                              product.addToCart =
-                                                                  true;
-                                                              Get.find<
-                                                                    HomeController
-                                                                  >()
-                                                                  .homeElements
-                                                                  .refresh();
-                                                              Get.find<
-                                                                    HomeController
-                                                                  >()
-                                                                  .cartCount
-                                                                  .value--;
-
-                                                              Get.find<
-                                                                    CartController
-                                                                  >()
-                                                                  .cartProducts
-                                                                  .removeAt(
-                                                                    Get.find<
-                                                                          CartController
-                                                                        >()
-                                                                        .cartProducts
-                                                                        .indexWhere(
-                                                                          (
-                                                                            element,
-                                                                          ) =>
-                                                                              element.id ==
-                                                                              product.id,
-                                                                        ),
-                                                                  );
-
-                                                              Get.find<
-                                                                    HomeController
-                                                                  >()
-                                                                  .cartCount
-                                                                  .refresh();
-                                                            }
-                                                          },
-                                                          icon: FaIcon(
-                                                            FontAwesomeIcons
-                                                                .minus,
-                                                            color:
-                                                                AppColors
-                                                                    .primaryColor,
-                                                            size: 14,
-                                                          ),
-                                                        ),
-
-                                                        Text(
-                                                          product.quantity!
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                            color:
-                                                                AppColors
-                                                                    .primaryColor,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-
-                                                        IconButton(
-                                                          onPressed: () {
-                                                            product.quantity =
-                                                                product
-                                                                    .quantity! +
-                                                                1;
-
-                                                            Get.find<
-                                                                  CartController
-                                                                >()
-                                                                .cartProducts
-                                                                .forEach((
-                                                                  element,
-                                                                ) {
-                                                                  if (element
-                                                                          .id ==
-                                                                      product
-                                                                          .id) {
-                                                                    element.quantity =
-                                                                        product
-                                                                            .quantity;
-                                                                  }
-                                                                });
-                                                            Get.find<
-                                                                  HomeController
-                                                                >()
-                                                                .homeElements
-                                                                .refresh();
-                                                          },
-                                                          icon: FaIcon(
-                                                            FontAwesomeIcons
-                                                                .plus,
-                                                            color:
-                                                                AppColors
-                                                                    .primaryColor,
-                                                            size: 14,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      product.quantity = 1;
-                                                      product.addToCart = false;
-                                                      Get.find<HomeController>()
-                                                          .cartCount
-                                                          .value++;
-                                                      Get.find<CartController>()
-                                                          .cartProducts
-                                                          .add(
-                                                            ProductCollection(
-                                                              id: product.id,
-                                                              title:
-                                                                  product.title,
-                                                              slug:
-                                                                  product.slug,
-                                                              image:
-                                                                  product.image,
-                                                              selling:
-                                                                  product
-                                                                      .selling,
-                                                              offered:
-                                                                  product
-                                                                      .offered,
-                                                              price:
-                                                                  product.price,
-                                                              reviewCount:
-                                                                  product
-                                                                      .reviewCount,
-                                                              rating:
-                                                                  product
-                                                                      .rating,
-                                                              quantity:
-                                                                  product
-                                                                      .quantity,
-                                                              endTime:
-                                                                  product
-                                                                      .endTime,
-                                                              addToCart:
-                                                                  product
-                                                                      .addToCart,
-                                                              badge:
-                                                                  product.badge,
-                                                              productId:
-                                                                  product.id,
-                                                            ),
-                                                          );
-                                                      Get.find<HomeController>()
-                                                          .cartCount
-                                                          .refresh();
-                                                      Get.find<HomeController>()
-                                                          .homeElements
-                                                          .refresh();
-                                                    },
-                                                    child: Text(
-                                                      '+ Add to Bag',
-                                                      style: TextStyle(
-                                                        color:
-                                                            AppColors
-                                                                .primaryColor,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                final item = controller.categoryProducts[index];
+                                final product = ProductCollection(
+                                  id: item.id,
+                                  title: item.title,
+                                  slug: item.slug,
+                                  image: item.image,
+                                  selling: item.selling,
+                                  offered: item.offered,
+                                  price: item.price,
+                                  reviewCount: item.reviewCount,
+                                  rating: item.rating,
+                                  quantity: 1,
+                                  endTime: item.endTime,
+                                  addToCart: true,
+                                );
+                                return ProductCard(
+                                  product: product,
+                                  index: index,
                                 );
                               },
                             ),
@@ -749,288 +421,28 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                     return GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 0.62,
+                         childAspectRatio: 0.66,
                       ),
                       itemCount: controller.categoryProducts.length,
                       shrinkWrap: true,
                       physics: AlwaysScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        final product = controller.categoryProducts[index];
-                        return InkWell(
-                          onTap: () {
-                            Get.toNamed(
-                              Routes.PRODUCT_DETAILS,
-                              arguments: {
-                                'product': ProductCollection(
-                                  id: product.id,
-                                  title: product.title,
-                                  slug: product.slug,
-                                  image: product.image,
-                                  selling: product.selling,
-                                  offered: product.offered,
-                                  price: product.price,
-                                  reviewCount: product.reviewCount,
-                                  rating: product.rating,
-                                  quantity: 1,
-                                  endTime: product.endTime,
-                                  addToCart: true,
-                                ),
-                              },
-                            );
-                          },
-                          child: AnimationConfiguration.staggeredGrid(
-                            position: index,
-                            duration: const Duration(milliseconds: 375),
-                            columnCount: 2,
-                            child: ScaleAnimation(
-                              child: FadeInAnimation(
-                                child: Card(
-                                  margin: EdgeInsets.all(8.0),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Column(
-                                      children: [
-                                        AnyImageView(
-                                         imagePath:  '${AppConfig
-                                            .imageBasePath}${product.image}',
-                                          height: 125.h,
-                                          width: 125.h,
-                                          cachedNetPlaceholderWidth: 125.h,
-                                          cachedNetPlaceholderHeight: 125.h,
-                                        ),
-                                        AppWidgets().gapH(4),
-                                        Text(
-                                          '${product.title}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: AppColors.primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        /*AppWidgets().gapH(4),
-                                                  Text(
-                                                    "Stock ${product.product!.quantity}",
-                                                    style: TextStyle(
-                                                      color:
-                                                          AppColors.primaryColor,
-                                                      fontSize: 12,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),*/
-                                        AppWidgets().gapH(6),
-                                        RichText(
-                                          text: TextSpan(
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                            ),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text:
-                                                    product.selling.toString(),
-                                                style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  fontWeight: FontWeight.bold,
-                                                  decoration:
-                                                      TextDecoration
-                                                          .lineThrough,
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text:
-                                                    "  ${product.offered.toString()} BDT",
-                                                style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: AppColors.primaryColor,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        AppWidgets().gapH8(),
-                                        Visibility(
-                                          visible: product.addToCart!,
-                                          replacement: Container(
-                                            margin: REdgeInsets.symmetric(
-                                              horizontal: 14,
-                                            ),
-                                            height: 30.h,
-                                            decoration: BoxDecoration(
-                                              color: AppColors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              border: Border.all(
-                                                color: AppColors.primaryColor,
-                                                width: 1,
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.2),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 2,
-                                                  offset: Offset(0, 1),
-                                                  // changes position of shadow
-                                                ),
-                                              ],
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () {
-                                                    if (product.quantity! > 1) {
-                                                      product.quantity =
-                                                          product.quantity! - 1;
-
-                                                      Get.find<CartController>()
-                                                          .cartProducts
-                                                          .forEach((element) {
-                                                            if (element.id ==
-                                                                product.id) {
-                                                              element.quantity =
-                                                                  product
-                                                                      .quantity;
-                                                            }
-                                                          });
-
-                                                      Get.find<HomeController>()
-                                                          .homeElements
-                                                          .refresh();
-                                                    } else {
-                                                      product.addToCart = true;
-                                                      Get.find<HomeController>()
-                                                          .homeElements
-                                                          .refresh();
-                                                      Get.find<HomeController>()
-                                                          .cartCount
-                                                          .value--;
-
-                                                      Get.find<CartController>()
-                                                          .cartProducts
-                                                          .removeAt(
-                                                            Get.find<
-                                                                  CartController
-                                                                >()
-                                                                .cartProducts
-                                                                .indexWhere(
-                                                                  (element) =>
-                                                                      element
-                                                                          .id ==
-                                                                      product
-                                                                          .id,
-                                                                ),
-                                                          );
-
-                                                      Get.find<HomeController>()
-                                                          .cartCount
-                                                          .refresh();
-                                                    }
-                                                  },
-                                                  icon: FaIcon(
-                                                    FontAwesomeIcons.minus,
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    size: 14,
-                                                  ),
-                                                ),
-
-                                                Text(
-                                                  product.quantity!.toString(),
-                                                  style: TextStyle(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-
-                                                IconButton(
-                                                  onPressed: () {
-                                                    product.quantity =
-                                                        product.quantity! + 1;
-
-                                                    Get.find<CartController>()
-                                                        .cartProducts
-                                                        .forEach((element) {
-                                                          if (element.id ==
-                                                              product.id) {
-                                                            element.quantity =
-                                                                product
-                                                                    .quantity;
-                                                          }
-                                                        });
-                                                    Get.find<HomeController>()
-                                                        .homeElements
-                                                        .refresh();
-                                                  },
-                                                  icon: FaIcon(
-                                                    FontAwesomeIcons.plus,
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    size: 14,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              product.quantity = 1;
-                                              product.addToCart = false;
-                                              Get.find<HomeController>()
-                                                  .cartCount
-                                                  .value++;
-                                              Get.find<CartController>()
-                                                  .cartProducts
-                                                  .add(
-                                                    ProductCollection(
-                                                      id: product.id,
-                                                      title: product.title,
-                                                      slug: product.slug,
-                                                      image: product.image,
-                                                      selling: product.selling,
-                                                      offered: product.offered,
-                                                      price: product.price,
-                                                      reviewCount:
-                                                          product.reviewCount,
-                                                      rating: product.rating,
-                                                      quantity:
-                                                          product.quantity,
-                                                      endTime: product.endTime,
-                                                      addToCart:
-                                                          product.addToCart,
-                                                      badge: product.badge,
-                                                      productId: product.id,
-                                                    ),
-                                                  );
-                                              Get.find<HomeController>()
-                                                  .cartCount
-                                                  .refresh();
-                                              Get.find<HomeController>()
-                                                  .homeElements
-                                                  .refresh();
-                                            },
-                                            child: Text(
-                                              '+ Add to Bag',
-                                              style: TextStyle(
-                                                color: AppColors.primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        final item = controller.categoryProducts[index];
+                        final product = ProductCollection(
+                          id: item.id,
+                          title: item.title,
+                          slug: item.slug,
+                          image: item.image,
+                          selling: item.selling,
+                          offered: item.offered,
+                          price: item.price,
+                          reviewCount: item.reviewCount,
+                          rating: item.rating,
+                          quantity: 1,
+                          endTime: item.endTime,
+                          addToCart: true,
                         );
+                        return ProductCard(product: product, index: index);
                       },
                     );
                   }),
