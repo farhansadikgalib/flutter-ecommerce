@@ -14,8 +14,7 @@ class OrderView extends GetView<OrderController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return  Scaffold(
         appBar: globalAppBar(context, 'Your Orders', showBackButton: false),
         body: Obx(() {
           if (controller.isLoading.value) {
@@ -376,8 +375,7 @@ class OrderView extends GetView<OrderController> {
             },
           );
         }),
-      ),
-    );
+      );
   }
 
   String getOrderStatus(dynamic order) {
