@@ -13,8 +13,8 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
+      body:
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Obx(
             () => AnimatedContainer(
@@ -494,7 +494,7 @@ class LoginView extends GetView<LoginController> {
             ),
           ),
         ),
-      ),
+
     );
   }
 }
