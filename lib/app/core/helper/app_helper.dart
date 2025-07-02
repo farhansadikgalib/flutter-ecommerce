@@ -51,7 +51,7 @@ class AppHelper {
 
   void logout() {
     Get.find<CartController>().cartProducts.clear();
-    Get.find<HomeController>().cartCount.value = 0;
+    Get.find<CartController>().cartCount.value = 0;
     AuthHelper().clearUserData();
     Get.offAllNamed(Routes.DASHBOARD);
   }
