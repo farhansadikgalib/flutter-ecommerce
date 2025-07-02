@@ -1808,28 +1808,12 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                                 controller.product.quantity;
                                           }
                                         });
-                                    Get.find<HomeController>().homeElements
-                                        .refresh();
+
                                   } else {
-                                    controller.product.addToCart = true;
-                                    Get.find<HomeController>().homeElements
-                                        .refresh();
-                                    Get.find<HomeController>()
-                                        .cartCount
-                                        .value--;
-                                    Get.find<CartController>().cartProducts
-                                        .removeAt(
-                                          Get.find<CartController>()
-                                              .cartProducts
-                                              .indexWhere(
-                                                (element) =>
-                                                    element.id ==
-                                                    controller.product.id,
-                                              ),
-                                        );
-                                    Get.find<HomeController>().cartCount
-                                        .refresh();
+
+
                                   }
+
                                 },
                                 icon: FaIcon(
                                   FontAwesomeIcons.minus,
@@ -1873,11 +1857,6 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                           onPressed: () {
                             controller.product.quantity = 1;
                             controller.product.addToCart = false;
-                            Get.find<HomeController>().cartCount.value++;
-                            Get.find<CartController>().cartProducts.add(
-                              controller.product,
-                            );
-                            Get.find<HomeController>().cartCount.refresh();
                             Get.find<HomeController>().homeElements.refresh();
                             AppWidgets().getSnackBar(
                               message:
