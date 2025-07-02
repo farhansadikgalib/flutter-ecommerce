@@ -7,6 +7,7 @@ import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/helper/shared_value_helper.dart';
 import 'package:turi/app/routes/app_pages.dart';
 
+import '../../../data/remote/model/cart/cart_items_response.dart';
 import '../../../data/remote/model/checkout/order_place_request.dart';
 import '../../../data/remote/model/checkout/shipping_info_response.dart';
 import '../../../data/remote/model/home/home_response.dart';
@@ -39,7 +40,7 @@ class CheckoutController extends BaseController {
   ];
 
   final args = Get.arguments;
-  final cartProducts = <ProductCollection>[].obs;
+  final cartProducts = <CartProducts>[].obs;
   final subTotal = 0.0.obs;
   final delivery = 0.0.obs;
   final couponAmount = 0.0.obs;
@@ -65,7 +66,7 @@ class CheckoutController extends BaseController {
 
   }
 
-   getShippingInfo() async {
+   Future<void> getShippingInfo() async {
     var response = await CheckoutRepository().getShippingInfo();
     if (response.status == 200) {
       shippingInfo.clear();
@@ -81,7 +82,7 @@ class CheckoutController extends BaseController {
   }
 
 
-  setShippingInfo()async{
+  Future<void> setShippingInfo()async{
 
     if(name.value.text.isEmpty){
       AppWidgets().getSnackBar(
