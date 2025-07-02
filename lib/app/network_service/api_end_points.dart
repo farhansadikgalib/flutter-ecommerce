@@ -78,5 +78,17 @@ static String addToWishlist = "user/wishlist/action";
 
 //wishlist
 
+//cart
+
+static String addToCart = "cart/action";
+static String allCartItems = "cart/by-user";
+static String deleteCartItems ({
+    required String productId,
+  }) =>
+      "cart/delete/$productId";
+
+//
+
+
 
 }
