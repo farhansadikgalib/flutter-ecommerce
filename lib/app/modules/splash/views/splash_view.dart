@@ -21,6 +21,10 @@ class SplashView extends GetView<SplashController> {
             child: ScaleAnimation(
               child: AnyImageView(
                 imagePath: Assets.pngLogo,
+                height: 100,
+                width: 100,
+                boxFit: BoxFit.contain,
+
               ),
             )
 
