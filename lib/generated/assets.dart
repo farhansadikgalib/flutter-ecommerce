@@ -2,6 +2,8 @@
 class Assets {
   Assets._();
 
-  static const String pngLogo = 'assets/png/logo.png';
+  static const String png0dbfcc7a59cd1cf16282 = 'assets/png/logo.png';
+  static const String pngLogo = 'assets/png/logo';
+  static const String turi = '.env';
 
 }
