@@ -2,7 +2,7 @@
 class ApiEndPoints {
 
   //Authentication
-  static String login = "user/signin";
+  static String login = "user-login";
   static String signup = "user/signup";
   static String verifyOtp = "user/verify";
   static String forgetPassword = "user/forgot-password";
