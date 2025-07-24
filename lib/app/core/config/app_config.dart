@@ -1,5 +1,4 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 class AppConfig {
   static String get currentVersion => dotenv.get('CURRENT_VERSION', fallback: '');
   static bool get https => dotenv.get('HTTPS', fallback: 'true') == 'true';
