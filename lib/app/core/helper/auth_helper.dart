@@ -8,20 +8,20 @@ import '../../data/remote/model/auth/login_response.dart';
 class AuthHelper {
   void setUserData(
       LoginResponse loginResponse) {
-    if (loginResponse.data?.token != null) {
+    if (loginResponse.token != null) {
       isLoggedIn.$ = true;
       isLoggedIn.save();
 
-      accessToken.$ = "Bearer ${loginResponse.data!.token}";
+      accessToken.$ = "Bearer ${loginResponse.token}";
       accessToken.save();
 
-      userName.$ = loginResponse.data!.user!.name!;
+      userName.$ = loginResponse.user!.name!;
       userName.save();
 
-      userId.$ = loginResponse.data!.user!.id!.toString();
+      userId.$ = loginResponse.user!.id!.toString();
       userId.save();
 
-      userEmail.$ = loginResponse.data!.user!.email!;
+      userEmail.$ = loginResponse.user!.email!;
       userEmail.save();
 
 

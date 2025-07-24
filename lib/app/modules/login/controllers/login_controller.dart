@@ -50,8 +50,8 @@ class LoginController extends GetxController {
     super.onInit();
     if(kDebugMode){
       nameController.text = 'coheraw';
-      emailController.text = 'pocinap866@forcrack.com';
-      passwordController.text = '123456';
+      emailController.text = 'rifat@gmail.com';
+      passwordController.text = '12345678';
     }
   }
 
