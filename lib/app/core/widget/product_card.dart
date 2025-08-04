@@ -5,13 +5,12 @@ import 'package:any_image_view/any_image_view.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/config/app_config.dart';
 import 'package:turi/app/core/style/app_colors.dart';
-import 'package:turi/app/data/remote/model/home/home_response.dart';
-import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
+import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../data/remote/repository/cart/cart_repository.dart';
 
 class ProductCard extends StatefulWidget {
-  final ProductCollection product;
+  final ProductData product;
   final int index;
 
   const ProductCard({super.key, required this.product, required this.index});
@@ -27,38 +26,28 @@ class _ProductCardState extends State<ProductCard> {
   @override
   void initState() {
     super.initState();
-    localQty = widget.product.quantity ?? 1;
-    showQtySelector = widget.product.addToCart == false;
+    localQty = 1;
   }
 
-  void _incrementQty() async {
-    setState(() {
-      localQty++;
-    });
-    await CartRepository().addToCart(
-      widget.product.id.toString(),
-      "1",
-      localQty.toString(),
-    );
-  }
-
-  void _decrementQty() async {
-    if (localQty > 1) {
-      setState(() {
-        localQty--;
-      });
-      await CartRepository().addToCart(
-        widget.product.id.toString(),
-        "1",
-        localQty.toString(),
-      );
-    } else {
-      await CartRepository().deleteCartItems(widget.product.id.toString());
-      setState(() {
-        showQtySelector = false;
-        localQty = 1;
-      });
+  String getProductImage() {
+    if (widget.product.productImages != null && widget.product.productImages!.isNotEmpty) {
+      return '${AppConfig.imageBasePath}${widget.product.productImages![0]}';
     }
+    return '${AppConfig.imageBasePath}default.png';
+  }
+
+  String getProductTitle() {
+    // Use name as title
+    return widget.product.name ?? '';
+  }
+
+  String getSellingPrice() {
+    return widget.product.productPrices?.sellingPrice ?? '0';
+  }
+
+  String getOfferedPrice() {
+    // Example: if you have an offer price, otherwise use selling price
+    return widget.product.productPrices?.promoPrice?.toString() ?? getSellingPrice();
   }
 
   @override
@@ -87,8 +76,7 @@ class _ProductCardState extends State<ProductCard> {
             children: [
               Center(
                 child: AnyImageView(
-                  imagePath:
-                      '${AppConfig.imageBasePath}${widget.product.image}',
+                  imagePath: getProductImage(),
                   height: 120,
                   width: 120,
                   cachedNetPlaceholderHeight: 120,
@@ -97,7 +85,7 @@ class _ProductCardState extends State<ProductCard> {
               ),
               SizedBox(height: 10),
               Text(
-                widget.product.title ?? '',
+                getProductTitle(),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -110,9 +98,9 @@ class _ProductCardState extends State<ProductCard> {
               SizedBox(height: 6),
               Row(
                 children: [
-                  if (widget.product.selling != widget.product.offered)
+                  if (getSellingPrice() != getOfferedPrice())
                     Text(
-                      '${widget.product.selling} BDT',
+                      '${getSellingPrice()} BDT',
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.grey,
@@ -121,7 +109,7 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                   SizedBox(width: 6),
                   Text(
-                    '${widget.product.offered} BDT',
+                    '${getOfferedPrice()} BDT',
                     style: TextStyle(
                       fontSize: 15,
                       color: AppColors.primaryColor,
@@ -133,82 +121,101 @@ class _ProductCardState extends State<ProductCard> {
               Spacer(),
               showQtySelector
                   ? Container(
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: AppColors.primaryColor,
-                        width: 1,
-                      ),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: _decrementQty,
-                          icon: FaIcon(
-                            FontAwesomeIcons.minus,
-                            size: 14,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        Text(
-                          localQty.toString(),
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: _incrementQty,
-                          icon: FaIcon(
-                            FontAwesomeIcons.plus,
-                            size: 14,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                  : ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor,
-                      shape: RoundedRectangleBorder(
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: AppColors.primaryColor,
+                          width: 1,
+                        ),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                    ),
-                    onPressed: () async {
-                      Get.find<CartController>().addToCart(
-                        widget.product.id.toString(),
-                        localQty.toString(),
-                        "1",
-                      );
-                      setState(() {
-                        localQty = 1;
-                        showQtySelector = true;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.shopping_bag,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    label: Text(
-                      'Add to Cart',
-                      style: TextStyle(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: _decrementQty,
+                            icon: FaIcon(
+                              FontAwesomeIcons.minus,
+                              size: 14,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                          Text(
+                            localQty.toString(),
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: _incrementQty,
+                            icon: FaIcon(
+                              FontAwesomeIcons.plus,
+                              size: 14,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          localQty = 1;
+                          showQtySelector = true;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.shopping_bag,
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        size: 18,
+                      ),
+                      label: Text(
+                        'Add to Cart',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _incrementQty() async {
+    setState(() {
+      localQty++;
+    });
+  }
+
+  void _decrementQty() async {
+    if (localQty > 1) {
+      setState(() {
+        localQty--;
+      });
+      await CartRepository().addToCart(
+        widget.product.id.toString(),
+        "1",
+        localQty.toString(),
+      );
+    } else {
+      setState(() {
+        showQtySelector = false;
+        localQty = 1;
+      });
+    }
   }
 }

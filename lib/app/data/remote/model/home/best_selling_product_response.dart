@@ -1,94 +1,18 @@
 import 'dart:convert';
 
-CategoryWiseProductsResponse categoryWiseProductsResponseFromJson(String str) => CategoryWiseProductsResponse.fromJson(json.decode(str));
+List<ProductData> bestSellingProductResponseFromJson(String str) => List<ProductData>.from(json.decode(str).map((x) => ProductData.fromJson(x)));
 
-String categoryWiseProductsResponseToJson(CategoryWiseProductsResponse data) => json.encode(data.toJson());
+String bestSellingProductResponseToJson(List<ProductData> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class CategoryWiseProductsResponse {
-  int? currentPage;
-  List<CategoryWiseProduct>? data;
-  String? firstPageUrl;
-  int? from;
-  int? lastPage;
-  String? lastPageUrl;
-  List<Link>? links;
-  dynamic nextPageUrl;
-  String? path;
-  int? perPage;
-  dynamic prevPageUrl;
-  int? to;
-  int? total;
-
-  CategoryWiseProductsResponse({
-    this.currentPage,
-    this.data,
-    this.firstPageUrl,
-    this.from,
-    this.lastPage,
-    this.lastPageUrl,
-    this.links,
-    this.nextPageUrl,
-    this.path,
-    this.perPage,
-    this.prevPageUrl,
-    this.to,
-    this.total,
-  });
-
-  factory CategoryWiseProductsResponse.fromJson(Map<String, dynamic> json) => CategoryWiseProductsResponse(
-    currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<CategoryWiseProduct>.from(json["data"]!.map((x) => CategoryWiseProduct.fromJson(x))),
-    firstPageUrl: json["first_page_url"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    lastPageUrl: json["last_page_url"],
-    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
-    nextPageUrl: json["next_page_url"],
-    path: json["path"],
-    perPage: json["per_page"],
-    prevPageUrl: json["prev_page_url"],
-    to: json["to"],
-    total: json["total"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "current_page": currentPage,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-    "first_page_url": firstPageUrl,
-    "from": from,
-    "last_page": lastPage,
-    "last_page_url": lastPageUrl,
-    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
-    "next_page_url": nextPageUrl,
-    "path": path,
-    "per_page": perPage,
-    "prev_page_url": prevPageUrl,
-    "to": to,
-    "total": total,
-  };
-}
-
-class CategoryWiseProduct {
+class ProductData {
   int? id;
+  int? quantity;
+  bool? addToCart;
+  String? name;
+  String? genericId;
   String? categoryId;
   String? supplierId;
-  String? name;
-  String? additionalItemNumbers;
-  String? productId;
-  dynamic tags;
-  String? manufacturerId;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-  dynamic upcEanIsbn;
-  dynamic description;
-  String? batchNo;
-  String? createdBy;
-  String? updatedBy;
-  String? genericId;
-  String? isEcommerceItem;
-  String? isBarcoded;
-  dynamic deletedAt;
+  String? totalSoldQuantity;
   Generic? generic;
   Category? category;
   Supplier? supplier;
@@ -101,27 +25,15 @@ class CategoryWiseProduct {
   List<dynamic>? productImages;
   List<StockBatch>? stockBatches;
 
-  CategoryWiseProduct({
+  ProductData({
     this.id,
+    this.addToCart,
+    this.name,
+    this.quantity,
+    this.genericId,
     this.categoryId,
     this.supplierId,
-    this.name,
-    this.additionalItemNumbers,
-    this.productId,
-    this.tags,
-    this.manufacturerId,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
-    this.upcEanIsbn,
-    this.description,
-    this.batchNo,
-    this.createdBy,
-    this.updatedBy,
-    this.genericId,
-    this.isEcommerceItem,
-    this.isBarcoded,
-    this.deletedAt,
+    this.totalSoldQuantity,
     this.generic,
     this.category,
     this.supplier,
@@ -135,27 +47,15 @@ class CategoryWiseProduct {
     this.stockBatches,
   });
 
-  factory CategoryWiseProduct.fromJson(Map<String, dynamic> json) => CategoryWiseProduct(
+  factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
     id: json["id"],
+    quantity: 0,
+    addToCart: false,
+    name: json["name"],
+    genericId: json["generic_id"],
     categoryId: json["category_id"],
     supplierId: json["supplier_id"],
-    name: json["name"],
-    additionalItemNumbers: json["additional_item_numbers"],
-    productId: json["product_id"],
-    tags: json["tags"],
-    manufacturerId: json["manufacturer_id"],
-    status: json["status"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    upcEanIsbn: json["upc_ean_isbn"],
-    description: json["description"],
-    batchNo: json["batch_no"],
-    createdBy: json["created_by"],
-    updatedBy: json["updated_by"],
-    genericId: json["generic_id"],
-    isEcommerceItem: json["is_ecommerce_item"],
-    isBarcoded: json["is_barcoded"],
-    deletedAt: json["deleted_at"],
+    totalSoldQuantity: json["total_sold_quantity"],
     generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
     category: json["category"] == null ? null : Category.fromJson(json["category"]),
     supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
@@ -171,25 +71,11 @@ class CategoryWiseProduct {
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "name": name,
+    "generic_id": genericId,
     "category_id": categoryId,
     "supplier_id": supplierId,
-    "name": name,
-    "additional_item_numbers": additionalItemNumbers,
-    "product_id": productId,
-    "tags": tags,
-    "manufacturer_id": manufacturerId,
-    "status": status,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "upc_ean_isbn": upcEanIsbn,
-    "description": description,
-    "batch_no": batchNo,
-    "created_by": createdBy,
-    "updated_by": updatedBy,
-    "generic_id": genericId,
-    "is_ecommerce_item": isEcommerceItem,
-    "is_barcoded": isBarcoded,
-    "deleted_at": deletedAt,
+    "total_sold_quantity": totalSoldQuantity,
     "generic": generic?.toJson(),
     "category": category?.toJson(),
     "supplier": supplier?.toJson(),
@@ -565,17 +451,17 @@ class StockBatch {
   String? productId;
   String? batchNo;
   dynamic expiryDate;
-  dynamic purchaseId;
-  dynamic purchaseProductId;
+  String? purchaseId;
+  String? purchaseProductId;
   dynamic purchaseBonusProductId;
-  dynamic receivedQuantity;
+  String? receivedQuantity;
   String? balancedQuantity;
   String? locked;
   String? createdAt;
   String? updatedAt;
   dynamic saleReturnId;
   dynamic saleReturnProductId;
-  dynamic cost;
+  String? cost;
   String? reconciliationId;
   String? reconciliationProductId;
   String? reconciliationQuantity;
@@ -679,7 +565,7 @@ class Supplier {
   String? storeAccountBalance;
   String? payAmount;
   dynamic deletedAt;
-  String? deletedBy;
+  dynamic deletedBy;
 
   Supplier({
     this.id,
@@ -757,29 +643,5 @@ class Supplier {
     "pay_amount": payAmount,
     "deleted_at": deletedAt,
     "deleted_by": deletedBy,
-  };
-}
-
-class Link {
-  String? url;
-  String? label;
-  bool? active;
-
-  Link({
-    this.url,
-    this.label,
-    this.active,
-  });
-
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "url": url,
-    "label": label,
-    "active": active,
   };
 }

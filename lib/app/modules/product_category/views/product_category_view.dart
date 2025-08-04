@@ -2,20 +2,16 @@ import 'package:any_image_view/any_image_view.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/core/widget/global_appbar.dart';
-import 'package:turi/app/core/widget/product_card.dart';
-import 'package:turi/app/data/remote/model/home/home_response.dart';
-import 'package:turi/app/modules/home/controllers/home_controller.dart';
-import '../../../core/config/app_config.dart';
+import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
 import '../../../core/helper/app_widgets.dart';
 import '../../../core/helper/debounce_helper.dart';
 import '../../../core/style/app_colors.dart';
-import '../../../routes/app_pages.dart';
+import '../../../core/widget/global_appbar.dart';
+import '../../../core/widget/product_card.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../controllers/product_category_controller.dart';
 
@@ -91,7 +87,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Obx(
+         /*           Obx(
                       () => Column(
                         children:
                             controller.category
@@ -110,7 +106,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                 )
                                 .toList(),
                       ),
-                    ),
+                    ),*/
                     Visibility(
                       visible: controller.category.isNotEmpty,
                       child: Divider(),
@@ -380,19 +376,12 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                               physics: AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 final item = controller.categoryProducts[index];
-                                final product = ProductCollection(
-                                  id: item.id,
-                                  title: item.title,
-                                  slug: item.slug,
-                                  image: item.image,
-                                  selling: item.selling,
-                                  offered: item.offered,
-                                  price: item.price,
-                                  reviewCount: item.reviewCount,
-                                  rating: item.rating,
-                                  quantity: 1,
-                                  endTime: item.endTime,
-                                  addToCart: true,
+                                final product = ProductData(
+                                  id:item.id,
+                                  name: item.name,
+                                  addToCart: false,
+                                quantity: 0,
+                                  categoryId: '11',
                                 );
                                 return ProductCard(
                                   product: product,
@@ -428,18 +417,10 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                       physics: AlwaysScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final item = controller.categoryProducts[index];
-                        final product = ProductCollection(
+                        final product = ProductData(
                           id: item.id,
-                          title: item.title,
-                          slug: item.slug,
-                          image: item.image,
-                          selling: item.selling,
-                          offered: item.offered,
-                          price: item.price,
-                          reviewCount: item.reviewCount,
-                          rating: item.rating,
+                          name: item.name,
                           quantity: 1,
-                          endTime: item.endTime,
                           addToCart: true,
                         );
                         return ProductCard(product: product, index: index);

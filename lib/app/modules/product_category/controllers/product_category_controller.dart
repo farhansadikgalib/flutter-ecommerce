@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:turi/app/data/remote/model/search/search_response.dart';
 import 'package:turi/app/data/remote/repository/category/category_repository.dart';
 
@@ -12,15 +13,16 @@ class ProductCategoryController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final DebounceHelper debounceHelper = DebounceHelper();
   final priceRange = RangeValues(0, 1000).obs;
-  final category = <Category>[].obs;
-  final brands = <Brand>[].obs;
-  final collections = <Brand>[].obs;
-  final deliveryType = <Brand>[].obs;
+  final category = <CategoryWiseProduct>[].obs;
+  final brands = [].obs;
+  final collections = [].obs;
+  final deliveryType = [].obs;
   final categorySlug = Get.arguments['slug'];
   final categoryName = Get.arguments['name'];
   final brandId = Get.arguments['brandId'];
   final fromSearch = Get.arguments['fromSearch'];
-  final categoryProducts = <CategoryProducts>[].obs;
+  final categoryProducts = <CategoryWiseProduct>[].obs;
+
 
   final isLoading = false.obs;
 
@@ -33,12 +35,10 @@ class ProductCategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (fromSearch == false) {
-      getCategoryWiseProducts(categorySlug, brandId, '', '', '');
-    }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      searchFocusNode.requestFocus(); // Request focus to show the keyboard
-    });
+
+    printLog(categorySlug);
+
+    getCategoryWiseProducts(categorySlug);
 
   }
 
@@ -48,36 +48,26 @@ class ProductCategoryController extends GetxController {
     super.onClose();
   }
 
-  getCategoryWiseProducts(
-    String categorySlug,
-    String brandId,
-    String deliveryId,
-    minPrice,
-    maxPrice,
+  Future<void> getCategoryWiseProducts(
+    int categoryId,
+
   ) async {
     isLoading.value = true;
     var response = await CategoryRepository().getCategoryWiseProduct(
-      categorySlug,
-      brandId,
-      deliveryId,
-      minPrice,
-      maxPrice,
+      categoryId,
     );
-    if (response.status == 200) {
+
+
       categoryProducts.clear();
-      category.clear();
-      brands.clear();
-      collections.clear();
-      deliveryType.clear();
-      categoryProducts.addAll(response.data?.result?.data ?? []);
-      collections.addAll(response.data?.collections ?? []);
-      category.addAll(response.data?.category ?? []);
-      brands.addAll(response.data?.brands ?? []);
-      deliveryType.addAll(response.data?.shipping ?? []);
-    } else {
-      printLog(response.message);
-    }
+      categoryProducts.addAll(response.data?? []);
     isLoading.value = false;
+
+    // categoryProducts.addAll(response.data?.result?.data ?? []);
+      // collections.addAll(response.data?.collections ?? []);
+      // category.addAll(response.data?.category ?? []);
+      // brands.addAll(response.data?.brands ?? []);
+      // deliveryType.addAll(response.data?.shipping ?? []);
+
   }
 
   void filterProducts() async {
@@ -87,11 +77,11 @@ class ProductCategoryController extends GetxController {
         .join(', ');
     printLog(selectedBrandIds);
 
-    final selectedCategoryIds = category
+/*    final selectedCategoryIds = category
         .where((category) => category.isSelected == true)
         .map((category) => category.id.toString())
-        .join(', ');
-    printLog(selectedCategoryIds);
+        .join(', ');*/
+    //printLog(selectedCategoryIds);
     final selectedCollectionIds = collections
         .where((collection) => collection.isSelected == true)
         .map((collection) => collection.id.toString())
@@ -106,11 +96,7 @@ class ProductCategoryController extends GetxController {
         '${priceRange.value.start} - ${priceRange.value.end}';
     printLog(selectedPriceRange);
     getCategoryWiseProducts(
-      selectedCategoryIds,
-      selectedBrandIds,
-      selectedDeliveryTypeIds,
-      priceRange.value.start.toString(),
-      priceRange.value.end.toString(),
+      1,
     );
   }
 
@@ -119,21 +105,6 @@ class ProductCategoryController extends GetxController {
       var response = await CategoryRepository().getSearchItems(query);
       if (response.status == 200) {
         categoryProducts.clear();
-        response.data?.product?.forEach((element) {
-              categoryProducts.add(CategoryProducts(
-                id: element.id,
-                title: element.title,
-                image: element.image,
-                price: element.price,
-                rating: element.rating,
-                slug: element.slug,
-                addToCart: true,
-                reviewCount: element.reviewCount,
-                quantity: 0,
-                selling: element.selling,
-                offered: element.offered,
-              ));
-        });
 
 
         printLog(categoryProducts.length);
@@ -146,7 +117,7 @@ class ProductCategoryController extends GetxController {
           categoryProducts
               .where(
                 (product) =>
-                    product.title?.toLowerCase().contains(
+                    product.name?.toLowerCase().contains(
                       query.toLowerCase(),
                     ) ??
                     false,

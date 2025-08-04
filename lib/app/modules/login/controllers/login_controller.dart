@@ -16,13 +16,10 @@ class LoginController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
 
-
   final RxBool isPasswordHidden = true.obs;
   final RxBool isSignUpMode = false.obs;
   final RxBool isForgotPasswordMode = false.obs;
   final RxBool isVerificationMode = false.obs;
-
-
 
   final RxString emailError = ''.obs;
   final RxString passwordError = ''.obs;
@@ -44,11 +41,10 @@ class LoginController extends GetxController {
     ),
   );
 
-
   @override
   void onInit() {
     super.onInit();
-    if(kDebugMode){
+    if (kDebugMode) {
       nameController.text = 'coheraw';
       emailController.text = 'rifat@gmail.com';
       passwordController.text = '12345678';
@@ -64,10 +60,10 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
-
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
+
   void goToSignUp() {
     isSignUpMode.value = true;
   }
@@ -78,6 +74,7 @@ class LoginController extends GetxController {
     passwordError.value = '';
     nameError.value = '';
   }
+
   void enterVerificationMode() {
     isVerificationMode.value = true;
     pinController.clear();
@@ -130,47 +127,45 @@ class LoginController extends GetxController {
     }
   }
 
-  void login() async{
+  void login() async {
     validateEmail(emailController.text);
     validatePassword(passwordController.text);
 
     if (emailError.value.isEmpty && passwordError.value.isEmpty) {
-
       final response = await AuthRepository().login(
         emailController.text.trim(),
         passwordController.text.trim(),
       );
 
-
-      if(response.status==200){
+      if (response.status == 200) {
         AuthHelper().setUserData(response);
+        AuthHelper().loadItems();
         Get.offAllNamed(Routes.DASHBOARD);
         AppWidgets().getSnackBar(message: response.message);
-        AuthHelper().loadItems();
-
-      } else{
+      } else {
         AppWidgets().getSnackBar(message: response.message);
       }
     }
   }
 
-  void signUp() async{
+  void signUp() async {
     validateName(nameController.text);
     validateEmail(emailController.text);
     validatePassword(passwordController.text);
 
-    if (nameError.value.isEmpty && emailError.value.isEmpty && passwordError.value.isEmpty) {
+    if (nameError.value.isEmpty &&
+        emailError.value.isEmpty &&
+        passwordError.value.isEmpty) {
       final response = await AuthRepository().signup(
         nameController.text,
         emailController.text.trim(),
         passwordController.text.trim(),
       );
 
-
-      if(response.status==200){
+      if (response.status == 200) {
         enterVerificationMode();
         AppWidgets().getSnackBar(message: response.message);
-      } else{
+      } else {
         AppWidgets().getSnackBar(message: response.message);
       }
     }
@@ -180,63 +175,54 @@ class LoginController extends GetxController {
     validateEmail(emailController.text);
 
     if (emailError.value.isEmpty) {
-
       final response = await AuthRepository().forgetPassword(
         emailController.text.trim(),
       );
 
-      if(response.status==200){
+      if (response.status == 200) {
         enterVerificationMode();
         AppWidgets().getSnackBar(message: response.message);
-      } else{
+      } else {
         AppWidgets().getSnackBar(message: response.message);
       }
     }
   }
 
+  void verifyCode() async {
+    if (isForgotPasswordMode.value) {
+      var response = await AuthRepository().updatePassword(
+        pinController.value.text,
+        emailController.value.text,
+        passwordController.value.text,
+      );
 
-
-  void verifyCode() async{
-
-      if (isForgotPasswordMode.value) {
-
-        var response = await AuthRepository().updatePassword(
-          pinController.value.text,
-          emailController.value.text,
-          passwordController.value.text
-        );
-
-        if(response.status==200) {
-          AppWidgets().getSnackBar(message: response.message);
-          isForgotPasswordMode.value = false;
-          isVerificationMode.value = false;
-        }
-        else {
-          AppWidgets().getSnackBar(message: response.message);
-        }
-
-        // Reset states and go back to login
+      if (response.status == 200) {
+        AppWidgets().getSnackBar(message: response.message);
+        isForgotPasswordMode.value = false;
+        isVerificationMode.value = false;
       } else {
-        // Sign up verification
-
-
-        var response = await AuthRepository().verifyOTP(emailController.value
-            .text, pinController.value.text);
-
-        if(response.status==200){
-          AppWidgets().getSnackBar(message:response.message);
-          isSignUpMode.value = false;
-          isVerificationMode.value = false;
-        }else{
-          AppWidgets().getSnackBar(message: response.message);
-        }
-
-
-        // Reset states and go back to login
-
+        AppWidgets().getSnackBar(message: response.message);
       }
 
+      // Reset states and go back to login
+    } else {
+      // Sign up verification
 
+      var response = await AuthRepository().verifyOTP(
+        emailController.value.text,
+        pinController.value.text,
+      );
+
+      if (response.status == 200) {
+        AppWidgets().getSnackBar(message: response.message);
+        isSignUpMode.value = false;
+        isVerificationMode.value = false;
+      } else {
+        AppWidgets().getSnackBar(message: response.message);
+      }
+
+      // Reset states and go back to login
+    }
   }
 
   void resendCode() {
@@ -246,5 +232,4 @@ class LoginController extends GetxController {
       signUp();
     }
   }
-
 }

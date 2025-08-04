@@ -1,9 +1,11 @@
 
+import 'dart:ffi';
+
 class ApiEndPoints {
 
   //Authentication
   static String login = "user-login";
-  static String signup = "user/signup";
+  static String signup = "user-register";
   static String verifyOtp = "user/verify";
   static String forgetPassword = "user/forgot-password";
   static String updatePassword = "user/update-password";
@@ -12,8 +14,10 @@ class ApiEndPoints {
 
   //Home
   static String home = "home";
-  static String categories = "categories";
+  static String categories = "category_all";
   static String brands = "brands";
+  static String bestSellingProduct = "best-selling-product";
+
   //Home
 
 
@@ -21,7 +25,7 @@ class ApiEndPoints {
   static String productDetails({
     required String productId,
   }) =>
-      "product/$productId";
+      "product-show/$productId";
 
 
   static String productReview({
@@ -42,13 +46,9 @@ class ApiEndPoints {
 
   //Category
   static String categoryList({
-    required String productCategory,required String brandId, required String
-    shippingId, required String maxPrice, required String minPrice,
+    required int categoryId,
   }) =>
-      "all?category=&sub_category=$productCategory&sortby=&shipping=$shippingId&brand"
-          "=$brandId"
-          "&collection"
-          "=&rating=&max=$maxPrice&min=$minPrice&page=1&sidebar_data=true";
+      "product-category-wise/$categoryId";
 
   //Category
 

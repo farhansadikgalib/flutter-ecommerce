@@ -2,16 +2,14 @@ import 'package:flutter_gallery_3d/gallery3d.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_controller.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
-import 'package:turi/app/core/helper/auth_helper.dart';
 import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/data/remote/model/home/brands_response.dart';
 import 'package:turi/app/data/remote/model/home/category_response.dart';
-import 'package:turi/app/data/remote/model/home/home_response.dart';
+import 'package:turi/app/data/remote/model/home/home_response.dart'
+    hide Product, Category;
 import 'package:turi/app/data/remote/repository/home/home_repository.dart';
 
-import '../../../core/helper/shared_value_helper.dart';
-import '../../../routes/app_pages.dart';
-import '../../cart/controllers/cart_controller.dart';
+import '../../../data/remote/model/home/best_selling_product_response.dart';
 
 class HomeController extends BaseController {
   final currentIndex = 0.obs;
@@ -20,8 +18,9 @@ class HomeController extends BaseController {
   final isCategoryLoading = true.obs;
   final isBrandLoading = true.obs;
   final homeElements = <HomeData>[].obs;
-  final categoriesData = <CategoriesData>[].obs;
+  final categoriesData = <CategoryData>[].obs;
   final brandsData = <BrandsData>[].obs;
+  final bestSellingProducts = <ProductData>[].obs;
   final Gallery3DController gallery3dController = Gallery3DController(
     itemCount: 5,
   );
@@ -29,14 +28,10 @@ class HomeController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    getHomeData();
+    // getHomeData();
     getCategoriesData();
-    getBrandsData();
-//     ever(, (value) {
-//       /*
-//       printLog("Cart count changed: $value");
-// */
-//     });
+    // getBrandsData();
+    getBestSellingProducts();
   }
 
   Future<void> getHomeData() async {
@@ -51,14 +46,12 @@ class HomeController extends BaseController {
   }
 
   Future<void> getCategoriesData() async {
+    isCategoryLoading.value = true;
     var response = await HomeRepository().getCategoriesData();
-    if (response.status == 200) {
-      categoriesData.clear();
-      categoriesData.addAll(response.data!.data ?? []);
-      isCategoryLoading.value = false;
-    } else {
-      AppWidgets().getSnackBar(title: 'Error', message: response.message);
-    }
+
+    categoriesData.clear();
+    categoriesData.addAll(response);
+    isCategoryLoading.value = false;
   }
 
   Future<void> getBrandsData() async {
@@ -72,5 +65,19 @@ class HomeController extends BaseController {
     }
   }
 
+  Future<void> getBestSellingProducts() async {
+    isLoading.value = true;
+    var response = await HomeRepository().getBestSellingProducts();
+    if (response.isNotEmpty) {
+      bestSellingProducts.clear();
+      bestSellingProducts.addAll(response);
+      printLog('Best Selling Products: ${bestSellingProducts.length}');
+      isLoading.value = false;
+    } else {
+      AppWidgets().getSnackBar(
+        title: 'Error',
+        message: 'No best selling products found',
+      );
+    }
+  }
 }
-

@@ -234,8 +234,8 @@ class HomeView extends BaseView<HomeController> {
                           Get.toNamed(
                             Routes.PRODUCT_CATEGORY,
                             arguments: {
-                              'name': controller.categoriesData[index].title,
-                              'slug': controller.categoriesData[index].slug,
+                              'name': controller.categoriesData[index].name,
+                              'slug': controller.categoriesData[index].id,
                               'brandId': '',
                               'fromSearch': false,
                             },
@@ -264,13 +264,14 @@ class HomeView extends BaseView<HomeController> {
                               ),
                               child: AnyImageView(
                                 imagePath:
-                                '${AppConfig.imageBasePath}${controller.categoriesData[index].image}',
+                                '${AppConfig.imageBasePath}${controller
+                                    .categoriesData[index].name}',
                                 height: 75.h,
                               ),
                             ),
                             AppWidgets().gapH(4),
                             Text(
-                              '${controller.categoriesData[index].title}',
+                              '${controller.categoriesData[index].name}',
                               style: TextStyle(
                                 color: AppColors.primaryColor,
                                 fontWeight: FontWeight.bold,
@@ -515,69 +516,51 @@ class HomeView extends BaseView<HomeController> {
                       );
                     },
                   )
-                      : ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount:
-                    controller.homeElements.first.collections!.length,
-                    itemBuilder: (context, index) {
-                      final collection =
-                      controller
-                          .homeElements
-                          .first
-                          .collections![index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      :  Column(
+                    children: [
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppWidgets().gapH8(),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '${collection.title}',
-                                style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                'See More',
-                                style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          GridView.builder(
-                            gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.66
+                          Text(
+                            'Best Selling Products',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
-                            itemCount:
-                            collection.productCollections!.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final product =
-                              collection.productCollections![index];
-
-                              return  ProductCard(
-                                product: product,
-                                index: index,
-                              );
-
-                            },
+                          ),
+                          Text(
+                            'See More',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
-                      );
-                    },
-                  ),
+                      ),
+                      SizedBox(height: 8),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.66,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                        itemCount: controller.bestSellingProducts.length,
+                        itemBuilder: (context, index) {
+
+                          return ProductCard(
+                            product: controller.bestSellingProducts[index],
+                            index: index,
+                          );
+                        },
+                      ),
+                    ],
+                  )
                 ),
               ],
             ),

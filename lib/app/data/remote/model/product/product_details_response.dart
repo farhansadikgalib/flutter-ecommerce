@@ -5,621 +5,469 @@ ProductDetailsResponse productDetailsResponseFromJson(String str) => ProductDeta
 String productDetailsResponseToJson(ProductDetailsResponse data) => json.encode(data.toJson());
 
 class ProductDetailsResponse {
-  ProductDetails? data;
-  int? status;
-  dynamic token;
-  String? message;
+  Product? product;
+  List<Supplier>? suppliers;
+  List<Category>? categories;
+  List<dynamic>? generics;
+  List<dynamic>? manufacturers;
 
   ProductDetailsResponse({
-    this.data,
-    this.status,
-    this.token,
-    this.message,
+    this.product,
+    this.suppliers,
+    this.categories,
+    this.generics,
+    this.manufacturers,
   });
 
   factory ProductDetailsResponse.fromJson(Map<String, dynamic> json) => ProductDetailsResponse(
-    data: json["data"] == null ? null : ProductDetails.fromJson(json["data"]),
-    status: json["status"],
-    token: json["token"],
-    message: json["message"],
+    product: json["product"] == null ? null : Product.fromJson(json["product"]),
+    suppliers: json["suppliers"] == null ? [] : List<Supplier>.from(json["suppliers"]!.map((x) => Supplier.fromJson(x))),
+    categories: json["categories"] == null ? [] : List<Category>.from(json["categories"]!.map((x) => Category.fromJson(x))),
+    generics: json["generics"] == null ? [] : List<dynamic>.from(json["generics"]!.map((x) => x)),
+    manufacturers: json["manufacturers"] == null ? [] : List<dynamic>.from(json["manufacturers"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
-    "data": data?.toJson(),
-    "status": status,
-    "token": token,
-    "message": message,
-  };
-}
-
-class ProductDetails {
-  int? id;
-  String? title;
-  String? description;
-  String? overview;
-  String? unit;
-  dynamic badge;
-  String? metaTitle;
-  String? metaDescription;
-  dynamic tags;
-  String? selling;
-  String? purchased;
-  String? offered;
-  String? image;
-  dynamic video;
-  dynamic videoThumb;
-  int? status;
-  int? categoryId;
-  int? subcategoryId;
-  int? warranty;
-  int? refundable;
-  int? taxRuleId;
-  int? shippingRuleId;
-  int? reviewCount;
-  int? rating;
-  dynamic bundleDealId;
-  int? brandId;
-  String? createdAt;
-  String? updatedAt;
-  int? adminId;
-  List<SubCategory>? slug;
-  dynamic price;
-  dynamic endTime;
-  dynamic wishlisted;
-  List<Inventory>? inventory;
-  List<dynamic>? vouchers;
-  List<ProductImage>? images;
-  String? timeZone;
-  bool? inStock;
-  List<Attribute>? attribute;
-  Brand? brand;
-  Store? store;
-  dynamic bundleDeal;
-  List<CurrentCategory>? currentCategories;
-  Category? category;
-  SubCategory? subCategory;
-  List<ProductImage>? productImageNames;
-  ShippingRule? shippingRule;
-
-  ProductDetails({
-    this.id,
-    this.title,
-    this.description,
-    this.overview,
-    this.unit,
-    this.badge,
-    this.metaTitle,
-    this.metaDescription,
-    this.tags,
-    this.selling,
-    this.purchased,
-    this.offered,
-    this.image,
-    this.video,
-    this.videoThumb,
-    this.status,
-    this.categoryId,
-    this.subcategoryId,
-    this.warranty,
-    this.refundable,
-    this.taxRuleId,
-    this.shippingRuleId,
-    this.reviewCount,
-    this.rating,
-    this.bundleDealId,
-    this.brandId,
-    this.createdAt,
-    this.updatedAt,
-    this.adminId,
-    this.slug,
-    this.price,
-    this.endTime,
-    this.wishlisted,
-    this.inventory,
-    this.vouchers,
-    this.images,
-    this.timeZone,
-    this.inStock,
-    this.attribute,
-    this.brand,
-    this.store,
-    this.bundleDeal,
-    this.currentCategories,
-    this.category,
-    this.subCategory,
-    this.productImageNames,
-    this.shippingRule,
-  });
-
-  factory ProductDetails.fromJson(Map<String, dynamic> json) => ProductDetails(
-    id: json["id"],
-    title: json["title"],
-    description: json["description"],
-    overview: json["overview"],
-    unit: json["unit"],
-    badge: json["badge"],
-    metaTitle: json["meta_title"],
-    metaDescription: json["meta_description"],
-    tags: json["tags"],
-    selling: json["selling"],
-    purchased: json["purchased"],
-    offered: json["offered"],
-    image: json["image"],
-    video: json["video"],
-    videoThumb: json["video_thumb"],
-    status: json["status"],
-    categoryId: json["category_id"],
-    subcategoryId: json["subcategory_id"],
-    warranty: json["warranty"],
-    refundable: json["refundable"],
-    taxRuleId: json["tax_rule_id"],
-    shippingRuleId: json["shipping_rule_id"],
-    reviewCount: json["review_count"],
-    rating: json["rating"],
-    bundleDealId: json["bundle_deal_id"],
-    brandId: json["brand_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    adminId: json["admin_id"],
-    slug: json["slug"] == null ? [] : List<SubCategory>.from(json["slug"]!.map((x) => SubCategory.fromJson(x))),
-    price: json["price"],
-    endTime: json["end_time"],
-    wishlisted: json["wishlisted"],
-    inventory: json["inventory"] == null ? [] : List<Inventory>.from(json["inventory"]!.map((x) => Inventory.fromJson(x))),
-    vouchers: json["vouchers"] == null ? [] : List<dynamic>.from(json["vouchers"]!.map((x) => x)),
-    images: json["images"] == null ? [] : List<ProductImage>.from(json["images"]!.map((x) => ProductImage.fromJson(x))),
-    timeZone: json["time_zone"],
-    inStock: json["in_stock"],
-    attribute: json["attribute"] == null ? [] : List<Attribute>.from(json["attribute"]!.map((x) => Attribute.fromJson(x))),
-    brand: json["brand"] == null ? null : Brand.fromJson(json["brand"]),
-    store: json["store"] == null ? null : Store.fromJson(json["store"]),
-    bundleDeal: json["bundle_deal"],
-    currentCategories: json["current_categories"] == null ? [] : List<CurrentCategory>.from(json["current_categories"]!.map((x) => CurrentCategory.fromJson(x))),
-    category: json["category"] == null ? null : Category.fromJson(json["category"]),
-    subCategory: json["sub_category"] == null ? null : SubCategory.fromJson(json["sub_category"]),
-    productImageNames: json["product_image_names"] == null ? [] : List<ProductImage>.from(json["product_image_names"]!.map((x) => ProductImage.fromJson(x))),
-    shippingRule: json["shipping_rule"] == null ? null : ShippingRule.fromJson(json["shipping_rule"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "description": description,
-    "overview": overview,
-    "unit": unit,
-    "badge": badge,
-    "meta_title": metaTitle,
-    "meta_description": metaDescription,
-    "tags": tags,
-    "selling": selling,
-    "purchased": purchased,
-    "offered": offered,
-    "image": image,
-    "video": video,
-    "video_thumb": videoThumb,
-    "status": status,
-    "category_id": categoryId,
-    "subcategory_id": subcategoryId,
-    "warranty": warranty,
-    "refundable": refundable,
-    "tax_rule_id": taxRuleId,
-    "shipping_rule_id": shippingRuleId,
-    "review_count": reviewCount,
-    "rating": rating,
-    "bundle_deal_id": bundleDealId,
-    "brand_id": brandId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "admin_id": adminId,
-    "slug": slug == null ? [] : List<dynamic>.from(slug!.map((x) => x.toJson())),
-    "price": price,
-    "end_time": endTime,
-    "wishlisted": wishlisted,
-    "inventory": inventory == null ? [] : List<dynamic>.from(inventory!.map((x) => x.toJson())),
-    "vouchers": vouchers == null ? [] : List<dynamic>.from(vouchers!.map((x) => x)),
-    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x.toJson())),
-    "time_zone": timeZone,
-    "in_stock": inStock,
-    "attribute": attribute == null ? [] : List<dynamic>.from(attribute!.map((x) => x.toJson())),
-    "brand": brand?.toJson(),
-    "store": store?.toJson(),
-    "bundle_deal": bundleDeal,
-    "current_categories": currentCategories == null ? [] : List<dynamic>.from(currentCategories!.map((x) => x.toJson())),
-    "category": category?.toJson(),
-    "sub_category": subCategory?.toJson(),
-    "product_image_names": productImageNames == null ? [] : List<dynamic>.from(productImageNames!.map((x) => x.toJson())),
-    "shipping_rule": shippingRule?.toJson(),
-  };
-}
-
-class Attribute {
-  int? id;
-  String? title;
-  String? createdAt;
-  String? updatedAt;
-  List<Value>? values;
-
-  Attribute({
-    this.id,
-    this.title,
-    this.createdAt,
-    this.updatedAt,
-    this.values,
-  });
-
-  factory Attribute.fromJson(Map<String, dynamic> json) => Attribute(
-    id: json["id"],
-    title: json["title"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    values: json["values"] == null ? [] : List<Value>.from(json["values"]!.map((x) => Value.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "values": values == null ? [] : List<dynamic>.from(values!.map((x) => x.toJson())),
-  };
-}
-
-class Value {
-  int? id;
-  String? title;
-  int? attributeId;
-  String? createdAt;
-  String? updatedAt;
-  int? inventoryId;
-  int? attributeValueId;
-  int? productId;
-  int? quantity;
-  String? price;
-
-  Value({
-    this.id,
-    this.title,
-    this.attributeId,
-    this.createdAt,
-    this.updatedAt,
-    this.inventoryId,
-    this.attributeValueId,
-    this.productId,
-    this.quantity,
-    this.price,
-  });
-
-  factory Value.fromJson(Map<String, dynamic> json) => Value(
-    id: json["id"],
-    title: json["title"],
-    attributeId: json["attribute_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    inventoryId: json["inventory_id"],
-    attributeValueId: json["attribute_value_id"],
-    productId: json["product_id"],
-    quantity: json["quantity"],
-    price: json["price"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "attribute_id": attributeId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "inventory_id": inventoryId,
-    "attribute_value_id": attributeValueId,
-    "product_id": productId,
-    "quantity": quantity,
-    "price": price,
-  };
-}
-
-class Brand {
-  int? id;
-  String? title;
-
-  Brand({
-    this.id,
-    this.title,
-  });
-
-  factory Brand.fromJson(Map<String, dynamic> json) => Brand(
-    id: json["id"],
-    title: json["title"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
+    "product": product?.toJson(),
+    "suppliers": suppliers == null ? [] : List<dynamic>.from(suppliers!.map((x) => x.toJson())),
+    "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x.toJson())),
+    "generics": generics == null ? [] : List<dynamic>.from(generics!.map((x) => x)),
+    "manufacturers": manufacturers == null ? [] : List<dynamic>.from(manufacturers!.map((x) => x)),
   };
 }
 
 class Category {
   int? id;
-  String? title;
-  String? slug;
+  String? name;
+  String? shortOrder;
+  String? createdAt;
+  dynamic updatedAt;
+  String? status;
 
   Category({
     this.id,
-    this.title,
-    this.slug,
+    this.name,
+    this.shortOrder,
+    this.createdAt,
+    this.updatedAt,
+    this.status,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     id: json["id"],
-    title: json["title"],
-    slug: json["slug"],
+    name: json["name"],
+    shortOrder: json["short_order"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    status: json["status"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "title": title,
-    "slug": slug,
+    "name": name,
+    "short_order": shortOrder,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "status": status,
   };
 }
 
-class CurrentCategory {
+class Product {
   int? id;
-  int? categoryId;
-  String? title;
-  String? slug;
+  String? categoryId;
+  String? supplierId;
+  String? name;
+  String? additionalItemNumbers;
+  String? productId;
+  List<dynamic>? tags;
+  String? manufacturerId;
+  String? status;
+  String? createdAt;
+  dynamic updatedAt;
+  dynamic upcEanIsbn;
+  dynamic description;
+  String? batchNo;
+  dynamic createdBy;
+  dynamic updatedBy;
+  String? genericId;
+  String? isEcommerceItem;
+  String? isBarcoded;
+  dynamic deletedAt;
+  Category? category;
+  Supplier? supplier;
+  PackSize? packSize;
+  List<dynamic>? productVariationAttributes;
+  List<dynamic>? productVariations;
+  ProductPrices? productPrices;
+  dynamic productInventories;
+  dynamic productLocations;
+  List<dynamic>? productImages;
+  dynamic generic;
+  dynamic manufacturer;
 
-  CurrentCategory({
+  Product({
     this.id,
     this.categoryId,
-    this.title,
-    this.slug,
+    this.supplierId,
+    this.name,
+    this.additionalItemNumbers,
+    this.productId,
+    this.tags,
+    this.manufacturerId,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.upcEanIsbn,
+    this.description,
+    this.batchNo,
+    this.createdBy,
+    this.updatedBy,
+    this.genericId,
+    this.isEcommerceItem,
+    this.isBarcoded,
+    this.deletedAt,
+    this.category,
+    this.supplier,
+    this.packSize,
+    this.productVariationAttributes,
+    this.productVariations,
+    this.productPrices,
+    this.productInventories,
+    this.productLocations,
+    this.productImages,
+    this.generic,
+    this.manufacturer,
   });
 
-  factory CurrentCategory.fromJson(Map<String, dynamic> json) => CurrentCategory(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
     id: json["id"],
     categoryId: json["category_id"],
-    title: json["title"],
-    slug: json["slug"],
+    supplierId: json["supplier_id"],
+    name: json["name"],
+    additionalItemNumbers: json["additional_item_numbers"],
+    productId: json["product_id"],
+    tags: json["tags"] == null ? [] : List<dynamic>.from(json["tags"]!.map((x) => x)),
+    manufacturerId: json["manufacturer_id"],
+    status: json["status"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    upcEanIsbn: json["upc_ean_isbn"],
+    description: json["description"],
+    batchNo: json["batch_no"],
+    createdBy: json["created_by"],
+    updatedBy: json["updated_by"],
+    genericId: json["generic_id"],
+    isEcommerceItem: json["is_ecommerce_item"],
+    isBarcoded: json["is_barcoded"],
+    deletedAt: json["deleted_at"],
+    category: json["category"] == null ? null : Category.fromJson(json["category"]),
+    supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
+    packSize: json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
+    productVariationAttributes: json["product_variation_attributes"] == null ? [] : List<dynamic>.from(json["product_variation_attributes"]!.map((x) => x)),
+    productVariations: json["product_variations"] == null ? [] : List<dynamic>.from(json["product_variations"]!.map((x) => x)),
+    productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
+    productInventories: json["product_inventories"],
+    productLocations: json["product_locations"],
+    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
+    generic: json["generic"],
+    manufacturer: json["manufacturer"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "category_id": categoryId,
-    "title": title,
-    "slug": slug,
+    "supplier_id": supplierId,
+    "name": name,
+    "additional_item_numbers": additionalItemNumbers,
+    "product_id": productId,
+    "tags": tags == null ? [] : List<dynamic>.from(tags!.map((x) => x)),
+    "manufacturer_id": manufacturerId,
+    "status": status,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "upc_ean_isbn": upcEanIsbn,
+    "description": description,
+    "batch_no": batchNo,
+    "created_by": createdBy,
+    "updated_by": updatedBy,
+    "generic_id": genericId,
+    "is_ecommerce_item": isEcommerceItem,
+    "is_barcoded": isBarcoded,
+    "deleted_at": deletedAt,
+    "category": category?.toJson(),
+    "supplier": supplier?.toJson(),
+    "pack_size": packSize?.toJson(),
+    "product_variation_attributes": productVariationAttributes == null ? [] : List<dynamic>.from(productVariationAttributes!.map((x) => x)),
+    "product_variations": productVariations == null ? [] : List<dynamic>.from(productVariations!.map((x) => x)),
+    "product_prices": productPrices?.toJson(),
+    "product_inventories": productInventories,
+    "product_locations": productLocations,
+    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
+    "generic": generic,
+    "manufacturer": manufacturer,
   };
 }
 
-class ProductImage {
+class PackSize {
   int? id;
-  String? image;
-  int? productId;
+  String? productId;
+  String? name;
+  String? quantity;
+  String? tp;
+  String? vatPercent;
+  String? vat;
+  String? sellingPrice;
+  String? defaultUnit;
+  String? createdAt;
+  dynamic updatedAt;
+  dynamic deletedAt;
+
+  PackSize({
+    this.id,
+    this.productId,
+    this.name,
+    this.quantity,
+    this.tp,
+    this.vatPercent,
+    this.vat,
+    this.sellingPrice,
+    this.defaultUnit,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+  });
+
+  factory PackSize.fromJson(Map<String, dynamic> json) => PackSize(
+    id: json["id"],
+    productId: json["product_id"],
+    name: json["name"],
+    quantity: json["quantity"],
+    tp: json["tp"],
+    vatPercent: json["vat_percent"],
+    vat: json["vat"],
+    sellingPrice: json["selling_price"],
+    defaultUnit: json["default_unit"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    deletedAt: json["deleted_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "product_id": productId,
+    "name": name,
+    "quantity": quantity,
+    "tp": tp,
+    "vat_percent": vatPercent,
+    "vat": vat,
+    "selling_price": sellingPrice,
+    "default_unit": defaultUnit,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "deleted_at": deletedAt,
+  };
+}
+
+class ProductPrices {
+  int? id;
+  String? productId;
+  String? costPriceWithoutTax;
+  String? sellingPrice;
+  String? tradePrice;
+  String? vat;
+  String? wholesale;
+  String? wholesaleType;
+  dynamic promoPrice;
+  dynamic promoStartDate;
+  dynamic promoEndDate;
+  String? disableFromPriceRules;
+  String? allowPriceOverrideRegardlessOfPermissions;
+  String? pricesIncludeTax;
+  String? onlyAllowItemsToBeSoldInWholeNumbers;
+  String? changeCostPriceDuringSale;
+  String? overrideDefaultCommission;
+  String? overrideDefaultTax;
+  String? createdAt;
+  String? updatedAt;
+  dynamic deletedAt;
+  dynamic isEditableInSale;
+
+  ProductPrices({
+    this.id,
+    this.productId,
+    this.costPriceWithoutTax,
+    this.sellingPrice,
+    this.tradePrice,
+    this.vat,
+    this.wholesale,
+    this.wholesaleType,
+    this.promoPrice,
+    this.promoStartDate,
+    this.promoEndDate,
+    this.disableFromPriceRules,
+    this.allowPriceOverrideRegardlessOfPermissions,
+    this.pricesIncludeTax,
+    this.onlyAllowItemsToBeSoldInWholeNumbers,
+    this.changeCostPriceDuringSale,
+    this.overrideDefaultCommission,
+    this.overrideDefaultTax,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+    this.isEditableInSale,
+  });
+
+  factory ProductPrices.fromJson(Map<String, dynamic> json) => ProductPrices(
+    id: json["id"],
+    productId: json["product_id"],
+    costPriceWithoutTax: json["cost_price_without_tax"],
+    sellingPrice: json["selling_price"],
+    tradePrice: json["trade_price"],
+    vat: json["vat"],
+    wholesale: json["wholesale"],
+    wholesaleType: json["wholesale_type"],
+    promoPrice: json["promo_price"],
+    promoStartDate: json["promo_start_date"],
+    promoEndDate: json["promo_end_date"],
+    disableFromPriceRules: json["disable_from_price_rules"],
+    allowPriceOverrideRegardlessOfPermissions: json["allow_price_override_regardless_of_permissions"],
+    pricesIncludeTax: json["prices_include_tax"],
+    onlyAllowItemsToBeSoldInWholeNumbers: json["only_allow_items_to_be_sold_in_whole_numbers"],
+    changeCostPriceDuringSale: json["change_cost_price_during_sale"],
+    overrideDefaultCommission: json["override_default_commission"],
+    overrideDefaultTax: json["override_default_tax"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    deletedAt: json["deleted_at"],
+    isEditableInSale: json["is_editable_in_sale"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "product_id": productId,
+    "cost_price_without_tax": costPriceWithoutTax,
+    "selling_price": sellingPrice,
+    "trade_price": tradePrice,
+    "vat": vat,
+    "wholesale": wholesale,
+    "wholesale_type": wholesaleType,
+    "promo_price": promoPrice,
+    "promo_start_date": promoStartDate,
+    "promo_end_date": promoEndDate,
+    "disable_from_price_rules": disableFromPriceRules,
+    "allow_price_override_regardless_of_permissions": allowPriceOverrideRegardlessOfPermissions,
+    "prices_include_tax": pricesIncludeTax,
+    "only_allow_items_to_be_sold_in_whole_numbers": onlyAllowItemsToBeSoldInWholeNumbers,
+    "change_cost_price_during_sale": changeCostPriceDuringSale,
+    "override_default_commission": overrideDefaultCommission,
+    "override_default_tax": overrideDefaultTax,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "deleted_at": deletedAt,
+    "is_editable_in_sale": isEditableInSale,
+  };
+}
+
+class Supplier {
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? address1;
+  dynamic address2;
+  dynamic city;
+  dynamic stateOrProvince;
+  dynamic zip;
+  dynamic country;
+  dynamic comments;
+  String? contact;
+  String? email;
+  String? companyName;
+  dynamic accountNo;
+  dynamic imagePath;
+  String? status;
   dynamic createdAt;
   dynamic updatedAt;
+  String? type;
+  String? storeAccountBalance;
+  String? payAmount;
+  dynamic deletedAt;
+  dynamic deletedBy;
 
-  ProductImage({
+  Supplier({
     this.id,
-    this.image,
-    this.productId,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
-    id: json["id"],
-    image: json["image"],
-    productId: json["product_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "image": image,
-    "product_id": productId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
-}
-
-class Inventory {
-  int? id;
-  String? createdAt;
-  String? updatedAt;
-  int? productId;
-  int? quantity;
-  String? price;
-  List<InventoryAttribute>? inventoryAttributes;
-
-  Inventory({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.productId,
-    this.quantity,
-    this.price,
-    this.inventoryAttributes,
-  });
-
-  factory Inventory.fromJson(Map<String, dynamic> json) => Inventory(
-    id: json["id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    productId: json["product_id"],
-    quantity: json["quantity"],
-    price: json["price"],
-    inventoryAttributes: json["inventory_attributes"] == null ? [] : List<InventoryAttribute>.from(json["inventory_attributes"]!.map((x) => InventoryAttribute.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "product_id": productId,
-    "quantity": quantity,
-    "price": price,
-    "inventory_attributes": inventoryAttributes == null ? [] : List<dynamic>.from(inventoryAttributes!.map((x) => x.toJson())),
-  };
-}
-
-class InventoryAttribute {
-  int? inventoryId;
-  int? attributeValueId;
-
-  InventoryAttribute({
-    this.inventoryId,
-    this.attributeValueId,
-  });
-
-  factory InventoryAttribute.fromJson(Map<String, dynamic> json) => InventoryAttribute(
-    inventoryId: json["inventory_id"],
-    attributeValueId: json["attribute_value_id"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "inventory_id": inventoryId,
-    "attribute_value_id": attributeValueId,
-  };
-}
-
-class ShippingRule {
-  int? id;
-  String? title;
-  List<ShippingPlace>? shippingPlaces;
-
-  ShippingRule({
-    this.id,
-    this.title,
-    this.shippingPlaces,
-  });
-
-  factory ShippingRule.fromJson(Map<String, dynamic> json) => ShippingRule(
-    id: json["id"],
-    title: json["title"],
-    shippingPlaces: json["shipping_places"] == null ? [] : List<ShippingPlace>.from(json["shipping_places"]!.map((x) => ShippingPlace.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "shipping_places": shippingPlaces == null ? [] : List<dynamic>.from(shippingPlaces!.map((x) => x.toJson())),
-  };
-}
-
-class ShippingPlace {
-  int? id;
-  String? country;
-  String? state;
-  String? price;
-  int? dayNeeded;
-  String? pickupPrice;
-  int? pickupPoint;
-  int? shippingRuleId;
-
-  ShippingPlace({
-    this.id,
+    this.firstName,
+    this.lastName,
+    this.address1,
+    this.address2,
+    this.city,
+    this.stateOrProvince,
+    this.zip,
     this.country,
-    this.state,
-    this.price,
-    this.dayNeeded,
-    this.pickupPrice,
-    this.pickupPoint,
-    this.shippingRuleId,
-  });
-
-  factory ShippingPlace.fromJson(Map<String, dynamic> json) => ShippingPlace(
-    id: json["id"],
-    country: json["country"],
-    state: json["state"],
-    price: json["price"],
-    dayNeeded: json["day_needed"],
-    pickupPrice: json["pickup_price"],
-    pickupPoint: json["pickup_point"],
-    shippingRuleId: json["shipping_rule_id"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "country": country,
-    "state": state,
-    "price": price,
-    "day_needed": dayNeeded,
-    "pickup_price": pickupPrice,
-    "pickup_point": pickupPoint,
-    "shipping_rule_id": shippingRuleId,
-  };
-}
-
-class SubCategory {
-  int? id;
-  String? title;
-  String? slug;
-  int? categoryId;
-  Category? category;
-
-  SubCategory({
-    this.id,
-    this.title,
-    this.slug,
-    this.categoryId,
-    this.category,
-  });
-
-  factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
-    id: json["id"],
-    title: json["title"],
-    slug: json["slug"],
-    categoryId: json["category_id"],
-    category: json["category"] == null ? null : Category.fromJson(json["category"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "slug": slug,
-    "category_id": categoryId,
-    "category": category?.toJson(),
-  };
-}
-
-class Store {
-  int? id;
-  String? image;
-  String? name;
-  String? slug;
-  String? metaTitle;
-  String? metaDescription;
-  String? createdAt;
-  String? updatedAt;
-
-  Store({
-    this.id,
-    this.image,
-    this.name,
-    this.slug,
-    this.metaTitle,
-    this.metaDescription,
+    this.comments,
+    this.contact,
+    this.email,
+    this.companyName,
+    this.accountNo,
+    this.imagePath,
+    this.status,
     this.createdAt,
     this.updatedAt,
+    this.type,
+    this.storeAccountBalance,
+    this.payAmount,
+    this.deletedAt,
+    this.deletedBy,
   });
 
-  factory Store.fromJson(Map<String, dynamic> json) => Store(
+  factory Supplier.fromJson(Map<String, dynamic> json) => Supplier(
     id: json["id"],
-    image: json["image"],
-    name: json["name"],
-    slug: json["slug"],
-    metaTitle: json["meta_title"],
-    metaDescription: json["meta_description"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
+    address1: json["address_1"],
+    address2: json["address_2"],
+    city: json["city"],
+    stateOrProvince: json["state_or_province"],
+    zip: json["zip"],
+    country: json["country"],
+    comments: json["comments"],
+    contact: json["contact"],
+    email: json["email"],
+    companyName: json["company_name"],
+    accountNo: json["account_no"],
+    imagePath: json["image_path"],
+    status: json["status"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
+    type: json["type"],
+    storeAccountBalance: json["store_account_balance"],
+    payAmount: json["pay_amount"],
+    deletedAt: json["deleted_at"],
+    deletedBy: json["deleted_by"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "image": image,
-    "name": name,
-    "slug": slug,
-    "meta_title": metaTitle,
-    "meta_description": metaDescription,
+    "first_name": firstName,
+    "last_name": lastName,
+    "address_1": address1,
+    "address_2": address2,
+    "city": city,
+    "state_or_province": stateOrProvince,
+    "zip": zip,
+    "country": country,
+    "comments": comments,
+    "contact": contact,
+    "email": email,
+    "company_name": companyName,
+    "account_no": accountNo,
+    "image_path": imagePath,
+    "status": status,
     "created_at": createdAt,
     "updated_at": updatedAt,
+    "type": type,
+    "store_account_balance": storeAccountBalance,
+    "pay_amount": payAmount,
+    "deleted_at": deletedAt,
+    "deleted_by": deletedBy,
   };
 }
