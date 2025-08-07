@@ -87,7 +87,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-         /*           Obx(
+                    /*           Obx(
                       () => Column(
                         children:
                             controller.category
@@ -369,19 +369,20 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                     childAspectRatio: 0.66,
+                                    childAspectRatio: 0.66,
                                   ),
-                              itemCount: controller.categoryProducts.length,
+                              itemCount: controller.searchProductList.length,
                               shrinkWrap: true,
                               physics: AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
-                                final item = controller.categoryProducts[index];
+                                final item =
+                                    controller.searchProductList[index];
                                 final product = ProductData(
-                                  id:item.id,
+                                  id: item.id,
                                   name: item.name,
                                   addToCart: false,
-                                quantity: 0,
-                                  categoryId: '11',
+                                  quantity: 0,
+                                  categoryId: item.categoryId,
                                 );
                                 return ProductCard(
                                   product: product,
@@ -410,7 +411,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                     return GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                         childAspectRatio: 0.66,
+                        childAspectRatio: 0.66,
                       ),
                       itemCount: controller.categoryProducts.length,
                       shrinkWrap: true,

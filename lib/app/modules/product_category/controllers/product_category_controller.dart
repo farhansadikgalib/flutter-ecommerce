@@ -20,7 +20,7 @@ class ProductCategoryController extends GetxController {
   final type = Get.arguments['type'];
   final itemName = Get.arguments['name'];
   final id = Get.arguments['id'];
-  final fromSearch = Get.arguments['type']== 'Search' ? true : false;
+  final fromSearch = Get.arguments['type'] == 'Search' ? true : false;
   final categoryProducts = <CategoryWiseProduct>[].obs;
 
   final isLoading = false.obs;
@@ -36,16 +36,13 @@ class ProductCategoryController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if(type == 'Categories') {
+    if (type == 'Categories') {
       getCategoryWiseProducts(id);
     } else if (type == 'Suppliers') {
       getSupplierWiseProducts(id);
     } else if (type == 'Search') {
       searchFocusNode.requestFocus();
-
     }
-
-
   }
 
   @override
@@ -56,9 +53,7 @@ class ProductCategoryController extends GetxController {
 
   Future<void> getCategoryWiseProducts(int id) async {
     isLoading.value = true;
-    var response = await CategoryRepository().getCategoryWiseProduct(
-      id,
-    );
+    var response = await CategoryRepository().getCategoryWiseProduct(id);
 
     categoryProducts.clear();
     categoryProducts.addAll(response.data ?? []);
@@ -67,9 +62,7 @@ class ProductCategoryController extends GetxController {
 
   Future<void> getSupplierWiseProducts(int id) async {
     isLoading.value = true;
-    var response = await CategoryRepository().getSupplierWiseProduct(
-      id,
-    );
+    var response = await CategoryRepository().getSupplierWiseProduct(id);
 
     categoryProducts.clear();
     categoryProducts.addAll(response.data ?? []);
@@ -107,22 +100,10 @@ class ProductCategoryController extends GetxController {
   void searchProducts(String query) async {
     if (query.isNotEmpty) {
       var response = await CategoryRepository().getSearchItems(query);
-      if (response.status == 200) {
-        categoryProducts.clear();
 
-        printLog(categoryProducts.length);
-      } else {
-        printLog(response);
-      }
-    } else {
-      categoryProducts.value =
-          categoryProducts
-              .where(
-                (product) =>
-                    product.name?.toLowerCase().contains(query.toLowerCase()) ??
-                    false,
-              )
-              .toList();
+      categoryProducts.clear();
+
+      searchProductList.addAll(response.products ?? []);
     }
   }
 }
