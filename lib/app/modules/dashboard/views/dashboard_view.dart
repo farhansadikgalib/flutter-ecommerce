@@ -110,7 +110,9 @@ class DashboardView extends GetView<DashboardController> {
             Get.find<WishlistController>().getWishlist();
           }
           if (index == 2 && isLoggedIn.$) {
-            Get.find<CartController>().getCartItems();
+
+            printLog('Cart Count: ${Get.find<CartController>().allCartProducts.length}');
+
           }
         },
         backgroundColor: Colors.white,

@@ -55,8 +55,8 @@ class HomeController extends BaseController {
   }
 
   Future<void> getSupplierData() async {
+    isSupplierLoading.value = true;
     var response = await HomeRepository().getSupplierData();
-
       supplierData.clear();
       supplierData.addAll(response);
       isSupplierLoading.value = false;

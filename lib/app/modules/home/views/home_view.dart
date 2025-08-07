@@ -17,10 +17,13 @@ import '../../../core/base/base_view.dart';
 import '../../../core/helper/dialog_helper.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/product_card.dart';
+import '../../cart/controllers/cart_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends BaseView<HomeController> {
   HomeView({super.key});
+
+  final CartController cartController = Get.find<CartController>();
 
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
@@ -727,10 +730,13 @@ class HomeView extends BaseView<HomeController> {
                   }, childCount: controller.bestSellingProducts.length),
                 ),
               ),
+
             ],
           ),
         );
       }),
     );
   }
+
+
 }

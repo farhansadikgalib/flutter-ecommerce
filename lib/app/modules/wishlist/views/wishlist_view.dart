@@ -168,11 +168,7 @@ class WishlistView extends GetView<WishlistController> {
                                       ),
 
                                       onPressed: () {
-                                        Get.find<CartController>().addToCart
-                                          (item.productId.toString(), '1', '1');
-                                        controller.wishlistAction(
-                                          item.productId.toString(),
-                                        );                                      },
+                                                                 },
                                       icon: const Icon(Icons.shopping_cart,
                                         color: AppColors.primaryColor,),
                                       label: const Text('Add to Cart',style:
