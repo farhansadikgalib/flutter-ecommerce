@@ -63,7 +63,7 @@ class ApiEndPoints {
   static String searchProduct({
     required String query,
   }) =>
-      "search?q=$query";
+      "products/search?term=$query";
 
 // Search
 
