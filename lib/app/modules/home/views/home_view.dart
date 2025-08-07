@@ -69,8 +69,8 @@ class HomeView extends BaseView<HomeController> {
                 automaticallyImplyLeading: false,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
-                    margin: REdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                 
+                    margin: REdgeInsets.symmetric(horizontal: 10, vertical: 15),
+
                     color: Colors.white,
                     child: SafeArea(
                       child: Skeletonizer(
@@ -81,9 +81,8 @@ class HomeView extends BaseView<HomeController> {
                               Routes.PRODUCT_CATEGORY,
                               arguments: {
                                 'name': 'Search',
-                                'slug': '',
-                                'brandId': '',
-                                'fromSearch': true,
+                                'type': 'Search',
+                                'id': '0',
                               },
                             );
                           },
@@ -123,7 +122,7 @@ class HomeView extends BaseView<HomeController> {
 
               // Content starts here
               SliverPadding(
-                padding: REdgeInsets.symmetric(horizontal: 12,),
+                padding: REdgeInsets.symmetric(horizontal: 12),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
                     Skeletonizer(
@@ -261,10 +260,14 @@ class HomeView extends BaseView<HomeController> {
                                     arguments: {
                                       'name':
                                           controller.categoriesData[index].name,
+                                      'type': 'Categories',
+                                      'id': controller.categoriesData[index].id,
+                                      /*                  'name':
+                                          controller.categoriesData[index].name,
                                       'slug':
                                           controller.categoriesData[index].id,
                                       'brandId': '',
-                                      'fromSearch': false,
+                                      'fromSearch': false,*/
                                     },
                                   );
                                 },
@@ -396,9 +399,8 @@ class HomeView extends BaseView<HomeController> {
                                           controller
                                               .supplierData[index]
                                               .companyName,
-                                      'slug': controller.supplierData[index].id,
-                                      'brandId': '',
-                                      'fromSearch': false,
+                                      'type': 'Suppliers',
+                                      'id': controller.supplierData[index].id,
                                     },
                                   );
                                 },

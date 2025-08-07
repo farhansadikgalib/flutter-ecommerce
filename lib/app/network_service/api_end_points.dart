@@ -45,10 +45,15 @@ class ApiEndPoints {
   //Checkout
 
   //Category
-  static String categoryList({
+  static String categoryProductList({
     required int categoryId,
   }) =>
       "product-category-wise/$categoryId";
+
+  static String supplierProductList({
+    required int categoryId,
+  }) =>
+      "product-supplier-wise/$categoryId";
 
   //Category
 

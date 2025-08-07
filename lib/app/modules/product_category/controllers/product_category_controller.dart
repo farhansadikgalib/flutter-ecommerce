@@ -17,12 +17,11 @@ class ProductCategoryController extends GetxController {
   final brands = [].obs;
   final collections = [].obs;
   final deliveryType = [].obs;
-  final categorySlug = Get.arguments['slug'];
-  final categoryName = Get.arguments['name'];
-  final brandId = Get.arguments['brandId'];
-  final fromSearch = Get.arguments['fromSearch'];
+  final type = Get.arguments['type'];
+  final itemName = Get.arguments['name'];
+  final id = Get.arguments['id'];
+  final fromSearch = Get.arguments['type']== 'Search' ? true : false;
   final categoryProducts = <CategoryWiseProduct>[].obs;
-
 
   final isLoading = false.obs;
 
@@ -30,15 +29,22 @@ class ProductCategoryController extends GetxController {
   final FocusNode searchFocusNode = FocusNode(canRequestFocus: true);
   final searchController = TextEditingController().obs;
   final searchProductList = <SearchProducts>[];
+
   //search
 
   @override
   void onInit() {
     super.onInit();
 
-    printLog(categorySlug);
+    if(type == 'Categories') {
+      getCategoryWiseProducts(id);
+    } else if (type == 'Suppliers') {
+      getSupplierWiseProducts(id);
+    } else if (type == 'Search') {
+      searchFocusNode.requestFocus();
 
-    getCategoryWiseProducts(categorySlug);
+    }
+
 
   }
 
@@ -48,26 +54,26 @@ class ProductCategoryController extends GetxController {
     super.onClose();
   }
 
-  Future<void> getCategoryWiseProducts(
-    int categoryId,
-
-  ) async {
+  Future<void> getCategoryWiseProducts(int id) async {
     isLoading.value = true;
     var response = await CategoryRepository().getCategoryWiseProduct(
-      categoryId,
+      id,
     );
 
-
-      categoryProducts.clear();
-      categoryProducts.addAll(response.data?? []);
+    categoryProducts.clear();
+    categoryProducts.addAll(response.data ?? []);
     isLoading.value = false;
+  }
 
-    // categoryProducts.addAll(response.data?.result?.data ?? []);
-      // collections.addAll(response.data?.collections ?? []);
-      // category.addAll(response.data?.category ?? []);
-      // brands.addAll(response.data?.brands ?? []);
-      // deliveryType.addAll(response.data?.shipping ?? []);
+  Future<void> getSupplierWiseProducts(int id) async {
+    isLoading.value = true;
+    var response = await CategoryRepository().getSupplierWiseProduct(
+      id,
+    );
 
+    categoryProducts.clear();
+    categoryProducts.addAll(response.data ?? []);
+    isLoading.value = false;
   }
 
   void filterProducts() async {
@@ -77,7 +83,7 @@ class ProductCategoryController extends GetxController {
         .join(', ');
     printLog(selectedBrandIds);
 
-/*    final selectedCategoryIds = category
+    /*    final selectedCategoryIds = category
         .where((category) => category.isSelected == true)
         .map((category) => category.id.toString())
         .join(', ');*/
@@ -95,9 +101,7 @@ class ProductCategoryController extends GetxController {
     final selectedPriceRange =
         '${priceRange.value.start} - ${priceRange.value.end}';
     printLog(selectedPriceRange);
-    getCategoryWiseProducts(
-      1,
-    );
+    getCategoryWiseProducts(1);
   }
 
   void searchProducts(String query) async {
@@ -106,9 +110,7 @@ class ProductCategoryController extends GetxController {
       if (response.status == 200) {
         categoryProducts.clear();
 
-
         printLog(categoryProducts.length);
-
       } else {
         printLog(response);
       }
@@ -117,13 +119,10 @@ class ProductCategoryController extends GetxController {
           categoryProducts
               .where(
                 (product) =>
-                    product.name?.toLowerCase().contains(
-                      query.toLowerCase(),
-                    ) ??
+                    product.name?.toLowerCase().contains(query.toLowerCase()) ??
                     false,
               )
               .toList();
     }
   }
-
 }

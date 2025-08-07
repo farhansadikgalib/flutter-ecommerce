@@ -71,7 +71,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                     ),
                   ),
                 )
-                : globalAppBar(context, controller.categoryName),
+                : globalAppBar(context, controller.itemName),
         drawer: Drawer(
           child: Column(
             children: [

@@ -8,10 +8,25 @@ class CategoryRepository {
     int categoryId,
   ) async {
     var response = await ApiClient().get(
-      ApiEndPoints.categoryList(
+      ApiEndPoints.categoryProductList(
         categoryId: categoryId,
       ),
       getCategoryWiseProduct,
+      isHeaderRequired: false,
+      isLoaderRequired: false,
+    );
+
+    return categoryWiseProductsResponseFromJson(response.toString());
+  }
+
+  Future<CategoryWiseProductsResponse> getSupplierWiseProduct(
+    int supplierId,
+  ) async {
+    var response = await ApiClient().get(
+      ApiEndPoints.supplierProductList(
+        categoryId: supplierId,
+      ),
+      getSupplierWiseProduct,
       isHeaderRequired: false,
       isLoaderRequired: false,
     );
