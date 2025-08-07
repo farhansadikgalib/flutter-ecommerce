@@ -137,7 +137,7 @@ class LoginController extends GetxController {
         passwordController.text.trim(),
       );
 
-      if (response.status == 200) {
+      if (response.status == 'success') {
         AuthHelper().setUserData(response);
         AuthHelper().loadItems();
         Get.offAllNamed(Routes.DASHBOARD);
