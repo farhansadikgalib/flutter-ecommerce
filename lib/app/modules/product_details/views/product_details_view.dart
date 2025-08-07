@@ -180,11 +180,11 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                         controller.product.name ?? 'Product Name',
                         style: TextStyle(
                           fontSize: 16.sp,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w700,
                           color: Colors.black87,
                         ),
                       ),
-                      SizedBox(height: 12.h),
+
 
                       // Stock availability indicator
                       if (controller.product.productInventories?.quantity !=
@@ -480,7 +480,8 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                       null)
                                     _buildSpecificationRow(
                                       'Pack Quantity',
-                                      '${controller.product.packSize!.quantity} ${controller.product.packSize!.defaultUnit ?? 'unit'}',
+                                      '${controller.product.packSize!
+                                          .quantity} ',
                                     ),
                                   if (controller
                                           .product

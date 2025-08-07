@@ -98,6 +98,7 @@ class CartController extends BaseController {
     if (index != -1) {
       int currentQuantity = allCartProducts[index].quantity ?? 0;
       updateQuantity(productId, currentQuantity + 1);
+      allCartProducts.refresh();
     }
   }
 
@@ -111,6 +112,7 @@ class CartController extends BaseController {
       } else {
         removeFromCart(productId);
       }
+      allCartProducts.refresh();
     }
   }
 

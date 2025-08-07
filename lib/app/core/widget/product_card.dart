@@ -190,7 +190,10 @@ class _ProductCardState extends State<ProductCard> {
           ),
           IconButton(
             onPressed:
-                () => cartController.increaseQuantity(widget.product.id!),
+                () {
+                  cartController.increaseQuantity(widget.product.id!);
+                  widget.product.reactive;
+                },
             icon: FaIcon(
               FontAwesomeIcons.plus,
               size: 14,
