@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:turi/app/core/base/base_controller.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/data/remote/model/home/brands_response.dart';
+import 'package:turi/app/data/remote/model/home/supplier_response.dart';
 import 'package:turi/app/data/remote/model/home/category_response.dart';
 import 'package:turi/app/data/remote/model/home/home_response.dart'
     hide Product, Category;
@@ -16,10 +16,10 @@ class HomeController extends BaseController {
   final imageList = <String>[].obs;
   final isLoading = true.obs;
   final isCategoryLoading = true.obs;
-  final isBrandLoading = true.obs;
+  final isSupplierLoading = true.obs;
   final homeElements = <HomeData>[].obs;
   final categoriesData = <CategoryData>[].obs;
-  final brandsData = <BrandsData>[].obs;
+  final supplierData = <SupplierResponse>[].obs;
   final bestSellingProducts = <ProductData>[].obs;
   final Gallery3DController gallery3dController = Gallery3DController(
     itemCount: 5,
@@ -30,7 +30,7 @@ class HomeController extends BaseController {
     super.onInit();
     // getHomeData();
     getCategoriesData();
-    // getBrandsData();
+    getSupplierData();
     getBestSellingProducts();
   }
 
@@ -54,15 +54,13 @@ class HomeController extends BaseController {
     isCategoryLoading.value = false;
   }
 
-  Future<void> getBrandsData() async {
-    var response = await HomeRepository().getBrandsData();
-    if (response.status == 200) {
-      brandsData.clear();
-      brandsData.addAll(response.data!.data ?? []);
-      isBrandLoading.value = false;
-    } else {
-      AppWidgets().getSnackBar(title: 'Error', message: response.message);
-    }
+  Future<void> getSupplierData() async {
+    var response = await HomeRepository().getSupplierData();
+
+      supplierData.clear();
+      supplierData.addAll(response);
+      isSupplierLoading.value = false;
+
   }
 
   Future<void> getBestSellingProducts() async {

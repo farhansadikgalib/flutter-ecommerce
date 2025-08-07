@@ -1,5 +1,5 @@
 import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
-import 'package:turi/app/data/remote/model/home/brands_response.dart';
+import 'package:turi/app/data/remote/model/home/supplier_response.dart';
 import 'package:turi/app/data/remote/model/home/category_response.dart';
 import 'package:turi/app/data/remote/model/home/home_response.dart' hide Product, Category;
 
@@ -29,15 +29,15 @@ class HomeRepository {
     return categoryResponseFromJson(response.toString());
   }
 
-  Future<BrandsResponse> getBrandsData() async {
+  Future<List<SupplierResponse>> getSupplierData() async {
     var response = await ApiClient().get(
-      ApiEndPoints.brands,
-      getBrandsData,
+      ApiEndPoints.supplier,
+      getSupplierData,
       isHeaderRequired: false,
       isLoaderRequired: false,
     );
 
-    return brandsResponseFromJson(response.toString());
+    return supplierResponseFromJson(response.toString());
   }
 
   Future<List<ProductData>> getBestSellingProducts() async {
