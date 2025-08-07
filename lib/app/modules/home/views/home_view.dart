@@ -54,7 +54,7 @@ class HomeView extends BaseView<HomeController> {
             printLog('Refreshing Home View');
             controller.getHomeData();
             controller. getCategoriesData();
-            controller.  getBrandsData();
+            controller.  getSupplierData();
             } ,
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
@@ -289,7 +289,7 @@ class HomeView extends BaseView<HomeController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Top Brands',
+                      'Suppliers',
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
@@ -300,7 +300,119 @@ class HomeView extends BaseView<HomeController> {
                 ),
                 AppWidgets().gapH(4),
 
-                controller.isBrandLoading.value
+                controller.isSupplierLoading.value
+                    ? Skeletonizer(
+                  child: SizedBox(
+                    height: 125.h,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: REdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.black,
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.gray.withOpacity(0.5),
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Container(
+                                color: AppColors.primaryColor,
+                                height: 75.h,
+                                width: 75.h,
+                              ),
+                            ),
+                            AppWidgets().gapH(4),
+                            Text(
+                              'Category Title',
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                )
+                    : SizedBox(
+                  height: 125.h,
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.supplierData.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          Get.toNamed(
+                            Routes.PRODUCT_CATEGORY,
+                            arguments: {
+                              'name': controller.supplierData[index].companyName,
+                              'slug': controller.supplierData[index].id,
+                              'brandId': '',
+                              'fromSearch': false,
+                            },
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: REdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.gray.withOpacity(0.5),
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: AnyImageView(
+                                imagePath:
+                                '${AppConfig.imageBasePath}${controller
+                                    .supplierData[index].imagePath}',
+                                height: 75.h,
+                              ),
+                            ),
+                            AppWidgets().gapH(4),
+                            Text(
+                              '${controller.supplierData[index].companyName}',
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+      /*          controller.isBrandLoading.value
                     ? Skeletonizer(
                   enabled: true,
                   child: SizedBox(
@@ -335,14 +447,14 @@ class HomeView extends BaseView<HomeController> {
                     child: Gallery3D(
                       width: Get.width,
                       onClickItem: (index) {
-                        printLog('${controller.brandsData[index].title}');
+                        printLog('${controller.supplierData[index].companyName}');
                         Get.toNamed(
                           Routes.PRODUCT_CATEGORY,
                           arguments: {
-                            'name': controller.brandsData[index].title,
+                            'name': controller.supplierData[index].companyName,
                             'slug': '',
                             'brandId':
-                            controller.brandsData[index].id.toString(),
+                            controller.supplierData[index].id.toString(),
                             'fromSearch': false,
                           },
                         );
@@ -353,15 +465,14 @@ class HomeView extends BaseView<HomeController> {
                         radius: 10,
                       ),
                       itemBuilder: (context, index) {
-                        final brand = controller.brandsData[index];
+                        final brand = controller.supplierData[index];
                         return InkWell(
                           onTap: () {
-                            printLog('${brand.title}');
                             Get.toNamed(
                               Routes.PRODUCT_CATEGORY,
                               arguments: {
-                                'name': brand.title,
-                                'slug': brand.slug,
+                                'name': brand.companyName,
+                                'slug': brand.companyName,
                                 'brandId': brand.id,
                               },
                             );
@@ -371,7 +482,7 @@ class HomeView extends BaseView<HomeController> {
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
                                 image: NetworkImage(
-                                  '${AppConfig.imageBasePath}${brand.image}',
+                                  '${AppConfig.imageBasePath}${brand.imagePath}',
                                 ),
                                 fit: BoxFit.fitHeight,
                               ),
@@ -380,11 +491,11 @@ class HomeView extends BaseView<HomeController> {
                         );
                       },
                       controller: Gallery3DController(
-                        itemCount: controller.brandsData.length,
+                        itemCount: controller.supplierData.length,
                       ),
                     ),
                   ),
-                ),
+                ),*/
                 AppWidgets().gapH8(),
                 Skeletonizer(
                   enabled: controller.isLoading.value,
