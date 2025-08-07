@@ -15,7 +15,7 @@ class ApiEndPoints {
   //Home
   static String home = "home";
   static String categories = "category_all";
-  static String brands = "brands";
+  static String supplier = "all-supplier";
   static String bestSellingProduct = "best-selling-product";
 
   //Home
