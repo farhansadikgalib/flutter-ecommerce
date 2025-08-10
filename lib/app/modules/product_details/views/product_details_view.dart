@@ -185,7 +185,6 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                         ),
                       ),
 
-
                       // Stock availability indicator
                       if (controller.product.productInventories?.quantity !=
                           null)
@@ -412,7 +411,6 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       // Product Features
                       if (controller.product.generic?.name != null ||
                           controller.product.category?.name != null ||
@@ -480,8 +478,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                       null)
                                     _buildSpecificationRow(
                                       'Pack Quantity',
-                                      '${controller.product.packSize!
-                                          .quantity} ',
+                                      '${controller.product.packSize!.quantity} ',
                                     ),
                                   if (controller
                                           .product
@@ -492,7 +489,6 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                       'Pack Selling Price',
                                       '৳${controller.product.packSize!.sellingPrice}',
                                     ),
-
 
                                   // Additional Product Information
                                   if (controller
@@ -579,109 +575,25 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 child: Row(
                   children: [
-                    // Chat button
-                    SizedBox(width: 12.w),
-                    // Add to Cart/Quantity buttons
+                    // Add to Cart/Quantity buttons - Same logic as ProductCard
                     Expanded(
-                      child: Visibility(
-                        visible: controller.product.addToCart!,
-                        replacement: Container(
-                          height: 42.h,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(
-                              color: AppColors.primaryColor,
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                offset: Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  if (controller.product.quantity! > 1) {
-                                    controller.product.quantity =
-                                        controller.product.quantity! - 1;
-                                  } else {}
-                                },
-                                icon: FaIcon(
-                                  FontAwesomeIcons.minus,
-                                  color: AppColors.primaryColor,
-                                  size: 14.sp,
-                                ),
-                              ),
-                              Text(
-                                controller.product.quantity.toString(),
-                                style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  controller.product.quantity =
-                                      controller.product.quantity! + 1;
-                                },
-                                icon: FaIcon(
-                                  FontAwesomeIcons.plus,
-                                  color: AppColors.primaryColor,
-                                  size: 14.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          height: 42.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(
-                              color: AppColors.primaryColor,
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                offset: Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              Get.find<CartController>().addToCart(
-                                controller.product,
-                              );
-                            },
-                            child: Text(
-                              'Add to Cart',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: Obx(() {
+                        bool isInCart = Get.find<CartController>()
+                            .isProductInCart(controller.product.id!);
+                        int quantity = Get.find<CartController>()
+                            .getProductQuantity(controller.product.id!);
+
+                        if (isInCart && quantity > 0) {
+                          return _buildQuantitySelector(quantity);
+                        } else {
+                          return _buildAddToCartButton();
+                        }
+                      }),
                     ),
 
                     SizedBox(width: 12.w),
 
-                    // Buy Now button
+                    // Wishlist button
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.primaryColor),
@@ -790,6 +702,78 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                   fontWeight: isHeader ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Add to Cart button - Same as ProductCard
+  Widget _buildAddToCartButton() {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primaryColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+        padding: EdgeInsets.symmetric(vertical: 12.h),
+      ),
+      onPressed: () {
+        Get.find<CartController>().addToCart(controller.product, quantity: 1);
+      },
+      icon: Icon(Icons.shopping_bag, color: Colors.white, size: 18.sp),
+      label: Text(
+        'Add to Cart',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16.sp,
+        ),
+      ),
+    );
+  }
+
+  // Quantity selector - Same as ProductCard
+  Widget _buildQuantitySelector(int quantity) {
+    return Container(
+      height: 42.h,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.primaryColor, width: 1),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed:
+                () => Get.find<CartController>().decreaseQuantity(
+                  controller.product.id!,
+                ),
+            icon: FaIcon(
+              quantity == 1 ? FontAwesomeIcons.trash : FontAwesomeIcons.minus,
+              size: 14.sp,
+              color: AppColors.primaryColor,
+            ),
+          ),
+          Text(
+            quantity.toString(),
+            style: TextStyle(
+              color: AppColors.primaryColor,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Get.find<CartController>().increaseQuantity(
+                controller.product.id!,
+              );
+            },
+            icon: FaIcon(
+              FontAwesomeIcons.plus,
+              size: 14.sp,
+              color: AppColors.primaryColor,
             ),
           ),
         ],
