@@ -39,7 +39,7 @@ class ApiEndPoints {
 
   //Checkout
   static String setShippingAddress = "user/address/action";
-  static String placeOrder = "order/action";
+  static String placeOrder = "sales";
   static String shippingRules = "shipping-rule/all-shipping-rules";
 
   //Checkout

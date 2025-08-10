@@ -61,7 +61,7 @@ class CheckoutController extends BaseController {
     super.onInit();
     // getShippingInfo();
     if (args != null) {
-      // cartProducts.addAll(args['cartProducts']);
+       cartProducts.addAll(args['cartProducts']);
       subTotal.value = args['subTotal'];
     }
 
@@ -163,73 +163,72 @@ class CheckoutController extends BaseController {
       return;
     }
 
-    var response = await CheckoutRepository().setShippingAddress(
-      name.value.text,
-      email.value.text,
-      mobile.value.text,
-      address.value.text,
-      city.value,
-    );
-    if (response.status == 200) {
-      placeOrder();
-      AppWidgets().getSnackBar(
-        title: 'Success',
-        message: response.message.toString(),
-      );
-    } else {
-      AppWidgets().getSnackBar(
-        title: 'Error',
-        message: response.message.toString(),
-      );
-    }
+
+    placeOrder();
+
   }
 
   void placeOrder() async {
     printLog('place order');
 
-    if (selectedPaymentMethod.value != 'Cash On Delivery') {
-      AppWidgets().getSnackBar(title: 'Error', message: 'Method not available');
-      printLog('sm methods');
-
-      return;
-    }
 
     OderPlaceRequest orderRequest = OderPlaceRequest(
-      orderMethod: 1,
-      userAddressId: shippingId.value,
-      productId: cartProducts.map((product) => product.id!).toList(),
-      quantity: cartProducts.map((product) => product.quantity!).toList(),
-      shippingPlaceId: List.generate(
-        cartProducts.length,
-        (index) => shippingId.value,
+      saleProducts:
+          cartProducts.map((product) {
+            final price =
+                double.tryParse(
+                  product.packSize?.sellingPrice?.toString() ??
+                      product.productPrices?.sellingPrice?.toString() ??
+                      '0',
+                ) ??
+                0.0;
+            final quantity = product.quantity ?? 1;
+            final packQuantity =
+                int.tryParse(product.packSize?.quantity?.toString() ?? '1') ??
+                1;
+
+            return SaleProduct(
+              productId: product.id.toString(),
+              productName: product.name,
+              price: price.toString(),
+              quantity: quantity.toString(),
+              packSizeId: product.packSize?.id.toString(),
+              packSizeQuantity: packQuantity.toString(),
+              totalQuantity: (quantity * packQuantity).toString(),
+              total: (price * quantity).toString(),
+            );
+          }).toList(),
+      subTotal: subTotal.value.toInt(),
+      total: (subTotal.value + delivery.value - couponAmount.value).toInt(),
+      shippingCost: delivery.value.toInt(),
+      billingAddress: BillingAddress(
+        fullName: name.value.text,
+        mobile: mobile.value.text,
+        address: address.value.text,
+        countryId: selectedCountry.value?.id.toString(),
+        cityId: selectedCity.value?.id.toString(),
+        notes: '',
       ),
-      shippingType: List.generate(
-        cartProducts.length,
-        (index) => shippingId.value,
-      ),
-      guestEmail: null,
-      userId: userId.$,
+      paymentMethodId: 1, // Assuming 1 for Cash on Delivery
+      customerId: int.tryParse(userId.$) ?? 0,
     );
 
-    var response = await CheckoutRepository().placeAnOrder(
-      orderRequest.toJson(),
-    );
-    printLog(response);
 
-    Get.offAllNamed(Routes.DASHBOARD);
-    AppWidgets().getSnackBar(title: 'Info', message: response.toString());
+      var response = await CheckoutRepository().placeAnOrder(orderRequest);
 
-    /*    if (response.status == 200) {
-      AppWidgets().getSnackBar(
-        title: 'Success',
-        message: response.message.toString(),
-      );
-    } else {
-      AppWidgets().getSnackBar(
-        title: 'Error',
-        message: response.message.toString(),
-      );*/
-    //}
+      if (response.status == 'success') {
+        Get.offAllNamed(Routes.DASHBOARD);
+        AppWidgets().getSnackBar(
+          title: 'Success',
+          message: response.message.toString(),
+        );
+      } else {
+        AppWidgets().getSnackBar(
+          title: 'Error',
+          message: response.message.toString(),
+        );
+
+    }
   }
 
   // Method to fetch cities by country ID

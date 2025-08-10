@@ -7,6 +7,7 @@ import 'package:turi/app/data/remote/model/checkout/shipping_info_response.dart'
 import 'package:turi/app/data/remote/model/home/home_response.dart';
 import '../../../../network_service/api_client.dart';
 import '../../../../network_service/api_end_points.dart';
+import '../../model/checkout/oder_place_response.dart';
 
 class CheckoutRepository {
   Future<ShippingInfoResponse> getShippingInfo() async {
@@ -49,15 +50,15 @@ class CheckoutRepository {
     return setUserAddressResponseFromJson(response.toString());
   }
 
-  Future<dynamic> placeAnOrder(body) async {
+  Future<OrderPlaceResponse> placeAnOrder(body) async {
     var response = await ApiClient().post(
       ApiEndPoints.placeOrder,
       body,
       placeAnOrder,
-      isHeaderRequired: false,
+      isHeaderRequired: true,
       isLoaderRequired: true,
     );
-    return response.toString();
+    return orderPlaceResponseFromJson(response.toString());
   }
 
 
