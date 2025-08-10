@@ -5,45 +5,121 @@ OderPlaceRequest oderPlaceRequestFromJson(String str) => OderPlaceRequest.fromJs
 String oderPlaceRequestToJson(OderPlaceRequest data) => json.encode(data.toJson());
 
 class OderPlaceRequest {
-  int? orderMethod;
-  int? userAddressId;
-  List<int>? productId;
-  List<int>? quantity;
-  List<int>? shippingPlaceId;
-  List<int>? shippingType;
-  String? guestEmail;
-  String? userId;
+  List<SaleProduct>? saleProducts;
+  int? subTotal;
+  int? total;
+  int? shippingCost;
+  BillingAddress? billingAddress;
+  int? paymentMethodId;
+  int? customerId;
 
   OderPlaceRequest({
-    this.orderMethod,
-    this.userAddressId,
-    this.productId,
-    this.quantity,
-    this.shippingPlaceId,
-    this.shippingType,
-    this.guestEmail,
-    this.userId
+    this.saleProducts,
+    this.subTotal,
+    this.total,
+    this.shippingCost,
+    this.billingAddress,
+    this.paymentMethodId,
+    this.customerId,
   });
 
   factory OderPlaceRequest.fromJson(Map<String, dynamic> json) => OderPlaceRequest(
-    orderMethod: json["order_method"],
-    userAddressId: json["user_address_id"],
-    productId: json["product_id"] == null ? [] : List<int>.from(json["product_id"]!.map((x) => x)),
-    quantity: json["quantity"] == null ? [] : List<int>.from(json["quantity"]!.map((x) => x)),
-    shippingPlaceId: json["shipping_place_id"] == null ? [] : List<int>.from(json["shipping_place_id"]!.map((x) => x)),
-    shippingType: json["shipping_type"] == null ? [] : List<int>.from(json["shipping_type"]!.map((x) => x)),
-    guestEmail: json["guest_email"],
-    userId: json["user_id"],
+    saleProducts: json["sale_products"] == null ? [] : List<SaleProduct>.from(json["sale_products"]!.map((x) => SaleProduct.fromJson(x))),
+    subTotal: json["sub_total"],
+    total: json["total"],
+    shippingCost: json["shipping_cost"],
+    billingAddress: json["billing_address"] == null ? null : BillingAddress.fromJson(json["billing_address"]),
+    paymentMethodId: json["payment_method_id"],
+    customerId: json["customer_id"],
   );
 
   Map<String, dynamic> toJson() => {
-    "order_method": orderMethod,
-    "user_address_id": userAddressId,
-    "product_id": productId == null ? [] : List<dynamic>.from(productId!.map((x) => x)),
-    "quantity": quantity == null ? [] : List<dynamic>.from(quantity!.map((x) => x)),
-    "shipping_place_id": shippingPlaceId == null ? [] : List<dynamic>.from(shippingPlaceId!.map((x) => x)),
-    "shipping_type": shippingType == null ? [] : List<dynamic>.from(shippingType!.map((x) => x)),
-    "guest_email": guestEmail,
-    "user_id": userId,
+    "sale_products": saleProducts == null ? [] : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
+    "sub_total": subTotal,
+    "total": total,
+    "shipping_cost": shippingCost,
+    "billing_address": billingAddress?.toJson(),
+    "payment_method_id": paymentMethodId,
+    "customer_id": customerId,
+  };
+}
+
+class BillingAddress {
+  String? fullName;
+  String? mobile;
+  String? address;
+  String? countryId;
+  String? cityId;
+  String? notes;
+
+  BillingAddress({
+    this.fullName,
+    this.mobile,
+    this.address,
+    this.countryId,
+    this.cityId,
+    this.notes,
+  });
+
+  factory BillingAddress.fromJson(Map<String, dynamic> json) => BillingAddress(
+    fullName: json["full_name"],
+    mobile: json["mobile"],
+    address: json["address"],
+    countryId: json["country_id"],
+    cityId: json["city_id"],
+    notes: json["notes"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "full_name": fullName,
+    "mobile": mobile,
+    "address": address,
+    "country_id": countryId,
+    "city_id": cityId,
+    "notes": notes,
+  };
+}
+
+class SaleProduct {
+  String? productId;
+  String? productName;
+  String? price;
+  String? quantity;
+  String? packSizeId;
+  String? packSizeQuantity;
+  String? totalQuantity;
+  String? total;
+
+  SaleProduct({
+    this.productId,
+    this.productName,
+    this.price,
+    this.quantity,
+    this.packSizeId,
+    this.packSizeQuantity,
+    this.totalQuantity,
+    this.total,
+  });
+
+  factory SaleProduct.fromJson(Map<String, dynamic> json) => SaleProduct(
+    productId: json["product_id"],
+    productName: json["product_name"],
+    price: json["price"],
+    quantity: json["quantity"],
+    packSizeId: json["pack_size_id"],
+    packSizeQuantity: json["pack_size_quantity"],
+    totalQuantity: json["total_quantity"],
+    total: json["total"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "product_id": productId,
+    "product_name": productName,
+    "price": price,
+    "quantity": quantity,
+    "pack_size_id": packSizeId,
+    "pack_size_quantity": packSizeQuantity,
+    "total_quantity": totalQuantity,
+    "total": total,
   };
 }
