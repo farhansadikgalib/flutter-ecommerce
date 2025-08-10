@@ -228,7 +228,8 @@ class CartView extends BaseView<CartController> {
             // Cart items list
             Expanded(
               child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: EdgeInsets.only(left: 16,right: 16, top: 4,bottom:
+                Get.height/3),
                 itemCount: controller.allCartProducts.length,
                 separatorBuilder: (_, __) => SizedBox(height: 10),
                 itemBuilder: (context, index) {
