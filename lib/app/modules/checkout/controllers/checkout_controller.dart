@@ -5,13 +5,15 @@ import 'package:turi/app/core/base/base_controller.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/helper/shared_value_helper.dart';
+import 'package:turi/app/data/remote/model/checkout/city_response.dart';
+import 'package:turi/app/data/remote/model/checkout/country_response.dart';
+import 'package:turi/app/data/remote/model/checkout/payment_method_response.dart';
 import 'package:turi/app/routes/app_pages.dart';
 
-import '../../../data/remote/model/cart/cart_items_response.dart';
 import '../../../data/remote/model/checkout/order_place_request.dart';
 import '../../../data/remote/model/checkout/shipping_info_response.dart';
-import '../../../data/remote/model/home/home_response.dart';
 import '../../../data/remote/repository/checkout/checkout_repository.dart';
+import '../../../data/remote/model/home/best_selling_product_response.dart';
 
 class CheckoutController extends BaseController {
   final selectedShippingMethod = ''.obs;
@@ -23,55 +25,83 @@ class CheckoutController extends BaseController {
   final coupon = TextEditingController().obs;
   final city = ''.obs;
 
+  // Country and City Selection
+  final selectedCountry = Rx<CountryResponse?>(null);
+  final selectedCity = Rx<CityResponse?>(null);
+
   final shippingInfo = <ShippingInfo>[].obs;
 
-  final cityList = [
-    "Manama",
-    "Muharraq",
-    "Riffa",
-    "Zallaq",
-    "Tubli",
-    "Abu Saiba",
-    "A'Ali",
-    "Sitra",
-    "'Hamad Town'",
-    "Al Budayyi",
-    "ISA Town",
-  ];
+  final paymentMethods = <PaymentMethodResponse>[].obs;
+  final countryList = <CountryResponse>[].obs;
+  final cityList = <CityResponse>[].obs;
+
+  // final cityList = [
+  //   "Manama",
+  //   "Muharraq",
+  //   "Riffa",
+  //   "Zallaq",
+  //   "Tubli",
+  //   "Abu Saiba",
+  //   "A'Ali",
+  //   "Sitra",
+  //   "'Hamad Town'",
+  //   "Al Budayyi",
+  //   "ISA Town",
+  // ];
 
   final args = Get.arguments;
-  final cartProducts = <CartProducts>[].obs;
+  final cartProducts = <ProductData>[].obs;
   final subTotal = 0.0.obs;
   final delivery = 0.0.obs;
   final couponAmount = 0.0.obs;
   final shippingId = 0.obs;
 
-
   @override
   void onInit() {
     super.onInit();
-    city.value =cityList.first;
-    getShippingInfo();
+    // getShippingInfo();
     if (args != null) {
-      cartProducts.addAll(args['cartProducts']);
+      // cartProducts.addAll(args['cartProducts']);
       subTotal.value = args['subTotal'];
     }
 
-    if(kDebugMode){
+    if (kDebugMode) {
       name.value.text = 'Test User';
       mobile.value.text = '1234567890';
       email.value.text = 'test@gmail.com';
       address.value.text = 'Test Address';
     }
 
+    getCountryList();
+    getPaymentMethods();
   }
 
-   Future<void> getShippingInfo() async {
+  Future<void> getPaymentMethods() async {
+    var response = await CheckoutRepository().paymentMethods();
+    paymentMethods.clear();
+    paymentMethods.addAll(response);
+  }
+
+  Future<void> getCountryList() async {
+    var response = await CheckoutRepository().getCountry();
+    countryList.clear();
+    countryList.addAll(response);
+  }
+
+  Future<void> getCityList() async {
+    var response = await CheckoutRepository().getCity(
+      countryList.first.id.toString(),
+    );
+    printLog(response);
+    cityList.clear();
+    cityList.addAll(response);
+  }
+
+  Future<void> getShippingInfo() async {
     var response = await CheckoutRepository().getShippingInfo();
     if (response.status == 200) {
       shippingInfo.clear();
       shippingInfo.addAll(response.data!);
-
     } else {
       printLog(response.message);
       AppWidgets().getSnackBar(
@@ -81,45 +111,43 @@ class CheckoutController extends BaseController {
     }
   }
 
-
-  Future<void> setShippingInfo()async{
-
-    if(name.value.text.isEmpty){
+  Future<void> setShippingInfo() async {
+    if (name.value.text.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
         message: 'Please enter your name',
       );
       return;
     }
-    if(email.value.text.isEmpty){
+    if (email.value.text.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
         message: 'Please enter your email',
       );
       return;
     }
-    if(mobile.value.text.isEmpty){
+    if (mobile.value.text.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
         message: 'Please enter your mobile number',
       );
       return;
     }
-    if(address.value.text.isEmpty){
+    if (address.value.text.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
         message: 'Please enter your address',
       );
       return;
     }
-    if(city.value.isEmpty){
+    if (city.value.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
         message: 'Please select your city',
       );
       return;
     }
-    if(selectedPaymentMethod.value.isEmpty) {
+    if (selectedPaymentMethod.value.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
         message: 'Please select payment method',
@@ -127,14 +155,13 @@ class CheckoutController extends BaseController {
       return;
     }
 
-    if(selectedShippingMethod.value.isEmpty) {
+    if (selectedShippingMethod.value.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
         message: 'Please select shipping method',
       );
       return;
     }
-
 
     var response = await CheckoutRepository().setShippingAddress(
       name.value.text,
@@ -158,29 +185,30 @@ class CheckoutController extends BaseController {
   }
 
   void placeOrder() async {
-
     printLog('place order');
 
-    if(selectedPaymentMethod.value != 'Cash On Delivery') {
-      AppWidgets().getSnackBar(
-        title: 'Error',
-        message: 'Method not available',
-      );
+    if (selectedPaymentMethod.value != 'Cash On Delivery') {
+      AppWidgets().getSnackBar(title: 'Error', message: 'Method not available');
       printLog('sm methods');
 
       return;
     }
-
 
     OderPlaceRequest orderRequest = OderPlaceRequest(
       orderMethod: 1,
       userAddressId: shippingId.value,
       productId: cartProducts.map((product) => product.id!).toList(),
       quantity: cartProducts.map((product) => product.quantity!).toList(),
-      shippingPlaceId: List.generate(cartProducts.length, (index) => shippingId.value),
-      shippingType: List.generate(cartProducts.length, (index) => shippingId.value),
+      shippingPlaceId: List.generate(
+        cartProducts.length,
+        (index) => shippingId.value,
+      ),
+      shippingType: List.generate(
+        cartProducts.length,
+        (index) => shippingId.value,
+      ),
       guestEmail: null,
-      userId: userId.$
+      userId: userId.$,
     );
 
     var response = await CheckoutRepository().placeAnOrder(
@@ -189,13 +217,9 @@ class CheckoutController extends BaseController {
     printLog(response);
 
     Get.offAllNamed(Routes.DASHBOARD);
-    AppWidgets().getSnackBar(
-      title: 'Info',
-      message: response.toString(),
-    );
+    AppWidgets().getSnackBar(title: 'Info', message: response.toString());
 
-
-/*    if (response.status == 200) {
+    /*    if (response.status == 200) {
       AppWidgets().getSnackBar(
         title: 'Success',
         message: response.message.toString(),
@@ -208,4 +232,23 @@ class CheckoutController extends BaseController {
     //}
   }
 
+  // Method to fetch cities by country ID
+  Future<void> getCitiesByCountry(int countryId) async {
+    try {
+      showLoading();
+      cityList.clear();
+      selectedCity.value = null;
+
+      var response = await CheckoutRepository().getCity(countryId.toString());
+      printLog(response);
+      cityList.addAll(response);
+    } catch (e) {
+      AppWidgets().getSnackBar(
+        title: 'Error',
+        message: 'Failed to load cities: $e',
+      );
+    } finally {
+      hideLoading();
+    }
+  }
 }

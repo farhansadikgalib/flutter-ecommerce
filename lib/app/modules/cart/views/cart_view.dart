@@ -75,6 +75,7 @@ class CartView extends BaseView<CartController> {
                           () => Get.toNamed(
                             Routes.CHECKOUT,
                             arguments: {
+                              'cartProducts': controller.allCartProducts,
                               'subTotal': controller.totalPrice.value,
                             },
                           ),

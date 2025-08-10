@@ -1,4 +1,7 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:turi/app/data/remote/model/checkout/city_response.dart';
+import 'package:turi/app/data/remote/model/checkout/country_response.dart';
+import 'package:turi/app/data/remote/model/checkout/payment_method_response.dart';
 import 'package:turi/app/data/remote/model/checkout/set_user_address_response.dart';
 import 'package:turi/app/data/remote/model/checkout/shipping_info_response.dart';
 import 'package:turi/app/data/remote/model/home/home_response.dart';
@@ -56,4 +59,40 @@ class CheckoutRepository {
     );
     return response.toString();
   }
+
+
+
+  Future<List<CountryResponse>> getCountry() async {
+    var response = await ApiClient().get(
+      ApiEndPoints.country,
+      getCountry,
+      isHeaderRequired: false,
+      isLoaderRequired: false,
+    );
+    return countryResponseFromJson(response.toString());
+  }
+
+  Future<List<CityResponse>> getCity(String countryId) async {
+    var response = await ApiClient().get(
+      ApiEndPoints.city(countryId: countryId),
+      getCountry,
+      isHeaderRequired: false,
+      isLoaderRequired: false,
+    );
+    return cityResponseFromJson(response.toString());
+  }
+
+  Future<List<PaymentMethodResponse>> paymentMethods() async {
+    var response = await ApiClient().get(
+      ApiEndPoints.paymentMethods,
+      paymentMethods,
+      isHeaderRequired: false,
+      isLoaderRequired: false,
+    );
+    return paymentMethodResponseFromJson(response.toString());
+  }
+
+
+
+
 }

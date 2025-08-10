@@ -85,15 +85,26 @@ static String addToWishlist = "user/wishlist/action";
 
 //cart
 
-static String addToCart = "cart/action";
+/*static String addToCart = "cart/action";
 static String allCartItems = "cart/by-user";
 static String deleteCartItems ({
     required String productId,
   }) =>
-      "cart/delete/$productId";
-
+      "cart/delete/$productId";*/
 //
 
+//Checkout
+
+
+  static String paymentMethods = "all-payment-methods";
+  static String country = "country/search";
+  static String city ({
+    required String countryId,
+  }) =>
+      "city/search?country_id=$countryId";
+
+
+//Checkout
 
 
 }
