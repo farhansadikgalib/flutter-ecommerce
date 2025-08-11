@@ -73,7 +73,7 @@ static String allOrders = "all-order-list-paginated";
   static String trackOrder({
     required String orderId,
   }) =>
-      "track-order?tracking_id=$orderId";
+      "order-tracking?sale_code=$orderId";
 //order
 
 //wishlist

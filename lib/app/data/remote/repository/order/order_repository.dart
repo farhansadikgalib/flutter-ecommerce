@@ -17,7 +17,7 @@ class OrderRepository{
   }
 
 
-  Future<TrackOrderResponse> trackOrder(String orderId) async {
+  Future<TrackOrderData> trackOrder(String orderId) async {
     var response = await ApiClient().get(
       ApiEndPoints.trackOrder(orderId: orderId),
       trackOrder,
@@ -25,7 +25,7 @@ class OrderRepository{
       isLoaderRequired: false,
     );
 
-    return trackOrderResponseFromJson(response.toString());
+    return trackOrderDataFromJson(response.toString());
   }
 
 

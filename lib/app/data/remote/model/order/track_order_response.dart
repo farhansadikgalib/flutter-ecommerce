@@ -1,265 +1,401 @@
+// To parse this JSON data, do
+//
+//     final trackOrderData = trackOrderDataFromJson(jsonString);
+
 import 'dart:convert';
 
-TrackOrderResponse trackOrderResponseFromJson(String str) => TrackOrderResponse.fromJson(json.decode(str));
+TrackOrderData trackOrderDataFromJson(String str) => TrackOrderData.fromJson(json.decode(str));
 
-String trackOrderResponseToJson(TrackOrderResponse data) => json.encode(data.toJson());
-
-class TrackOrderResponse {
-  TrackOrderData? data;
-  int? status;
-  String? token;
-  String? message;
-
-  TrackOrderResponse({
-    this.data,
-    this.status,
-    this.token,
-    this.message,
-  });
-
-  factory TrackOrderResponse.fromJson(Map<String, dynamic> json) => TrackOrderResponse(
-    data: json["data"] == null ? null : TrackOrderData.fromJson(json["data"]),
-    status: json["status"],
-    token: json["token"],
-    message: json["message"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "data": data?.toJson(),
-    "status": status,
-    "token": token,
-    "message": message,
-  };
-}
+String trackOrderDataToJson(TrackOrderData data) => json.encode(data.toJson());
 
 class TrackOrderData {
   int? id;
-  int? status;
-  String? totalAmount;
-  int? orderMethod;
-  String? currency;
-  int? paymentDone;
-  int? cancelled;
-  dynamic paymentToken;
+  String? customerId;
+  String? paymentMethodId;
+  String? saleDate;
+  dynamic itemTiers;
+  dynamic note;
+  String? subTotal;
+  String? total;
+  dynamic paidAmount;
+  dynamic amountDue;
+  String? commentOnReceipt;
+  String? createdBy;
   String? createdAt;
   String? updatedAt;
-  int? userId;
-  int? userAddressId;
-  dynamic voucherId;
-  String? order;
-  dynamic userToken;
-  List<OrderedProduct>? orderedProducts;
+  dynamic branchId;
+  String? saleCode;
+  dynamic discountEntireSale;
+  dynamic discountAllItemByPercent;
+  dynamic discountReason;
+  dynamic itemTire;
+  String? verifyStatus;
+  dynamic verifiedBy;
+  dynamic verifiedAt;
+  dynamic suspendedBy;
+  dynamic customerName;
+  String? suspendRequest;
+  dynamic suspendRequestBy;
+  dynamic shippingCost;
+  List<SaleProduct>? saleProducts;
+  PaymentMethod? paymentMethod;
+  SoldUser? soldUser;
+  dynamic customer;
+  BillingAddress? billingAddress;
 
   TrackOrderData({
     this.id,
-    this.status,
-    this.totalAmount,
-    this.orderMethod,
-    this.currency,
-    this.paymentDone,
-    this.cancelled,
-    this.paymentToken,
+    this.customerId,
+    this.paymentMethodId,
+    this.saleDate,
+    this.itemTiers,
+    this.note,
+    this.subTotal,
+    this.total,
+    this.paidAmount,
+    this.amountDue,
+    this.commentOnReceipt,
+    this.createdBy,
     this.createdAt,
     this.updatedAt,
-    this.userId,
-    this.userAddressId,
-    this.voucherId,
-    this.order,
-    this.userToken,
-    this.orderedProducts,
+    this.branchId,
+    this.saleCode,
+    this.discountEntireSale,
+    this.discountAllItemByPercent,
+    this.discountReason,
+    this.itemTire,
+    this.verifyStatus,
+    this.verifiedBy,
+    this.verifiedAt,
+    this.suspendedBy,
+    this.customerName,
+    this.suspendRequest,
+    this.suspendRequestBy,
+    this.shippingCost,
+    this.saleProducts,
+    this.paymentMethod,
+    this.soldUser,
+    this.customer,
+    this.billingAddress,
   });
 
   factory TrackOrderData.fromJson(Map<String, dynamic> json) => TrackOrderData(
     id: json["id"],
-    status: json["status"],
-    totalAmount: json["total_amount"],
-    orderMethod: json["order_method"],
-    currency: json["currency"],
-    paymentDone: json["payment_done"],
-    cancelled: json["cancelled"],
-    paymentToken: json["payment_token"],
+    customerId: json["customer_id"],
+    paymentMethodId: json["payment_method_id"],
+    saleDate: json["sale_date"],
+    itemTiers: json["item_tiers"],
+    note: json["note"],
+    subTotal: json["sub_total"],
+    total: json["total"],
+    paidAmount: json["paid_amount"],
+    amountDue: json["amount_due"],
+    commentOnReceipt: json["comment_on_receipt"],
+    createdBy: json["created_by"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
-    userId: json["user_id"],
-    userAddressId: json["user_address_id"],
-    voucherId: json["voucher_id"],
-    order: json["order"],
-    userToken: json["user_token"],
-    orderedProducts: json["ordered_products"] == null ? [] : List<OrderedProduct>.from(json["ordered_products"]!.map((x) => OrderedProduct.fromJson(x))),
+    branchId: json["branch_id"],
+    saleCode: json["sale_code"],
+    discountEntireSale: json["discount_entire_sale"],
+    discountAllItemByPercent: json["discount_all_item_by_percent"],
+    discountReason: json["discount_reason"],
+    itemTire: json["item_tire"],
+    verifyStatus: json["verify_status"],
+    verifiedBy: json["verified_by"],
+    verifiedAt: json["verified_at"],
+    suspendedBy: json["suspended_by"],
+    customerName: json["customer_name"],
+    suspendRequest: json["suspend_request"],
+    suspendRequestBy: json["suspend_request_by"],
+    shippingCost: json["shipping_cost"],
+    saleProducts: json["sale_products"] == null ? [] : List<SaleProduct>.from(json["sale_products"]!.map((x) => SaleProduct.fromJson(x))),
+    paymentMethod: json["payment_method"] == null ? null : PaymentMethod.fromJson(json["payment_method"]),
+    soldUser: json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
+    customer: json["customer"],
+    billingAddress: json["billing_address"] == null ? null : BillingAddress.fromJson(json["billing_address"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "status": status,
-    "total_amount": totalAmount,
-    "order_method": orderMethod,
-    "currency": currency,
-    "payment_done": paymentDone,
-    "cancelled": cancelled,
-    "payment_token": paymentToken,
+    "customer_id": customerId,
+    "payment_method_id": paymentMethodId,
+    "sale_date": saleDate,
+    "item_tiers": itemTiers,
+    "note": note,
+    "sub_total": subTotal,
+    "total": total,
+    "paid_amount": paidAmount,
+    "amount_due": amountDue,
+    "comment_on_receipt": commentOnReceipt,
+    "created_by": createdBy,
     "created_at": createdAt,
     "updated_at": updatedAt,
-    "user_id": userId,
-    "user_address_id": userAddressId,
-    "voucher_id": voucherId,
-    "order": order,
-    "user_token": userToken,
-    "ordered_products": orderedProducts == null ? [] : List<dynamic>.from(orderedProducts!.map((x) => x.toJson())),
+    "branch_id": branchId,
+    "sale_code": saleCode,
+    "discount_entire_sale": discountEntireSale,
+    "discount_all_item_by_percent": discountAllItemByPercent,
+    "discount_reason": discountReason,
+    "item_tire": itemTire,
+    "verify_status": verifyStatus,
+    "verified_by": verifiedBy,
+    "verified_at": verifiedAt,
+    "suspended_by": suspendedBy,
+    "customer_name": customerName,
+    "suspend_request": suspendRequest,
+    "suspend_request_by": suspendRequestBy,
+    "shipping_cost": shippingCost,
+    "sale_products": saleProducts == null ? [] : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
+    "payment_method": paymentMethod?.toJson(),
+    "sold_user": soldUser?.toJson(),
+    "customer": customer,
+    "billing_address": billingAddress?.toJson(),
   };
 }
 
-class OrderedProduct {
-  int? productId;
-  int? inventoryId;
-  int? quantity;
-  int? shippingPlaceId;
-  int? shippingType;
-  String? selling;
-  String? shippingPrice;
-  String? taxPrice;
-  int? bundleOffer;
-  int? orderId;
-  ShippingPlace? shippingPlace;
-  Product? product;
+class BillingAddress {
+  int? id;
+  String? saleId;
+  String? fullName;
+  String? mobile;
+  String? address;
+  dynamic countryId;
+  String? cityId;
+  dynamic notes;
+  String? createdAt;
+  String? updatedAt;
+  dynamic deletedAt;
 
-  OrderedProduct({
-    this.productId,
-    this.inventoryId,
-    this.quantity,
-    this.shippingPlaceId,
-    this.shippingType,
-    this.selling,
-    this.shippingPrice,
-    this.taxPrice,
-    this.bundleOffer,
-    this.orderId,
-    this.shippingPlace,
-    this.product,
+  BillingAddress({
+    this.id,
+    this.saleId,
+    this.fullName,
+    this.mobile,
+    this.address,
+    this.countryId,
+    this.cityId,
+    this.notes,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
   });
 
-  factory OrderedProduct.fromJson(Map<String, dynamic> json) => OrderedProduct(
-    productId: json["product_id"],
-    inventoryId: json["inventory_id"],
-    quantity: json["quantity"],
-    shippingPlaceId: json["shipping_place_id"],
-    shippingType: json["shipping_type"],
-    selling: json["selling"],
-    shippingPrice: json["shipping_price"],
-    taxPrice: json["tax_price"],
-    bundleOffer: json["bundle_offer"],
-    orderId: json["order_id"],
-    shippingPlace: json["shipping_place"] == null ? null : ShippingPlace.fromJson(json["shipping_place"]),
-    product: json["product"] == null ? null : Product.fromJson(json["product"]),
+  factory BillingAddress.fromJson(Map<String, dynamic> json) => BillingAddress(
+    id: json["id"],
+    saleId: json["sale_id"],
+    fullName: json["full_name"],
+    mobile: json["mobile"],
+    address: json["address"],
+    countryId: json["country_id"],
+    cityId: json["city_id"],
+    notes: json["notes"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    deletedAt: json["deleted_at"],
   );
 
   Map<String, dynamic> toJson() => {
-    "product_id": productId,
-    "inventory_id": inventoryId,
-    "quantity": quantity,
-    "shipping_place_id": shippingPlaceId,
-    "shipping_type": shippingType,
-    "selling": selling,
-    "shipping_price": shippingPrice,
-    "tax_price": taxPrice,
-    "bundle_offer": bundleOffer,
-    "order_id": orderId,
-    "shipping_place": shippingPlace?.toJson(),
-    "product": product?.toJson(),
+    "id": id,
+    "sale_id": saleId,
+    "full_name": fullName,
+    "mobile": mobile,
+    "address": address,
+    "country_id": countryId,
+    "city_id": cityId,
+    "notes": notes,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "deleted_at": deletedAt,
   };
 }
 
-class Product {
+class PaymentMethod {
   int? id;
-  int? categoryId;
-  String? title;
+  String? name;
   String? slug;
-  String? image;
-  String? selling;
-  String? offered;
-  int? shippingRuleId;
-  dynamic bundleDealId;
-  String? unit;
+  String? code;
+  String? note;
+  String? status;
+  dynamic createdAt;
+  dynamic updatedAt;
 
-  Product({
+  PaymentMethod({
     this.id,
-    this.categoryId,
-    this.title,
+    this.name,
     this.slug,
-    this.image,
-    this.selling,
-    this.offered,
-    this.shippingRuleId,
-    this.bundleDealId,
-    this.unit,
+    this.code,
+    this.note,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory PaymentMethod.fromJson(Map<String, dynamic> json) => PaymentMethod(
     id: json["id"],
-    categoryId: json["category_id"],
-    title: json["title"],
+    name: json["name"],
     slug: json["slug"],
-    image: json["image"],
-    selling: json["selling"],
-    offered: json["offered"],
-    shippingRuleId: json["shipping_rule_id"],
-    bundleDealId: json["bundle_deal_id"],
-    unit: json["unit"],
+    code: json["code"],
+    note: json["note"],
+    status: json["status"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "category_id": categoryId,
-    "title": title,
+    "name": name,
     "slug": slug,
-    "image": image,
-    "selling": selling,
-    "offered": offered,
-    "shipping_rule_id": shippingRuleId,
-    "bundle_deal_id": bundleDealId,
-    "unit": unit,
+    "code": code,
+    "note": note,
+    "status": status,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
   };
 }
 
-class ShippingPlace {
+class SaleProduct {
   int? id;
-  String? country;
-  String? state;
+  String? saleId;
+  String? productId;
+  String? productName;
+  String? quantity;
   String? price;
-  int? dayNeeded;
-  String? pickupPrice;
-  int? pickupPoint;
-  int? shippingRuleId;
+  dynamic discountPercent;
+  String? total;
+  dynamic batchNo;
+  dynamic purchaseId;
+  dynamic purchaseProductId;
+  String? createdAt;
+  String? updatedAt;
+  dynamic discountAmount;
+  String? packSizeId;
+  String? packSizeQuantity;
+  String? totalQuantity;
 
-  ShippingPlace({
+  SaleProduct({
     this.id,
-    this.country,
-    this.state,
+    this.saleId,
+    this.productId,
+    this.productName,
+    this.quantity,
     this.price,
-    this.dayNeeded,
-    this.pickupPrice,
-    this.pickupPoint,
-    this.shippingRuleId,
+    this.discountPercent,
+    this.total,
+    this.batchNo,
+    this.purchaseId,
+    this.purchaseProductId,
+    this.createdAt,
+    this.updatedAt,
+    this.discountAmount,
+    this.packSizeId,
+    this.packSizeQuantity,
+    this.totalQuantity,
   });
 
-  factory ShippingPlace.fromJson(Map<String, dynamic> json) => ShippingPlace(
+  factory SaleProduct.fromJson(Map<String, dynamic> json) => SaleProduct(
     id: json["id"],
-    country: json["country"],
-    state: json["state"],
+    saleId: json["sale_id"],
+    productId: json["product_id"],
+    productName: json["product_name"],
+    quantity: json["quantity"],
     price: json["price"],
-    dayNeeded: json["day_needed"],
-    pickupPrice: json["pickup_price"],
-    pickupPoint: json["pickup_point"],
-    shippingRuleId: json["shipping_rule_id"],
+    discountPercent: json["discount_percent"],
+    total: json["total"],
+    batchNo: json["batch_no"],
+    purchaseId: json["purchase_id"],
+    purchaseProductId: json["purchase_product_id"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    discountAmount: json["discount_amount"],
+    packSizeId: json["pack_size_id"],
+    packSizeQuantity: json["pack_size_quantity"],
+    totalQuantity: json["total_quantity"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "country": country,
-    "state": state,
+    "sale_id": saleId,
+    "product_id": productId,
+    "product_name": productName,
+    "quantity": quantity,
     "price": price,
-    "day_needed": dayNeeded,
-    "pickup_price": pickupPrice,
-    "pickup_point": pickupPoint,
-    "shipping_rule_id": shippingRuleId,
+    "discount_percent": discountPercent,
+    "total": total,
+    "batch_no": batchNo,
+    "purchase_id": purchaseId,
+    "purchase_product_id": purchaseProductId,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "discount_amount": discountAmount,
+    "pack_size_id": packSizeId,
+    "pack_size_quantity": packSizeQuantity,
+    "total_quantity": totalQuantity,
+  };
+}
+
+class SoldUser {
+  int? id;
+  String? name;
+  String? email;
+  dynamic emailVerifiedAt;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  String? branchId;
+  String? userType;
+  dynamic username;
+  dynamic phone;
+  dynamic dob;
+  dynamic gender;
+  dynamic address;
+
+  SoldUser({
+    this.id,
+    this.name,
+    this.email,
+    this.emailVerifiedAt,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.branchId,
+    this.userType,
+    this.username,
+    this.phone,
+    this.dob,
+    this.gender,
+    this.address,
+  });
+
+  factory SoldUser.fromJson(Map<String, dynamic> json) => SoldUser(
+    id: json["id"],
+    name: json["name"],
+    email: json["email"],
+    emailVerifiedAt: json["email_verified_at"],
+    status: json["status"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    branchId: json["branch_id"],
+    userType: json["user_type"],
+    username: json["username"],
+    phone: json["phone"],
+    dob: json["dob"],
+    gender: json["gender"],
+    address: json["address"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "email": email,
+    "email_verified_at": emailVerifiedAt,
+    "status": status,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "branch_id": branchId,
+    "user_type": userType,
+    "username": username,
+    "phone": phone,
+    "dob": dob,
+    "gender": gender,
+    "address": address,
   };
 }

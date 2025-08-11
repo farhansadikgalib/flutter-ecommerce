@@ -2,6 +2,7 @@ import 'package:any_image_view/any_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/routes/app_pages.dart';
@@ -293,7 +294,9 @@ class OrderView extends GetView<OrderController> {
                           Expanded(
                             child: OutlinedButton(
                               onPressed: () {
-                                controller.trackOrder(order.id.toString());
+                                printLog('start tracking');
+                                controller.trackOrder(order.saleCode.toString());
+
                               },
                               style: OutlinedButton.styleFrom(
                                 side: BorderSide(color: Colors.grey[300]!),

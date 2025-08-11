@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
+import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/data/remote/model/order/order_response.dart';
 
 import '../../../data/remote/model/order/track_order_response.dart';
@@ -10,30 +11,31 @@ class OrderController extends GetxController {
   final isLoading = false.obs;
 
   final orderData = <AllOrdersData>[].obs;
-  final trackOrderData = <TrackOrderData>[].obs;
+  var trackOrderData = <TrackOrderData>[].obs;
 
   Future<void> getOrders() async {
     isLoading.value = true;
     var response = await OrderRepository().customerOrder();
-
     orderData.addAll(response.data!);
-
     isLoading.value = false;
   }
 
   Future<void> trackOrder(String orderId) async {
     isLoading.value = true;
-    var response = await OrderRepository().trackOrder(orderId);
-    if (response.status == 200) {
+    try {
+      var response = await OrderRepository().trackOrder(orderId);
+      printLog(response);
       trackOrderData.clear();
-      trackOrderData.add(response.data!);
+      trackOrderData.add(response);
       Get.to(() => TrackOrderView());
       AppWidgets().getSnackBar(message: 'Order tracked successfully');
-    } else {
-      // Handle error response
-      AppWidgets().getSnackBar(message: response.message);
+    } catch (e) {
+      AppWidgets().getSnackBar(
+        title: 'Error',
+        message: 'Failed to track order: $e',
+      );
+    } finally {
+      isLoading.value = false;
     }
-
-    isLoading.value = false;
   }
 }
