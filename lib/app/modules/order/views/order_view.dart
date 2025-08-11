@@ -77,14 +77,14 @@ class OrderView extends GetView<OrderController> {
               // Format date if possible
               String formattedDate = '';
               try {
-                final date = DateTime.parse(order.created.toString());
+                final date = DateTime.parse(order.createdAt.toString());
                 formattedDate = DateFormat('MMM d, yyyy').format(date);
               } catch (e) {
-                formattedDate = order.created.toString();
+                formattedDate = order.createdAt.toString();
               }
 
               // Get order status
-              final orderStatus = getOrderStatus(order);
+              final orderStatus = getOrderStatus();
 
               return Container(
                 margin: const EdgeInsets.only(bottom: 16),
@@ -147,7 +147,7 @@ class OrderView extends GetView<OrderController> {
                                 ),
                               ),
                               Text(
-                                '\$${order.totalAmount ?? '0.00'}',
+                                '\$${order.total ?? '0.00'}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.white,
@@ -193,8 +193,8 @@ class OrderView extends GetView<OrderController> {
                     ),
 
                     // Order items
-                    if (order.orderedProducts != null &&
-                        order.orderedProducts!.isNotEmpty)
+                    if (order.saleProducts != null &&
+                        order.saleProducts!.isNotEmpty)
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -202,9 +202,9 @@ class OrderView extends GetView<OrderController> {
                           horizontal: 12,
                           vertical: 8,
                         ),
-                        itemCount: order.orderedProducts!.length,
+                        itemCount: order.saleProducts!.length,
                         itemBuilder: (context, i) {
-                          final product = order.orderedProducts![i];
+                          final product = order.saleProducts![i];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: Row(
@@ -222,8 +222,7 @@ class OrderView extends GetView<OrderController> {
                                     child: AnyImageView(
                                       imagePath:
                                           '${AppConfig
-                                              .imageBasePath}${product
-                                              .product!.image}',
+                                              .imageBasePath}',
                                       cachedNetPlaceholderHeight: 60,
                                       cachedNetPlaceholderWidth: 60,
                                       boxFit: BoxFit.cover,
@@ -239,7 +238,7 @@ class OrderView extends GetView<OrderController> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        product.product?.title ?? 'Product',
+                                        product.productName ?? 'Product',
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -250,7 +249,7 @@ class OrderView extends GetView<OrderController> {
                                       Row(
                                         children: [
                                           Text(
-                                            '\$${product.selling ?? '0.00'}',
+                                            '\$${product.price ?? '0.00'}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               color: Colors.grey[700],
@@ -294,7 +293,7 @@ class OrderView extends GetView<OrderController> {
                           Expanded(
                             child: OutlinedButton(
                               onPressed: () {
-                                controller.trackOrder(order.order.toString());
+                                controller.trackOrder(order.id.toString());
                               },
                               style: OutlinedButton.styleFrom(
                                 side: BorderSide(color: Colors.grey[300]!),
@@ -378,16 +377,13 @@ class OrderView extends GetView<OrderController> {
       );
   }
 
-  String getOrderStatus(dynamic order) {
+  String getOrderStatus() {
     // You can replace this with your actual status logic
     // For now I'm using a dummy implementation
-    if (order.status != null) {
-      return order.status.toString();
-    }
 
     // Random status for demonstration
     final statuses = ["Processing", "Shipped", "Delivered", "Cancelled"];
-    return statuses[order.id % statuses.length];
+    return statuses[4 % statuses.length];
   }
 
   Color getStatusColor(String status) {

@@ -6,11 +6,8 @@ import '../../../../network_service/api_end_points.dart';
 
 class OrderRepository{
   Future<OrderResponse> customerOrder() async {
-    var response = await ApiClient().post(
+    var response = await ApiClient().get(
       ApiEndPoints.allOrders,
-      {
-        "order_by": userId.$,
-      },
       customerOrder,
       isHeaderRequired: true,
       isLoaderRequired: false,

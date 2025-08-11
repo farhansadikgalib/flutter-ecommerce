@@ -69,7 +69,7 @@ class ApiEndPoints {
 
 
 //order
-static String allOrders = "order/by-user";
+static String allOrders = "all-order-list-paginated";
   static String trackOrder({
     required String orderId,
   }) =>

@@ -12,33 +12,14 @@ class OrderController extends GetxController {
   final orderData = <AllOrdersData>[].obs;
   final trackOrderData = <TrackOrderData>[].obs;
 
-
-
   Future<void> getOrders() async {
+    isLoading.value = true;
+    var response = await OrderRepository().customerOrder();
 
-    isLoading.value = true; // Set loading state to true
-    var response =  await OrderRepository().customerOrder();
-
-    if (response.status == 200) {
-      if(response.data!.data!.isNotEmpty){
-        orderData.clear();
-        orderData.addAll(response.data!.data!);
-      } else {
-
-        AppWidgets().getSnackBar(message: response.message);
-      }
-
-    } else {
-      // Handle error response
-      AppWidgets().getSnackBar(message: response.message);
-    }
+    orderData.addAll(response.data!);
 
     isLoading.value = false;
-
-
   }
-
-
 
   Future<void> trackOrder(String orderId) async {
     isLoading.value = true;
@@ -46,9 +27,7 @@ class OrderController extends GetxController {
     if (response.status == 200) {
       trackOrderData.clear();
       trackOrderData.add(response.data!);
-      Get.to(
-        () => TrackOrderView(),
-      );
+      Get.to(() => TrackOrderView());
       AppWidgets().getSnackBar(message: 'Order tracked successfully');
     } else {
       // Handle error response
@@ -57,8 +36,4 @@ class OrderController extends GetxController {
 
     isLoading.value = false;
   }
-
-
-
-
 }
