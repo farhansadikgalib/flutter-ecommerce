@@ -281,7 +281,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Cash on Delivery',
+                                'Inside Dhaka',
                                 style: TextStyle(fontSize: 14),
                               ),
                               Padding(
@@ -293,7 +293,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                               ),
                             ],
                           ),
-                          value: 'Cash on Delivery',
+                          value: 'Inside Dhaka',
                           groupValue: controller.selectedShippingMethod.value,
                           onChanged: (value) {
                             controller.selectedShippingMethod.value = value!;

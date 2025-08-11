@@ -220,6 +220,7 @@ class CheckoutController extends BaseController {
         message: response.message.toString(),
       );
       Get.find<CartController>().allCartProducts.clear();
+      Get.find<CartController>().cartCount.value=0;
       Get.offAllNamed(Routes.DASHBOARD);
     } else {
       AppWidgets().getSnackBar(

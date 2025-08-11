@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final orderPlaceResponse = orderPlaceResponseFromJson(jsonString);
-
 import 'dart:convert';
 
 OrderPlaceResponse orderPlaceResponseFromJson(String str) => OrderPlaceResponse.fromJson(json.decode(str));
@@ -35,11 +31,11 @@ class OrderPlaceResponse {
 class Sale {
   String? saleCode;
   DateTime? saleDate;
-  String? customerId;
-  String? subTotal;
-  String? total;
-  String? shippingCost;
-  String? paymentMethodId;
+  int? customerId;
+  int? subTotal;
+  int? total;
+  int? shippingCost;
+  int? paymentMethodId;
   int? createdBy;
   String? updatedAt;
   String? createdAt;
