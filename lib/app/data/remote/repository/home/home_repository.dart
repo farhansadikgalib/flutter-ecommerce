@@ -11,7 +11,7 @@ class HomeRepository {
     var response = await ApiClient().get(
       ApiEndPoints.home,
       getHomeData,
-      isHeaderRequired: true,
+      isHeaderRequired: false,
       isLoaderRequired: false,
     );
 
@@ -45,7 +45,7 @@ class HomeRepository {
       ApiEndPoints.bestSellingProduct,
       getBestSellingProducts,
       isHeaderRequired: true,
-      isLoaderRequired: true,
+      isLoaderRequired: false,
     );
 
     return bestSellingProductResponseFromJson(response.toString());
