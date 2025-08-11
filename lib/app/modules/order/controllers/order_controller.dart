@@ -39,4 +39,11 @@ class OrderController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<void> cancelOrder(String orderId) async {
+    var response = await OrderRepository().cancelOrder(orderId);
+    getOrders();
+    printLog(response);
+    AppWidgets().getSnackBar(message: 'Order cancelled successfully');
+  }
 }

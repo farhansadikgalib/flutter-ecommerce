@@ -28,6 +28,20 @@ class OrderRepository{
     return trackOrderDataFromJson(response.toString());
   }
 
+  Future<TrackOrderData> cancelOrder(String orderId) async {
+    var response = await ApiClient().post(
+      ApiEndPoints.cancelOrder(orderId: orderId),
+      {
+
+      },
+      cancelOrder,
+      isHeaderRequired: true,
+      isLoaderRequired: false,
+    );
+
+    return trackOrderDataFromJson(response.toString());
+  }
+
 
 
 

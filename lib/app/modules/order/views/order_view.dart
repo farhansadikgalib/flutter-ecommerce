@@ -344,8 +344,9 @@ class OrderView extends GetView<OrderController> {
                                                   TextButton(
                                                     onPressed: () {
                                                       Navigator.pop(context);
-                                                      // Add cancel logic here
-                                                      // controller.cancelOrder(order.id);
+
+                                                      controller.cancelOrder(order.saleCode.toString());
+
                                                     },
                                                     child: const Text('Yes'),
                                                   ),
