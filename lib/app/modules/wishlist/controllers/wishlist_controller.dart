@@ -4,38 +4,83 @@ import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/data/remote/model/wishlist/wishlist_response.dart';
 import 'package:turi/app/data/remote/repository/wishlist/wishlist_repository.dart';
 
+import '../../../data/remote/model/home/best_selling_product_response.dart';
+
 class WishlistController extends GetxController {
-  final wishlistItems = <WishlistItems>[].obs;
+  final wishlistItems = <ProductData>[].obs;
   final isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    getWishlist();
+
   }
 
-  Future<void> getWishlist() async {
-    isLoading.value = true;
-    var response = await WishlistRepository().getWishlist();
+  void addToWishlist(ProductData product, ) {
+    try {
+      int existingIndex = wishlistItems.indexWhere(
+            (item) => item.id == product.id,
+      );
 
-    if (response.data!.data!.isNotEmpty) {
-      wishlistItems.clear();
-      wishlistItems.addAll(response.data!.data!);
-    } else {
-      printLog('Wishlist is empty');
+      if (existingIndex != -1) {
+        removeFromWishlist(product.id!);
+      } else {
+        // New product, add to cart
+        ProductData item = ProductData(
+          id: product.id,
+          name: product.name,
+          quantity: 0,
+          addToCart: false,
+          addToWishlist: true,
+          packSize: product.packSize,
+          productImages: product.productImages,
+          categoryId: product.categoryId,
+          genericId: product.genericId,
+          supplierId: product.supplierId,
+          totalSoldQuantity: product.totalSoldQuantity,
+          generic: product.generic,
+          category: product.category,
+          supplier: product.supplier,
+          productVariationAttributes: product.productVariationAttributes,
+          productVariations: product.productVariations,
+          productPrices: product.productPrices,
+          productInventories: product.productInventories,
+          productLocations: product.productLocations,
+          stockBatches: product.stockBatches,
+        );
+        wishlistItems.add(item);
+      }
+
+
+      AppWidgets().getSnackBar(
+        title: 'Success',
+        message: 'Product added to wishlist successfully!',
+      );
+
+      printLog('Product added to wishlist: ${product.name}, Quantity: '
+          );
+    } catch (e) {
+      printLog('Error adding to wishlist: $e');
+      AppWidgets().getSnackBar(
+        title: 'Error',
+        message: 'Failed to add product to wishlist',
+      );
     }
-    isLoading.value = false;
   }
 
-  void wishlistAction(String id)async {
-    var response = await WishlistRepository().addToWishlist(id);
-    if (response.status==200) {
-      wishlistItems.clear();
-      getWishlist();
-    } else {
-      AppWidgets().getSnackBar(message: response.message);
+
+  void removeFromWishlist(int productId) {
+    try {
+      wishlistItems.removeWhere((item) => item.id == productId);
+      AppWidgets().getSnackBar(
+        title: 'Success',
+        message: 'Item removed from cart',
+      );
+
+      printLog('Product removed from cart: ID $productId');
+    } catch (e) {
+      printLog('Error removing from cart: $e');
     }
-    isLoading.value = false;
-
   }
+
 }

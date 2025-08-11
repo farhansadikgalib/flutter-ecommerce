@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/data/remote/model/home/home_response.dart';
 import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
@@ -74,24 +75,16 @@ class WishlistView extends GetView<WishlistController> {
             );
           }
 
-          return RefreshIndicator(
-            onRefresh: controller.getWishlist,
-            child: ListView.builder(
+          return ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: controller.wishlistItems.length,
               itemBuilder: (context, index) {
                 final item = controller.wishlistItems[index];
                 return InkWell(
                   onTap: (){
-                    var product = ProductCollection(id: item.id,
-                      productId: item.productId,
-                      createdAt: item.createdAt,
-                      updatedAt: item.updatedAt,
-                        addToCart: false,
-                    );
                     Get.toNamed(
                       Routes.PRODUCT_DETAILS,
-                      arguments: {'product': product },
+                      arguments: {'product': item },
                     );
                   },
                   child: Card(
@@ -111,7 +104,8 @@ class WishlistView extends GetView<WishlistController> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: CachedNetworkImage(
-                              imageUrl: '${AppConfig.imageBasePath}${item.product?.image}' ?? '',
+                              imageUrl: '${AppConfig
+                                  .imageBasePath}${item.productImages}' ?? '',
                               height: 100,
                               width: 100,
                               fit: BoxFit.cover,
@@ -135,7 +129,7 @@ class WishlistView extends GetView<WishlistController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.product?.title ?? 'No Title',
+                                  item.name ?? 'No Title',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -146,7 +140,7 @@ class WishlistView extends GetView<WishlistController> {
                                 const SizedBox(height: 8),
                                 Text(
                                   ''
-                                  '${item.product?.selling ?? 0} BDT',
+                                  '${item.packSize!.sellingPrice } BDT',
                                   style: const TextStyle(
                                     color: Colors.green,
                                     fontWeight: FontWeight.bold,
@@ -177,8 +171,8 @@ class WishlistView extends GetView<WishlistController> {
                                     Spacer(),
                                     IconButton(
                                       onPressed: () {
-                                        controller.wishlistAction(
-                                          item.productId.toString(),
+                                        controller.removeFromWishlist(
+                                          item.id!
                                         );
                                       },
                                       icon: const Icon(
@@ -198,8 +192,8 @@ class WishlistView extends GetView<WishlistController> {
                   ),
                 );
               },
-            ),
-          );
+            );
+
         }
       }),
     );

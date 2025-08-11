@@ -562,14 +562,14 @@ class HomeView extends BaseView<HomeController> {
                                               fontSize: 16,
                                             ),
                                           ),
-                                          Text(
-                                            'See More',
-                                            style: TextStyle(
-                                              color: AppColors.primaryColor,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
+                                          // Text(
+                                          //   'See More',
+                                          //   style: TextStyle(
+                                          //     color: AppColors.primaryColor,
+                                          //     fontSize: 16,
+                                          //     fontWeight: FontWeight.bold,
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                       DynamicHeightGridView(
@@ -700,14 +700,14 @@ class HomeView extends BaseView<HomeController> {
                           fontSize: 16,
                         ),
                       ),
-                      Text(
-                        'See More',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      // Text(
+                      //   'See More',
+                      //   style: TextStyle(
+                      //     color: AppColors.primaryColor,
+                      //     fontSize: 16,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

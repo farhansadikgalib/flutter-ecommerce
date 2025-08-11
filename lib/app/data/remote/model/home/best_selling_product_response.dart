@@ -8,6 +8,7 @@ class ProductData {
   int? id;
   int? quantity;
   bool? addToCart;
+  bool? addToWishlist;
   String? name;
   String? genericId;
   String? categoryId;
@@ -45,12 +46,14 @@ class ProductData {
     this.productLocations,
     this.productImages,
     this.stockBatches,
+    this.addToWishlist
   });
 
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
     id: json["id"],
     quantity: 0,
     addToCart: false,
+    addToWishlist: false,
     name: json["name"],
     genericId: json["generic_id"],
     categoryId: json["category_id"],

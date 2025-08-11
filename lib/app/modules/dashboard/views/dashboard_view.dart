@@ -107,7 +107,7 @@ class DashboardView extends GetView<DashboardController> {
             Get.find<OrderController>().getOrders();
           }
           if (index == 1 && isLoggedIn.$) {
-            Get.find<WishlistController>().getWishlist();
+            // Get.find<WishlistController>().getWishlist();
           }
           if (index == 2 && isLoggedIn.$) {
 

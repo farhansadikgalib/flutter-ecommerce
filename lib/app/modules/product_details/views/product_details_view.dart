@@ -611,8 +611,8 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                           size: 24.sp,
                         ),
                         onPressed: () {
-                          Get.find<WishlistController>().wishlistAction(
-                            controller.product.id.toString(),
+                          Get.find<WishlistController>().addToWishlist(
+                            controller.product,
                           );
                           controller.wishlistItem.value =
                               !controller.wishlistItem.value;
