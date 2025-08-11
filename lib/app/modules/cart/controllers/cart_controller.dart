@@ -196,7 +196,7 @@ class CartController extends BaseController {
     // Try to get price from packSize selling price first
     if (product.packSize?.sellingPrice != null) {
       try {
-        return double.parse(product.packSize!.sellingPrice.toString());
+        return double.parse(product.productPrices!.sellingPrice.toString());
       } catch (e) {
         printLog('Error parsing packSize selling price: $e');
       }
