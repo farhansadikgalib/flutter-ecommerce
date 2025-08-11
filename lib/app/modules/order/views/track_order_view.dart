@@ -49,7 +49,8 @@ class TrackOrderView extends StatelessWidget {
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Order Summary Card
               Card(
@@ -60,7 +61,8 @@ class TrackOrderView extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
                         children: [
@@ -78,26 +80,6 @@ class TrackOrderView extends StatelessWidget {
                             ),
                           ),
                           Spacer(),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _getStatusColor(
-                                data.verifyStatus,
-                              ).withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              data.verifyStatus?.toUpperCase() ?? "PROCESSING",
-                              style: TextStyle(
-                                color: _getStatusColor(data.verifyStatus),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                       const Divider(height: 25),
@@ -121,14 +103,8 @@ class TrackOrderView extends StatelessWidget {
                       const SizedBox(height: 12),
                       Row(
                         children: [
-                          const Icon(
-                            Icons.attach_money,
-                            size: 16,
-                            color: Colors.grey,
-                          ),
-                          const SizedBox(width: 8),
                           Text(
-                            'Total: ${data.total ?? "N/A"}',
+                            'Total:  ৳ ${data.total ?? "N/A"}',
                             style: TextStyle(
                               color: Colors.grey[700],
                               fontSize: 14,
@@ -141,26 +117,40 @@ class TrackOrderView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              // Product List
-              Text(
-                'Products',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: AppColors.primaryColor,
+              // Centered Timeline for Order Status in a Card
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              ),
-              const SizedBox(height: 8),
-              ...?data.saleProducts?.map(
-                (product) => Card(
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      child: Text(product.productName?.substring(0, 1) ?? '?'),
-                    ),
-                    title: Text(product.productName ?? 'Product'),
-                    subtitle: Text('Qty: ${product.quantity ?? "1"}'),
-                    trailing: Text('${product.total ?? product.price ?? ""}'),
+                elevation: 2,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 16,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Order Progress',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      const Divider(height: 25),
+                      const SizedBox(height: 6),
+                      _OrderTimeline(
+                        status: data.verifyStatus,
+                        createdAt: data.createdAt,
+                        shippedAt: data.updatedAt,
+                        deliveredAt: data.verifiedAt,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -188,4 +178,147 @@ class TrackOrderView extends StatelessWidget {
       }),
     );
   }
+}
+
+class _OrderTimeline extends StatelessWidget {
+  final String? status;
+  final String? createdAt;
+  final String? shippedAt;
+  final String? deliveredAt;
+
+  const _OrderTimeline({
+    this.status,
+    this.createdAt,
+    this.shippedAt,
+    this.deliveredAt,
+  });
+
+  int get currentStep {
+    switch (status?.toLowerCase()) {
+      case 'delivered':
+        return 3;
+      case 'shipped':
+      case 'out for delivery':
+        return 2;
+      case 'processing':
+        return 1;
+      default:
+        return 0;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final steps = [
+      _TimelineStep(
+        title: 'Ordered',
+        subtitle:
+            createdAt != null
+                ? DateFormat('MMM dd, yyyy').format(DateTime.parse(createdAt!))
+                : '',
+        icon: Icons.shopping_cart,
+        isActive: currentStep >= 0,
+        isDone: currentStep > 0,
+      ),
+      _TimelineStep(
+        title: 'Processing',
+        subtitle: '',
+        icon: Icons.settings,
+        isActive: currentStep >= 1,
+        isDone: currentStep > 1,
+      ),
+      _TimelineStep(
+        title: 'Shipped',
+        subtitle:
+            shippedAt != null
+                ? DateFormat('MMM dd, yyyy').format(DateTime.parse(shippedAt!))
+                : '',
+        icon: Icons.local_shipping,
+        isActive: currentStep >= 2,
+        isDone: currentStep > 2,
+      ),
+    ];
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: List.generate(steps.length, (i) {
+        final step = steps[i];
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color:
+                        step.isActive
+                            ? AppColors.primaryColor
+                            : Colors.grey[300],
+                    shape: BoxShape.circle,
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    step.icon,
+                    color: step.isActive ? Colors.white : Colors.grey[500],
+                    size: 22,
+                  ),
+                ),
+                if (i < steps.length - 1)
+                  Container(
+                    width: 4,
+                    height: 36,
+                    color:
+                        step.isDone ? AppColors.primaryColor : Colors.grey[300],
+                  ),
+              ],
+            ),
+            const SizedBox(width: 16),
+            // Center the text column and remove Expanded
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  step.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color:
+                        step.isActive
+                            ? AppColors.primaryColor
+                            : Colors.grey[600],
+                    fontSize: 15,
+                  ),
+                ),
+                if (step.subtitle.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: Text(
+                      step.subtitle,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        );
+      }),
+    );
+  }
+}
+
+class _TimelineStep {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final bool isActive;
+  final bool isDone;
+  _TimelineStep({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.isActive,
+    required this.isDone,
+  });
 }

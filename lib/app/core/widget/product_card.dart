@@ -68,7 +68,7 @@ class _ProductCardState extends State<ProductCard> {
             width: 1,
           ),
         ),
-        margin: EdgeInsets.all(8),
+       
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -84,16 +84,20 @@ class _ProductCardState extends State<ProductCard> {
                 ),
               ),
               SizedBox(height: 10),
-              Text(
-                getProductTitle(),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
-                  color: Colors.black87,
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  getProductTitle(),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    color: Colors.black87,
+                  ),
+                  textAlign: TextAlign.left,
                 ),
-                textAlign: TextAlign.left,
               ),
               SizedBox(height: 6),
               Row(
@@ -134,6 +138,7 @@ class _ProductCardState extends State<ProductCard> {
                   return _buildAddToCartButton();
                 }
               }),
+
             ],
           ),
         ),

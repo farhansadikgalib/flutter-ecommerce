@@ -29,7 +29,6 @@ class OrderController extends GetxController {
       trackOrderData.clear();
       trackOrderData.add(response);
       Get.to(() => TrackOrderView());
-      AppWidgets().getSnackBar(message: 'Order tracked successfully');
     } catch (e) {
       AppWidgets().getSnackBar(
         title: 'Error',

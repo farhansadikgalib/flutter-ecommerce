@@ -149,7 +149,7 @@ class OrderView extends GetView<OrderController> {
                                 ),
                               ),
                               Text(
-                                '\$${order.total ?? '0.00'}',
+                                '৳ ${order.total ?? '0.00'}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.white,
@@ -251,7 +251,7 @@ class OrderView extends GetView<OrderController> {
                                       Row(
                                         children: [
                                           Text(
-                                            '\$${product.price ?? '0.00'}',
+                                            '৳ ${product.price ?? '0.00'}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               color: Colors.grey[700],
