@@ -7,6 +7,7 @@ import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../../core/config/app_config.dart';
+import '../../../data/remote/model/order/order_response.dart';
 import '../controllers/order_controller.dart';
 import 'package:intl/intl.dart';
 
@@ -85,7 +86,7 @@ class OrderView extends GetView<OrderController> {
               }
 
               // Get order status
-              final orderStatus = getOrderStatus();
+              final orderStatus = getOrderStatus(order);
 
               return Container(
                 margin: const EdgeInsets.only(bottom: 16),
@@ -380,24 +381,29 @@ class OrderView extends GetView<OrderController> {
       );
   }
 
-  String getOrderStatus() {
-    // You can replace this with your actual status logic
-    // For now I'm using a dummy implementation
+  String getOrderStatus(AllOrdersData order) {
 
-    // Random status for demonstration
-    final statuses = ["Processing", "Shipped", "Delivered", "Cancelled"];
-    return statuses[4 % statuses.length];
+    switch (int.parse(order.verifyStatus.toString())) {
+      case 0:
+        return 'Pending';
+      case 1:
+        return 'Confirm';
+      case 2:
+        return 'Cancel';
+      default:
+        return 'Unknown';
+    }
+
+
   }
 
   Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
-      case 'processing':
-        return Colors.blue[700]!;
-      case 'shipped':
-        return Colors.orange[700]!;
-      case 'delivered':
+      case 'Pending':
+        return Colors.yellow[700]!;
+      case 'Confirm':
         return Colors.green[700]!;
-      case 'cancelled':
+      case 'Cancel':
         return Colors.red[700]!;
       default:
         return Colors.grey[700]!;

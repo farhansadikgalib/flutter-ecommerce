@@ -8,6 +8,7 @@ import 'package:turi/app/core/helper/shared_value_helper.dart';
 import 'package:turi/app/data/remote/model/checkout/city_response.dart';
 import 'package:turi/app/data/remote/model/checkout/country_response.dart';
 import 'package:turi/app/data/remote/model/checkout/payment_method_response.dart';
+import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
 import 'package:turi/app/routes/app_pages.dart';
 
 import '../../../data/remote/model/checkout/order_place_request.dart';
@@ -61,7 +62,7 @@ class CheckoutController extends BaseController {
     super.onInit();
     // getShippingInfo();
     if (args != null) {
-       cartProducts.addAll(args['cartProducts']);
+      cartProducts.addAll(args['cartProducts']);
       subTotal.value = args['subTotal'];
     }
 
@@ -163,14 +164,11 @@ class CheckoutController extends BaseController {
       return;
     }
 
-
     placeOrder();
-
   }
 
   void placeOrder() async {
     printLog('place order');
-
 
     OderPlaceRequest orderRequest = OderPlaceRequest(
       saleProducts:
@@ -209,25 +207,25 @@ class CheckoutController extends BaseController {
         cityId: selectedCity.value?.id.toString(),
         notes: '',
       ),
-      paymentMethodId: 1, // Assuming 1 for Cash on Delivery
+      paymentMethodId: 1,
+      // Assuming 1 for Cash on Delivery
       customerId: int.tryParse(userId.$) ?? 0,
     );
 
+    var response = await CheckoutRepository().placeAnOrder(orderRequest);
 
-      var response = await CheckoutRepository().placeAnOrder(orderRequest);
-
-      if (response.status == 'success') {
-        Get.offAllNamed(Routes.DASHBOARD);
-        AppWidgets().getSnackBar(
-          title: 'Success',
-          message: response.message.toString(),
-        );
-      } else {
-        AppWidgets().getSnackBar(
-          title: 'Error',
-          message: response.message.toString(),
-        );
-
+    if (response.status == 'success') {
+      AppWidgets().getSnackBar(
+        title: 'Success',
+        message: response.message.toString(),
+      );
+      Get.find<CartController>().allCartProducts.clear();
+      Get.offAllNamed(Routes.DASHBOARD);
+    } else {
+      AppWidgets().getSnackBar(
+        title: 'Error',
+        message: response.message.toString(),
+      );
     }
   }
 
