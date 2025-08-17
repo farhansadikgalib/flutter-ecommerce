@@ -51,6 +51,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                       decoration: InputDecoration(
                         isDense: true,
                         hintText: 'What are you looking for?',
+                        contentPadding: EdgeInsets.only(top: 5,left: 10),
                         border: InputBorder.none,
                         suffixIcon: Icon(
                           Icons.search,
@@ -64,10 +65,10 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                           onMethod: () {
                             controller.searchProducts(value);
                           },
-                          time: 500,
+                          time: 300,
                         );
                       },
-                    ),
+                    )
                   ),
                 )
                 : globalAppBar(context, controller.itemName),
@@ -363,6 +364,18 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                     if (controller.fromSearch) {
                       return Column(
                         children: [
+                      if (controller.searchController.value.text.isEmpty)
+
+                        SizedBox(height: Get.height/1.5,child:   Center(
+                          child: Text(
+                            'Type something to search!',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),),
+
                           Expanded(
                             child: GridView.builder(
                               gridDelegate:
@@ -504,6 +517,8 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                         ],
                       );
                     }
+
+
 
                     if (controller.categoryProducts.isEmpty) {
                       return Center(

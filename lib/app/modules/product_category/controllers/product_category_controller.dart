@@ -99,11 +99,11 @@ class ProductCategoryController extends GetxController {
 
   void searchProducts(String query) async {
     if (query.isNotEmpty) {
+      searchProductList.clear();
       var response = await CategoryRepository().getSearchItems(query);
-
-      categoryProducts.clear();
-
       searchProductList.addAll(response.products ?? []);
+      searchProductList.reactive;
+      searchController.refresh();
     }
   }
 }
