@@ -9,6 +9,7 @@ import 'package:turi/app/data/remote/model/home/home_response.dart'
     hide Product, Category;
 import 'package:turi/app/data/remote/repository/home/home_repository.dart';
 
+import '../../../../generated/assets.dart';
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 
 class HomeController extends BaseController {
@@ -21,6 +22,7 @@ class HomeController extends BaseController {
   final categoriesData = <CategoryData>[].obs;
   final supplierData = <SupplierResponse>[].obs;
   final bestSellingProducts = <ProductData>[].obs;
+  final bannerImage = [Assets.pngSlider1, Assets.pngSlider2].obs;
   final Gallery3DController gallery3dController = Gallery3DController(
     itemCount: 5,
   );
@@ -57,10 +59,9 @@ class HomeController extends BaseController {
   Future<void> getSupplierData() async {
     isSupplierLoading.value = true;
     var response = await HomeRepository().getSupplierData();
-      supplierData.clear();
-      supplierData.addAll(response);
-      isSupplierLoading.value = false;
-
+    supplierData.clear();
+    supplierData.addAll(response);
+    isSupplierLoading.value = false;
   }
 
   Future<void> getBestSellingProducts() async {

@@ -131,18 +131,18 @@ class HomeView extends BaseView<HomeController> {
                     Skeletonizer(
                       enabled: controller.isLoading.value,
                       child:
-                          controller.homeElements.isNotEmpty
+                          controller.bannerImage.isNotEmpty
                               ? Stack(
                                 alignment: Alignment.bottomCenter,
                                 children: [
                                   CarouselSlider(
                                     items:
-                                        controller.homeElements.first.banners!.map((
+                                        controller.bannerImage!.map((
                                           element,
                                         ) {
                                           return AnyImageView(
                                             imagePath:
-                                                '${AppConfig.imageBasePath}${element.image}',
+                                                element,
                                             fit: BoxFit.cover,
                                           );
                                         }).toList(),
@@ -161,13 +161,12 @@ class HomeView extends BaseView<HomeController> {
                                     child: CarouselIndicator(
                                       count:
                                           controller
-                                              .homeElements
-                                              .first
-                                              .banners!
+                                              .bannerImage
                                               .length,
                                       index: controller.currentIndex.value,
                                       color: AppColors.secondaryColor,
                                       activeColor: AppColors.primaryColor,
+
                                     ),
                                   ),
                                 ],
@@ -429,7 +428,9 @@ class HomeView extends BaseView<HomeController> {
                                       ),
                                       child: AnyImageView(
                                         imagePath:
-                                            '${AppConfig.imageBasePath}${controller.supplierData[index].imagePath}',
+                                            '${AppConfig
+                                                .imageBasePath}${controller
+                                                .supplierData[index].imagePath}',
                                         height: 75.h,
                                       ),
                                     ),
