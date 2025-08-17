@@ -1,21 +1,21 @@
-import 'package:get/get.dart';
-import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
-
-import '../../cart/controllers/cart_controller.dart';
-import '../controllers/product_details_controller.dart';
-
-class ProductDetailsBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut<ProductDetailsController>(
-      () => ProductDetailsController(),
-    );
-    Get.lazyPut<CartController>(
-          () => CartController(),
-    );
-
-    Get.lazyPut<WishlistController>(
-          () => WishlistController(),
-    );
-  }
-}
+// import 'package:get/get.dart';
+// import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
+//
+// import '../../cart/controllers/cart_controller.dart';
+// import '../controllers/product_details_controller.dart';
+//
+// class ProductDetailsBinding extends Bindings {
+//   @override
+//   void dependencies() {
+//     Get.lazyPut<ProductDetailsController>(
+//       () => ProductDetailsController(),
+//     );
+//     Get.lazyPut<CartController>(
+//           () => CartController(),
+//     );
+//
+//     Get.lazyPut<WishlistController>(
+//           () => WishlistController(),
+//     );
+//   }
+// }

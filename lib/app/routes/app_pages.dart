@@ -51,11 +51,11 @@ class AppPages {
       page: () => CheckoutView(),
       binding: CheckoutBinding(),
     ),
-    GetPage(
-      name: _Paths.PRODUCT_DETAILS,
-      page: () => ProductDetailsView(),
-      binding: ProductDetailsBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.PRODUCT_DETAILS,
+    //   page: () => ProductDetailsView(),
+    //   binding: ProductDetailsBinding(),
+    // ),
     GetPage(
       name: _Paths.PRODUCT_CATEGORY,
       page: () => const ProductCategoryView(),

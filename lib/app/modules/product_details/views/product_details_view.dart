@@ -3,26 +3,74 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:turi/app/core/base/base_view.dart';
-import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
-import 'package:turi/app/modules/product_details/controllers/product_details_controller.dart';
-import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
 
 import '../../../core/config/app_config.dart';
+import '../../../core/helper/app_widgets.dart';
+import '../../../core/helper/print_log.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/product_card.dart';
-import '../../../data/remote/model/home/best_selling_product_response.dart';
+import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
+import 'package:turi/app/data/remote/model/product/product_details_response.dart'
+    hide ProductPrices, PackSize, Supplier, Category, Generic;
+import 'package:turi/app/data/remote/repository/product/product_repository.dart';
 
-class ProductDetailsView extends BaseView<ProductDetailsController> {
-  ProductDetailsView({super.key});
+import '../../../data/remote/model/product/product_review_response.dart';
+import '../../cart/controllers/cart_controller.dart';
+import '../../wishlist/controllers/wishlist_controller.dart';
+
+class ProductDetailsView extends StatefulWidget {
+  final ProductData product;
+
+  const ProductDetailsView({super.key, required this.product});
 
   @override
-  PreferredSizeWidget? appBar(BuildContext context) {
-    return null;
+  State<ProductDetailsView> createState() => _ProductDetailsViewState();
+}
+
+class _ProductDetailsViewState extends State<ProductDetailsView> {
+  final PageController pageController = PageController();
+  final currentPage = 0.obs;
+
+  ProductData get product => widget.product;
+
+  /*  final productDetails = <ProductDetails>[].obs;
+  final imageList = <ProductImage>[].obs; */
+
+  final productDetails = [].obs;
+  final imageList = [].obs;
+  final productReview = <ProductReview>[].obs;
+  final wishlistItem = false.obs;
+  final relatedProducts = <RelatedProduct>[].obs;
+
+  Future<void> getProductDetails() async {
+    productDetails.clear();
+    relatedProducts.clear();
+    var response = await ProductRepository().getProductDetails(
+      product.id.toString(),
+    );
+    productDetails.add(response.product);
+    relatedProducts.addAll(response.relatedProducts ?? []);
+    relatedProducts.refresh();
+
+    printLog('relatedProducts : ${response.relatedProducts!.length}');
+  }
+
+  void getProductReview() async {
+    var response = await ProductRepository().getProductReview(
+      product.id.toString(),
+    );
+
+    if (response.status == 200) {
+      //   productReview.addAll(response.data! as Iterable<ProductReview>);
+    } else {
+      printLog(response.message);
+      AppWidgets().getSnackBar(message: response.message.toString());
+    }
   }
 
   @override
-  Widget body(BuildContext context) {
+  Widget build(BuildContext context) {
+    getProductDetails();
     return Obx(() {
       return Scaffold(
         body: Stack(
@@ -38,24 +86,21 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                     children: [
                       // Main image carousel
                       PageView.builder(
-                        controller: controller.pageController,
+                        controller: pageController,
                         itemCount: 1,
                         onPageChanged: (index) {
-                          controller.currentPage.value = index;
+                          currentPage.value = index;
                         },
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {},
                             child: Hero(
-                              tag: 'product-${controller.product.id}',
+                              tag: 'product-${product.id}',
                               child: AnyImageView(
                                 imagePath:
-                                    controller.product.productImages != null &&
-                                            controller
-                                                .product
-                                                .productImages!
-                                                .isNotEmpty
-                                        ? '${AppConfig.imageBasePath}${controller.product.productImages![index].path}'
+                                    product.productImages != null &&
+                                            product.productImages!.isNotEmpty
+                                        ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
                                         : 'https://via.placeholder.com/350x350?text=No+Image',
                                 width: double.infinity,
                                 height: 350.h,
@@ -79,14 +124,14 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: List.generate(
-                                  controller.product.productImages?.length ?? 1,
+                                  product.productImages?.length ?? 1,
                                   (index) => GestureDetector(
                                     onTap: () {
-                                      controller.pageController.animateToPage(
-                                        index,
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.easeInOut,
-                                      );
+                                      // pageanimateToPage(
+                                      //   index,
+                                      //   duration: Duration(milliseconds: 300),
+                                      //   curve: Curves.easeInOut,
+                                      // );
                                     },
                                     child: Container(
                                       width: 50.h,
@@ -97,8 +142,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                       decoration: BoxDecoration(
                                         border: Border.all(
                                           color:
-                                              controller.currentPage.value ==
-                                                      index
+                                              currentPage.value == index
                                                   ? AppColors.primaryColor
                                                   : Colors.grey[300]!,
                                           width: 2,
@@ -113,15 +157,11 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                         ),
                                         child: AnyImageView(
                                           imagePath:
-                                              controller
-                                                              .product
-                                                              .productImages !=
-                                                          null &&
-                                                      controller
-                                                          .product
+                                              product.productImages != null &&
+                                                      product
                                                           .productImages!
                                                           .isNotEmpty
-                                                  ? '${AppConfig.imageBasePath}${controller.product.productImages![index].path}'
+                                                  ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
                                                   : 'https://via.placeholder.com/46x46?text=No+Image',
                                           width: 46.w,
                                           height: 46.h,
@@ -149,7 +189,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Category badge
-                      if (controller.product.category?.name != null)
+                      if (product.category?.name != null)
                         Container(
                           margin: EdgeInsets.only(bottom: 8.h),
                           padding: EdgeInsets.symmetric(
@@ -161,7 +201,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
-                            controller.product.category!.name!,
+                            product.category!.name!,
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
@@ -172,7 +212,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
 
                       // Product title with slightly smaller font than Amazon
                       Text(
-                        controller.product.name ?? 'Product Name',
+                        product.name ?? 'Product Name',
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w700,
@@ -181,8 +221,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                       ),
 
                       // Stock availability indicator
-                      if (controller.product.productInventories?.quantity !=
-                          null)
+                      if (product.productInventories?.quantity != null)
                         Container(
                           margin: EdgeInsets.only(bottom: 8.h),
                           child: Row(
@@ -192,8 +231,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                 size: 16.sp,
                                 color:
                                     int.parse(
-                                              controller
-                                                  .product
+                                              product
                                                   .productInventories!
                                                   .quantity
                                                   .toString(),
@@ -205,21 +243,17 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                               SizedBox(width: 4.w),
                               Text(
                                 int.parse(
-                                          controller
-                                              .product
-                                              .productInventories!
-                                              .quantity
+                                          product.productInventories!.quantity
                                               .toString(),
                                         ) >
                                         0
-                                    ? 'In Stock (${controller.product.productInventories!.quantity} available)'
+                                    ? 'In Stock (${product.productInventories!.quantity} available)'
                                     : 'Out of Stock',
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color:
                                       int.parse(
-                                                controller
-                                                    .product
+                                                product
                                                     .productInventories!
                                                     .quantity
                                                     .toString(),
@@ -236,11 +270,10 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
 
                       // Price section in Alibaba style (larger, with range format)
                       Text(
-                        controller.product.productPrices?.sellingPrice != null
-                            ? '৳${controller.product.productPrices!.sellingPrice}'
-                            : controller.product.productPrices?.sellingPrice !=
-                                null
-                            ? '৳${controller.product.productPrices!.sellingPrice}'
+                        product.productPrices?.sellingPrice != null
+                            ? '৳${product.productPrices!.sellingPrice}'
+                            : product.productPrices?.sellingPrice != null
+                            ? '৳${product.productPrices!.sellingPrice}'
                             : 'Price not available',
                         style: TextStyle(
                           fontSize: 24.sp,
@@ -267,17 +300,16 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                               borderRadius: BorderRadius.circular(2.r),
                             ),
                             child: Text(
-                              controller.product.productPrices?.sellingPrice !=
-                                          null &&
-                                      controller
-                                              .product
+                              /*         product.productPrices?.sellingPrice != null &&
+                                      product
                                               .productPrices
                                               ?.costPriceWithoutTax !=
                                           null
-                                  ? '${((double.parse(controller.product.productPrices!.costPriceWithoutTax.toString()) - double.parse(controller.product.productPrices!.sellingPrice.toString())) / double.parse(controller.product.productPrices!.costPriceWithoutTax.toString()) * 100).toStringAsFixed(0)}% OFF'
-                                  : controller.product.packSize?.vat != null
-                                  ? '${controller.product.packSize!.vat}% VAT'
-                                  : 'Special Offer',
+                                  ? '${((double.parse(product.productPrices!.costPriceWithoutTax.toString()) - double.parse(product.productPrices!.sellingPrice.toString())) / double.parse(product.productPrices!.costPriceWithoutTax.toString()) * 100).toStringAsFixed(0)}% OFF'
+                                  : product.packSize?.vat != null
+                                  ? '${product.packSize!.vat}% VAT'
+                                  : */
+                              'Special Offer',
                               style: TextStyle(
                                 fontSize: 10.sp,
                                 color: Color(0xFFFF6A00),
@@ -331,7 +363,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                 ),
                                 SizedBox(width: 6.w),
                                 Text(
-                                  'Ships from ${controller.product.supplier?.country ?? controller.product.supplier?.city ?? 'Bangladesh'}',
+                                  'Ships from ${product.supplier?.country ?? product.supplier?.city ?? 'Bangladesh'}',
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: Colors.grey[700],
@@ -348,7 +380,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                 ),
                                 SizedBox(width: 6.w),
                                 Text(
-                                  'Lead time: ${controller.product.stockBatches?.isNotEmpty == true ? '1-2'
+                                  'Lead time: ${product.stockBatches?.isNotEmpty == true ? '1-2'
                                           ' days' : '5-10 days'}',
                                   style: TextStyle(
                                     fontSize: 12.sp,
@@ -384,7 +416,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                 ),
                                 SizedBox(width: 6.w),
                                 Text(
-                                  '${controller.product.supplier?.companyName ?? 'Verified'} Seller',
+                                  '${product.supplier?.companyName ?? 'Verified'} Seller',
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: Colors.grey[700],
@@ -407,9 +439,9 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Product Features
-                      if (controller.product.generic?.name != null ||
-                          controller.product.category?.name != null ||
-                          controller.product.packSize?.quantity != null)
+                      if (product.generic?.name != null ||
+                          product.category?.name != null ||
+                          product.packSize?.quantity != null)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -432,74 +464,61 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                               child: Column(
                                 children: [
                                   // Generic Information
-                                  if (controller.product.generic?.name != null)
+                                  if (product.generic?.name != null)
                                     _buildSpecificationRow(
                                       'Generic Name',
-                                      controller.product.generic!.name!,
+                                      product.generic!.name!,
                                       isFirst: true,
                                     ),
-                                  if (controller.product.generic?.category !=
-                                      null)
+                                  if (product.generic?.category != null)
                                     _buildSpecificationRow(
                                       'Generic Category',
-                                      controller.product.generic!.category!,
+                                      product.generic!.category!,
                                     ),
 
                                   // Product Category
-                                  if (controller.product.category?.name != null)
+                                  if (product.category?.name != null)
                                     _buildSpecificationRow(
                                       'Product Category',
-                                      controller.product.category!.name!,
+                                      product.category!.name!,
                                     ),
 
                                   // Product Unit Price
-                                  if (controller
-                                          .product
-                                          .productPrices
-                                          ?.sellingPrice !=
+                                  if (product.productPrices?.sellingPrice !=
                                       null)
                                     _buildSpecificationRow(
                                       'Unit Selling Price',
-                                      '৳${controller.product.productPrices!.sellingPrice}',
+                                      '৳${product.productPrices!.sellingPrice}',
                                     ),
 
                                   // Pack Size Information
-                                  if (controller.product.packSize?.name != null)
+                                  if (product.packSize?.name != null)
                                     _buildSpecificationRow(
                                       'Pack Size Name',
-                                      controller.product.packSize!.name!,
+                                      product.packSize!.name!,
                                     ),
-                                  if (controller.product.packSize?.quantity !=
-                                      null)
+                                  if (product.packSize?.quantity != null)
                                     _buildSpecificationRow(
                                       'Pack Quantity',
-                                      '${controller.product.packSize!.quantity} ',
+                                      '${product.packSize!.quantity} ',
                                     ),
-                                  if (controller
-                                          .product
-                                          .packSize
-                                          ?.sellingPrice !=
-                                      null)
+                                  if (product.packSize?.sellingPrice != null)
                                     _buildSpecificationRow(
                                       'Pack Selling Price',
-                                      '৳${controller.product.packSize!.sellingPrice}',
+                                      '৳${product.packSize!.sellingPrice}',
                                     ),
 
                                   // Additional Product Information
-                                  if (controller
-                                          .product
-                                          .productInventories
-                                          ?.quantity !=
+                                  if (product.productInventories?.quantity !=
                                       null)
                                     _buildSpecificationRow(
                                       'Available Stock',
-                                      '${controller.product.productInventories!.quantity} units',
+                                      '${product.productInventories!.quantity} units',
                                     ),
-                                  if (controller.product.totalSoldQuantity !=
-                                      null)
+                                  if (product.totalSoldQuantity != null)
                                     _buildSpecificationRow(
                                       'Total Sold',
-                                      '${controller.product.totalSoldQuantity} units',
+                                      '${product.totalSoldQuantity} units',
                                       isLast: true,
                                     ),
                                 ],
@@ -511,16 +530,22 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                   ),
                 ),
 
-                SizedBox(height: 8.h),
-
                 Padding(
-                  padding: EdgeInsets.all(16.w),
-                  child: Text('Related Products'),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Text(
+                    'Related Products',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ),
 
                 Container(
                   height: Get.height,
-                  padding: EdgeInsets.all(16.w),
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: GridView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -529,10 +554,10 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                     ),
-                    itemCount: controller.relatedProducts.length,
+                    itemCount: relatedProducts.length,
                     itemBuilder: (BuildContext context, int index) {
                       // Dart
-                      final item = controller.relatedProducts[index];
+                      final item = relatedProducts[index];
 
                       final product = ProductData(
                         id: item.id,
@@ -688,9 +713,8 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
             Positioned(
               top: 50,
               left: 10,
-
               child: InkWell(
-                onTap: () => Get.back(),
+                onTap: () => Navigator.of(context).pop(),
                 child: CircleAvatar(
                   backgroundColor: AppColors.primaryColor,
 
@@ -730,9 +754,9 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                     Expanded(
                       child: Obx(() {
                         bool isInCart = Get.find<CartController>()
-                            .isProductInCart(controller.product.id!);
+                            .isProductInCart(product.id!);
                         int quantity = Get.find<CartController>()
-                            .getProductQuantity(controller.product.id!);
+                            .getProductQuantity(product.id!);
 
                         if (isInCart && quantity > 0) {
                           return _buildQuantitySelector(quantity);
@@ -752,21 +776,18 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                       ),
                       child: IconButton(
                         icon: Icon(
-                          controller.wishlistItem.value
+                          wishlistItem.value
                               ? Icons.favorite
                               : Icons.favorite_border,
                           color:
-                              controller.wishlistItem.value
+                              wishlistItem.value
                                   ? Colors.red
                                   : AppColors.primaryColor,
                           size: 24.sp,
                         ),
                         onPressed: () {
-                          Get.find<WishlistController>().addToWishlist(
-                            controller.product,
-                          );
-                          controller.wishlistItem.value =
-                              !controller.wishlistItem.value;
+                          Get.find<WishlistController>().addToWishlist(product);
+                          wishlistItem.value = !wishlistItem.value;
                         },
                       ),
                     ),
@@ -869,7 +890,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
         padding: EdgeInsets.symmetric(vertical: 12.h),
       ),
       onPressed: () {
-        Get.find<CartController>().addToCart(controller.product, quantity: 1);
+        Get.find<CartController>().addToCart(product, quantity: 1);
       },
       icon: Icon(Icons.shopping_bag, color: Colors.white, size: 18.sp),
       label: Text(
@@ -898,9 +919,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
         children: [
           IconButton(
             onPressed:
-                () => Get.find<CartController>().decreaseQuantity(
-                  controller.product.id!,
-                ),
+                () => Get.find<CartController>().decreaseQuantity(product.id!),
             icon: FaIcon(
               quantity == 1 ? FontAwesomeIcons.trash : FontAwesomeIcons.minus,
               size: 14.sp,
@@ -917,9 +936,7 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
           ),
           IconButton(
             onPressed: () {
-              Get.find<CartController>().increaseQuantity(
-                controller.product.id!,
-              );
+              Get.find<CartController>().increaseQuantity(product.id!);
             },
             icon: FaIcon(
               FontAwesomeIcons.plus,

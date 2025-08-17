@@ -4,8 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:any_image_view/any_image_view.dart';
 import 'package:get/get.dart';
 import 'package:turi/app/core/config/app_config.dart';
+import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
+import 'package:turi/app/modules/product_details/views/product_details_view.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../modules/cart/controllers/cart_controller.dart';
 
@@ -55,10 +57,15 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(
-          Routes.PRODUCT_DETAILS,
-          arguments: {'product': widget.product},
-        );
+        printLog('clicked: ${widget.product.name}');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ProductDetailsView(product: widget.product);
+        }));
+        // Get.to(
+        //   ProductDetailsView(),
+        //   arguments: {'product': widget.product},
+        // );
+
       },
       child: Card(
         elevation: 3,

@@ -5,6 +5,7 @@ import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/data/remote/model/home/home_response.dart';
 import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
+import 'package:turi/app/modules/product_details/views/product_details_view.dart';
 import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -82,10 +83,9 @@ class WishlistView extends GetView<WishlistController> {
                 final item = controller.wishlistItems[index];
                 return InkWell(
                   onTap: (){
-                    Get.toNamed(
-                      Routes.PRODUCT_DETAILS,
-                      arguments: {'product': item },
-                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return ProductDetailsView(product:item);
+                    }));
                   },
                   child: Card(
                     margin: const EdgeInsets.only(bottom: 16),
