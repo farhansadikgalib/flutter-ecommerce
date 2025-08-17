@@ -338,7 +338,8 @@ class CartView extends BaseView<CartController> {
                                   imagePath:
                                       product.productImages != null &&
                                               product.productImages!.isNotEmpty
-                                          ? '${AppConfig.imageBasePath}${product.productImages![0]}'
+                                          ? '${AppConfig
+                                          .imageBasePath}${product.productImages![0].path}'
                                           : '${AppConfig.imageBasePath}default.png',
                                 ),
                               ),
