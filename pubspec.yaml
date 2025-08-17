@@ -18,7 +18,7 @@ dependencies:
   url_launcher:
   shared_value:
   intl:
-  any_image_view:
+  any_image_view: ^1.6.0
   easy_debounce:
   font_awesome_flutter:
   flutter_spinkit:
