@@ -30,7 +30,8 @@ class _ProductCardState extends State<ProductCard> {
   String getProductImage() {
     if (widget.product.productImages != null &&
         widget.product.productImages!.isNotEmpty) {
-      return '${AppConfig.imageBasePath}${widget.product.productImages![0]}';
+      return '${AppConfig.imageBasePath}${widget.product.productImages?.first
+          .path}';
     }
     return '${AppConfig.imageBasePath}default.png';
   }
@@ -79,8 +80,6 @@ class _ProductCardState extends State<ProductCard> {
                   imagePath: getProductImage(),
                   height: 120,
                   width: 120,
-                  cachedNetPlaceholderHeight: 120,
-                  cachedNetPlaceholderWidth: 120,
                 ),
               ),
               SizedBox(height: 10),

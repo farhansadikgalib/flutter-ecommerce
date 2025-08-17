@@ -143,10 +143,7 @@ class HomeView extends BaseView<HomeController> {
                                           return AnyImageView(
                                             imagePath:
                                                 '${AppConfig.imageBasePath}${element.image}',
-                                            boxFit: BoxFit.cover,
-                                            cachedNetPlaceholderHeight: 150.h,
-                                            cachedNetPlaceholderWidth:
-                                                Get.width,
+                                            fit: BoxFit.cover,
                                           );
                                         }).toList(),
                                     options: CarouselOptions(

@@ -23,7 +23,7 @@ class ProductData {
   ProductPrices? productPrices;
   ProductInventories? productInventories;
   ProductLocations? productLocations;
-  List<dynamic>? productImages;
+  List<ProductImage>? productImages;
   List<StockBatch>? stockBatches;
 
   ProductData({
@@ -68,7 +68,7 @@ class ProductData {
     productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
     productInventories: json["product_inventories"] == null ? null : ProductInventories.fromJson(json["product_inventories"]),
     productLocations: json["product_locations"] == null ? null : ProductLocations.fromJson(json["product_locations"]),
-    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
+    productImages: json["product_images"] == null ? [] : List<ProductImage>.from(json["product_images"]!.map((x) => ProductImage.fromJson(x))),
     stockBatches: json["stock_batches"] == null ? [] : List<StockBatch>.from(json["stock_batches"]!.map((x) => StockBatch.fromJson(x))),
   );
 
@@ -232,6 +232,44 @@ class PackSize {
     "deleted_at": deletedAt,
   };
 }
+
+class ProductImage {
+  int? id;
+  String? productId;
+  String? path;
+  String? createdAt;
+  String? updatedAt;
+  dynamic deletedAt;
+
+  ProductImage({
+    this.id,
+    this.productId,
+    this.path,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+  });
+
+  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
+    id: json["id"],
+    productId: json["product_id"],
+    path: json["path"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    deletedAt: json["deleted_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "product_id": productId,
+    "path": path,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "deleted_at": deletedAt,
+  };
+}
+
+
 
 class ProductInventories {
   int? id;

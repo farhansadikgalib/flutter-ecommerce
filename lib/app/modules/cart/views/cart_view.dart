@@ -334,7 +334,7 @@ class CartView extends BaseView<CartController> {
                                 child: AnyImageView(
                                   height: 64,
                                   width: 64,
-                                  boxFit: BoxFit.cover,
+                                  fit: BoxFit.cover,
                                   imagePath:
                                       product.productImages != null &&
                                               product.productImages!.isNotEmpty

@@ -223,11 +223,9 @@ class OrderView extends GetView<OrderController> {
                                   child: Center(
                                     child: AnyImageView(
                                       imagePath:
-                                          '${AppConfig
-                                              .imageBasePath}',
-                                      cachedNetPlaceholderHeight: 60,
-                                      cachedNetPlaceholderWidth: 60,
-                                      boxFit: BoxFit.cover,
+                                          AppConfig
+                                              .imageBasePath,
+
                                     ),
                                   ),
                                 ),
