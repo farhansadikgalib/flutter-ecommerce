@@ -52,11 +52,13 @@ class HomeView extends BaseView<HomeController> {
       },
       child: Obx(() {
         return RefreshIndicator(
+          color: AppColors.primaryColor,
           onRefresh: () async {
             printLog('Refreshing Home View');
-            controller.getHomeData();
+            // controller.getHomeData();
             controller.getCategoriesData();
             controller.getSupplierData();
+            controller.getBestSellingProducts();
           },
           child: CustomScrollView(
             physics: AlwaysScrollableScrollPhysics(),
@@ -293,11 +295,32 @@ class HomeView extends BaseView<HomeController> {
                                           ),
                                         ],
                                       ),
-                                      child: AnyImageView(
+                            child: Container(
+                              height: 75.h,
+                              width: 75.h,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                        child: Text(
+                                controller.categoriesData[index].name != null &&
+                                controller.categoriesData[index].name!.isNotEmpty
+                                  ? controller.categoriesData[index].name![0].toUpperCase()
+                                  : '',
+                                style: TextStyle(
+                                  fontSize: 40,
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            /*          child: AnyImageView(
                                         imagePath:
-                                            '${AppConfig.imageBasePath}${controller.categoriesData[index].name}',
+                                            '${AppConfig
+                                                .imageBasePath}${controller.categoriesData[index]}',
                                         height: 75.h,
-                                      ),
+                                      ),*/
                                     ),
                                     AppWidgets().gapH(4),
                                     Text(
@@ -389,15 +412,15 @@ class HomeView extends BaseView<HomeController> {
                             scrollDirection: Axis.horizontal,
                             itemCount: controller.supplierData.length,
                             itemBuilder: (context, index) {
-                              return InkWell(
+                              return Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 15),child: InkWell(
                                 onTap: () {
                                   Get.toNamed(
                                     Routes.PRODUCT_CATEGORY,
                                     arguments: {
                                       'name':
-                                          controller
-                                              .supplierData[index]
-                                              .companyName,
+                                      controller
+                                          .supplierData[index]
+                                          .companyName,
                                       'type': 'Suppliers',
                                       'id': controller.supplierData[index].id,
                                     },
@@ -409,6 +432,30 @@ class HomeView extends BaseView<HomeController> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Container(
+                                      height: 75.h,
+                                      width: 75.h,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primaryColor.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        controller.supplierData[index].companyName !=
+                                            null &&
+                                            controller.supplierData[index]
+                                                .companyName!.isNotEmpty
+                                            ? controller
+                                            .supplierData[index].companyName
+                                        !.toUpperCase()
+                                            : '',textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    /*     Container(
                                       margin: REdgeInsets.symmetric(
                                         horizontal: 8,
                                         vertical: 6,
@@ -433,7 +480,7 @@ class HomeView extends BaseView<HomeController> {
                                                 .supplierData[index].imagePath}',
                                         height: 75.h,
                                       ),
-                                    ),
+                                    ),*/
                                     AppWidgets().gapH(4),
                                     Text(
                                       '${controller.supplierData[index].companyName}',
@@ -444,7 +491,7 @@ class HomeView extends BaseView<HomeController> {
                                     ),
                                   ],
                                 ),
-                              );
+                              ),);
                             },
                           ),
                         ),
