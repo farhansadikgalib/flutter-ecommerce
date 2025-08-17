@@ -1,4 +1,3 @@
-import 'package:any_image_view/any_image_view.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -377,13 +376,124 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                               itemBuilder: (context, index) {
                                 final item =
                                     controller.searchProductList[index];
+
                                 final product = ProductData(
                                   id: item.id,
-                                  name: item.name,
-                                  addToCart: false,
                                   quantity: 0,
+                                  addToCart: false,
+                                  addToWishlist: false,
+                                  name: item.name,
+                                  genericId: item.genericId,
                                   categoryId: item.categoryId,
+                                  supplierId: item.supplierId,
+                                  // totalSoldQuantity: item.totalSoldQuantity,
+                                  generic: item.generic != null
+                                      ? Generic(
+                                          id: item.generic!.id,
+                                          name: item.generic!.name,
+                                          category: item.generic!.category,
+                                          status: item.generic!.status,
+                                          createdBy: item.generic!.createdBy,
+                                          updatedBy: item.generic!.updatedBy,
+                                          createdAt: item.generic!.createdAt,
+                                          updatedAt: item.generic!.updatedAt,
+                                        )
+                                      : null,
+                                  category: item.category != null
+                                      ? Category(
+                                          id: item.category!.id,
+                                          name: item.category!.name,
+                                          shortOrder: item.category!.shortOrder,
+                                          createdAt: item.category!.createdAt,
+                                          updatedAt: item.category!.updatedAt,
+                                          status: item.category!.status,
+                                        )
+                                      : null,
+                                  supplier: item.supplier != null
+                                      ? Supplier(
+                                          id: item.supplier!.id,
+                                          firstName: item.supplier!.firstName,
+                                          lastName: item.supplier!.lastName,
+                                          address1: item.supplier!.address1,
+                                          address2: item.supplier!.address2,
+                                          city: item.supplier!.city,
+                                          stateOrProvince: item.supplier!.stateOrProvince,
+                                          zip: item.supplier!.zip,
+                                          country: item.supplier!.country,
+                                          comments: item.supplier!.comments,
+                                          contact: item.supplier!.contact,
+                                          email: item.supplier!.email,
+                                          companyName: item.supplier!.companyName,
+                                          accountNo: item.supplier!.accountNo,
+                                          imagePath: item.supplier!.imagePath,
+                                          status: item.supplier!.status,
+                                          createdAt: item.supplier!.createdAt,
+                                          updatedAt: item.supplier!.updatedAt,
+                                          type: item.supplier!.type,
+                                          storeAccountBalance: item.supplier!.storeAccountBalance,
+                                          payAmount: item.supplier!.payAmount,
+                                          deletedAt: item.supplier!.deletedAt,
+                                          deletedBy: item.supplier!.deletedBy,
+                                        )
+                                      : null,
+                                  packSize: item.packSize != null
+                                      ? PackSize(
+                                          id: item.packSize!.id,
+                                          productId: item.packSize!.productId,
+                                          name: item.packSize!.name,
+                                          quantity: item.packSize!.quantity,
+                                          tp: item.packSize!.tp,
+                                          vatPercent: item.packSize!.vatPercent,
+                                          vat: item.packSize!.vat,
+                                          sellingPrice: item.packSize!.sellingPrice,
+                                          defaultUnit: item.packSize!.defaultUnit,
+                                          createdAt: item.packSize!.createdAt,
+                                          updatedAt: item.packSize!.updatedAt,
+                                          deletedAt: item.packSize!.deletedAt,
+                                        )
+                                      : null,
+                                  productVariationAttributes: item.productVariationAttributes,
+                                  productVariations: item.productVariations,
+                                  productPrices: item.productPrices != null
+                                      ? ProductPrices(
+                                          id: item.productPrices!.id,
+                                          productId: item.productPrices!.productId,
+                                          costPriceWithoutTax: item.productPrices!.costPriceWithoutTax,
+                                          sellingPrice: item.productPrices!.sellingPrice,
+                                          tradePrice: item.productPrices!.tradePrice,
+                                          vat: item.productPrices!.vat,
+                                          wholesale: item.productPrices!.wholesale,
+                                          wholesaleType: item.productPrices!.wholesaleType,
+                                          promoPrice: item.productPrices!.promoPrice,
+                                          promoStartDate: item.productPrices!.promoStartDate,
+                                          promoEndDate: item.productPrices!.promoEndDate,
+                                          disableFromPriceRules: item.productPrices!.disableFromPriceRules,
+                                          allowPriceOverrideRegardlessOfPermissions: item.productPrices!.allowPriceOverrideRegardlessOfPermissions,
+                                          pricesIncludeTax: item.productPrices!.pricesIncludeTax,
+                                          onlyAllowItemsToBeSoldInWholeNumbers: item.productPrices!.onlyAllowItemsToBeSoldInWholeNumbers,
+                                          changeCostPriceDuringSale: item.productPrices!.changeCostPriceDuringSale,
+                                          overrideDefaultCommission: item.productPrices!.overrideDefaultCommission,
+                                          overrideDefaultTax: item.productPrices!.overrideDefaultTax,
+                                          createdAt: item.productPrices!.createdAt,
+                                          updatedAt: item.productPrices!.updatedAt,
+                                          deletedAt: item.productPrices!.deletedAt,
+                                          isEditableInSale: item.productPrices!.isEditableInSale,
+                                        )
+                                      : null,
+
+                                  productImages: item.productImages != null
+                                      ? item.productImages!.map((img) => ProductImage(
+                                    id: img.id,
+                                    productId: img.productId,
+                                    path: img.path,
+                                    createdAt: img.createdAt,
+                                    updatedAt: img.updatedAt,
+                                    deletedAt: img.deletedAt,
+                                  )).toList()
+                                      : [],
+
                                 );
+
                                 return ProductCard(
                                   product: product,
                                   index: index,

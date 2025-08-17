@@ -30,7 +30,7 @@ class SearchProducts {
   String? categoryId;
   String? supplierId;
   String? name;
-  String? additionalItemNumbers;
+  dynamic additionalItemNumbers;
   String? productId;
   dynamic tags;
   String? manufacturerId;
@@ -46,6 +46,7 @@ class SearchProducts {
   String? isEcommerceItem;
   String? isBarcoded;
   dynamic deletedAt;
+  Generic? generic;
   Category? category;
   Supplier? supplier;
   PackSize? packSize;
@@ -54,8 +55,7 @@ class SearchProducts {
   ProductPrices? productPrices;
   ProductInventories? productInventories;
   ProductLocations? productLocations;
-  List<dynamic>? productImages;
-  Generic? generic;
+  List<ProductImage>? productImages;
   List<StockBatch>? stockBatches;
 
   SearchProducts({
@@ -79,6 +79,7 @@ class SearchProducts {
     this.isEcommerceItem,
     this.isBarcoded,
     this.deletedAt,
+    this.generic,
     this.category,
     this.supplier,
     this.packSize,
@@ -88,7 +89,6 @@ class SearchProducts {
     this.productInventories,
     this.productLocations,
     this.productImages,
-    this.generic,
     this.stockBatches,
   });
 
@@ -113,6 +113,7 @@ class SearchProducts {
     isEcommerceItem: json["is_ecommerce_item"],
     isBarcoded: json["is_barcoded"],
     deletedAt: json["deleted_at"],
+    generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
     category: json["category"] == null ? null : Category.fromJson(json["category"]),
     supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
     packSize: json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
@@ -121,8 +122,7 @@ class SearchProducts {
     productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
     productInventories: json["product_inventories"] == null ? null : ProductInventories.fromJson(json["product_inventories"]),
     productLocations: json["product_locations"] == null ? null : ProductLocations.fromJson(json["product_locations"]),
-    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
-    generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
+    productImages: json["product_images"] == null ? [] : List<ProductImage>.from(json["product_images"]!.map((x) => ProductImage.fromJson(x))),
     stockBatches: json["stock_batches"] == null ? [] : List<StockBatch>.from(json["stock_batches"]!.map((x) => StockBatch.fromJson(x))),
   );
 
@@ -147,6 +147,7 @@ class SearchProducts {
     "is_ecommerce_item": isEcommerceItem,
     "is_barcoded": isBarcoded,
     "deleted_at": deletedAt,
+    "generic": generic?.toJson(),
     "category": category?.toJson(),
     "supplier": supplier?.toJson(),
     "pack_size": packSize?.toJson(),
@@ -155,8 +156,7 @@ class SearchProducts {
     "product_prices": productPrices?.toJson(),
     "product_inventories": productInventories?.toJson(),
     "product_locations": productLocations?.toJson(),
-    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
-    "generic": generic?.toJson(),
+    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x.toJson())),
     "stock_batches": stockBatches == null ? [] : List<dynamic>.from(stockBatches!.map((x) => x.toJson())),
   };
 }
@@ -200,9 +200,9 @@ class Category {
 class Generic {
   int? id;
   String? name;
-  String? category;
+  dynamic category;
   String? status;
-  dynamic createdBy;
+  String? createdBy;
   dynamic updatedBy;
   String? createdAt;
   String? updatedAt;
@@ -295,6 +295,42 @@ class PackSize {
     "vat": vat,
     "selling_price": sellingPrice,
     "default_unit": defaultUnit,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "deleted_at": deletedAt,
+  };
+}
+
+class ProductImage {
+  int? id;
+  String? productId;
+  String? path;
+  String? createdAt;
+  String? updatedAt;
+  dynamic deletedAt;
+
+  ProductImage({
+    this.id,
+    this.productId,
+    this.path,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+  });
+
+  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
+    id: json["id"],
+    productId: json["product_id"],
+    path: json["path"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    deletedAt: json["deleted_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "product_id": productId,
+    "path": path,
     "created_at": createdAt,
     "updated_at": updatedAt,
     "deleted_at": deletedAt,
@@ -425,7 +461,7 @@ class ProductPrices {
   String? tradePrice;
   String? vat;
   String? wholesale;
-  String? wholesaleType;
+  dynamic wholesaleType;
   dynamic promoPrice;
   dynamic promoStartDate;
   dynamic promoEndDate;
@@ -522,17 +558,17 @@ class StockBatch {
   String? productId;
   String? batchNo;
   dynamic expiryDate;
-  String? purchaseId;
-  String? purchaseProductId;
+  dynamic purchaseId;
+  dynamic purchaseProductId;
   dynamic purchaseBonusProductId;
-  String? receivedQuantity;
+  dynamic receivedQuantity;
   String? balancedQuantity;
   String? locked;
   String? createdAt;
   String? updatedAt;
   dynamic saleReturnId;
   dynamic saleReturnProductId;
-  String? cost;
+  dynamic cost;
   String? reconciliationId;
   String? reconciliationProductId;
   String? reconciliationQuantity;
@@ -631,7 +667,7 @@ class Supplier {
   dynamic imagePath;
   String? status;
   dynamic createdAt;
-  String? updatedAt;
+  dynamic updatedAt;
   String? type;
   String? storeAccountBalance;
   String? payAmount;
