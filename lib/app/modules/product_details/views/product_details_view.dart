@@ -23,7 +23,6 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
   Widget body(BuildContext context) {
     return Obx(() {
       return Scaffold(
-        // appBar: globalAppBar(context, 'Product Details'),
         body: Stack(
           children: [
             ListView(
@@ -43,28 +42,22 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                           controller.currentPage.value = index;
                         },
                         itemBuilder: (BuildContext context, int index) {
-                          String imagePath =
-                              'https://api.prabashibd'
-                              '.com/uploads/product-1737989871-7.jpg';
-                          /*                              controller.product.productImages != null &&
-                                      controller
-                                          .product
-                                          .productImages!
-                                          .isNotEmpty
-                                  ? '${AppConfig.imageBasePath}${controller.product.productImages![index]}'
-                                  : 'https://via.placeholder.com/350x350?text=No+Image';*/
-
                           return GestureDetector(
-                            onTap: () {
-                              // Image viewer/zoomer functionality
-                            },
+                            onTap: () {},
                             child: Hero(
                               tag: 'product-${controller.product.id}',
                               child: AnyImageView(
-                                imagePath: imagePath,
+                                imagePath:
+                                    controller.product.productImages != null &&
+                                            controller
+                                                .product
+                                                .productImages!
+                                                .isNotEmpty
+                                        ? '${AppConfig.imageBasePath}${controller.product.productImages![index].path}'
+                                        : 'https://via.placeholder.com/350x350?text=No+Image',
                                 width: double.infinity,
                                 height: 350.h,
-                                boxFit: BoxFit.cover,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           );
@@ -126,11 +119,11 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                                                           .product
                                                           .productImages!
                                                           .isNotEmpty
-                                                  ? '${AppConfig.imageBasePath}${controller.product.productImages![index]}'
+                                                  ? '${AppConfig.imageBasePath}${controller.product.productImages![index].path}'
                                                   : 'https://via.placeholder.com/46x46?text=No+Image',
                                           width: 46.w,
                                           height: 46.h,
-                                          boxFit: BoxFit.cover,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
@@ -517,42 +510,22 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
                 ),
 
                 SizedBox(height: 8.h),
-
-                // Supplier Information Section
-                if (controller.product.supplier != null)
-                  Container(
-                    color: Colors.white,
-                    padding: EdgeInsets.all(16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Supplier Information',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        SizedBox(height: 12.h),
-                        if (controller.product.supplier!.companyName != null)
-                          _buildInfoRow(
-                            'Company',
-                            controller.product.supplier!.companyName!,
-                          ),
-
-                        if (controller.product.supplier!.address1 != null)
-                          _buildInfoRow(
-                            'Address',
-                            controller.product.supplier!.address1!,
-                          ),
-                      ],
-                    ),
-                  ),
-
-                SizedBox(height: 8.h),
               ],
             ),
+
+            Positioned(
+                top: 50,
+                left: 10,
+
+                child: InkWell(
+                  onTap: ()=>Get.back(),
+                  child: CircleAvatar(
+                    backgroundColor: AppColors.primaryColor,
+
+                    child: Padding(
+                        padding:EdgeInsets.only(right: 5),
+                        child: Icon(Icons.arrow_back_ios_new_outlined,color: AppColors.white,)),),
+                )),
 
             // Bottom Add to Cart Bar with improved styling
             Positioned(

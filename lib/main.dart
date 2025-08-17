@@ -34,7 +34,7 @@ Future<void> main() async {
 
         return SharedValue.wrapApp(
           GetMaterialApp(
-            title: "Turi",
+            title: "E-Commerce",
             debugShowCheckedModeBanner: false,
             initialRoute: AppPages.INITIAL,
             initialBinding: InitialBinding(),
