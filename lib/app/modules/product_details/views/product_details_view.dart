@@ -234,8 +234,8 @@ class ProductDetailsView extends BaseView<ProductDetailsController> {
 
                       // Price section in Alibaba style (larger, with range format)
                       Text(
-                        controller.product.packSize?.sellingPrice != null
-                            ? '৳${controller.product.packSize!.sellingPrice}'
+                        controller.product.productPrices?.sellingPrice != null
+                            ? '৳${controller.product.productPrices!.sellingPrice}'
                             : controller.product.productPrices?.sellingPrice !=
                                 null
                             ? '৳${controller.product.productPrices!.sellingPrice}'
