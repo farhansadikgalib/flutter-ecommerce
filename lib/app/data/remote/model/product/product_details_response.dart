@@ -10,6 +10,7 @@ class ProductDetailsResponse {
   List<Category>? categories;
   List<dynamic>? generics;
   List<dynamic>? manufacturers;
+  List<RelatedProduct>? relatedProducts;
 
   ProductDetailsResponse({
     this.product,
@@ -17,6 +18,7 @@ class ProductDetailsResponse {
     this.categories,
     this.generics,
     this.manufacturers,
+    this.relatedProducts,
   });
 
   factory ProductDetailsResponse.fromJson(Map<String, dynamic> json) => ProductDetailsResponse(
@@ -25,6 +27,7 @@ class ProductDetailsResponse {
     categories: json["categories"] == null ? [] : List<Category>.from(json["categories"]!.map((x) => Category.fromJson(x))),
     generics: json["generics"] == null ? [] : List<dynamic>.from(json["generics"]!.map((x) => x)),
     manufacturers: json["manufacturers"] == null ? [] : List<dynamic>.from(json["manufacturers"]!.map((x) => x)),
+    relatedProducts: json["related_products"] == null ? [] : List<RelatedProduct>.from(json["related_products"]!.map((x) => RelatedProduct.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +36,7 @@ class ProductDetailsResponse {
     "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x.toJson())),
     "generics": generics == null ? [] : List<dynamic>.from(generics!.map((x) => x)),
     "manufacturers": manufacturers == null ? [] : List<dynamic>.from(manufacturers!.map((x) => x)),
+    "related_products": relatedProducts == null ? [] : List<dynamic>.from(relatedProducts!.map((x) => x.toJson())),
   };
 }
 
@@ -290,7 +294,7 @@ class ProductPrices {
   String? createdAt;
   String? updatedAt;
   dynamic deletedAt;
-  dynamic isEditableInSale;
+  String? isEditableInSale;
 
   ProductPrices({
     this.id,
@@ -386,12 +390,12 @@ class Supplier {
   dynamic imagePath;
   String? status;
   dynamic createdAt;
-  dynamic updatedAt;
+  String? updatedAt;
   String? type;
   String? storeAccountBalance;
   String? payAmount;
   dynamic deletedAt;
-  dynamic deletedBy;
+  String? deletedBy;
 
   Supplier({
     this.id,
@@ -469,5 +473,166 @@ class Supplier {
     "pay_amount": payAmount,
     "deleted_at": deletedAt,
     "deleted_by": deletedBy,
+  };
+}
+
+class Generic {
+  int? id;
+  String? name;
+  String? category;
+  String? status;
+  String? createdBy;
+  dynamic updatedBy;
+  String? createdAt;
+  String? updatedAt;
+
+  Generic({
+    this.id,
+    this.name,
+    this.category,
+    this.status,
+    this.createdBy,
+    this.updatedBy,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Generic.fromJson(Map<String, dynamic> json) => Generic(
+    id: json["id"],
+    name: json["name"],
+    category: json["category"],
+    status: json["status"],
+    createdBy: json["created_by"],
+    updatedBy: json["updated_by"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "category": category,
+    "status": status,
+    "created_by": createdBy,
+    "updated_by": updatedBy,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+  };
+}
+
+
+class RelatedProduct {
+  int? id;
+  String? categoryId;
+  String? supplierId;
+  String? name;
+  String? additionalItemNumbers;
+  String? productId;
+  dynamic tags;
+  String? manufacturerId;
+  String? status;
+  String? createdAt;
+  dynamic updatedAt;
+  dynamic upcEanIsbn;
+  dynamic description;
+  String? batchNo;
+  dynamic createdBy;
+  dynamic updatedBy;
+  String? genericId;
+  String? isEcommerceItem;
+  String? isBarcoded;
+  dynamic deletedAt;
+  Category? category;
+  Supplier? supplier;
+  ProductPrices? productPrices;
+  List<dynamic>? productImages;
+  Generic? generic;
+  PackSize? packSize;
+
+  RelatedProduct({
+    this.id,
+    this.categoryId,
+    this.supplierId,
+    this.name,
+    this.additionalItemNumbers,
+    this.productId,
+    this.tags,
+    this.manufacturerId,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.upcEanIsbn,
+    this.description,
+    this.batchNo,
+    this.createdBy,
+    this.updatedBy,
+    this.genericId,
+    this.isEcommerceItem,
+    this.isBarcoded,
+    this.deletedAt,
+    this.category,
+    this.supplier,
+    this.productPrices,
+    this.productImages,
+    this.generic,
+    this.packSize,
+  });
+
+  factory RelatedProduct.fromJson(Map<String, dynamic> json) => RelatedProduct(
+    id: json["id"],
+    categoryId: json["category_id"],
+    supplierId: json["supplier_id"],
+    name: json["name"],
+    additionalItemNumbers: json["additional_item_numbers"],
+    productId: json["product_id"],
+    tags: json["tags"],
+    manufacturerId: json["manufacturer_id"],
+    status: json["status"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    upcEanIsbn: json["upc_ean_isbn"],
+    description: json["description"],
+    batchNo: json["batch_no"],
+    createdBy: json["created_by"],
+    updatedBy: json["updated_by"],
+    genericId: json["generic_id"],
+    isEcommerceItem: json["is_ecommerce_item"],
+    isBarcoded: json["is_barcoded"],
+    deletedAt: json["deleted_at"],
+    category: json["category"] == null ? null : Category.fromJson(json["category"]),
+    supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
+    productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
+    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
+    generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
+    packSize: json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "category_id": categoryId,
+    "supplier_id": supplierId,
+    "name": name,
+    "additional_item_numbers": additionalItemNumbers,
+    "product_id": productId,
+    "tags": tags,
+    "manufacturer_id": manufacturerId,
+    "status": status,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "upc_ean_isbn": upcEanIsbn,
+    "description": description,
+    "batch_no": batchNo,
+    "created_by": createdBy,
+    "updated_by": updatedBy,
+    "generic_id": genericId,
+    "is_ecommerce_item": isEcommerceItem,
+    "is_barcoded": isBarcoded,
+    "deleted_at": deletedAt,
+    "category": category?.toJson(),
+    "supplier": supplier?.toJson(),
+    "product_prices": productPrices?.toJson(),
+    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
+    "generic": generic,
+    "pack_size": packSize?.toJson(),
   };
 }
