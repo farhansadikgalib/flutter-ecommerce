@@ -1,5 +1,6 @@
 import 'package:turi/app/data/remote/model/product/product_details_response.dart';
 import 'package:turi/app/data/remote/model/product/product_review_response.dart';
+import 'package:turi/app/data/remote/model/product/related_product_response.dart';
 
 import '../../../../network_service/api_client.dart';
 import '../../../../network_service/api_end_points.dart';
@@ -25,5 +26,16 @@ class ProductRepository{
     );
 
     return productReviewResponseFromJson(response.toString());
+  }
+
+  Future<RelatedProductResponse> getRelatedProduct(String genericId) async {
+    var response = await ApiClient().get(
+      ApiEndPoints.relatedProduct(genericId: genericId),
+      getRelatedProduct,
+      isHeaderRequired: false,
+      isLoaderRequired: false,
+    );
+
+    return relatedProductResponseFromJson(response.toString());
   }
 }

@@ -1,8 +1,6 @@
-
 import 'dart:ffi';
 
 class ApiEndPoints {
-
   //Authentication
   static String login = "user-login";
   static String signup = "user-register";
@@ -10,6 +8,7 @@ class ApiEndPoints {
   static String forgetPassword = "user/forgot-password";
   static String updatePassword = "user/update-password";
   static String logout = "user/logout";
+
   //Authentication
 
   //Home
@@ -20,22 +19,15 @@ class ApiEndPoints {
 
   //Home
 
-
   //Product
-  static String productDetails({
-    required String productId,
-  }) =>
+  static String productDetails({required String productId}) =>
       "product-show/$productId";
 
-
-  static String productReview({
-    required String productId,
-  }) =>
+  static String productReview({required String productId}) =>
       "reviews/$productId?order_by=created_at&type=desc";
 
-
-
-
+  static String relatedProduct({required String genericId}) =>
+      "product-generic-wise/$genericId";
 
   //Checkout
   static String setShippingAddress = "user/address/action";
@@ -45,63 +37,49 @@ class ApiEndPoints {
   //Checkout
 
   //Category
-  static String categoryProductList({
-    required int categoryId,
-  }) =>
+  static String categoryProductList({required int categoryId}) =>
       "product-category-wise/$categoryId";
 
-  static String supplierProductList({
-    required int categoryId,
-  }) =>
+  static String supplierProductList({required int categoryId}) =>
       "product-supplier-wise/$categoryId";
 
   //Category
 
+  // Search
 
-// Search
-
-  static String searchProduct({
-    required String query,
-  }) =>
+  static String searchProduct({required String query}) =>
       "products/search?term=$query";
 
-// Search
+  // Search
 
+  //order
+  static String allOrders = "all-order-list-paginated";
 
-//order
-static String allOrders = "all-order-list-paginated";
-  static String trackOrder({
-    required String orderId,
-  }) =>
+  static String trackOrder({required String orderId}) =>
       "order-tracking?sale_code=$orderId";
 
-  static String cancelOrder({
-    required String orderId,
-  }) =>
+  static String cancelOrder({required String orderId}) =>
       "sale/request-to-suspend/$orderId";
-//order
 
-//wishlist
+  //order
 
-static String wishlistItems = "user/wishlist/all?order_by=created_at&type=desc";
-static String addToWishlist = "user/wishlist/action";
+  //wishlist
 
-//wishlist
+  static String wishlistItems =
+      "user/wishlist/all?order_by=created_at&type=desc";
+  static String addToWishlist = "user/wishlist/action";
 
-//cart
+  //wishlist
 
-//Checkout
+  //cart
 
+  //Checkout
 
   static String paymentMethods = "all-payment-methods";
   static String country = "country/search";
-  static String city ({
-    required String countryId,
-  }) =>
+
+  static String city({required String countryId}) =>
       "city/search?country_id=$countryId";
 
-
-//Checkout
-
-
+  //Checkout
 }
