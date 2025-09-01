@@ -771,6 +771,7 @@ class HomeView extends BaseView<HomeController> {
                     return ProductCard(
                       product: controller.bestSellingProducts[index],
                       index: index,
+                      promoPrice: '',
                     );
                   }, childCount: controller.bestSellingProducts.length),
                 ),
