@@ -805,12 +805,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   ? item.productImages!
                                       .map(
                                         (img) => ProductImage(
-                                          id: img.id??'',
-                                          productId: img.productId,
-                                          path: img.path,
-                                          createdAt: img.createdAt,
-                                          updatedAt: img.updatedAt,
-                                          deletedAt: img.deletedAt,
+                                          id: index+1,
+                                          productId: img['productId'],
+                                          path: img['path'],
+                                          createdAt: img['createdAt'],
+                                          updatedAt: img['updatedAt'],
+                                          deletedAt: img['deletedAt'],
                                         ),
                                       )
                                       .toList()

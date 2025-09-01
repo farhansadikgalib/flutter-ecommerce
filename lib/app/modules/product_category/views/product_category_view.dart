@@ -19,10 +19,11 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldKey = GlobalKey<ScaffoldState>();
     Get.put(CartController);
     return Obx(() {
       return Scaffold(
-        key: controller.scaffoldKey,
+        key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar:
             controller.fromSearch
@@ -565,7 +566,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                 top: MediaQuery.of(context).size.height / 2 - 28,
                 child: InkWell(
                   onTap: () {
-                    controller.scaffoldKey.currentState?.openDrawer();
+                    scaffoldKey.currentState?.openDrawer();
                   },
                   child: Container(
                     padding: REdgeInsets.symmetric(horizontal: 12, vertical: 8),

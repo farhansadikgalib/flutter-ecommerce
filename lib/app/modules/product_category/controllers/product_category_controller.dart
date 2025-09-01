@@ -10,7 +10,6 @@ import '../../../data/remote/model/category/categorywiseproducts_response.dart';
 import '../../cart/controllers/cart_controller.dart';
 
 class ProductCategoryController extends GetxController {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final DebounceHelper debounceHelper = DebounceHelper();
   final priceRange = RangeValues(0, 1000).obs;
   final category = <CategoryWiseProduct>[].obs;

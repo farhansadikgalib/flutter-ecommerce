@@ -54,18 +54,15 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   String getOfferedPrice() {
-    // Example: if you have an offer price, otherwise use selling price
-    return widget.product.productPrices?.promoPrice?.toString() ??
-        getSellingPrice();
+    return widget.promoPrice ?? getSellingPrice();
   }
 
   /// Returns a tuple: (percent, label) where label is 'OFF' or 'UP'
   Map<String, dynamic>? getDiscountInfo() {
-    final selling = double.parse(getSellingPrice());
-    final promo = double.parse(widget.promoPrice);
-
-    printLog('Selling: $selling, Promo: $promo');
-    if (selling != null && promo != null && promo != selling) {
+    final selling = double.tryParse(getOfferedPrice()) ?? 0;
+    final promo = double.tryParse(getSellingPrice()) ?? 0;
+    // Only show discount if both prices are > 0 and not equal
+    if (selling > 0 && promo > 0 && promo != selling) {
       double percent = ((promo - selling).abs() / selling) * 100;
       String label = promo < selling ? 'OFF' : 'UP';
       return {'percent': percent, 'label': label};
@@ -161,27 +158,10 @@ class _ProductCardState extends State<ProductCard> {
                 ),
               ),
               SizedBox(height: 6),
-              Row(
-                children: [
-                  if (getSellingPrice() != getOfferedPrice())
-                    Text(
-                      '${getSellingPrice()} BDT',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                  SizedBox(width: 6),
-                  Text(
-                    '${getOfferedPrice()} BDT',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: AppColors.primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+
+              Text(
+                '${getSellingPrice()} BDT',
+                style: TextStyle(fontSize: 15, color: AppColors.primaryColor),
               ),
               Spacer(),
               // Cart Section - Show quantity selector if in cart, otherwise show add button
