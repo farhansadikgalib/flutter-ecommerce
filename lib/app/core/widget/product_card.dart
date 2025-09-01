@@ -14,8 +14,14 @@ import '../../modules/cart/controllers/cart_controller.dart';
 class ProductCard extends StatefulWidget {
   final ProductData product;
   final int index;
+  final promoPrice; // Example promo price
 
-  const ProductCard({super.key, required this.product, required this.index});
+  const ProductCard({
+    super.key,
+    required this.product,
+    required this.index,
+    this.promoPrice,
+  });
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -27,13 +33,13 @@ class _ProductCardState extends State<ProductCard> {
   @override
   void initState() {
     super.initState();
+    getDiscountInfo();
   }
 
   String getProductImage() {
     if (widget.product.productImages != null &&
         widget.product.productImages!.isNotEmpty) {
-      return '${AppConfig.imageBasePath}${widget.product.productImages?.first
-          .path}';
+      return '${AppConfig.imageBasePath}${widget.product.productImages?.first.path}';
     }
     return '${AppConfig.imageBasePath}default.png';
   }
@@ -53,19 +59,33 @@ class _ProductCardState extends State<ProductCard> {
         getSellingPrice();
   }
 
+  /// Returns a tuple: (percent, label) where label is 'OFF' or 'UP'
+  Map<String, dynamic>? getDiscountInfo() {
+    final selling = double.parse(getSellingPrice());
+    final promo = double.parse(widget.promoPrice);
+
+    printLog('Selling: $selling, Promo: $promo');
+    if (selling != null && promo != null && promo != selling) {
+      double percent = ((promo - selling).abs() / selling) * 100;
+      String label = promo < selling ? 'OFF' : 'UP';
+      return {'percent': percent, 'label': label};
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         printLog('clicked: ${widget.product.name}');
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetailsView(product: widget.product);
-        }));
-        // Get.to(
-        //   ProductDetailsView(),
-        //   arguments: {'product': widget.product},
-        // );
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ProductDetailsView(product: widget.product);
+            },
+          ),
+        );
       },
       child: Card(
         elevation: 3,
@@ -76,18 +96,53 @@ class _ProductCardState extends State<ProductCard> {
             width: 1,
           ),
         ),
-       
+
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(
-                child: AnyImageView(
-                  imagePath: getProductImage(),
-                  height: 120,
-                  width: 120,
-                ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  AnyImageView(
+                    imagePath: getProductImage(),
+                    height: 120,
+                    width: 120,
+                    borderRadius: BorderRadius.circular(16),
+                    errorWidget: FlutterLogo(),
+                  ),
+                  if (widget.promoPrice.toString().isNotEmpty &&
+                      getDiscountInfo() != null)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color:
+                              getDiscountInfo()!['label'] == 'OFF'
+                                  ? Colors.redAccent
+                                  : AppColors.primaryColor,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomRight: Radius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          '${getDiscountInfo()!['percent'].toStringAsFixed(0)}% ${getDiscountInfo()!['label']}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
               SizedBox(height: 10),
               FittedBox(
@@ -144,7 +199,6 @@ class _ProductCardState extends State<ProductCard> {
                   return _buildAddToCartButton();
                 }
               }),
-
             ],
           ),
         ),
@@ -200,11 +254,10 @@ class _ProductCardState extends State<ProductCard> {
             ),
           ),
           IconButton(
-            onPressed:
-                () {
-                  cartController.increaseQuantity(widget.product.id!);
-                  widget.product.reactive;
-                },
+            onPressed: () {
+              cartController.increaseQuantity(widget.product.id!);
+              widget.product.reactive;
+            },
             icon: FaIcon(
               FontAwesomeIcons.plus,
               size: 14,

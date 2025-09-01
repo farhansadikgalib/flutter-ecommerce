@@ -670,7 +670,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         // Dart
                         final item = relatedProducts[index];
 
-                        final product = ProductData(
+                        final relatedProduct = ProductData(
                           id: item.id,
                           quantity: 0,
                           addToCart: false,
@@ -816,7 +816,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       .toList()
                                   : [],
                         );
-                        return ProductCard(product: product, index: index);
+                        return ProductCard(product: relatedProduct, index: index,promoPrice: product.productPrices?.sellingPrice,);
                       },
                     ),
                   );
@@ -913,34 +913,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         ),
       );
     });
-  }
-
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 8.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 80.w,
-            child: Text(
-              '$label:',
-              style: TextStyle(
-                fontSize: 13.sp,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(fontSize: 13.sp, color: Colors.black87),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildSpecificationRow(
