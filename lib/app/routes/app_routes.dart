@@ -13,6 +13,7 @@ abstract class Routes {
   static const ORDER = _Paths.ORDER;
   static const PROFILE = _Paths.PROFILE;
   static const WISHLIST = _Paths.WISHLIST;
+  static const TRANSACTIONS = _Paths.TRANSACTIONS;
 }
 
 abstract class _Paths {
@@ -28,4 +29,5 @@ abstract class _Paths {
   static const ORDER = '/order';
   static const PROFILE = '/profile';
   static const WISHLIST = '/wishlist';
+  static const TRANSACTIONS = '/transactions';
 }

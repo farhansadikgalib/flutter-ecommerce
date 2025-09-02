@@ -20,6 +20,8 @@ import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/transactions/bindings/transactions_binding.dart';
+import '../modules/transactions/views/transactions_view.dart';
 import '../modules/wishlist/bindings/wishlist_binding.dart';
 import '../modules/wishlist/views/wishlist_view.dart';
 
@@ -85,6 +87,11 @@ class AppPages {
       name: _Paths.WISHLIST,
       page: () => const WishlistView(),
       binding: WishlistBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRANSACTIONS,
+      page: () => const TransactionsView(),
+      binding: TransactionsBinding(),
     ),
   ];
 }

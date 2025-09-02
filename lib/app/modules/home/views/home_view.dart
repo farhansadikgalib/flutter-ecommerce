@@ -89,24 +89,29 @@ class HomeView extends BaseView<HomeController> {
                               ),
 
                               Spacer(),
-                              Container(
-                                padding: REdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryColor.withOpacity(
-                                    0.1,
+                              InkWell(
+                                onTap: () {
+                                  Get.toNamed(Routes.TRANSACTIONS);
+                                },
+                                child: Container(
+                                  padding: REdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryColor.withOpacity(
+                                      0.1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8).r,
+                                    border: Border.all(
+                                      color: AppColors.primaryColor,
+                                      width: 2,
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(8).r,
-                                  border: Border.all(
-                                    color: AppColors.primaryColor,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Text(
-                                  '৳ 9999 ',
-                                  style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                  child: Text(
+                                    '৳ 9999 ',
+                                    style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ),
                               ),
