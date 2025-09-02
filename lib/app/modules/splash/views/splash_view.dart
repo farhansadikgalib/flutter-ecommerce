@@ -9,6 +9,7 @@ import '../controllers/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
   const SplashView({super.key});
+
   @override
   Widget build(BuildContext context) {
     controller.initializeApp();
@@ -16,21 +17,17 @@ class SplashView extends GetView<SplashController> {
       body: Center(
         child: AnimationConfiguration.synchronized(
           duration: const Duration(milliseconds: 2000),
-          child:
-          FadeInAnimation(
+          child: FadeInAnimation(
             child: ScaleAnimation(
               child: AnyImageView(
                 imagePath: Assets.pngLogo,
-                height: 100,
-                width: 100,
+                height: 125,
                 fit: BoxFit.contain,
-
               ),
-            )
-
+            ),
           ),
-        ),)
-
+        ),
+      ),
     );
   }
 }
