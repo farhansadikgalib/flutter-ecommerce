@@ -12,7 +12,9 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:turi/app/core/config/app_config.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:turi/app/core/helper/print_log.dart';
+import 'package:turi/app/core/helper/webview_helper.dart';
 import 'package:turi/app/routes/app_pages.dart';
+import 'package:turi/generated/assets.dart';
 import '../../../core/base/base_view.dart';
 import '../../../core/helper/dialog_helper.dart';
 import '../../../core/style/app_colors.dart';
@@ -63,62 +65,110 @@ class HomeView extends BaseView<HomeController> {
           child: CustomScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             slivers: [
-              // Pinned Search Bar as SliverAppBar
               SliverAppBar(
-                pinned: true,
+                pinned: false,
                 floating: true,
-                snap: true,
+                snap: false,
                 elevation: 0,
                 backgroundColor: Colors.white,
-                expandedHeight: 75.h,
-                automaticallyImplyLeading: false,
+                expandedHeight: 85.h,
+                automaticallyImplyLeading: true,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
-                    margin: REdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    margin: REdgeInsets.symmetric(horizontal: 10, vertical: 0),
 
                     color: Colors.white,
                     child: SafeArea(
-                      child: Skeletonizer(
-                        enabled: controller.isLoading.value,
-                        child: InkWell(
-                          onTap: () {
-                            Get.toNamed(
-                              Routes.PRODUCT_CATEGORY,
-                              arguments: {
-                                'name': 'Search',
-                                'type': 'Search',
-                                'id': '0',
-                              },
-                            );
-                          },
-                          child: Container(
-                            height: 40.h,
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: AppColors.gray,
-                                width: 1,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              AnyImageView(
+                                imagePath: Assets.pngLogo,
+                                height: 35.h,
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.magnifyingGlass,
-                                  color: AppColors.primaryColor,
-                                ),
-                                AppWidgets().gapW8(),
-                                Text(
-                                  'What are you looking for?',
-                                  style: TextStyle(
+
+                              Spacer(),
+                              Container(
+                                padding: REdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor.withOpacity(
+                                    0.1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8).r,
+                                  border: Border.all(
                                     color: AppColors.primaryColor,
-                                    fontWeight: FontWeight.w700,
+                                    width: 2,
                                   ),
                                 ),
-                              ],
+                                child: Text(
+                                  '৳ 9999 ',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              AppWidgets().gapW8(),
+                              IconButton(
+                                icon: Icon(
+                                  FontAwesomeIcons.facebookMessenger,
+                                  color: AppColors.primaryColor,
+                                ),
+                                onPressed: () {
+                                  launchURL(
+                                    'https://m.me/chaardik.chaardik.7',
+                                    true,
+                                  );
+                                },
+                                tooltip: 'Message us on Messenger',
+                              ),
+                            ],
+                          ),
+                          Skeletonizer(
+                            enabled: controller.isLoading.value,
+                            child: InkWell(
+                              onTap: () {
+                                Get.toNamed(
+                                  Routes.PRODUCT_CATEGORY,
+                                  arguments: {
+                                    'name': 'Search',
+                                    'type': 'Search',
+                                    'id': '0',
+                                  },
+                                );
+                              },
+                              child: Container(
+                                height: 40.h,
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: AppColors.gray,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    FaIcon(
+                                      FontAwesomeIcons.magnifyingGlass,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                    AppWidgets().gapW8(),
+                                    Text(
+                                      'What are you looking for?',
+                                      style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
@@ -139,12 +189,9 @@ class HomeView extends BaseView<HomeController> {
                                 children: [
                                   CarouselSlider(
                                     items:
-                                        controller.bannerImage!.map((
-                                          element,
-                                        ) {
+                                        controller.bannerImage.map((element) {
                                           return AnyImageView(
-                                            imagePath:
-                                                element,
+                                            imagePath: element,
                                             fit: BoxFit.cover,
                                           );
                                         }).toList(),
@@ -161,14 +208,10 @@ class HomeView extends BaseView<HomeController> {
                                   Positioned(
                                     bottom: 15,
                                     child: CarouselIndicator(
-                                      count:
-                                          controller
-                                              .bannerImage
-                                              .length,
+                                      count: controller.bannerImage.length,
                                       index: controller.currentIndex.value,
                                       color: AppColors.secondaryColor,
                                       activeColor: AppColors.primaryColor,
-
                                     ),
                                   ),
                                 ],
@@ -295,27 +338,39 @@ class HomeView extends BaseView<HomeController> {
                                           ),
                                         ],
                                       ),
-                            child: Container(
-                              height: 75.h,
-                              width: 75.h,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                        child: Text(
-                                controller.categoriesData[index].name != null &&
-                                controller.categoriesData[index].name!.isNotEmpty
-                                  ? controller.categoriesData[index].name![0].toUpperCase()
-                                  : '',
-                                style: TextStyle(
-                                  fontSize: 40,
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            /*          child: AnyImageView(
+                                      child: Container(
+                                        height: 75.h,
+                                        width: 75.h,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primaryColor
+                                              .withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          controller
+                                                          .categoriesData[index]
+                                                          .name !=
+                                                      null &&
+                                                  controller
+                                                      .categoriesData[index]
+                                                      .name!
+                                                      .isNotEmpty
+                                              ? controller
+                                                  .categoriesData[index]
+                                                  .name![0]
+                                                  .toUpperCase()
+                                              : '',
+                                          style: TextStyle(
+                                            fontSize: 40,
+                                            color: AppColors.primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      /*          child: AnyImageView(
                                         imagePath:
                                             '${AppConfig
                                                 .imageBasePath}${controller.categoriesData[index]}',
@@ -412,50 +467,64 @@ class HomeView extends BaseView<HomeController> {
                             scrollDirection: Axis.horizontal,
                             itemCount: controller.supplierData.length,
                             itemBuilder: (context, index) {
-                              return Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 15),child: InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                    Routes.PRODUCT_CATEGORY,
-                                    arguments: {
-                                      'name':
-                                      controller
-                                          .supplierData[index]
-                                          .companyName,
-                                      'type': 'Suppliers',
-                                      'id': controller.supplierData[index].id,
-                                    },
-                                  );
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      height: 75.h,
-                                      width: 75.h,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryColor.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Text(
-                                        controller.supplierData[index].companyName !=
-                                            null &&
-                                            controller.supplierData[index]
-                                                .companyName!.isNotEmpty
-                                            ? controller
-                                            .supplierData[index].companyName
-                                        !.toUpperCase()
-                                            : '',textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold,
+                              return Padding(
+                                padding: EdgeInsetsGeometry.symmetric(
+                                  horizontal: 15,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Get.toNamed(
+                                      Routes.PRODUCT_CATEGORY,
+                                      arguments: {
+                                        'name':
+                                            controller
+                                                .supplierData[index]
+                                                .companyName,
+                                        'type': 'Suppliers',
+                                        'id': controller.supplierData[index].id,
+                                      },
+                                    );
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        height: 75.h,
+                                        width: 75.h,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primaryColor
+                                              .withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          controller
+                                                          .supplierData[index]
+                                                          .companyName !=
+                                                      null &&
+                                                  controller
+                                                      .supplierData[index]
+                                                      .companyName!
+                                                      .isNotEmpty
+                                              ? controller
+                                                  .supplierData[index]
+                                                  .companyName!
+                                                  .toUpperCase()
+                                              : '',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: AppColors.primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    /*     Container(
+                                      /*     Container(
                                       margin: REdgeInsets.symmetric(
                                         horizontal: 8,
                                         vertical: 6,
@@ -481,17 +550,18 @@ class HomeView extends BaseView<HomeController> {
                                         height: 75.h,
                                       ),
                                     ),*/
-                                    AppWidgets().gapH(4),
-                                    Text(
-                                      '${controller.supplierData[index].companyName}',
-                                      style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                      AppWidgets().gapH(4),
+                                      Text(
+                                        '${controller.supplierData[index].companyName}',
+                                        style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),);
+                              );
                             },
                           ),
                         ),
@@ -775,13 +845,10 @@ class HomeView extends BaseView<HomeController> {
                   }, childCount: controller.bestSellingProducts.length),
                 ),
               ),
-
             ],
           ),
         );
       }),
     );
   }
-
-
 }

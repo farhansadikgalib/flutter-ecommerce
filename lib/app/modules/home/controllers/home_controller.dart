@@ -22,7 +22,7 @@ class HomeController extends BaseController {
   final categoriesData = <CategoryData>[].obs;
   final supplierData = <SupplierResponse>[].obs;
   final bestSellingProducts = <ProductData>[].obs;
-  final bannerImage = [Assets.pngSlider1, Assets.pngSlider2].obs;
+  final bannerImage = [Assets.pngB1, Assets.pngB2,Assets.pngB3].obs;
   final Gallery3DController gallery3dController = Gallery3DController(
     itemCount: 5,
   );
