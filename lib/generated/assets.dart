@@ -2,9 +2,10 @@
 class Assets {
   Assets._();
 
+  static const String pngB1 = 'assets/png/b1.png';
+  static const String pngB2 = 'assets/png/b2.png';
+  static const String pngB3 = 'assets/png/b3.png';
   static const String pngLogo = 'assets/png/logo.png';
-  static const String pngSlider1 = 'assets/png/slider1.jpeg';
-  static const String pngSlider2 = 'assets/png/slider2.jpeg';
   static const String turi = '.env';
 
 }
