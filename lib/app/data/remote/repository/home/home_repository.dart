@@ -1,3 +1,4 @@
+import 'package:turi/app/data/remote/model/category/ecom_categories_response.dart';
 import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:turi/app/data/remote/model/home/supplier_response.dart';
 import 'package:turi/app/data/remote/model/home/category_response.dart';
@@ -49,5 +50,16 @@ class HomeRepository {
     );
 
     return bestSellingProductResponseFromJson(response.toString());
+  }
+
+  Future<List<EcomCategoriesResponse>> getEcomCategories() async {
+    var response = await ApiClient().get(
+      ApiEndPoints.ecomCategories,
+      getEcomCategories,
+      isHeaderRequired: true,
+      isLoaderRequired: false,
+    );
+
+    return ecomCategoriesResponseFromJson(response.toString());
   }
 }

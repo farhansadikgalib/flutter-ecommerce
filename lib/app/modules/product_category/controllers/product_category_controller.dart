@@ -40,7 +40,9 @@ class ProductCategoryController extends GetxController {
     } else if (type == 'Suppliers') {
       getSupplierWiseProducts(id);
     } else if (type == 'Search') {
-      searchFocusNode.requestFocus();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        searchFocusNode.requestFocus();
+      });
     }
   }
 

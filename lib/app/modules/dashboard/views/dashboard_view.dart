@@ -17,6 +17,7 @@ import 'package:turi/app/modules/wishlist/views/wishlist_view.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../cart/views/cart_view.dart';
 import '../controllers/dashboard_controller.dart';
+import 'categories_view.dart';
 
 class DashboardView extends GetView<DashboardController> {
   const DashboardView({super.key});
@@ -24,7 +25,8 @@ class DashboardView extends GetView<DashboardController> {
   List<Widget> _buildScreens() {
     return [
       HomeView(),
-      if (isLoggedIn.$) WishlistView() else LoginView(),
+      // if (isLoggedIn.$) WishlistView() else LoginView(),
+      CategoriesView(),
       if (isLoggedIn.$) CartView() else LoginView(),
       if (isLoggedIn.$) OrderView() else LoginView(),
       if (isLoggedIn.$) ProfileView() else LoginView(),
@@ -39,9 +41,15 @@ class DashboardView extends GetView<DashboardController> {
         activeColorPrimary: AppColors.primaryColor,
         inactiveColorPrimary: Colors.grey,
       ),
+      // PersistentBottomNavBarItem(
+      //   icon: Icon(Icons.favorite),
+      //   title: ("Wishlist"),
+      //   activeColorPrimary: AppColors.primaryColor,
+      //   inactiveColorPrimary: Colors.grey,
+      // ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.favorite),
-        title: ("Wishlist"),
+        icon: Icon(Icons.category),
+        title: ("Categories"),
         activeColorPrimary: AppColors.primaryColor,
         inactiveColorPrimary: Colors.grey,
       ),

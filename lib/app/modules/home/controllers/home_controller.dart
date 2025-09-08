@@ -10,6 +10,7 @@ import 'package:turi/app/data/remote/model/home/home_response.dart'
 import 'package:turi/app/data/remote/repository/home/home_repository.dart';
 
 import '../../../../generated/assets.dart';
+import '../../../data/remote/model/category/ecom_categories_response.dart';
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 
 class HomeController extends BaseController {
@@ -34,6 +35,7 @@ class HomeController extends BaseController {
     getCategoriesData();
     getSupplierData();
     getBestSellingProducts();
+
   }
 
   Future<void> getHomeData() async {
@@ -79,4 +81,6 @@ class HomeController extends BaseController {
       );
     }
   }
+
+
 }

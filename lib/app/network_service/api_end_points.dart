@@ -16,6 +16,7 @@ class ApiEndPoints {
   static String categories = "category_all";
   static String supplier = "all-supplier";
   static String bestSellingProduct = "best-selling-product";
+  static String ecomCategories = "all-ecom-categories";
 
   //Home
 

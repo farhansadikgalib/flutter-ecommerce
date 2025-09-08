@@ -26,53 +26,53 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
         key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar:
-            controller.fromSearch
-                ? AppBar(
-                  elevation: 0.0,
-                  titleSpacing: -20,
-                  centerTitle: false,
-                  backgroundColor: AppColors.white,
-                  leading: InkWell(
-                    onTap: () => Get.back(),
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: AppColors.primaryColor,
-                    ),
+        controller.fromSearch
+            ? AppBar(
+          elevation: 0.0,
+          titleSpacing: -20,
+          centerTitle: false,
+          backgroundColor: AppColors.white,
+          leading: InkWell(
+            onTap: () => Get.back(),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.primaryColor,
+            ),
+          ),
+          title: Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              height: 50.h,
+              width: Get.width / 1.10,
+              padding: REdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: TextField(
+                cursorColor: AppColors.primaryColor,
+                cursorHeight: 20,
+                controller: controller.searchController.value,
+                focusNode: controller.searchFocusNode,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: 'What are you looking for?',
+                  contentPadding: EdgeInsets.only(top: 5,left: 10),
+                  border: InputBorder.none,
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: AppColors.primaryColor,
+                    size: 30,
                   ),
-                  title: Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    height: 50.h,
-                    width: Get.width / 1.10,
-                    padding: REdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: TextField(
-                      cursorColor: AppColors.primaryColor,
-                      cursorHeight: 20,
-                      controller: controller.searchController.value,
-                      focusNode: controller.searchFocusNode,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        hintText: 'What are you looking for?',
-                        contentPadding: EdgeInsets.only(top: 5,left: 10),
-                        border: InputBorder.none,
-                        suffixIcon: Icon(
-                          Icons.search,
-                          color: AppColors.primaryColor,
-                          size: 30,
-                        ),
-                      ),
-                      onChanged: (value) {
-                        controller.debounceHelper.debounce(
-                          tag: DebounceHelper.searchTextTag,
-                          onMethod: () {
-                            controller.searchProducts(value);
-                          },
-                          time: 300,
-                        );
-                      },
-                    )
-                  ),
-                )
-                : globalAppBar(context, controller.itemName),
+                ),
+                onChanged: (value) {
+                  controller.debounceHelper.debounce(
+                    tag: DebounceHelper.searchTextTag,
+                    onMethod: () {
+                      controller.searchProducts(value);
+                    },
+                    time: 300,
+                  );
+                },
+              )
+          ),
+        )
+            : globalAppBar(context, controller.itemName),
         drawer: Drawer(
           child: Column(
             children: [
@@ -121,26 +121,26 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                       ),
                     ),
                     Obx(
-                      () => Column(
+                          () => Column(
                         children:
-                            controller.brands
-                                .map(
-                                  (brand) => CheckboxListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    activeColor: AppColors.primaryColor,
-                                    dense: true,
-                                    title: Text(brand.title ?? ''),
-                                    value: brand.isSelected ?? false,
-                                    onChanged: (value) {
-                                      brand.isSelected = value;
-                                      printLog(
-                                        'Selected Brand ID: ${brand.id}',
-                                      );
-                                      controller.brands.refresh();
-                                    },
-                                  ),
-                                )
-                                .toList(),
+                        controller.brands
+                            .map(
+                              (brand) => CheckboxListTile(
+                            contentPadding: EdgeInsets.zero,
+                            activeColor: AppColors.primaryColor,
+                            dense: true,
+                            title: Text(brand.title ?? ''),
+                            value: brand.isSelected ?? false,
+                            onChanged: (value) {
+                              brand.isSelected = value;
+                              printLog(
+                                'Selected Brand ID: ${brand.id}',
+                              );
+                              controller.brands.refresh();
+                            },
+                          ),
+                        )
+                            .toList(),
                       ),
                     ),
                     Divider(),
@@ -153,26 +153,26 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                       ),
                     ),
                     Obx(
-                      () => Column(
+                          () => Column(
                         children:
-                            controller.collections
-                                .map(
-                                  (collection) => CheckboxListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    activeColor: AppColors.primaryColor,
-                                    dense: true,
-                                    title: Text(collection.title ?? ''),
-                                    value: collection.isSelected ?? false,
-                                    onChanged: (value) {
-                                      collection.isSelected = value;
-                                      printLog(
-                                        'Selected Collection ID: ${collection.id}',
-                                      );
-                                      controller.collections.refresh();
-                                    },
-                                  ),
-                                )
-                                .toList(),
+                        controller.collections
+                            .map(
+                              (collection) => CheckboxListTile(
+                            contentPadding: EdgeInsets.zero,
+                            activeColor: AppColors.primaryColor,
+                            dense: true,
+                            title: Text(collection.title ?? ''),
+                            value: collection.isSelected ?? false,
+                            onChanged: (value) {
+                              collection.isSelected = value;
+                              printLog(
+                                'Selected Collection ID: ${collection.id}',
+                              );
+                              controller.collections.refresh();
+                            },
+                          ),
+                        )
+                            .toList(),
                       ),
                     ),
                     Divider(),
@@ -186,35 +186,35 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                       ),
                     ),
                     Obx(
-                      () => Column(
+                          () => Column(
                         mainAxisSize: MainAxisSize.min,
                         children:
+                        controller.deliveryType
+                            .map(
+                              (deliveryType) => RadioListTile(
+                            activeColor: AppColors.primaryColor,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(deliveryType.title ?? ''),
+                            value: deliveryType.id,
+                            dense: true,
+                            groupValue:
                             controller.deliveryType
-                                .map(
-                                  (deliveryType) => RadioListTile(
-                                    activeColor: AppColors.primaryColor,
-                                    contentPadding: EdgeInsets.zero,
-                                    title: Text(deliveryType.title ?? ''),
-                                    value: deliveryType.id,
-                                    dense: true,
-                                    groupValue:
-                                        controller.deliveryType
-                                            .firstWhereOrNull(
-                                              (type) => type.isSelected == true,
-                                            )
-                                            ?.id,
-                                    onChanged: (value) {
-                                      controller.deliveryType.forEach((type) {
-                                        type.isSelected = type.id == value;
-                                      });
-                                      printLog(
-                                        'Selected Delivery Type ID: $value',
-                                      );
-                                      controller.deliveryType.refresh();
-                                    },
-                                  ),
-                                )
-                                .toList(),
+                                .firstWhereOrNull(
+                                  (type) => type.isSelected == true,
+                            )
+                                ?.id,
+                            onChanged: (value) {
+                              controller.deliveryType.forEach((type) {
+                                type.isSelected = type.id == value;
+                              });
+                              printLog(
+                                'Selected Delivery Type ID: $value',
+                              );
+                              controller.deliveryType.refresh();
+                            },
+                          ),
+                        )
+                            .toList(),
                       ),
                     ),
                     Divider(),
@@ -323,7 +323,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                               fontSize: 14.0,
                                               fontWeight: FontWeight.bold,
                                               decoration:
-                                                  TextDecoration.lineThrough,
+                                              TextDecoration.lineThrough,
                                             ),
                                           ),
                                           TextSpan(
@@ -365,31 +365,31 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                     if (controller.fromSearch) {
                       return Column(
                         children: [
-                      if (controller.searchController.value.text.isEmpty)
+                          if (controller.searchController.value.text.isEmpty)
 
-                        SizedBox(height: Get.height/1.5,child:   Center(
-                          child: Text(
-                            'Type something to search!',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ),),
+                            SizedBox(height: Get.height/1.5,child:   Center(
+                              child: Text(
+                                'Type something to search!',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: AppColors.primaryColor,
+                                ),
+                              ),
+                            ),),
 
                           Expanded(
                             child: GridView.builder(
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 0.66,
-                                  ),
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.66,
+                              ),
                               itemCount: controller.searchProductList.length,
                               shrinkWrap: true,
                               physics: AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 final item =
-                                    controller.searchProductList[index];
+                                controller.searchProductList[index];
 
                                 final product = ProductData(
                                   id: item.id,
@@ -403,96 +403,96 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                   // totalSoldQuantity: item.totalSoldQuantity,
                                   generic: item.generic != null
                                       ? Generic(
-                                          id: item.generic!.id,
-                                          name: item.generic!.name,
-                                          category: item.generic!.category,
-                                          status: item.generic!.status,
-                                          createdBy: item.generic!.createdBy,
-                                          updatedBy: item.generic!.updatedBy,
-                                          createdAt: item.generic!.createdAt,
-                                          updatedAt: item.generic!.updatedAt,
-                                        )
+                                    id: item.generic!.id,
+                                    name: item.generic!.name,
+                                    category: item.generic!.category,
+                                    status: item.generic!.status,
+                                    createdBy: item.generic!.createdBy,
+                                    updatedBy: item.generic!.updatedBy,
+                                    createdAt: item.generic!.createdAt,
+                                    updatedAt: item.generic!.updatedAt,
+                                  )
                                       : null,
                                   category: item.category != null
                                       ? Category(
-                                          id: item.category!.id,
-                                          name: item.category!.name,
-                                          shortOrder: item.category!.shortOrder,
-                                          createdAt: item.category!.createdAt,
-                                          updatedAt: item.category!.updatedAt,
-                                          status: item.category!.status,
-                                        )
+                                    id: item.category!.id,
+                                    name: item.category!.name,
+                                    shortOrder: item.category!.shortOrder,
+                                    createdAt: item.category!.createdAt,
+                                    updatedAt: item.category!.updatedAt,
+                                    status: item.category!.status,
+                                  )
                                       : null,
                                   supplier: item.supplier != null
                                       ? Supplier(
-                                          id: item.supplier!.id,
-                                          firstName: item.supplier!.firstName,
-                                          lastName: item.supplier!.lastName,
-                                          address1: item.supplier!.address1,
-                                          address2: item.supplier!.address2,
-                                          city: item.supplier!.city,
-                                          stateOrProvince: item.supplier!.stateOrProvince,
-                                          zip: item.supplier!.zip,
-                                          country: item.supplier!.country,
-                                          comments: item.supplier!.comments,
-                                          contact: item.supplier!.contact,
-                                          email: item.supplier!.email,
-                                          companyName: item.supplier!.companyName,
-                                          accountNo: item.supplier!.accountNo,
-                                          imagePath: item.supplier!.imagePath,
-                                          status: item.supplier!.status,
-                                          createdAt: item.supplier!.createdAt,
-                                          updatedAt: item.supplier!.updatedAt,
-                                          type: item.supplier!.type,
-                                          storeAccountBalance: item.supplier!.storeAccountBalance,
-                                          payAmount: item.supplier!.payAmount,
-                                          deletedAt: item.supplier!.deletedAt,
-                                          deletedBy: item.supplier!.deletedBy,
-                                        )
+                                    id: item.supplier!.id,
+                                    firstName: item.supplier!.firstName,
+                                    lastName: item.supplier!.lastName,
+                                    address1: item.supplier!.address1,
+                                    address2: item.supplier!.address2,
+                                    city: item.supplier!.city,
+                                    stateOrProvince: item.supplier!.stateOrProvince,
+                                    zip: item.supplier!.zip,
+                                    country: item.supplier!.country,
+                                    comments: item.supplier!.comments,
+                                    contact: item.supplier!.contact,
+                                    email: item.supplier!.email,
+                                    companyName: item.supplier!.companyName,
+                                    accountNo: item.supplier!.accountNo,
+                                    imagePath: item.supplier!.imagePath,
+                                    status: item.supplier!.status,
+                                    createdAt: item.supplier!.createdAt,
+                                    updatedAt: item.supplier!.updatedAt,
+                                    type: item.supplier!.type,
+                                    storeAccountBalance: item.supplier!.storeAccountBalance,
+                                    payAmount: item.supplier!.payAmount,
+                                    deletedAt: item.supplier!.deletedAt,
+                                    deletedBy: item.supplier!.deletedBy,
+                                  )
                                       : null,
                                   packSize: item.packSize != null
                                       ? PackSize(
-                                          id: item.packSize!.id,
-                                          productId: item.packSize!.productId,
-                                          name: item.packSize!.name,
-                                          quantity: item.packSize!.quantity,
-                                          tp: item.packSize!.tp,
-                                          vatPercent: item.packSize!.vatPercent,
-                                          vat: item.packSize!.vat,
-                                          sellingPrice: item.packSize!.sellingPrice,
-                                          defaultUnit: item.packSize!.defaultUnit,
-                                          createdAt: item.packSize!.createdAt,
-                                          updatedAt: item.packSize!.updatedAt,
-                                          deletedAt: item.packSize!.deletedAt,
-                                        )
+                                    id: item.packSize!.id,
+                                    productId: item.packSize!.productId,
+                                    name: item.packSize!.name,
+                                    quantity: item.packSize!.quantity,
+                                    tp: item.packSize!.tp,
+                                    vatPercent: item.packSize!.vatPercent,
+                                    vat: item.packSize!.vat,
+                                    sellingPrice: item.packSize!.sellingPrice,
+                                    defaultUnit: item.packSize!.defaultUnit,
+                                    createdAt: item.packSize!.createdAt,
+                                    updatedAt: item.packSize!.updatedAt,
+                                    deletedAt: item.packSize!.deletedAt,
+                                  )
                                       : null,
                                   productVariationAttributes: item.productVariationAttributes,
                                   productVariations: item.productVariations,
                                   productPrices: item.productPrices != null
                                       ? ProductPrices(
-                                          id: item.productPrices!.id,
-                                          productId: item.productPrices!.productId,
-                                          costPriceWithoutTax: item.productPrices!.costPriceWithoutTax,
-                                          sellingPrice: item.productPrices!.sellingPrice,
-                                          tradePrice: item.productPrices!.tradePrice,
-                                          vat: item.productPrices!.vat,
-                                          wholesale: item.productPrices!.wholesale,
-                                          wholesaleType: item.productPrices!.wholesaleType,
-                                          promoPrice: item.productPrices!.promoPrice,
-                                          promoStartDate: item.productPrices!.promoStartDate,
-                                          promoEndDate: item.productPrices!.promoEndDate,
-                                          disableFromPriceRules: item.productPrices!.disableFromPriceRules,
-                                          allowPriceOverrideRegardlessOfPermissions: item.productPrices!.allowPriceOverrideRegardlessOfPermissions,
-                                          pricesIncludeTax: item.productPrices!.pricesIncludeTax,
-                                          onlyAllowItemsToBeSoldInWholeNumbers: item.productPrices!.onlyAllowItemsToBeSoldInWholeNumbers,
-                                          changeCostPriceDuringSale: item.productPrices!.changeCostPriceDuringSale,
-                                          overrideDefaultCommission: item.productPrices!.overrideDefaultCommission,
-                                          overrideDefaultTax: item.productPrices!.overrideDefaultTax,
-                                          createdAt: item.productPrices!.createdAt,
-                                          updatedAt: item.productPrices!.updatedAt,
-                                          deletedAt: item.productPrices!.deletedAt,
-                                          isEditableInSale: item.productPrices!.isEditableInSale,
-                                        )
+                                    id: item.productPrices!.id,
+                                    productId: item.productPrices!.productId,
+                                    costPriceWithoutTax: item.productPrices!.costPriceWithoutTax,
+                                    sellingPrice: item.productPrices!.sellingPrice,
+                                    tradePrice: item.productPrices!.tradePrice,
+                                    vat: item.productPrices!.vat,
+                                    wholesale: item.productPrices!.wholesale,
+                                    wholesaleType: item.productPrices!.wholesaleType,
+                                    promoPrice: item.productPrices!.promoPrice,
+                                    promoStartDate: item.productPrices!.promoStartDate,
+                                    promoEndDate: item.productPrices!.promoEndDate,
+                                    disableFromPriceRules: item.productPrices!.disableFromPriceRules,
+                                    allowPriceOverrideRegardlessOfPermissions: item.productPrices!.allowPriceOverrideRegardlessOfPermissions,
+                                    pricesIncludeTax: item.productPrices!.pricesIncludeTax,
+                                    onlyAllowItemsToBeSoldInWholeNumbers: item.productPrices!.onlyAllowItemsToBeSoldInWholeNumbers,
+                                    changeCostPriceDuringSale: item.productPrices!.changeCostPriceDuringSale,
+                                    overrideDefaultCommission: item.productPrices!.overrideDefaultCommission,
+                                    overrideDefaultTax: item.productPrices!.overrideDefaultTax,
+                                    createdAt: item.productPrices!.createdAt,
+                                    updatedAt: item.productPrices!.updatedAt,
+                                    deletedAt: item.productPrices!.deletedAt,
+                                    isEditableInSale: item.productPrices!.isEditableInSale,
+                                  )
                                       : null,
 
                                   productImages: item.productImages != null
@@ -560,7 +560,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
 
             Visibility(
               visible:
-                  controller.categoryProducts.isNotEmpty &&
+              controller.categoryProducts.isNotEmpty &&
                   !controller.fromSearch,
               child: Positioned(
                 top: MediaQuery.of(context).size.height / 2 - 28,

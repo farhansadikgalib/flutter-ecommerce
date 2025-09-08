@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../style/app_colors.dart';
@@ -153,24 +152,6 @@ class AppWidgets {
               ),
             )),
       ],
-    );
-  }
-
-  mySvgIconButton(BuildContext context, {required String imagePath, callBack}) {
-    return InkWell(
-      overlayColor: WidgetStateProperty.all<Color>(
-          AppColors.primaryColor.withOpacity(.2)),
-      customBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40),
-      ),
-      onTap: () {
-        callBack(context);
-      },
-      child: SvgPicture.asset(
-        imagePath,
-        height: 48,
-        width: 48,
-      ),
     );
   }
 
@@ -418,27 +399,6 @@ class AppWidgets {
     );
   }
 
-  Widget socialIconsViewer(context, {required imagePath}) {
-    return SizedBox(
-      height: 40,
-      width: 40,
-      child: CircleAvatar(
-          radius: 30,
-          backgroundColor: Colors.grey,
-          child: CircleAvatar(
-            radius: 29,
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: SvgPicture.asset(
-                imagePath,
-                height: 48,
-                width: 48,
-              ),
-            ),
-          )),
-    );
-  }
 
   bannedUserDialog({required message}) {
     Get.defaultDialog(
