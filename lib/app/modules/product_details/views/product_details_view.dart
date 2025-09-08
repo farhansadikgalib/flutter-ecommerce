@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:turi/app/data/remote/model/product/related_product_response.dart' hide Generic, Category, Supplier, PackSize, ProductPrices;
 
 import '../../../core/config/app_config.dart';
 import '../../../core/helper/app_widgets.dart';
@@ -43,7 +42,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   final imageList = [].obs;
   final productReview = <ProductReview>[].obs;
   final wishlistItem = false.obs;
-  final relatedProducts = <RelatedProducts>[].obs;
+  final relatedProducts = <RelatedProduct>[].obs;
   final isLoading = false.obs;
 
   Future<void> getProductDetails() async {
@@ -54,23 +53,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       product.id.toString(),
     );
     productDetails.add(response.product);
-    // relatedProducts.addAll(response.relatedProducts ?? []);
+    relatedProducts.addAll(response.relatedProducts ?? []);
     relatedProducts.refresh();
 
     printLog('relatedProducts : ${response.relatedProducts!.length}');
-    isLoading.value = false;
-  }
-
-  Future<void> getRelatedProducts() async {
-    isLoading.value = true;
-    relatedProducts.clear();
-    var response = await ProductRepository().getRelatedProduct(
-      product.genericId.toString(),
-    );
-
-    relatedProducts.addAll(response.data??[]);
-
-    printLog('relatedProducts : ${response.data!.length}');
     isLoading.value = false;
   }
 
@@ -89,7 +75,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    getRelatedProducts();
+    getProductDetails();
     return Obx(() {
       return Scaffold(
         body: Stack(
@@ -549,7 +535,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   ),
                 ),
 
-                if(relatedProducts.isNotEmpty)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Text(
@@ -654,7 +639,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     );
                   }
                   return Container(
-                    height: relatedProducts.isNotEmpty? Get.height : 0,
+                    height: Get.height,
                     margin: EdgeInsets.zero,
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: GridView.builder(
@@ -670,7 +655,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         // Dart
                         final item = relatedProducts[index];
 
-                        final relatedProduct = ProductData(
+                        final product = ProductData(
                           id: item.id,
                           quantity: 0,
                           addToCart: false,
@@ -805,18 +790,18 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   ? item.productImages!
                                       .map(
                                         (img) => ProductImage(
-                                          id: index+1,
-                                          productId: img['productId'],
-                                          path: img['path'],
-                                          createdAt: img['createdAt'],
-                                          updatedAt: img['updatedAt'],
-                                          deletedAt: img['deletedAt'],
+                                          id: img.id,
+                                          productId: img.productId,
+                                          path: img.path,
+                                          createdAt: img.createdAt,
+                                          updatedAt: img.updatedAt,
+                                          deletedAt: img.deletedAt,
                                         ),
                                       )
                                       .toList()
                                   : [],
                         );
-                        return ProductCard(product: relatedProduct, index: index,promoPrice: product.productPrices?.sellingPrice,);
+                        return ProductCard(product: product, index: index);
                       },
                     ),
                   );
@@ -845,7 +830,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
             // Bottom Add to Cart Bar with improved styling
             Positioned(
-              bottom: 20,
+              bottom: 0,
               left: 0,
               right: 0,
               child: Container(
@@ -913,6 +898,34 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         ),
       );
     });
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 80.w,
+            child: Text(
+              '$label:',
+              style: TextStyle(
+                fontSize: 13.sp,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(fontSize: 13.sp, color: Colors.black87),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildSpecificationRow(
