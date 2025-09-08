@@ -159,10 +159,48 @@ class _ProductCardState extends State<ProductCard> {
               ),
               SizedBox(height: 6),
 
-              Text(
-                '${getSellingPrice()} BDT',
-                style: TextStyle(fontSize: 15, color: AppColors.primaryColor),
+              // Price Section
+              Builder(
+                builder: (context) {
+                  final sellingPrice = widget.product.productPrices?.sellingPrice?.toString() ?? '';
+                  final discountPrice = widget.product.productPrices?.ecomFinalSellingPrice?.toString() ?? '';
+                  if (discountPrice.isNotEmpty && sellingPrice.isNotEmpty && discountPrice != sellingPrice) {
+                    return Row(
+                      children: [
+                        Text(
+                          double.parse(discountPrice).toStringAsFixed(2),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          sellingPrice,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (sellingPrice.isNotEmpty) {
+                    return Text(
+                      sellingPrice,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: AppColors.primaryColor,
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
               ),
+
               Spacer(),
               // Cart Section - Show quantity selector if in cart, otherwise show add button
               Obx(() {

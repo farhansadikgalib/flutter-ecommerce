@@ -410,6 +410,10 @@ class ProductPrices {
   String? updatedAt;
   dynamic deletedAt;
   String? isEditableInSale;
+  dynamic packQuantity;
+  String? ecomDiscountPercentage;
+  String? ecomDiscountAmount;
+  dynamic ecomFinalSellingPrice;
 
   ProductPrices({
     this.id,
@@ -434,6 +438,10 @@ class ProductPrices {
     this.updatedAt,
     this.deletedAt,
     this.isEditableInSale,
+    this.packQuantity,
+    this.ecomDiscountPercentage,
+    this.ecomDiscountAmount,
+    this.ecomFinalSellingPrice,
   });
 
   factory ProductPrices.fromJson(Map<String, dynamic> json) => ProductPrices(
@@ -459,6 +467,10 @@ class ProductPrices {
     updatedAt: json["updated_at"],
     deletedAt: json["deleted_at"],
     isEditableInSale: json["is_editable_in_sale"],
+    packQuantity: json["pack_quantity"],
+    ecomDiscountPercentage: json["ecom_discount_percentage"],
+    ecomDiscountAmount: json["ecom_discount_amount"],
+    ecomFinalSellingPrice: json["ecom_final_selling_price"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -484,6 +496,10 @@ class ProductPrices {
     "updated_at": updatedAt,
     "deleted_at": deletedAt,
     "is_editable_in_sale": isEditableInSale,
+    "pack_quantity": packQuantity,
+    "ecom_discount_percentage": ecomDiscountPercentage,
+    "ecom_discount_amount": ecomDiscountAmount,
+    "ecom_final_selling_price": ecomFinalSellingPrice,
   };
 }
 
