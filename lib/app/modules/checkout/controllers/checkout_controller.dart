@@ -40,7 +40,6 @@ class CheckoutController extends BaseController {
   final cityList = <CityResponse>[].obs;
   final areaList = <AreaResponse>[].obs;
 
-
   final args = Get.arguments;
   final cartProducts = <ProductData>[].obs;
   final subTotal = 0.0.obs;
@@ -63,11 +62,10 @@ class CheckoutController extends BaseController {
       address.value.text = 'Test Address';
     }
 
-
-    Future.microtask(()async {
-     await getCountryList();
-     await getCityList();
-     await getAreaList();
+    Future.microtask(() async {
+      await getCountryList();
+      await getCityList();
+      await getAreaList();
       getPaymentMethods();
     });
   }
@@ -82,6 +80,10 @@ class CheckoutController extends BaseController {
     var response = await CheckoutRepository().getCountry();
     countryList.clear();
     countryList.addAll(response);
+    // Auto-select the first country and prevent user changes
+    if (countryList.isNotEmpty) {
+      selectedCountry.value = countryList.first;
+    }
   }
 
   Future<void> getCityList() async {
@@ -91,6 +93,10 @@ class CheckoutController extends BaseController {
     printLog(response);
     cityList.clear();
     cityList.addAll(response);
+    // Auto-select the first city and prevent user changes
+    if (cityList.isNotEmpty) {
+      selectedCity.value = cityList.first;
+    }
   }
 
   Future<void> getAreaList() async {
@@ -100,6 +106,10 @@ class CheckoutController extends BaseController {
     printLog(response);
     areaList.clear();
     areaList.addAll(response);
+    // Auto-select the first area and prevent user changes
+    if (areaList.isNotEmpty) {
+      selectedArea.value = areaList.first;
+    }
   }
 
   Future<void> getShippingInfo() async {
@@ -224,7 +234,7 @@ class CheckoutController extends BaseController {
         message: response.message.toString(),
       );
       Get.find<CartController>().allCartProducts.clear();
-      Get.find<CartController>().cartCount.value=0;
+      Get.find<CartController>().cartCount.value = 0;
       Get.offAllNamed(Routes.DASHBOARD);
     } else {
       AppWidgets().getSnackBar(

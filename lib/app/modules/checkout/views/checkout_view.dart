@@ -67,7 +67,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   AppWidgets().gapH8(),
-                  // Country Dropdown
+                  // Country Dropdown (read-only)
                   SizedBox(
                     height: 40.h,
                     child: Obx(
@@ -102,26 +102,19 @@ class CheckoutView extends BaseView<CheckoutController> {
                           ),
                         ),
                         value: controller.selectedCountry.value,
-                        hint: Text('Select Country'),
-                        items:
-                            controller.countryList.map((country) {
-                              return DropdownMenuItem<CountryResponse>(
-                                value: country,
-                                child: Text(country.name ?? ''),
-                              );
-                            }).toList(),
-                        onChanged: (CountryResponse? newValue) {
-                          controller.selectedCountry.value = newValue;
-                          if (newValue != null) {
-                            controller.getCitiesByCountry(newValue.id!);
-                            printLog('Selected country ID: ${newValue.id}');
-                          }
-                        },
+                        items: controller.countryList.isNotEmpty
+                            ? [DropdownMenuItem<CountryResponse>(
+                                value: controller.selectedCountry.value,
+                                child: Text(controller.selectedCountry.value?.name ?? ''),
+                              )]
+                            : [],
+                        onChanged: null, // disables dropdown
+                        disabledHint: Text(controller.selectedCountry.value?.name ?? ''),
                       ),
                     ),
                   ),
                   AppWidgets().gapH8(),
-                  // City Dropdown
+                  // City Dropdown (read-only)
                   SizedBox(
                     height: 40.h,
                     child: Obx(
@@ -156,92 +149,64 @@ class CheckoutView extends BaseView<CheckoutController> {
                           ),
                         ),
                         value: controller.selectedCity.value,
-                        hint: Text(
-                          controller.cityList.isEmpty
-                              ? 'Select Country First'
-                              : 'Select City',
-                        ),
-                        items:
-                            controller.cityList.map((CityResponse city) {
-                              return DropdownMenuItem<CityResponse>(
-                                value: city,
-                                child: Text(city.name ?? ''),
-                              );
-                            }).toList(),
-                        onChanged:
-                            controller.cityList.isEmpty
-                                ? null
-                                : (CityResponse? newValue) {
-                                  controller.selectedCity.value = newValue;
-                                  if (newValue != null) {
-                                    controller.city.value =
-                                        newValue.id.toString();
-                                    printLog(
-                                      'Selected city ID: ${newValue.id}',
-                                    );
-                                  }
-                                },
+                        items: controller.cityList.isNotEmpty
+                            ? [DropdownMenuItem<CityResponse>(
+                                value: controller.selectedCity.value,
+                                child: Text(controller.selectedCity.value?.name ?? ''),
+                              )]
+                            : [],
+                        onChanged: null, // disables dropdown
+                        disabledHint: Text(controller.selectedCity.value?.name ?? ''),
                       ),
                     ),
                   ),
                   AppWidgets().gapH8(),
-                  // Area Dropdown
-               // Area Dropdown
-               SizedBox(
-                 height: 40.h,
-                 child: Obx(
-                   () => DropdownButtonFormField<AreaResponse>(
-                     padding: EdgeInsets.zero,
-                     iconEnabledColor: AppColors.primaryColor,
-                     iconDisabledColor: AppColors.primaryColor,
-                     decoration: InputDecoration(
-                       contentPadding: EdgeInsets.only(right: 5),
-                       labelText: 'Area',
-                       prefixIcon: Icon(
-                         Icons.map,
-                         color: AppColors.primaryColor,
-                       ),
-                       floatingLabelStyle: TextStyle(
-                         color: AppColors.primaryColor,
-                         fontSize: 14.sp,
-                       ),
-                       focusedBorder: OutlineInputBorder(
-                         borderRadius: BorderRadius.circular(8),
-                         borderSide: BorderSide(
-                           width: 2,
-                           color: AppColors.primaryColor,
-                         ),
-                       ),
-                       enabledBorder: OutlineInputBorder(
-                         borderRadius: BorderRadius.circular(8),
-                         borderSide: BorderSide(
-                           width: 1,
-                           color: AppColors.primaryColor,
-                         ),
-                       ),
-                     ),
-                     value: controller.selectedArea.value,
-                     hint: Text(
-                       controller.areaList.isEmpty ? 'Select City First' : 'Select Area',
-                     ),
-                     items: controller.areaList.map((area) {
-                       return DropdownMenuItem<AreaResponse>(
-                         value: area,
-                         child: Text(area.name ?? ''),
-                       );
-                     }).toList(),
-                     onChanged: controller.areaList.isEmpty
-                         ? null
-                         : (AreaResponse? newValue) {
-                             controller.selectedArea.value = newValue;
-                             if (newValue != null) {
-                               controller.area.value = newValue.id.toString();
-                               printLog('Selected area ID: ${newValue.id}');
-                             }
-                           },
-                   ),
-                 ),
-               ),
+                  // Area Dropdown (read-only)
+                  SizedBox(
+                    height: 40.h,
+                    child: Obx(
+                      () => DropdownButtonFormField<AreaResponse>(
+                        padding: EdgeInsets.zero,
+                        iconEnabledColor: AppColors.primaryColor,
+                        iconDisabledColor: AppColors.primaryColor,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(right: 5),
+                          labelText: 'Area',
+                          prefixIcon: Icon(
+                            Icons.map,
+                            color: AppColors.primaryColor,
+                          ),
+                          floatingLabelStyle: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 14.sp,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              width: 2,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
+                        value: controller.selectedArea.value,
+                        items: controller.areaList.isNotEmpty
+                            ? [DropdownMenuItem<AreaResponse>(
+                                value: controller.selectedArea.value,
+                                child: Text(controller.selectedArea.value?.name ?? ''),
+                              )]
+                            : [],
+                        onChanged: null, // disables dropdown
+                        disabledHint: Text(controller.selectedArea.value?.name ?? ''),
+                      ),
+                    ),
+                  ),
                   AppWidgets().gapH8(),
                   commonTextField(
                     controller: controller.address.value,
