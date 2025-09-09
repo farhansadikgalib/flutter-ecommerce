@@ -97,7 +97,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CATEGORIES,
-      page: () => const CategoriesView(),
+      page: () =>  CategoriesView(),
       binding: CategoriesBinding(),
     ),
   ];

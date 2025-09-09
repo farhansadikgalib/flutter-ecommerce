@@ -1,10 +1,8 @@
 import 'package:any_image_view/any_image_view.dart';
-import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../core/helper/app_widgets.dart';
@@ -35,18 +33,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   ProductData get product => widget.product;
 
-  /*  final productDetails = <ProductDetails>[].obs;
-  final imageList = <ProductImage>[].obs; */
-
   final productDetails = [].obs;
   final imageList = [].obs;
   final productReview = <ProductReview>[].obs;
   final wishlistItem = false.obs;
   final relatedProducts = <RelatedProduct>[].obs;
-  final isLoading = false.obs;
 
   Future<void> getProductDetails() async {
-    isLoading.value = true;
     productDetails.clear();
     relatedProducts.clear();
     var response = await ProductRepository().getProductDetails(
@@ -57,7 +50,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     relatedProducts.refresh();
 
     printLog('relatedProducts : ${response.relatedProducts!.length}');
-    isLoading.value = false;
   }
 
   void getProductReview() async {
@@ -81,6 +73,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         body: Stack(
           children: [
             ListView(
+              physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(bottom: 80.h),
               children: [
                 // Product Image Carousel with improved styling
@@ -180,10 +173,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             ),
                           ),
                         ),
-                      ),
-
-                      // Share and Wishlist buttons - Amazon places these in the bottom right
-                    ],
+                      )],
                   ),
                 ),
 
@@ -546,266 +536,172 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ),
                   ),
                 ),
-                Obx(() {
-                  if (isLoading.isTrue) {
-                    return Skeletonizer(
-                      enabled: isLoading.value,
-                      child: DynamicHeightGridView(
-                        crossAxisCount: 2,
-                        itemCount: 4,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        builder: (context, index) {
-                          return Card(
-                            margin: EdgeInsets.all(8.0),
-                            child: Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    color: AppColors.secondaryColor,
-                                    height: 125,
-                                    width: 125,
-                                  ),
-                                  AppWidgets().gapH(4),
-                                  Text(
-                                    'Product Title',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: AppColors.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  AppWidgets().gapH(4),
-                                  Text(
-                                    "Stock 00",
-                                    style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  AppWidgets().gapH(4),
-                                  RichText(
-                                    text: TextSpan(
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 24,
-                                      ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: '9999',
-                                          style: TextStyle(
-                                            fontSize: 14.0,
-                                            fontWeight: FontWeight.bold,
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: "  99999 BDT",
-                                          style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: AppColors.primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  AppWidgets().gapH8(),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      side: BorderSide(
-                                        color: Colors.transparent,
-                                      ), // Set the border
-                                      // color to grey
-                                    ),
-                                    child: Text(
-                                      '+ Add to Bag',
-                                      style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                  return Container(
-                    height: Get.height,
-                    margin: EdgeInsets.zero,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.66,
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                      ),
-                      itemCount: relatedProducts.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        // Dart
-                        final item = relatedProducts[index];
 
-                        final product = ProductData(
-                          id: item.id,
-                          quantity: 0,
-                          addToCart: false,
-                          addToWishlist: false,
-                          name: item.name,
-                          genericId: item.genericId,
-                          categoryId: item.categoryId,
-                          supplierId: item.supplierId,
-                          generic:
-                              item.generic != null
-                                  ? Generic(
-                                    id: item.generic!.id,
-                                    name: item.generic!.name,
-                                    category: item.generic!.category,
-                                    status: item.generic!.status,
-                                    createdBy: item.generic!.createdBy,
-                                    updatedBy: item.generic!.updatedBy,
-                                    createdAt: item.generic!.createdAt,
-                                    updatedAt: item.generic!.updatedAt,
-                                  )
-                                  : null,
-                          category:
-                              item.category != null
-                                  ? Category(
-                                    id: item.category!.id,
-                                    name: item.category!.name,
-                                    shortOrder: item.category!.shortOrder,
-                                    createdAt: item.category!.createdAt,
-                                    updatedAt: item.category!.updatedAt,
-                                    status: item.category!.status,
-                                  )
-                                  : null,
-                          supplier:
-                              item.supplier != null
-                                  ? Supplier(
-                                    id: item.supplier!.id,
-                                    firstName: item.supplier!.firstName,
-                                    lastName: item.supplier!.lastName,
-                                    address1: item.supplier!.address1,
-                                    address2: item.supplier!.address2,
-                                    city: item.supplier!.city,
-                                    stateOrProvince:
-                                        item.supplier!.stateOrProvince,
-                                    zip: item.supplier!.zip,
-                                    country: item.supplier!.country,
-                                    comments: item.supplier!.comments,
-                                    contact: item.supplier!.contact,
-                                    email: item.supplier!.email,
-                                    companyName: item.supplier!.companyName,
-                                    accountNo: item.supplier!.accountNo,
-                                    imagePath: item.supplier!.imagePath,
-                                    status: item.supplier!.status,
-                                    createdAt: item.supplier!.createdAt,
-                                    updatedAt: item.supplier!.updatedAt,
-                                    type: item.supplier!.type,
-                                    storeAccountBalance:
-                                        item.supplier!.storeAccountBalance,
-                                    payAmount: item.supplier!.payAmount,
-                                    deletedAt: item.supplier!.deletedAt,
-                                    deletedBy: item.supplier!.deletedBy,
-                                  )
-                                  : null,
-                          packSize:
-                              item.packSize != null
-                                  ? PackSize(
-                                    id: item.packSize!.id,
-                                    productId: item.packSize!.productId,
-                                    name: item.packSize!.name,
-                                    quantity: item.packSize!.quantity,
-                                    tp: item.packSize!.tp,
-                                    vatPercent: item.packSize!.vatPercent,
-                                    vat: item.packSize!.vat,
-                                    sellingPrice: item.packSize!.sellingPrice,
-                                    defaultUnit: item.packSize!.defaultUnit,
-                                    createdAt: item.packSize!.createdAt,
-                                    updatedAt: item.packSize!.updatedAt,
-                                    deletedAt: item.packSize!.deletedAt,
-                                  )
-                                  : null,
-                          productPrices:
-                              item.productPrices != null
-                                  ? ProductPrices(
-                                    id: item.productPrices!.id,
-                                    productId: item.productPrices!.productId,
-                                    costPriceWithoutTax:
-                                        item.productPrices!.costPriceWithoutTax,
-                                    sellingPrice:
-                                        item.productPrices!.sellingPrice,
-                                    tradePrice: item.productPrices!.tradePrice,
-                                    vat: item.productPrices!.vat,
-                                    wholesale: item.productPrices!.wholesale,
-                                    wholesaleType:
-                                        item.productPrices!.wholesaleType,
-                                    promoPrice: item.productPrices!.promoPrice,
-                                    promoStartDate:
-                                        item.productPrices!.promoStartDate,
-                                    promoEndDate:
-                                        item.productPrices!.promoEndDate,
-                                    disableFromPriceRules:
-                                        item
-                                            .productPrices!
-                                            .disableFromPriceRules,
-                                    allowPriceOverrideRegardlessOfPermissions:
-                                        item
-                                            .productPrices!
-                                            .allowPriceOverrideRegardlessOfPermissions,
-                                    pricesIncludeTax:
-                                        item.productPrices!.pricesIncludeTax,
-                                    onlyAllowItemsToBeSoldInWholeNumbers:
-                                        item
-                                            .productPrices!
-                                            .onlyAllowItemsToBeSoldInWholeNumbers,
-                                    changeCostPriceDuringSale:
-                                        item
-                                            .productPrices!
-                                            .changeCostPriceDuringSale,
-                                    overrideDefaultCommission:
-                                        item
-                                            .productPrices!
-                                            .overrideDefaultCommission,
-                                    overrideDefaultTax:
-                                        item.productPrices!.overrideDefaultTax,
-                                    createdAt: item.productPrices!.createdAt,
-                                    updatedAt: item.productPrices!.updatedAt,
-                                    deletedAt: item.productPrices!.deletedAt,
-                                    isEditableInSale:
-                                        item.productPrices!.isEditableInSale,
-                                  )
-                                  : null,
-                          productImages:
-                              item.productImages != null
-                                  ? item.productImages!
-                                      .map(
-                                        (img) => ProductImage(
-                                          id: img.id,
-                                          productId: img.productId,
-                                          path: img.path,
-                                          createdAt: img.createdAt,
-                                          updatedAt: img.updatedAt,
-                                          deletedAt: img.deletedAt,
-                                        ),
-                                      )
-                                      .toList()
-                                  : [],
-                        );
-                        return ProductCard(product: product, index: index);
-                      },
+                Container(
+                  height: Get.height,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.66,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
                     ),
-                  );
-                }),
+                    itemCount: relatedProducts.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      // Dart
+                      final item = relatedProducts[index];
+
+                      final product = ProductData(
+                        id: item.id,
+                        quantity: 0,
+                        addToCart: false,
+                        addToWishlist: false,
+                        name: item.name,
+                        genericId: item.genericId,
+                        categoryId: item.categoryId,
+                        supplierId: item.supplierId,
+                        generic:
+                            item.generic != null
+                                ? Generic(
+                                  id: item.generic!.id,
+                                  name: item.generic!.name,
+                                  category: item.generic!.category,
+                                  status: item.generic!.status,
+                                  createdBy: item.generic!.createdBy,
+                                  updatedBy: item.generic!.updatedBy,
+                                  createdAt: item.generic!.createdAt,
+                                  updatedAt: item.generic!.updatedAt,
+                                )
+                                : null,
+                        category:
+                            item.category != null
+                                ? Category(
+                                  id: item.category!.id,
+                                  name: item.category!.name,
+                                  shortOrder: item.category!.shortOrder,
+                                  createdAt: item.category!.createdAt,
+                                  updatedAt: item.category!.updatedAt,
+                                  status: item.category!.status,
+                                )
+                                : null,
+                        supplier:
+                            item.supplier != null
+                                ? Supplier(
+                                  id: item.supplier!.id,
+                                  firstName: item.supplier!.firstName,
+                                  lastName: item.supplier!.lastName,
+                                  address1: item.supplier!.address1,
+                                  address2: item.supplier!.address2,
+                                  city: item.supplier!.city,
+                                  stateOrProvince:
+                                      item.supplier!.stateOrProvince,
+                                  zip: item.supplier!.zip,
+                                  country: item.supplier!.country,
+                                  comments: item.supplier!.comments,
+                                  contact: item.supplier!.contact,
+                                  email: item.supplier!.email,
+                                  companyName: item.supplier!.companyName,
+                                  accountNo: item.supplier!.accountNo,
+                                  imagePath: item.supplier!.imagePath,
+                                  status: item.supplier!.status,
+                                  createdAt: item.supplier!.createdAt,
+                                  updatedAt: item.supplier!.updatedAt,
+                                  type: item.supplier!.type,
+                                  storeAccountBalance:
+                                      item.supplier!.storeAccountBalance,
+                                  payAmount: item.supplier!.payAmount,
+                                  deletedAt: item.supplier!.deletedAt,
+                                  deletedBy: item.supplier!.deletedBy,
+                                )
+                                : null,
+                        packSize:
+                            item.packSize != null
+                                ? PackSize(
+                                  id: item.packSize!.id,
+                                  productId: item.packSize!.productId,
+                                  name: item.packSize!.name,
+                                  quantity: item.packSize!.quantity,
+                                  tp: item.packSize!.tp,
+                                  vatPercent: item.packSize!.vatPercent,
+                                  vat: item.packSize!.vat,
+                                  sellingPrice: item.packSize!.sellingPrice,
+                                  defaultUnit: item.packSize!.defaultUnit,
+                                  createdAt: item.packSize!.createdAt,
+                                  updatedAt: item.packSize!.updatedAt,
+                                  deletedAt: item.packSize!.deletedAt,
+                                )
+                                : null,
+                        productPrices:
+                            item.productPrices != null
+                                ? ProductPrices(
+                                  id: item.productPrices!.id,
+                                  productId: item.productPrices!.productId,
+                                  costPriceWithoutTax:
+                                      item.productPrices!.costPriceWithoutTax,
+                                  sellingPrice:
+                                      item.productPrices!.sellingPrice,
+                                  tradePrice: item.productPrices!.tradePrice,
+                                  vat: item.productPrices!.vat,
+                                  wholesale: item.productPrices!.wholesale,
+                                  wholesaleType:
+                                      item.productPrices!.wholesaleType,
+                                  promoPrice: item.productPrices!.promoPrice,
+                                  promoStartDate:
+                                      item.productPrices!.promoStartDate,
+                                  promoEndDate:
+                                      item.productPrices!.promoEndDate,
+                                  disableFromPriceRules:
+                                      item.productPrices!.disableFromPriceRules,
+                                  allowPriceOverrideRegardlessOfPermissions:
+                                      item
+                                          .productPrices!
+                                          .allowPriceOverrideRegardlessOfPermissions,
+                                  pricesIncludeTax:
+                                      item.productPrices!.pricesIncludeTax,
+                                  onlyAllowItemsToBeSoldInWholeNumbers:
+                                      item
+                                          .productPrices!
+                                          .onlyAllowItemsToBeSoldInWholeNumbers,
+                                  changeCostPriceDuringSale:
+                                      item
+                                          .productPrices!
+                                          .changeCostPriceDuringSale,
+                                  overrideDefaultCommission:
+                                      item
+                                          .productPrices!
+                                          .overrideDefaultCommission,
+                                  overrideDefaultTax:
+                                      item.productPrices!.overrideDefaultTax,
+                                  createdAt: item.productPrices!.createdAt,
+                                  updatedAt: item.productPrices!.updatedAt,
+                                  deletedAt: item.productPrices!.deletedAt,
+                                  isEditableInSale:
+                                      item.productPrices!.isEditableInSale,
+                                )
+                                : null,
+                        productImages:
+                            item.productImages != null
+                                ? item.productImages!
+                                    .map(
+                                      (img) => ProductImage(
+                                        id: img.id,
+                                        productId: img.productId,
+                                        path: img.path,
+                                        createdAt: img.createdAt,
+                                        updatedAt: img.updatedAt,
+                                        deletedAt: img.deletedAt,
+                                      ),
+                                    )
+                                    .toList()
+                                : [],
+                      );
+                      return ProductCard(product: product, index: index);
+                    },
+                  ),
+                ),
               ],
             ),
 
@@ -1047,4 +943,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       ),
     );
   }
+
+
 }

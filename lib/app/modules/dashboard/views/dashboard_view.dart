@@ -6,18 +6,14 @@ import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/helper/shared_value_helper.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
-import 'package:turi/app/modules/home/controllers/home_controller.dart';
 import 'package:turi/app/modules/home/views/home_view.dart';
 import 'package:turi/app/modules/login/views/login_view.dart';
 import 'package:turi/app/modules/order/controllers/order_controller.dart';
 import 'package:turi/app/modules/order/views/order_view.dart';
 import 'package:turi/app/modules/profile/views/profile_view.dart';
-import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
-import 'package:turi/app/modules/wishlist/views/wishlist_view.dart';
-import 'package:turi/app/routes/app_pages.dart';
 import '../../cart/views/cart_view.dart';
+import '../../categories/views/categories_view.dart';
 import '../controllers/dashboard_controller.dart';
-import 'categories_view.dart';
 
 class DashboardView extends GetView<DashboardController> {
   const DashboardView({super.key});
@@ -25,7 +21,6 @@ class DashboardView extends GetView<DashboardController> {
   List<Widget> _buildScreens() {
     return [
       HomeView(),
-      // if (isLoggedIn.$) WishlistView() else LoginView(),
       CategoriesView(),
       if (isLoggedIn.$) CartView() else LoginView(),
       if (isLoggedIn.$) OrderView() else LoginView(),
