@@ -70,6 +70,13 @@ class _ProductCardState extends State<ProductCard> {
     return null;
   }
 
+  int getTotalStock() {
+    final batches = widget.product.stockBatches;
+    if (batches == null || batches.isEmpty) return 0;
+    return batches.fold<int>(0, (sum, batch) => sum + (double.parse(batch
+        .balancedQuantity.toString()).toInt()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -200,6 +207,26 @@ class _ProductCardState extends State<ProductCard> {
                   }
                 },
               ),
+              SizedBox(height: 6),
+
+              //stock
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Stock: ${getTotalStock()}',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    color: Colors.black87,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+
+
 
               Spacer(),
               // Cart Section - Show quantity selector if in cart, otherwise show add button
@@ -211,11 +238,11 @@ class _ProductCardState extends State<ProductCard> {
                   widget.product.id!,
                 );
 
-                if (isInCart && quantity > 0) {
-                  return _buildQuantitySelector(quantity);
-                } else {
+                // if (isInCart && quantity > 0) {
+                //   return _buildQuantitySelector(quantity);
+                // } else {
                   return _buildAddToCartButton();
-                }
+               // }
               }),
             ],
           ),

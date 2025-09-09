@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/categories/bindings/categories_binding.dart';
@@ -16,8 +15,6 @@ import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/product_category/bindings/product_category_binding.dart';
 import '../modules/product_category/views/product_category_view.dart';
-import '../modules/product_details/bindings/product_details_binding.dart';
-import '../modules/product_details/views/product_details_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -97,8 +94,9 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CATEGORIES,
-      page: () =>  CategoriesView(),
+      page: () => CategoriesView(),
       binding: CategoriesBinding(),
     ),
+
   ];
 }

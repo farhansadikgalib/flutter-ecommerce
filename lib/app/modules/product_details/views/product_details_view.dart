@@ -192,7 +192,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             vertical: 4.h,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.primaryColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
@@ -224,8 +223,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               Icon(
                                 Icons.inventory_2_outlined,
                                 size: 16.sp,
-                                color:
-                                    int.parse(
+                                color: int.parse(
                                               product
                                                   .productInventories!
                                                   .quantity
@@ -264,18 +262,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         ),
 
                       // Price section in Alibaba style (larger, with range format)
-                      Text(
-                        product.productPrices?.sellingPrice != null
-                            ? '৳${product.productPrices!.sellingPrice}'
-                            : product.productPrices?.sellingPrice != null
-                            ? '৳${product.productPrices!.sellingPrice}'
-                            : 'Price not available',
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFE51A19), // Alibaba's red color
-                        ),
-                      ),
+                      _buildPriceSection(product),
 
                       SizedBox(height: 4.h),
 
@@ -944,5 +931,41 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     );
   }
 
-
-}
+  // Price section in Alibaba style (larger, with range format)
+  Widget _buildPriceSection(ProductData product) {
+    final sellingPrice = product.productPrices?.sellingPrice?.toString() ?? '';
+    final discountPrice = product.productPrices?.ecomFinalSellingPrice?.toString() ?? '';
+    if (discountPrice.isNotEmpty && sellingPrice.isNotEmpty && discountPrice != sellingPrice) {
+      return Row(
+        children: [
+          Text(
+            '৳$discountPrice',
+            style: TextStyle(
+              fontSize: 24.sp,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFE51A19), // Alibaba's red color
+            ),
+          ),
+          SizedBox(width: 8.w),
+          Text(
+            '৳$sellingPrice',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey,
+              decoration: TextDecoration.lineThrough,
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Text(
+        sellingPrice.isNotEmpty ? '৳$sellingPrice' : 'Price not available',
+        style: TextStyle(
+          fontSize: 24.sp,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFFE51A19), // Alibaba's red color
+        ),
+      );
+    }
+  }}
