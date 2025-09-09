@@ -5,6 +5,7 @@ import 'package:turi/app/core/base/base_controller.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/helper/shared_value_helper.dart';
+import 'package:turi/app/data/remote/model/checkout/area_response.dart';
 import 'package:turi/app/data/remote/model/checkout/city_response.dart';
 import 'package:turi/app/data/remote/model/checkout/country_response.dart';
 import 'package:turi/app/data/remote/model/checkout/payment_method_response.dart';
@@ -25,30 +26,20 @@ class CheckoutController extends BaseController {
   final address = TextEditingController().obs;
   final coupon = TextEditingController().obs;
   final city = ''.obs;
+  final area = ''.obs;
 
   // Country and City Selection
   final selectedCountry = Rx<CountryResponse?>(null);
   final selectedCity = Rx<CityResponse?>(null);
+  final selectedArea = Rx<AreaResponse?>(null);
 
   final shippingInfo = <ShippingInfo>[].obs;
 
   final paymentMethods = <PaymentMethodResponse>[].obs;
   final countryList = <CountryResponse>[].obs;
   final cityList = <CityResponse>[].obs;
+  final areaList = <AreaResponse>[].obs;
 
-  // final cityList = [
-  //   "Manama",
-  //   "Muharraq",
-  //   "Riffa",
-  //   "Zallaq",
-  //   "Tubli",
-  //   "Abu Saiba",
-  //   "A'Ali",
-  //   "Sitra",
-  //   "'Hamad Town'",
-  //   "Al Budayyi",
-  //   "ISA Town",
-  // ];
 
   final args = Get.arguments;
   final cartProducts = <ProductData>[].obs;
@@ -60,7 +51,6 @@ class CheckoutController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    // getShippingInfo();
     if (args != null) {
       cartProducts.addAll(args['cartProducts']);
       subTotal.value = args['subTotal'];
@@ -73,8 +63,13 @@ class CheckoutController extends BaseController {
       address.value.text = 'Test Address';
     }
 
-    getCountryList();
-    getPaymentMethods();
+
+    Future.microtask(()async {
+     await getCountryList();
+     await getCityList();
+     await getAreaList();
+      getPaymentMethods();
+    });
   }
 
   Future<void> getPaymentMethods() async {
@@ -96,6 +91,15 @@ class CheckoutController extends BaseController {
     printLog(response);
     cityList.clear();
     cityList.addAll(response);
+  }
+
+  Future<void> getAreaList() async {
+    var response = await CheckoutRepository().getArea(
+      cityList.first.id.toString(),
+    );
+    printLog(response);
+    areaList.clear();
+    areaList.addAll(response);
   }
 
   Future<void> getShippingInfo() async {

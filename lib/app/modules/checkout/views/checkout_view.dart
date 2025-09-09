@@ -8,6 +8,7 @@ import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 
 import '../../../core/widget/common_textfield.dart';
+import '../../../data/remote/model/checkout/area_response.dart';
 import '../../../data/remote/model/checkout/country_response.dart';
 import '../../../data/remote/model/checkout/city_response.dart';
 import '../../../data/remote/model/checkout/payment_method_response.dart';
@@ -184,7 +185,64 @@ class CheckoutView extends BaseView<CheckoutController> {
                     ),
                   ),
                   AppWidgets().gapH8(),
-
+                  // Area Dropdown
+               // Area Dropdown
+               SizedBox(
+                 height: 40.h,
+                 child: Obx(
+                   () => DropdownButtonFormField<AreaResponse>(
+                     padding: EdgeInsets.zero,
+                     iconEnabledColor: AppColors.primaryColor,
+                     iconDisabledColor: AppColors.primaryColor,
+                     decoration: InputDecoration(
+                       contentPadding: EdgeInsets.only(right: 5),
+                       labelText: 'Area',
+                       prefixIcon: Icon(
+                         Icons.map,
+                         color: AppColors.primaryColor,
+                       ),
+                       floatingLabelStyle: TextStyle(
+                         color: AppColors.primaryColor,
+                         fontSize: 14.sp,
+                       ),
+                       focusedBorder: OutlineInputBorder(
+                         borderRadius: BorderRadius.circular(8),
+                         borderSide: BorderSide(
+                           width: 2,
+                           color: AppColors.primaryColor,
+                         ),
+                       ),
+                       enabledBorder: OutlineInputBorder(
+                         borderRadius: BorderRadius.circular(8),
+                         borderSide: BorderSide(
+                           width: 1,
+                           color: AppColors.primaryColor,
+                         ),
+                       ),
+                     ),
+                     value: controller.selectedArea.value,
+                     hint: Text(
+                       controller.areaList.isEmpty ? 'Select City First' : 'Select Area',
+                     ),
+                     items: controller.areaList.map((area) {
+                       return DropdownMenuItem<AreaResponse>(
+                         value: area,
+                         child: Text(area.name ?? ''),
+                       );
+                     }).toList(),
+                     onChanged: controller.areaList.isEmpty
+                         ? null
+                         : (AreaResponse? newValue) {
+                             controller.selectedArea.value = newValue;
+                             if (newValue != null) {
+                               controller.area.value = newValue.id.toString();
+                               printLog('Selected area ID: ${newValue.id}');
+                             }
+                           },
+                   ),
+                 ),
+               ),
+                  AppWidgets().gapH8(),
                   commonTextField(
                     controller: controller.address.value,
                     labelText: 'Address',

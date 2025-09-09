@@ -1,4 +1,5 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:turi/app/data/remote/model/checkout/area_response.dart';
 import 'package:turi/app/data/remote/model/checkout/city_response.dart';
 import 'package:turi/app/data/remote/model/checkout/country_response.dart';
 import 'package:turi/app/data/remote/model/checkout/payment_method_response.dart';
@@ -81,6 +82,16 @@ class CheckoutRepository {
       isLoaderRequired: false,
     );
     return cityResponseFromJson(response.toString());
+  }
+
+  Future<List<AreaResponse>> getArea(String cityId) async {
+    var response = await ApiClient().get(
+      ApiEndPoints.area(cityId: cityId),
+      getArea,
+      isHeaderRequired: false,
+      isLoaderRequired: false,
+    );
+    return areaResponseFromJson(response.toString());
   }
 
   Future<List<PaymentMethodResponse>> paymentMethods() async {
