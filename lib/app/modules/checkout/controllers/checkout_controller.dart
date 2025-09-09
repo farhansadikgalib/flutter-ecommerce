@@ -148,6 +148,14 @@ class CheckoutController extends BaseController {
       );
       return;
     }
+    // Mobile number must be exactly 11 digits and numeric
+    if (mobile.value.text.length != 11 || !RegExp(r'^\d{11}\$').hasMatch(mobile.value.text)) {
+      AppWidgets().getSnackBar(
+        title: 'Error',
+        message: 'Mobile number must be exactly 11 digits',
+      );
+      return;
+    }
     if (address.value.text.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
@@ -219,6 +227,7 @@ class CheckoutController extends BaseController {
         address: address.value.text,
         countryId: selectedCountry.value?.id.toString(),
         cityId: selectedCity.value?.id.toString(),
+        areaId: selectedArea.value?.id.toString(),
         notes: '',
       ),
       paymentMethodId: 1,

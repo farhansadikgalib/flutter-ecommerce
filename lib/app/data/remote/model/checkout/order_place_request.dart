@@ -50,6 +50,7 @@ class BillingAddress {
   String? address;
   String? countryId;
   String? cityId;
+  String? areaId;
   String? notes;
 
   BillingAddress({
@@ -58,6 +59,7 @@ class BillingAddress {
     this.address,
     this.countryId,
     this.cityId,
+    this.areaId,
     this.notes,
   });
 
@@ -67,6 +69,7 @@ class BillingAddress {
     address: json["address"],
     countryId: json["country_id"],
     cityId: json["city_id"],
+    areaId: json["area_id"],
     notes: json["notes"],
   );
 
@@ -76,6 +79,7 @@ class BillingAddress {
     "address": address,
     "country_id": countryId,
     "city_id": cityId,
+    "area_id": areaId,
     "notes": notes,
   };
 }
