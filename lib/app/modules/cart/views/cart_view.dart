@@ -9,6 +9,7 @@ import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/routes/app_pages.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
+import '../../../data/remote/model/home/best_selling_product_response.dart';
 import '../controllers/cart_controller.dart';
 
 class CartView extends BaseView<CartController> {
@@ -360,10 +361,22 @@ class CartView extends BaseView<CartController> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   SizedBox(height: 6),
+                                  // Stock information
+                                  Text(
+                                    'Stock: ${getTotalStock(product)}',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.grey[700],
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
                                   Row(
                                     children: [
                                       Text(
-                                        '৳${product.productPrices?.sellingPrice ?? product.packSize?.sellingPrice ?? 0}',
+                                        '৳${double.parse(product.productPrices!
+                                            .ecomFinalSellingPrice.toString())
+                                      .toStringAsFixed(2) ?? '0.00'}',
                                         style: TextStyle(
                                           color: AppColors.primaryColor,
                                           fontSize: 15,
@@ -384,7 +397,8 @@ class CartView extends BaseView<CartController> {
                                   // Total price for this item
                                   Obx(
                                     () => Text(
-                                      'Total: ৳${((double.parse((product.productPrices?.sellingPrice ?? product.packSize?.sellingPrice ?? 0).toString())) * controller.getProductQuantity(product.id!)).toStringAsFixed(2)}',
+                                      'Sub Total: ৳${((double.parse((product
+                                          .productPrices?.sellingPrice ?? product.packSize?.sellingPrice ?? 0).toString())) * controller.getProductQuantity(product.id!)).toStringAsFixed(2)}',
                                       style: TextStyle(
                                         color: Colors.grey[700],
                                         fontSize: 13,
@@ -464,8 +478,7 @@ class CartView extends BaseView<CartController> {
                           ],
                         ),
                       ),
-                    ),
-                  );
+                    ));
                 },
               ),
             ),
@@ -473,6 +486,14 @@ class CartView extends BaseView<CartController> {
         ),
       );
     });
+  }
+
+  // Helper to get total stock for a product
+  int getTotalStock(ProductData product) {
+    final batches = product.stockBatches;
+    if (batches == null || batches.isEmpty) return 0;
+    return batches.fold<int>(0, (sum, batch) => sum + (double.parse(batch
+        .balancedQuantity.toString()).toInt()));
   }
 
   // Confirmation dialog for swipe to remove

@@ -238,11 +238,11 @@ class _ProductCardState extends State<ProductCard> {
                   widget.product.id!,
                 );
 
-                // if (isInCart && quantity > 0) {
-                //   return _buildQuantitySelector(quantity);
-                // } else {
+                if (isInCart && quantity > 0) {
+                  return _buildQuantitySelector(quantity);
+                } else {
                   return _buildAddToCartButton();
-               // }
+               }
               }),
             ],
           ),

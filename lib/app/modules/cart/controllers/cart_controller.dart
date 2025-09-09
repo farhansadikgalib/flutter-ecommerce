@@ -215,4 +215,13 @@ class CartController extends BaseController {
     printLog('No price found for product: ${product.name}');
     return 0.0;
   }
+
+  /// Set the quantity for a product in the cart
+  void setProductQuantity(int productId, int quantity) {
+    int index = allCartProducts.indexWhere((item) => item.id == productId);
+    if (index != -1) {
+      allCartProducts[index].quantity = quantity;
+      _updateCartSummary();
+    }
+  }
 }
