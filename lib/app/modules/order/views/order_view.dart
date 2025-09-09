@@ -16,372 +16,362 @@ class OrderView extends GetView<OrderController> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: globalAppBar(context, 'Your Orders', showBackButton: false),
-        body: Obx(() {
-          if (controller.isLoading.value) {
-            return _buildLoadingSkeleton();
-          }
+    return Scaffold(
+      appBar: globalAppBar(context, 'Your Orders', showBackButton: false),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return _buildLoadingSkeleton();
+        }
 
-          if (controller.orderData.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/empty_order.png',
-                    height: 120,
-                    width: 120,
-                    errorBuilder:
-                        (ctx, obj, stack) => Icon(
-                          Icons.inventory_2_outlined,
-                          size: 80,
-                          color: Colors.grey[400],
-                        ),
+        if (controller.orderData.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/empty_order.png',
+                  height: 120,
+                  width: 120,
+                  errorBuilder:
+                      (ctx, obj, stack) => Icon(
+                        Icons.inventory_2_outlined,
+                        size: 80,
+                        color: Colors.grey[400],
+                      ),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'No orders yet',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'No orders yet',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Your order history will appear here',
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () => Get.offAllNamed(Routes.DASHBOARD),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Your order history will appear here',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  child: const Text('Start Shopping'),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(12),
+          itemCount: controller.orderData.length,
+          itemBuilder: (context, index) {
+            final order = controller.orderData[index];
+
+            // Format date if possible
+            String formattedDate = '';
+            try {
+              final date = DateTime.parse(order.createdAt.toString());
+              formattedDate = DateFormat('MMM d, yyyy').format(date);
+            } catch (e) {
+              formattedDate = order.createdAt.toString();
+            }
+
+            // Get order status
+            final orderStatus = getOrderStatus(order);
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.primaryColor),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.15),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
                   ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () => Get.offAllNamed(Routes.DASHBOARD),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
+                ],
+              ),
+              child: Column(
+                children: [
+                  // Order header
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor.withOpacity(0.9),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
                       ),
                     ),
-                    child: const Text('Start Shopping'),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'ORDER PLACED',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.white,
+                              ),
+                            ),
+                            Text(
+                              'TOTAL',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              formattedDate,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.white,
+                              ),
+                            ),
+                            Text(
+                              '৳ ${order.total ?? '0.00'}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Text(
+                              'ORDER # ${order.id}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.white,
+                              ),
+                            ),
+                            const Spacer(),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: getStatusColor(
+                                  orderStatus,
+                                ).withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                orderStatus,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Order items
+                  if (order.saleProducts != null &&
+                      order.saleProducts!.isNotEmpty)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      itemCount: order.saleProducts!.length,
+                      itemBuilder: (context, i) {
+                        final product = order.saleProducts![i];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Product image placeholder
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Center(
+                                  child: AnyImageView(
+                                    imagePath: AppConfig.imageBasePath,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+
+                              // Product details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product.productName ?? 'Product',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '৳ ${product.price ?? '0.00'}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 6,
+                                            vertical: 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Qty: ${product.quantity ?? 1}',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey[700],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+
+                  // Order actions
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              printLog('start tracking');
+                              controller.trackOrder(order.saleCode.toString());
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Colors.grey[300]!),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                            child: const Text(
+                              'Track Order',
+                              style: TextStyle(color: AppColors.primaryColor),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed:
+                                orderStatus == "Delivered" ||
+                                        orderStatus == "Cancelled"
+                                    ? null
+                                    : () {
+                                      // Add cancel order functionality
+                                      showDialog(
+                                        context: context,
+                                        builder:
+                                            (context) => AlertDialog(
+                                              title: const Text('Cancel Order'),
+                                              content: const Text(
+                                                'Are you sure you want to cancel this order?',
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed:
+                                                      () => Navigator.pop(
+                                                        context,
+                                                      ),
+                                                  child: const Text('No'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+
+                                                    controller.cancelOrder(
+                                                      order.saleCode.toString(),
+                                                    );
+                                                  },
+                                                  child: const Text('Yes'),
+                                                ),
+                                              ],
+                                            ),
+                                      );
+                                    },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  orderStatus == "Delivered" ||
+                                          orderStatus == "Cancelled"
+                                      ? Colors.grey[300]
+                                      : Colors.red[400],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                            child: const Text('Cancel'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             );
-          }
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(12),
-            itemCount: controller.orderData.length,
-            itemBuilder: (context, index) {
-              final order = controller.orderData[index];
-
-              // Format date if possible
-              String formattedDate = '';
-              try {
-                final date = DateTime.parse(order.createdAt.toString());
-                formattedDate = DateFormat('MMM d, yyyy').format(date);
-              } catch (e) {
-                formattedDate = order.createdAt.toString();
-              }
-
-              // Get order status
-              final orderStatus = getOrderStatus(order);
-
-              return Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.primaryColor),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.15),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    // Order header
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor.withOpacity(0.9),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          topRight: Radius.circular(8),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'ORDER PLACED',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                              Text(
-                                'TOTAL',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                formattedDate,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                              Text(
-                                '৳ ${order.total ?? '0.00'}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Text(
-                                'ORDER # ${order.id}',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                              const Spacer(),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 3,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: getStatusColor(
-                                    orderStatus,
-                                  ).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  orderStatus,
-                                  style: TextStyle(
-                                    color: getStatusColor(orderStatus),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // Order items
-                    if (order.saleProducts != null &&
-                        order.saleProducts!.isNotEmpty)
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        itemCount: order.saleProducts!.length,
-                        itemBuilder: (context, i) {
-                          final product = order.saleProducts![i];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Product image placeholder
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Center(
-                                    child: AnyImageView(
-                                      imagePath:
-                                          AppConfig
-                                              .imageBasePath,
-
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-
-                                // Product details
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        product.productName ?? 'Product',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            '৳ ${product.price ?? '0.00'}',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.grey[700],
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 2,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[200],
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Text(
-                                              'Qty: ${product.quantity ?? 1}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey[700],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-
-                    // Order actions
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () {
-                                printLog('start tracking');
-                                controller.trackOrder(order.saleCode.toString());
-
-                              },
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Colors.grey[300]!),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                ),
-                              ),
-                              child: const Text(
-                                'Track Order',
-                                style: TextStyle(color: AppColors.primaryColor),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed:
-                                  orderStatus == "Delivered" ||
-                                          orderStatus == "Cancelled"
-                                      ? null
-                                      : () {
-                                        // Add cancel order functionality
-                                        showDialog(
-                                          context: context,
-                                          builder:
-                                              (context) => AlertDialog(
-                                                title: const Text(
-                                                  'Cancel Order',
-                                                ),
-                                                content: const Text(
-                                                  'Are you sure you want to cancel this order?',
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed:
-                                                        () => Navigator.pop(
-                                                          context,
-                                                        ),
-                                                    child: const Text('No'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-
-                                                      controller.cancelOrder(order.saleCode.toString());
-
-                                                    },
-                                                    child: const Text('Yes'),
-                                                  ),
-                                                ],
-                                              ),
-                                        );
-                                      },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    orderStatus == "Delivered" ||
-                                            orderStatus == "Cancelled"
-                                        ? Colors.grey[300]
-                                        : Colors.red[400],
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                ),
-                              ),
-                              child: const Text('Cancel'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        }),
-      );
+          },
+        );
+      }),
+    );
   }
 
   String getOrderStatus(AllOrdersData order) {
-
     switch (int.parse(order.verifyStatus.toString())) {
       case 0:
         return 'Pending';
@@ -392,12 +382,11 @@ class OrderView extends GetView<OrderController> {
       default:
         return 'Unknown';
     }
-
-
   }
 
   Color getStatusColor(String status) {
-    switch (status.toLowerCase()) {
+    printLog(status);
+    switch (status) {
       case 'Pending':
         return Colors.yellow[700]!;
       case 'Confirm':

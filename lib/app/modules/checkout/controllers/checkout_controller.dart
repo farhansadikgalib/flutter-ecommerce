@@ -57,7 +57,7 @@ class CheckoutController extends BaseController {
 
     if (kDebugMode) {
       name.value.text = 'Test User';
-      mobile.value.text = '1234567890';
+      mobile.value.text = '01773076754';
       email.value.text = 'test@gmail.com';
       address.value.text = 'Test Address';
     }
@@ -149,27 +149,27 @@ class CheckoutController extends BaseController {
       return;
     }
     // Mobile number must be exactly 11 digits and numeric
-    if (mobile.value.text.length != 11 || !RegExp(r'^\d{11}\$').hasMatch(mobile.value.text)) {
+    if (mobile.value.text.length != 11) {
       AppWidgets().getSnackBar(
         title: 'Error',
         message: 'Mobile number must be exactly 11 digits',
       );
       return;
     }
-    if (address.value.text.isEmpty) {
-      AppWidgets().getSnackBar(
-        title: 'Error',
-        message: 'Please enter your address',
-      );
-      return;
-    }
-    if (city.value.isEmpty) {
-      AppWidgets().getSnackBar(
-        title: 'Error',
-        message: 'Please select your city',
-      );
-      return;
-    }
+    // if (address.value.text.isEmpty) {
+    //   AppWidgets().getSnackBar(
+    //     title: 'Error',
+    //     message: 'Please enter your address',
+    //   );
+    //   return;
+    // }
+    // if (city.value.isEmpty) {
+    //   AppWidgets().getSnackBar(
+    //     title: 'Error',
+    //     message: 'Please select your city',
+    //   );
+    //   return;
+    // }
     if (selectedPaymentMethod.value.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
