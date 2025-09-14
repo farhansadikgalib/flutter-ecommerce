@@ -7,6 +7,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:turi/app/core/base/base_view.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/routes/app_pages.dart';
+import 'package:turi/generated/assets.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../data/remote/model/home/best_selling_product_response.dart';
@@ -342,7 +343,7 @@ class CartView extends BaseView<CartController> {
                                           ? '${AppConfig
                                           .imageBasePath}${product
                                           .productImages![0].path}'
-                                          : '${AppConfig.imageBasePath}default.png',
+                                          : Assets.pngNotFound,
                                 ),
                               ),
                             ),
