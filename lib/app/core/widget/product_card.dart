@@ -9,6 +9,7 @@ import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:turi/app/modules/product_details/views/product_details_view.dart';
 import 'package:turi/app/routes/app_pages.dart';
+import 'package:turi/generated/assets.dart';
 import '../../modules/cart/controllers/cart_controller.dart';
 
 class ProductCard extends StatefulWidget {
@@ -114,7 +115,8 @@ class _ProductCardState extends State<ProductCard> {
                     height: 120,
                     width: 120,
                     borderRadius: BorderRadius.circular(16),
-                    errorWidget: FlutterLogo(),
+                    errorWidget: AnyImageView(imagePath: Assets.pngNotFound,
+                      fit: BoxFit.cover,),
                   ),
                   if (widget.promoPrice.toString().isNotEmpty &&
                       getDiscountInfo() != null)

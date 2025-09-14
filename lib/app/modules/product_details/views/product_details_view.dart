@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:turi/generated/assets.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../core/helper/app_widgets.dart';
@@ -99,7 +100,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                     product.productImages != null &&
                                             product.productImages!.isNotEmpty
                                         ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
-                                        : 'https://via.placeholder.com/350x350?text=No+Image',
+                                        : Assets.pngNotFound,
                                 width: double.infinity,
                                 height: 350.h,
                                 fit: BoxFit.cover,
