@@ -68,7 +68,7 @@ class HomeController extends BaseController {
 
   Future<void> getBestSellingProducts() async {
     isLoading.value = true;
-    var response = await HomeRepository().getBestSellingProducts();
+    var response = await HomeRepository().getBestSellingProducts(1);
     if (response.isNotEmpty) {
       bestSellingProducts.clear();
       bestSellingProducts.addAll(response);

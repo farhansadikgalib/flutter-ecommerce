@@ -41,9 +41,9 @@ class HomeRepository {
     return supplierResponseFromJson(response.toString());
   }
 
-  Future<List<ProductData>> getBestSellingProducts() async {
+  Future<List<ProductData>> getBestSellingProducts(int page) async {
     var response = await ApiClient().get(
-      ApiEndPoints.bestSellingProduct,
+      ApiEndPoints.bestSellingProduct(page: page),
       getBestSellingProducts,
       isHeaderRequired: true,
       isLoaderRequired: false,
