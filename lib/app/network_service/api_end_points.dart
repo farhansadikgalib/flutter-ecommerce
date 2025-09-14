@@ -16,7 +16,7 @@ class ApiEndPoints {
   static String categories = "category_all";
   static String supplier = "all-supplier";
   static String bestSellingProduct({required int page}) =>
-      "best-selling-product?page=$page&limit=20";
+      "best-selling-product?page=$page&limit=30";
   static String ecomCategories = "all-ecom-categories";
 
   //Home
