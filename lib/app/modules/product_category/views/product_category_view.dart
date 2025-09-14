@@ -266,6 +266,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
 
         body: Stack(
           children: [
+            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),child:
             Column(
               children: [
                 Expanded(
@@ -556,12 +557,13 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                   }),
                 ),
               ],
-            ),
+            ),),
+
 
             Visibility(
-              visible:
-              controller.categoryProducts.isNotEmpty &&
-                  !controller.fromSearch,
+              visible: false,
+              // controller.categoryProducts.isNotEmpty &&
+              //     !controller.fromSearch,
               child: Positioned(
                 top: MediaQuery.of(context).size.height / 2 - 28,
                 child: InkWell(

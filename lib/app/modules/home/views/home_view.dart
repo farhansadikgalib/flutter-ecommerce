@@ -848,23 +848,25 @@ class HomeView extends BaseView<HomeController> {
                       return ProductCard(
                         product: controller.bestSellingProducts[index],
                         index: index,
+                        showDiscountTag: true,
                       );
                     } else {
-                     return Center(
-                       child: Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         crossAxisAlignment: CrossAxisAlignment.center,
-                         children: [
-                           Text(
-                             'Loading more products...',
-                             style: TextStyle(
-                               color: AppColors.primaryColor,
-                               fontWeight: FontWeight.w500,
-                               fontSize: 14,
+                     return SizedBox(
+                       height: 20,
+                       child: Row(
+                           children: [
+                             Spacer(),
+                              Text(
+                               'Loading more products...',
+                               style: TextStyle(
+                                 color: AppColors.primaryColor,
+                                 fontWeight: FontWeight.w500,
+                                 fontSize: 14,
+                               ),
                              ),
-                           ),
-                         ],
-                       ),
+                             Spacer()
+                           ],
+                         ),
                      );
                     }
                   },

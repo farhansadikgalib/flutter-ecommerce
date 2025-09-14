@@ -15,13 +15,15 @@ import '../../modules/cart/controllers/cart_controller.dart';
 class ProductCard extends StatefulWidget {
   final ProductData product;
   final int index;
-  final promoPrice; // Example promo price
+  final promoPrice;
+  final bool showDiscountTag;
 
   const ProductCard({
     super.key,
     required this.product,
     required this.index,
     this.promoPrice,
+    this.showDiscountTag =false
   });
 
   @override
@@ -51,11 +53,11 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   String getSellingPrice() {
-    return widget.product.productPrices?.sellingPrice ?? '0';
+    return widget.product.productPrices?.sellingPrice.toString() ?? '0';
   }
 
   String getOfferedPrice() {
-    return widget.promoPrice ?? getSellingPrice();
+    return widget.promoPrice ?? '0';
   }
 
   /// Returns a tuple: (percent, label) where label is 'OFF' or 'UP'
@@ -63,6 +65,8 @@ class _ProductCardState extends State<ProductCard> {
     final selling = double.tryParse(getOfferedPrice()) ?? 0;
     final promo = double.tryParse(getSellingPrice()) ?? 0;
     // Only show discount if both prices are > 0 and not equal
+    
+    // printLog('selling: $selling, promo: $promo');
     if (selling > 0 && promo > 0 && promo != selling) {
       double percent = ((promo - selling).abs() / selling) * 100;
       String label = promo < selling ? 'OFF' : 'UP';
@@ -157,22 +161,34 @@ class _ProductCardState extends State<ProductCard> {
                   Positioned(
                     top: 0,
                     right: 0,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.redAccent,
+                    child: Visibility(
+                      visible: widget.showDiscountTag,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent,
 
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          bottomRight: Radius.circular(12),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomRight: Radius.circular(12),
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        '${double.parse((double.parse(widget.product.productPrices!.ecomFinalSellingPrice.toString()) - double.parse(widget.product.productPrices!.sellingPrice.toString()) / 100).toString()).toStringAsFixed(2)}% OFF',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                        child: Text(
+                         widget.showDiscountTag?  '${(((double.tryParse(widget
+                             .product
+        .productPrices!
+                              .sellingPrice!.toString()) ?? 1) -
+                              (double.tryParse(widget.product.productPrices!
+                                  .ecomFinalSellingPrice!.toString()) ?? 0)) /
+                              ((double.tryParse(widget.product.productPrices!
+                                  .sellingPrice!.toString()) ?? 1)) * 100)
+                              .abs()
+                              .toStringAsFixed(2)}% OFF': '',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ),

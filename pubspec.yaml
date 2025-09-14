@@ -36,6 +36,8 @@ dependencies:
   pinput:
   timeline_tile:
   flutter_dotenv:
+  icons_launcher:
+  android_notification_icons:
 
 
 dev_dependencies:
@@ -47,7 +49,29 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
     - assets/
     - assets/png/
-    - .env
+    - assets/logo/
 
+icons_launcher:
+  image_path: "assets/logo/icon.png"
+  platforms:
+    android:
+      enable: true
+      image_path: "assets/logo/icon.png"
+      notification_image: "assets/logo/icon.png"
+      # adaptive_background_color: '#ffffff'
+      adaptive_background_image: "assets/logo/icon.png"
+      adaptive_foreground_image: "assets/logo/icon.png"
+      adaptive_round_image: "assets/logo/icon.png"
+      adaptive_monochrome_image: "assets/logo/icon.png"
+    ios:
+      enable: true
+      image_path: "assets/logo/icon.png"
+      dark_path: "assets/logo/icon.png"
+      tinted_path: "assets/logo/icon.png"
+
+android_notification_icons:
+  image_path: 'assets/png/logo.png'
+  icon_name: 'ic_notification'
