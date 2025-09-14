@@ -1,8 +1,72 @@
 import 'dart:convert';
 
-List<ProductData> bestSellingProductResponseFromJson(String str) => List<ProductData>.from(json.decode(str).map((x) => ProductData.fromJson(x)));
+BestSellingProductResponse bestSellingProductResponseFromJson(String str) => BestSellingProductResponse.fromJson(json.decode(str));
 
-String bestSellingProductResponseToJson(List<ProductData> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String bestSellingProductResponseToJson(BestSellingProductResponse data) => json.encode(data.toJson());
+
+class BestSellingProductResponse {
+  int? currentPage;
+  List<ProductData>? data;
+  String? firstPageUrl;
+  int? from;
+  int? lastPage;
+  String? lastPageUrl;
+  List<Link>? links;
+  String? nextPageUrl;
+  String? path;
+  int? perPage;
+  dynamic prevPageUrl;
+  int? to;
+  int? total;
+
+  BestSellingProductResponse({
+    this.currentPage,
+    this.data,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
+    this.links,
+    this.nextPageUrl,
+    this.path,
+    this.perPage,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+  });
+
+  factory BestSellingProductResponse.fromJson(Map<String, dynamic> json) => BestSellingProductResponse(
+    currentPage: json["current_page"],
+    data: json["data"] == null ? [] : List<ProductData>.from(json["data"]!.map((x) => ProductData.fromJson(x))),
+    firstPageUrl: json["first_page_url"],
+    from: json["from"],
+    lastPage: json["last_page"],
+    lastPageUrl: json["last_page_url"],
+    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+    nextPageUrl: json["next_page_url"],
+    path: json["path"],
+    perPage: json["per_page"],
+    prevPageUrl: json["prev_page_url"],
+    to: json["to"],
+    total: json["total"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "current_page": currentPage,
+    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "first_page_url": firstPageUrl,
+    "from": from,
+    "last_page": lastPage,
+    "last_page_url": lastPageUrl,
+    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
+    "next_page_url": nextPageUrl,
+    "path": path,
+    "per_page": perPage,
+    "prev_page_url": prevPageUrl,
+    "to": to,
+    "total": total,
+  };
+}
 
 class ProductData {
   int? id;
@@ -13,7 +77,10 @@ class ProductData {
   String? genericId;
   String? categoryId;
   String? supplierId;
+  String? pharmaSalesQuantity;
+  String? ecommerceSalesQuantity;
   String? totalSoldQuantity;
+  String? totalBalancedQuantity;
   Generic? generic;
   Category? category;
   Supplier? supplier;
@@ -29,12 +96,16 @@ class ProductData {
   ProductData({
     this.id,
     this.addToCart,
-    this.name,
+    this.addToWishlist,
     this.quantity,
+    this.name,
     this.genericId,
     this.categoryId,
     this.supplierId,
+    this.pharmaSalesQuantity,
+    this.ecommerceSalesQuantity,
     this.totalSoldQuantity,
+    this.totalBalancedQuantity,
     this.generic,
     this.category,
     this.supplier,
@@ -46,19 +117,18 @@ class ProductData {
     this.productLocations,
     this.productImages,
     this.stockBatches,
-    this.addToWishlist
   });
 
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
     id: json["id"],
-    quantity: 0,
-    addToCart: false,
-    addToWishlist: false,
     name: json["name"],
     genericId: json["generic_id"],
     categoryId: json["category_id"],
     supplierId: json["supplier_id"],
+    pharmaSalesQuantity: json["pharma_sales_quantity"],
+    ecommerceSalesQuantity: json["ecommerce_sales_quantity"],
     totalSoldQuantity: json["total_sold_quantity"],
+    totalBalancedQuantity: json["total_balanced_quantity"],
     generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
     category: json["category"] == null ? null : Category.fromJson(json["category"]),
     supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
@@ -78,7 +148,10 @@ class ProductData {
     "generic_id": genericId,
     "category_id": categoryId,
     "supplier_id": supplierId,
+    "pharma_sales_quantity": pharmaSalesQuantity,
+    "ecommerce_sales_quantity": ecommerceSalesQuantity,
     "total_sold_quantity": totalSoldQuantity,
+    "total_balanced_quantity": totalBalancedQuantity,
     "generic": generic?.toJson(),
     "category": category?.toJson(),
     "supplier": supplier?.toJson(),
@@ -88,7 +161,7 @@ class ProductData {
     "product_prices": productPrices?.toJson(),
     "product_inventories": productInventories?.toJson(),
     "product_locations": productLocations?.toJson(),
-    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
+    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x.toJson())),
     "stock_batches": stockBatches == null ? [] : List<dynamic>.from(stockBatches!.map((x) => x.toJson())),
   };
 }
@@ -100,6 +173,7 @@ class Category {
   String? createdAt;
   dynamic updatedAt;
   String? status;
+  dynamic deletedAt;
 
   Category({
     this.id,
@@ -108,6 +182,7 @@ class Category {
     this.createdAt,
     this.updatedAt,
     this.status,
+    this.deletedAt,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
@@ -117,6 +192,7 @@ class Category {
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     status: json["status"],
+    deletedAt: json["deleted_at"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -126,6 +202,7 @@ class Category {
     "created_at": createdAt,
     "updated_at": updatedAt,
     "status": status,
+    "deleted_at": deletedAt,
   };
 }
 
@@ -269,8 +346,6 @@ class ProductImage {
   };
 }
 
-
-
 class ProductInventories {
   int? id;
   String? productId;
@@ -410,10 +485,10 @@ class ProductPrices {
   String? updatedAt;
   dynamic deletedAt;
   String? isEditableInSale;
-  dynamic packQuantity;
+  String? packQuantity;
   String? ecomDiscountPercentage;
   String? ecomDiscountAmount;
-  dynamic ecomFinalSellingPrice;
+  double? ecomFinalSellingPrice;
 
   ProductPrices({
     this.id,
@@ -470,7 +545,7 @@ class ProductPrices {
     packQuantity: json["pack_quantity"],
     ecomDiscountPercentage: json["ecom_discount_percentage"],
     ecomDiscountAmount: json["ecom_discount_amount"],
-    ecomFinalSellingPrice: json["ecom_final_selling_price"],
+    ecomFinalSellingPrice: json["ecom_final_selling_price"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -700,5 +775,29 @@ class Supplier {
     "pay_amount": payAmount,
     "deleted_at": deletedAt,
     "deleted_by": deletedBy,
+  };
+}
+
+class Link {
+  String? url;
+  String? label;
+  bool? active;
+
+  Link({
+    this.url,
+    this.label,
+    this.active,
+  });
+
+  factory Link.fromJson(Map<String, dynamic> json) => Link(
+    url: json["url"],
+    label: json["label"],
+    active: json["active"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "url": url,
+    "label": label,
+    "active": active,
   };
 }
