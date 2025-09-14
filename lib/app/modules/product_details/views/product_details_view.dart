@@ -10,12 +10,14 @@ import '../../../core/helper/app_widgets.dart';
 import '../../../core/helper/print_log.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/product_card.dart';
-import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
+import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart'
+    hide Supplier, Category, PackSize, ProductPrices;
 import 'package:turi/app/data/remote/model/product/product_details_response.dart'
     hide ProductPrices, PackSize, Supplier, Category, Generic;
 import 'package:turi/app/data/remote/repository/product/product_repository.dart';
 
 import '../../../data/remote/model/product/product_review_response.dart';
+import '../../../data/remote/model/product/related_product_response.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../../wishlist/controllers/wishlist_controller.dart';
 
@@ -38,19 +40,16 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   final imageList = [].obs;
   final productReview = <ProductReview>[].obs;
   final wishlistItem = false.obs;
-  final relatedProducts = <RelatedProduct>[].obs;
+  final relatedProducts = <RelatedProducts>[].obs;
 
-  Future<void> getProductDetails() async {
-    productDetails.clear();
-    relatedProducts.clear();
-    var response = await ProductRepository().getProductDetails(
-      product.id.toString(),
+  getRelatedProduct() async {
+    var response = await ProductRepository().getRelatedProduct(
+      product.genericId.toString(),
     );
-    productDetails.add(response.product);
-    relatedProducts.addAll(response.relatedProducts ?? []);
-    relatedProducts.refresh();
-
-    printLog('relatedProducts : ${response.relatedProducts!.length}');
+    if (response.data!.isNotEmpty) {
+      relatedProducts.clear();
+      relatedProducts.addAll(response.data ?? []);
+    }
   }
 
   void getProductReview() async {
@@ -68,7 +67,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    getProductDetails();
+    getRelatedProduct();
     return Obx(() {
       return Scaffold(
         body: Stack(
@@ -174,7 +173,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             ),
                           ),
                         ),
-                      )],
+                      ),
+                    ],
                   ),
                 ),
 
@@ -224,7 +224,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               Icon(
                                 Icons.inventory_2_outlined,
                                 size: 16.sp,
-                                color: int.parse(
+                                color:
+                                    int.parse(
                                               product
                                                   .productInventories!
                                                   .quantity
@@ -283,15 +284,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               borderRadius: BorderRadius.circular(2.r),
                             ),
                             child: Text(
-                              /*         product.productPrices?.sellingPrice != null &&
-                                      product
-                                              .productPrices
-                                              ?.costPriceWithoutTax !=
-                                          null
-                                  ? '${((double.parse(product.productPrices!.costPriceWithoutTax.toString()) - double.parse(product.productPrices!.sellingPrice.toString())) / double.parse(product.productPrices!.costPriceWithoutTax.toString()) * 100).toStringAsFixed(0)}% OFF'
-                                  : product.packSize?.vat != null
-                                  ? '${product.packSize!.vat}% VAT'
-                                  : */
                               'Special Offer',
                               style: TextStyle(
                                 fontSize: 10.sp,
@@ -534,15 +526,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.66,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8.w,
+                      mainAxisSpacing: 8.h,
                     ),
                     itemCount: relatedProducts.length,
                     itemBuilder: (BuildContext context, int index) {
-                      // Dart
                       final item = relatedProducts[index];
 
-                      final product = ProductData(
+                      // Create a simplified ProductData for related products
+                      final relatedProduct = ProductData(
                         id: item.id,
                         quantity: 0,
                         addToCart: false,
@@ -551,125 +543,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         genericId: item.genericId,
                         categoryId: item.categoryId,
                         supplierId: item.supplierId,
-                        generic:
-                            item.generic != null
-                                ? Generic(
-                                  id: item.generic!.id,
-                                  name: item.generic!.name,
-                                  category: item.generic!.category,
-                                  status: item.generic!.status,
-                                  createdBy: item.generic!.createdBy,
-                                  updatedBy: item.generic!.updatedBy,
-                                  createdAt: item.generic!.createdAt,
-                                  updatedAt: item.generic!.updatedAt,
-                                )
-                                : null,
-                        category:
-                            item.category != null
-                                ? Category(
-                                  id: item.category!.id,
-                                  name: item.category!.name,
-                                  shortOrder: item.category!.shortOrder,
-                                  createdAt: item.category!.createdAt,
-                                  updatedAt: item.category!.updatedAt,
-                                  status: item.category!.status,
-                                )
-                                : null,
-                        supplier:
-                            item.supplier != null
-                                ? Supplier(
-                                  id: item.supplier!.id,
-                                  firstName: item.supplier!.firstName,
-                                  lastName: item.supplier!.lastName,
-                                  address1: item.supplier!.address1,
-                                  address2: item.supplier!.address2,
-                                  city: item.supplier!.city,
-                                  stateOrProvince:
-                                      item.supplier!.stateOrProvince,
-                                  zip: item.supplier!.zip,
-                                  country: item.supplier!.country,
-                                  comments: item.supplier!.comments,
-                                  contact: item.supplier!.contact,
-                                  email: item.supplier!.email,
-                                  companyName: item.supplier!.companyName,
-                                  accountNo: item.supplier!.accountNo,
-                                  imagePath: item.supplier!.imagePath,
-                                  status: item.supplier!.status,
-                                  createdAt: item.supplier!.createdAt,
-                                  updatedAt: item.supplier!.updatedAt,
-                                  type: item.supplier!.type,
-                                  storeAccountBalance:
-                                      item.supplier!.storeAccountBalance,
-                                  payAmount: item.supplier!.payAmount,
-                                  deletedAt: item.supplier!.deletedAt,
-                                  deletedBy: item.supplier!.deletedBy,
-                                )
-                                : null,
-                        packSize:
-                            item.packSize != null
-                                ? PackSize(
-                                  id: item.packSize!.id,
-                                  productId: item.packSize!.productId,
-                                  name: item.packSize!.name,
-                                  quantity: item.packSize!.quantity,
-                                  tp: item.packSize!.tp,
-                                  vatPercent: item.packSize!.vatPercent,
-                                  vat: item.packSize!.vat,
-                                  sellingPrice: item.packSize!.sellingPrice,
-                                  defaultUnit: item.packSize!.defaultUnit,
-                                  createdAt: item.packSize!.createdAt,
-                                  updatedAt: item.packSize!.updatedAt,
-                                  deletedAt: item.packSize!.deletedAt,
-                                )
-                                : null,
-                        productPrices:
-                            item.productPrices != null
-                                ? ProductPrices(
-                                  id: item.productPrices!.id,
-                                  productId: item.productPrices!.productId,
-                                  costPriceWithoutTax:
-                                      item.productPrices!.costPriceWithoutTax,
-                                  sellingPrice:
-                                      item.productPrices!.sellingPrice,
-                                  tradePrice: item.productPrices!.tradePrice,
-                                  vat: item.productPrices!.vat,
-                                  wholesale: item.productPrices!.wholesale,
-                                  wholesaleType:
-                                      item.productPrices!.wholesaleType,
-                                  promoPrice: item.productPrices!.promoPrice,
-                                  promoStartDate:
-                                      item.productPrices!.promoStartDate,
-                                  promoEndDate:
-                                      item.productPrices!.promoEndDate,
-                                  disableFromPriceRules:
-                                      item.productPrices!.disableFromPriceRules,
-                                  allowPriceOverrideRegardlessOfPermissions:
-                                      item
-                                          .productPrices!
-                                          .allowPriceOverrideRegardlessOfPermissions,
-                                  pricesIncludeTax:
-                                      item.productPrices!.pricesIncludeTax,
-                                  onlyAllowItemsToBeSoldInWholeNumbers:
-                                      item
-                                          .productPrices!
-                                          .onlyAllowItemsToBeSoldInWholeNumbers,
-                                  changeCostPriceDuringSale:
-                                      item
-                                          .productPrices!
-                                          .changeCostPriceDuringSale,
-                                  overrideDefaultCommission:
-                                      item
-                                          .productPrices!
-                                          .overrideDefaultCommission,
-                                  overrideDefaultTax:
-                                      item.productPrices!.overrideDefaultTax,
-                                  createdAt: item.productPrices!.createdAt,
-                                  updatedAt: item.productPrices!.updatedAt,
-                                  deletedAt: item.productPrices!.deletedAt,
-                                  isEditableInSale:
-                                      item.productPrices!.isEditableInSale,
-                                )
-                                : null,
+                        // Use null for complex nested objects to avoid type conflicts
+                        generic: null,
+                        category: null,
+                        supplier: null,
+                        packSize: null,
+                        productPrices: null,
                         productImages:
                             item.productImages != null
                                 ? item.productImages!
@@ -685,8 +564,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                     )
                                     .toList()
                                 : [],
+                        // Add other required fields with default values
+                        productInventories: null,
+                        stockBatches: null,
+                        totalSoldQuantity: null,
                       );
-                      return ProductCard(product: product, index: index);
+
+                      return ProductCard(product: relatedProduct, index: index);
                     },
                   ),
                 ),
@@ -700,7 +584,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 onTap: () => Navigator.of(context).pop(),
                 child: CircleAvatar(
                   backgroundColor: AppColors.primaryColor,
-
                   child: Padding(
                     padding: EdgeInsets.only(right: 5),
                     child: Icon(
@@ -935,8 +818,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   // Price section in Alibaba style (larger, with range format)
   Widget _buildPriceSection(ProductData product) {
     final sellingPrice = product.productPrices?.sellingPrice?.toString() ?? '';
-    final discountPrice = product.productPrices?.ecomFinalSellingPrice?.toString() ?? '';
-    if (discountPrice.isNotEmpty && sellingPrice.isNotEmpty && discountPrice != sellingPrice) {
+    final discountPrice =
+        product.productPrices?.ecomFinalSellingPrice?.toString() ?? '';
+    if (discountPrice.isNotEmpty &&
+        sellingPrice.isNotEmpty &&
+        discountPrice != sellingPrice) {
       return Row(
         children: [
           Text(
@@ -969,4 +855,5 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         ),
       );
     }
-  }}
+  }
+}
