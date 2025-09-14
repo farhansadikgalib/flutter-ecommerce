@@ -20,6 +20,7 @@ Future<void> main() async {
       designSize: const Size(360, 800),
       minTextAdapt: true,
       splitScreenMode: true,
+      useInheritedMediaQuery: true,
       builder: (context, child) {
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
@@ -33,53 +34,58 @@ Future<void> main() async {
             statusBarIconBrightness: Brightness.dark));
 
         return SharedValue.wrapApp(
-          GetMaterialApp(
-            title: "E-Commerce",
-            debugShowCheckedModeBanner: false,
-            initialRoute: AppPages.INITIAL,
-            initialBinding: InitialBinding(),
-            builder: EasyLoading.init(),
-            theme: ThemeData(
-              primaryColor: AppColors.primaryColor,
-              useMaterial3: false,
-              scaffoldBackgroundColor: Colors.white,
-              textTheme: GoogleFonts.robotoTextTheme(
-                Theme.of(context).textTheme,
-              ),
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  borderSide: BorderSide(color: AppColors.primaryColor),
+          MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: const TextScaler.linear(1.0),
+            ),
+            child: GetMaterialApp(
+              title: "E-Commerce",
+              debugShowCheckedModeBanner: false,
+              initialRoute: AppPages.INITIAL,
+              initialBinding: InitialBinding(),
+              builder: EasyLoading.init(),
+              theme: ThemeData(
+                primaryColor: AppColors.primaryColor,
+                useMaterial3: false,
+                scaffoldBackgroundColor: Colors.white,
+                textTheme: GoogleFonts.robotoTextTheme(
+                  Theme.of(context).textTheme,
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  borderSide:
-                  BorderSide(color: AppColors.primaryColor, width: 2),
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide(color: AppColors.primaryColor),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 2),
+                  ),
+                  focusColor: AppColors.primaryColor,
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide(color: AppColors.primaryColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 2),
+                  ),
                 ),
-                focusColor: AppColors.primaryColor,
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  borderSide: BorderSide(color: AppColors.primaryColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  borderSide:
-                  BorderSide(color: AppColors.primaryColor, width: 2),
-                ),
-              ),
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.white,
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(color: AppColors.primaryColor),
-                    borderRadius: BorderRadius.circular(8.r),
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.white,
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: AppColors.primaryColor),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
                   ),
                 ),
               ),
+              defaultTransition: Transition.fadeIn,
+              getPages: AppPages.routes,
+              enableLog: kDebugMode,
             ),
-            defaultTransition: Transition.fadeIn,
-            getPages: AppPages.routes,
-            enableLog: kDebugMode,
           ),
         );
       }));

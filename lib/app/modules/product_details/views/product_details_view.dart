@@ -73,7 +73,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         body: Stack(
           children: [
             ListView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.only(bottom: 80.h),
               children: [
                 // Product Image Carousel with improved styling
@@ -939,7 +939,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       return Row(
         children: [
           Text(
-            '৳$discountPrice',
+            '৳${double.parse(discountPrice).toStringAsFixed(2)}',
             style: TextStyle(
               fontSize: 24.sp,
               fontWeight: FontWeight.bold,

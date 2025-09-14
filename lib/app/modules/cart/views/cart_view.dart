@@ -340,7 +340,8 @@ class CartView extends BaseView<CartController> {
                                       product.productImages != null &&
                                               product.productImages!.isNotEmpty
                                           ? '${AppConfig
-                                          .imageBasePath}${product.productImages![0].path}'
+                                          .imageBasePath}${product
+                                          .productImages![0].path}'
                                           : '${AppConfig.imageBasePath}default.png',
                                 ),
                               ),
@@ -362,6 +363,14 @@ class CartView extends BaseView<CartController> {
                                   ),
                                   SizedBox(height: 6),
                                   // Stock information
+                                  Text('${product.name} ${product.productPrices!.packQuantity}',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 6),
                                   Text(
                                     'Stock: ${getTotalStock(product)}',
                                     style: TextStyle(
@@ -376,7 +385,7 @@ class CartView extends BaseView<CartController> {
                                       Text(
                                         '৳${double.parse(product.productPrices!
                                             .ecomFinalSellingPrice.toString())
-                                      .toStringAsFixed(2) ?? '0.00'}',
+                                      .toStringAsFixed(2) }',
                                         style: TextStyle(
                                           color: AppColors.primaryColor,
                                           fontSize: 15,
