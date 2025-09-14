@@ -74,8 +74,11 @@ class _ProductCardState extends State<ProductCard> {
   int getTotalStock() {
     final batches = widget.product.stockBatches;
     if (batches == null || batches.isEmpty) return 0;
-    return batches.fold<int>(0, (sum, batch) => sum + (double.parse(batch
-        .balancedQuantity.toString()).toInt()));
+    return batches.fold<int>(
+      0,
+      (sum, batch) =>
+          sum + (double.parse(batch.balancedQuantity.toString()).toInt()),
+    );
   }
 
   @override
@@ -115,8 +118,10 @@ class _ProductCardState extends State<ProductCard> {
                     height: 120,
                     width: 120,
                     borderRadius: BorderRadius.circular(16),
-                    errorWidget: AnyImageView(imagePath: Assets.pngNotFound,
-                      fit: BoxFit.cover,),
+                    errorWidget: AnyImageView(
+                      imagePath: Assets.pngNotFound,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   if (widget.promoPrice.toString().isNotEmpty &&
                       getDiscountInfo() != null)
@@ -148,6 +153,30 @@ class _ProductCardState extends State<ProductCard> {
                         ),
                       ),
                     ),
+
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          bottomRight: Radius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        '${double.parse((double.parse(widget.product.productPrices!.ecomFinalSellingPrice.toString()) - double.parse(widget.product.productPrices!.sellingPrice.toString()) / 100).toString()).toStringAsFixed(2)}% OFF',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: 10),
@@ -171,9 +200,16 @@ class _ProductCardState extends State<ProductCard> {
               // Price Section
               Builder(
                 builder: (context) {
-                  final sellingPrice = widget.product.productPrices?.sellingPrice?.toString() ?? '';
-                  final discountPrice = widget.product.productPrices?.ecomFinalSellingPrice?.toString() ?? '';
-                  if (discountPrice.isNotEmpty && sellingPrice.isNotEmpty && discountPrice != sellingPrice) {
+                  final sellingPrice =
+                      widget.product.productPrices?.sellingPrice?.toString() ??
+                      '';
+                  final discountPrice =
+                      widget.product.productPrices?.ecomFinalSellingPrice
+                          ?.toString() ??
+                      '';
+                  if (discountPrice.isNotEmpty &&
+                      sellingPrice.isNotEmpty &&
+                      discountPrice != sellingPrice) {
                     return Row(
                       children: [
                         Text(
@@ -228,8 +264,6 @@ class _ProductCardState extends State<ProductCard> {
                 ),
               ),
 
-
-
               Spacer(),
               // Cart Section - Show quantity selector if in cart, otherwise show add button
               Obx(() {
@@ -244,7 +278,7 @@ class _ProductCardState extends State<ProductCard> {
                   return _buildQuantitySelector(quantity);
                 } else {
                   return _buildAddToCartButton();
-               }
+                }
               }),
             ],
           ),

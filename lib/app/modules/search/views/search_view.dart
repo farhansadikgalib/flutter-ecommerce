@@ -81,6 +81,8 @@ class SearchView extends GetView<SearchController> {
                   SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.66,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
 
                   ),
                   itemCount: controller.searchProductList.length,
