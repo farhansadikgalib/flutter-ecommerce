@@ -9,7 +9,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:turi/app/core/config/app_config.dart';
 import 'package:turi/app/core/helper/app_widgets.dart';
 import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/helper/webview_helper.dart';
@@ -136,14 +135,15 @@ class HomeView extends BaseView<HomeController> {
                             enabled: controller.isLoading.value,
                             child: InkWell(
                               onTap: () {
-                                Get.toNamed(
-                                  Routes.PRODUCT_CATEGORY,
-                                  arguments: {
-                                    'name': 'Search',
-                                    'type': 'Search',
-                                    'id': '0',
-                                  },
-                                );
+                                Get.toNamed(Routes.SEARCH);
+                                // Get.toNamed(
+                                //   Routes.PRODUCT_CATEGORY,
+                                //   arguments: {
+                                //     'name': 'Search',
+                                //     'type': 'Search',
+                                //     'id': '0',
+                                //   },
+                                // );
                               },
                               child: Container(
                                 height: 40.h,
