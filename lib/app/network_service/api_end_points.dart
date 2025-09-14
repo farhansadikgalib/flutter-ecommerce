@@ -29,7 +29,7 @@ class ApiEndPoints {
       "reviews/$productId?order_by=created_at&type=desc";
 
   static String relatedProduct({required String genericId}) =>
-      "product-generic-wise/$genericId";
+      "product-generic-wise/$genericId?page=1";
 
   //Checkout
   static String setShippingAddress = "user/address/action";
