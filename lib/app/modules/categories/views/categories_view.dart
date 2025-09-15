@@ -294,8 +294,8 @@ class CategoriesView extends GetView<CategoriesController> {
               children: [
                 // Subcategory Icon
                 Container(
-                  width: 20.h,
-                  height: 20.h,
+                  width: 35.h,
+                  height: 35.h,
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(18.r),
@@ -312,8 +312,8 @@ class CategoriesView extends GetView<CategoriesController> {
                             child: AnyImageView(
                               imagePath:
                                   '${AppConfig.imageBasePath}${subcategory.path}',
-                              width: 20.w,
-                              height: 20.h,
+                              width: 35.h,
+                              height: 35.h,
                               fit: BoxFit.cover,
                               errorWidget: Icon(
                                 Icons.category_outlined,
@@ -425,7 +425,7 @@ class CategoriesView extends GetView<CategoriesController> {
           // Animated floating icon
           Container(
             width: 120.w,
-            height: 120.h,
+            height: 135.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [

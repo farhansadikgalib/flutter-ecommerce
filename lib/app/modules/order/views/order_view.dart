@@ -6,6 +6,7 @@ import 'package:turi/app/core/helper/print_log.dart';
 import 'package:turi/app/core/style/app_colors.dart';
 import 'package:turi/app/core/widget/global_appbar.dart';
 import 'package:turi/app/routes/app_pages.dart';
+import 'package:turi/generated/assets.dart';
 import '../../../core/config/app_config.dart';
 import '../../../data/remote/model/order/order_response.dart';
 import '../controllers/order_controller.dart';
@@ -222,7 +223,7 @@ class OrderView extends GetView<OrderController> {
                                 ),
                                 child: Center(
                                   child: AnyImageView(
-                                    imagePath: AppConfig.imageBasePath,
+                                    imagePath: Assets.pngNotFound,
                                   ),
                                 ),
                               ),
