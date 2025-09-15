@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:turi/app/core/base/base_controller.dart';
-import 'package:turi/app/core/helper/app_widgets.dart';
-import 'package:turi/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/core/base/base_controller.dart';
+import 'package:ousadbazar/app/core/helper/app_widgets.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 
 class CartController extends BaseController {

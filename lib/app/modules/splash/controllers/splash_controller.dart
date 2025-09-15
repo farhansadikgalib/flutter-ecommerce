@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:turi/app/core/helper/app_helper.dart';
-import 'package:turi/app/core/helper/auth_helper.dart';
+import 'package:ousadbazar/app/core/helper/app_helper.dart';
+import 'package:ousadbazar/app/core/helper/auth_helper.dart';
 
 import '../../../routes/app_pages.dart';
 

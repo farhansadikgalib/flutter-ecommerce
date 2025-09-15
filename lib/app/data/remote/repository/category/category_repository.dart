@@ -1,7 +1,9 @@
-import 'package:turi/app/data/remote/model/category/categorywiseproducts_response.dart';
-import 'package:turi/app/data/remote/model/search/search_response.dart';
-import '../../../../network_service/api_client.dart';
-import '../../../../network_service/api_end_points.dart';
+import 'package:ousadbazar/app/data/remote/model/category/categorywiseproducts_response.dart';
+import 'package:ousadbazar/app/data/remote/model/search/search_response.dart';
+
+import '../../../../services/network_service/api_client.dart';
+import '../../../../services/network_service/api_end_points.dart';
+
 
 class CategoryRepository {
   Future<CategoryWiseProductsResponse> getCategoryWiseProduct(

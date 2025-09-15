@@ -5,13 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' as getX;
 import 'package:get/get_connect/http/src/status/http_status.dart';
 
-import '../core/config/app_config.dart';
-import '../core/connection_manager/connection_manager_controller.dart';
-import '../core/constants/app_constants.dart';
-import '../core/helper/app_helper.dart';
-import '../core/helper/app_widgets.dart';
-import '../core/helper/print_log.dart';
-import '../core/helper/shared_value_helper.dart';
+import '../../core/config/app_config.dart';
+import '../../core/connection_manager/connection_manager_controller.dart';
+import '../../core/constants/app_constants.dart';
+import '../../core/helper/app_helper.dart';
+import '../../core/helper/app_widgets.dart';
+import '../../core/helper/print_log.dart';
+import '../../core/helper/shared_value_helper.dart';
 
 class ApiClient {
   Dio? dio;

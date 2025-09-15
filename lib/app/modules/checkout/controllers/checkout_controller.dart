@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:turi/app/core/base/base_controller.dart';
-import 'package:turi/app/core/helper/app_widgets.dart';
-import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/core/helper/shared_value_helper.dart';
-import 'package:turi/app/data/remote/model/checkout/area_response.dart';
-import 'package:turi/app/data/remote/model/checkout/city_response.dart';
-import 'package:turi/app/data/remote/model/checkout/country_response.dart';
-import 'package:turi/app/data/remote/model/checkout/payment_method_response.dart';
-import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
-import 'package:turi/app/routes/app_pages.dart';
+import 'package:ousadbazar/app/core/base/base_controller.dart';
+import 'package:ousadbazar/app/core/helper/app_widgets.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/core/helper/shared_value_helper.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/area_response.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/city_response.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/country_response.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/payment_method_response.dart';
+import 'package:ousadbazar/app/modules/cart/controllers/cart_controller.dart';
+import 'package:ousadbazar/app/routes/app_pages.dart';
 
 import '../../../data/remote/model/checkout/order_place_request.dart';
 import '../../../data/remote/model/checkout/shipping_info_response.dart';

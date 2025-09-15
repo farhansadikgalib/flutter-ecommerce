@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:get/get.dart';
-import '../helper/print_log.dart';
-import '../helper/webview_helper.dart';
+import '../../core/helper/print_log.dart';
+import '../../core/helper/webview_helper.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();

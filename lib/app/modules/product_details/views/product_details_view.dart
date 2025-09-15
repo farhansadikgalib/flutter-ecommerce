@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:turi/generated/assets.dart';
+import 'package:ousadbazar/generated/assets.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../core/helper/app_widgets.dart';
 import '../../../core/helper/print_log.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/product_card.dart';
-import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart'
+import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart'
     as BestSellingModel;
-import 'package:turi/app/data/remote/model/product/product_details_response.dart'
+import 'package:ousadbazar/app/data/remote/model/product/product_details_response.dart'
     hide ProductPrices, PackSize, Supplier, Category, Generic;
-import 'package:turi/app/data/remote/repository/product/product_repository.dart';
+import 'package:ousadbazar/app/data/remote/repository/product/product_repository.dart';
 
 import '../../../data/remote/model/product/product_review_response.dart';
 import '../../../data/remote/model/product/related_product_response.dart';

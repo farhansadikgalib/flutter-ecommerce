@@ -4,14 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
 import '../../../core/helper/app_widgets.dart';
 import '../../../core/helper/debounce_helper.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/global_appbar.dart';
 import '../../../core/widget/product_card.dart';
-import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart'
+import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart'
 as BestSellingModel;
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 import '../../cart/controllers/cart_controller.dart';

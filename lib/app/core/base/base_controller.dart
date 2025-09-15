@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
+import 'package:ousadbazar/app/modules/cart/controllers/cart_controller.dart';
 import 'page_state.dart';
 
 abstract class BaseController extends GetxController {

@@ -1,6 +1,6 @@
 
 
-import 'package:turi/app/core/helper/shared_value_helper.dart';
+import 'package:ousadbazar/app/core/helper/shared_value_helper.dart';
 
 import '../../data/remote/model/auth/login_response.dart';
 

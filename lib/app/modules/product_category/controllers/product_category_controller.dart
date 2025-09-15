@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:turi/app/data/remote/model/search/search_response.dart';
-import 'package:turi/app/data/remote/repository/category/category_repository.dart';
+import 'package:ousadbazar/app/data/remote/model/search/search_response.dart';
+import 'package:ousadbazar/app/data/remote/repository/category/category_repository.dart';
 import '../../../core/helper/debounce_helper.dart';
 import '../../../core/helper/print_log.dart';
 import '../../../data/remote/model/category/categorywiseproducts_response.dart';

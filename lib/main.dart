@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_value/shared_value.dart';
 
 import 'app/core/binding/initial_binding.dart';
-import 'app/core/notification/notification_service.dart';
+import 'app/services/notification/notification_service.dart';
 import 'app/core/style/app_colors.dart';
 import 'app/routes/app_pages.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

@@ -1,9 +1,11 @@
-import 'package:turi/app/data/remote/model/product/product_details_response.dart';
-import 'package:turi/app/data/remote/model/product/product_review_response.dart';
-import 'package:turi/app/data/remote/model/product/related_product_response.dart';
+import 'package:ousadbazar/app/data/remote/model/product/product_details_response.dart';
+import 'package:ousadbazar/app/data/remote/model/product/product_review_response.dart';
+import 'package:ousadbazar/app/data/remote/model/product/related_product_response.dart';
 
-import '../../../../network_service/api_client.dart';
-import '../../../../network_service/api_end_points.dart';
+import '../../../../services/network_service/api_client.dart';
+import '../../../../services/network_service/api_end_points.dart';
+
+
 
 class ProductRepository{
   Future<ProductDetailsResponse> getProductDetails(String productId) async {

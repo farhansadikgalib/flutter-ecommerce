@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../data/remote/model/order/track_order_response.dart';
-import 'package:turi/app/core/widget/global_appbar.dart';
-import 'package:turi/app/modules/order/controllers/order_controller.dart';
+import 'package:ousadbazar/app/core/widget/global_appbar.dart';
+import 'package:ousadbazar/app/modules/order/controllers/order_controller.dart';
 
 class TrackOrderView extends StatelessWidget {
   final OrderController controller = Get.find<OrderController>();

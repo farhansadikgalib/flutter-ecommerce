@@ -1,5 +1,5 @@
 // import 'package:get/get.dart';
-// import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
+// import 'package:ousadbazar/app/modules/wishlist/controllers/wishlist_controller.dart';
 //
 // import '../../cart/controllers/cart_controller.dart';
 // import '../controllers/product_details_controller.dart';

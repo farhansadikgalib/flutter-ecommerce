@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
-import 'package:turi/app/routes/app_pages.dart';
+import 'package:ousadbazar/app/routes/app_pages.dart';
 
 import '../../../core/helper/app_widgets.dart';
 import '../../../core/helper/auth_helper.dart';

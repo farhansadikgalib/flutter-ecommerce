@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:turi/app/modules/categories/controllers/categories_controller.dart';
-import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
+import 'package:ousadbazar/app/modules/categories/controllers/categories_controller.dart';
+import 'package:ousadbazar/app/modules/wishlist/controllers/wishlist_controller.dart';
 import '../../modules/cart/controllers/cart_controller.dart';
 import '../../modules/home/controllers/home_controller.dart';
 import '../../modules/login/controllers/login_controller.dart';

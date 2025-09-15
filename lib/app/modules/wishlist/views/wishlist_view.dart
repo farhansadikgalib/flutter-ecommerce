@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/core/widget/global_appbar.dart';
-import 'package:turi/app/data/remote/model/home/home_response.dart';
-import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
-import 'package:turi/app/modules/product_details/views/product_details_view.dart';
-import 'package:turi/app/modules/wishlist/controllers/wishlist_controller.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/core/widget/global_appbar.dart';
+import 'package:ousadbazar/app/data/remote/model/home/home_response.dart';
+import 'package:ousadbazar/app/modules/cart/controllers/cart_controller.dart';
+import 'package:ousadbazar/app/modules/product_details/views/product_details_view.dart';
+import 'package:ousadbazar/app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../core/config/app_config.dart';

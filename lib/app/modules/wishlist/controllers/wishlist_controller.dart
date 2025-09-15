@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:turi/app/core/helper/app_widgets.dart';
-import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/data/remote/model/wishlist/wishlist_response.dart';
-import 'package:turi/app/data/remote/repository/wishlist/wishlist_repository.dart';
+import 'package:ousadbazar/app/core/helper/app_widgets.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/data/remote/model/wishlist/wishlist_response.dart';
+import 'package:ousadbazar/app/data/remote/repository/wishlist/wishlist_repository.dart';
 
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 

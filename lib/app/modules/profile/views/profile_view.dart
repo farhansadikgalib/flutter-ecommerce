@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:turi/app/core/helper/app_helper.dart';
-import 'package:turi/app/core/helper/shared_value_helper.dart';
-import 'package:turi/app/core/style/app_colors.dart';
+import 'package:ousadbazar/app/core/helper/app_helper.dart';
+import 'package:ousadbazar/app/core/helper/shared_value_helper.dart';
+import 'package:ousadbazar/app/core/style/app_colors.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {

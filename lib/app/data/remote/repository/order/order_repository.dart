@@ -1,8 +1,8 @@
-import 'package:turi/app/core/helper/shared_value_helper.dart';
-import 'package:turi/app/data/remote/model/order/order_response.dart';
-import 'package:turi/app/data/remote/model/order/track_order_response.dart';
-import '../../../../network_service/api_client.dart';
-import '../../../../network_service/api_end_points.dart';
+import 'package:ousadbazar/app/data/remote/model/order/order_response.dart';
+import 'package:ousadbazar/app/data/remote/model/order/track_order_response.dart';
+import '../../../../services/network_service/api_client.dart';
+import '../../../../services/network_service/api_end_points.dart';
+
 
 class OrderRepository{
   Future<OrderResponse> customerOrder() async {

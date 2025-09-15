@@ -1,11 +1,11 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:turi/app/core/base/base_view.dart';
-import 'package:turi/app/core/helper/app_widgets.dart';
-import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/core/style/app_colors.dart';
-import 'package:turi/app/core/widget/global_appbar.dart';
+import 'package:ousadbazar/app/core/base/base_view.dart';
+import 'package:ousadbazar/app/core/helper/app_widgets.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/core/style/app_colors.dart';
+import 'package:ousadbazar/app/core/widget/global_appbar.dart';
 
 import '../../../core/widget/common_textfield.dart';
 import '../../../data/remote/model/checkout/area_response.dart';

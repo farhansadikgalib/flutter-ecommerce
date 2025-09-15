@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:any_image_view/any_image_view.dart';
 import 'package:get/get.dart';
-import 'package:turi/app/core/config/app_config.dart';
-import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/core/style/app_colors.dart';
-import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
-import 'package:turi/app/modules/product_details/views/product_details_view.dart';
-import 'package:turi/app/routes/app_pages.dart';
-import 'package:turi/generated/assets.dart';
+import 'package:ousadbazar/app/core/config/app_config.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/core/style/app_colors.dart';
+import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
+import 'package:ousadbazar/app/modules/product_details/views/product_details_view.dart';
+import 'package:ousadbazar/app/routes/app_pages.dart';
+import 'package:ousadbazar/generated/assets.dart';
 import '../../modules/cart/controllers/cart_controller.dart';
 
 class ProductCard extends StatefulWidget {

@@ -1,10 +1,9 @@
-import 'package:turi/app/data/remote/model/auth/forget_password_response.dart';
-import 'package:turi/app/data/remote/model/auth/otp_verify_response.dart';
-import 'package:turi/app/data/remote/model/auth/sign_up_response.dart';
-import 'package:turi/app/data/remote/model/auth/update_password_response.dart';
-
-import '../../../../network_service/api_client.dart';
-import '../../../../network_service/api_end_points.dart';
+import 'package:ousadbazar/app/data/remote/model/auth/forget_password_response.dart';
+import 'package:ousadbazar/app/data/remote/model/auth/otp_verify_response.dart';
+import 'package:ousadbazar/app/data/remote/model/auth/sign_up_response.dart';
+import 'package:ousadbazar/app/data/remote/model/auth/update_password_response.dart';
+import '../../../../services/network_service/api_client.dart';
+import '../../../../services/network_service/api_end_points.dart';
 import '../../model/auth/login_response.dart';
 import '../../model/auth/logout_response.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:turi/app/core/widget/global_appbar.dart';
+import 'package:ousadbazar/app/core/widget/global_appbar.dart';
 
 import '../controllers/transactions_controller.dart';
 

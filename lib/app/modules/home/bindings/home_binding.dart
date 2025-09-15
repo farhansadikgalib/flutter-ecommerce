@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:turi/app/modules/cart/controllers/cart_controller.dart';
+import 'package:ousadbazar/app/modules/cart/controllers/cart_controller.dart';
 
 import '../controllers/home_controller.dart';
 

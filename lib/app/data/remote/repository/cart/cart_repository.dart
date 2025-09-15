@@ -1,8 +1,8 @@
 /*
-import 'package:turi/app/core/helper/shared_value_helper.dart';
-import 'package:turi/app/data/remote/model/cart/cart_items_response.dart';
-import 'package:turi/app/data/remote/model/cart/delete_cart_items_response.dart';
-import 'package:turi/app/data/remote/model/wishlist/wishlist_action_response.dart';
+import 'package:ousadbazar/app/core/helper/shared_value_helper.dart';
+import 'package:ousadbazar/app/data/remote/model/cart/cart_items_response.dart';
+import 'package:ousadbazar/app/data/remote/model/cart/delete_cart_items_response.dart';
+import 'package:ousadbazar/app/data/remote/model/wishlist/wishlist_action_response.dart';
 import '../../../../network_service/api_client.dart';
 import '../../../../network_service/api_end_points.dart';
 

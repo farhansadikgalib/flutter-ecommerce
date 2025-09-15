@@ -1,13 +1,12 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:turi/app/data/remote/model/checkout/area_response.dart';
-import 'package:turi/app/data/remote/model/checkout/city_response.dart';
-import 'package:turi/app/data/remote/model/checkout/country_response.dart';
-import 'package:turi/app/data/remote/model/checkout/payment_method_response.dart';
-import 'package:turi/app/data/remote/model/checkout/set_user_address_response.dart';
-import 'package:turi/app/data/remote/model/checkout/shipping_info_response.dart';
-import 'package:turi/app/data/remote/model/home/home_response.dart';
-import '../../../../network_service/api_client.dart';
-import '../../../../network_service/api_end_points.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/area_response.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/city_response.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/country_response.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/payment_method_response.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/set_user_address_response.dart';
+import 'package:ousadbazar/app/data/remote/model/checkout/shipping_info_response.dart';
+import '../../../../services/network_service/api_client.dart';
+import '../../../../services/network_service/api_end_points.dart';
 import '../../model/checkout/oder_place_response.dart';
 
 class CheckoutRepository {

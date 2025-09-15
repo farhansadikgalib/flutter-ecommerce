@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:get/get.dart';
-import 'package:turi/generated/assets.dart';
+import 'package:ousadbazar/generated/assets.dart';
 
 import '../controllers/splash_controller.dart';
 

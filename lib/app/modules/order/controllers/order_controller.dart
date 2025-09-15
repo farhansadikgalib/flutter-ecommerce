@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:turi/app/core/helper/app_widgets.dart';
-import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/data/remote/model/order/order_response.dart';
+import 'package:ousadbazar/app/core/helper/app_widgets.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/data/remote/model/order/order_response.dart';
 
 import '../../../data/remote/model/order/track_order_response.dart';
 import '../../../data/remote/repository/order/order_repository.dart';

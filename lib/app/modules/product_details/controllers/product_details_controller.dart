@@ -1,11 +1,11 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-// import 'package:turi/app/core/base/base_controller.dart';
-// import 'package:turi/app/core/helper/app_widgets.dart';
-// import 'package:turi/app/core/helper/print_log.dart';
-// import 'package:turi/app/data/remote/model/home/best_selling_product_response.dart';
-// import 'package:turi/app/data/remote/model/product/product_details_response.dart';
-// import 'package:turi/app/data/remote/repository/product/product_repository.dart';
+// import 'package:ousadbazar/app/core/base/base_controller.dart';
+// import 'package:ousadbazar/app/core/helper/app_widgets.dart';
+// import 'package:ousadbazar/app/core/helper/print_log.dart';
+// import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
+// import 'package:ousadbazar/app/data/remote/model/product/product_details_response.dart';
+// import 'package:ousadbazar/app/data/remote/repository/product/product_repository.dart';
 //
 // import '../../../data/remote/model/product/product_review_response.dart';
 //

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gallery_3d/gallery3d.dart';
 import 'package:get/get.dart';
-import 'package:turi/app/core/base/base_controller.dart';
-import 'package:turi/app/core/helper/app_widgets.dart';
-import 'package:turi/app/core/helper/print_log.dart';
-import 'package:turi/app/data/remote/model/home/supplier_response.dart';
-import 'package:turi/app/data/remote/model/home/category_response.dart';
-import 'package:turi/app/data/remote/model/home/home_response.dart'
+import 'package:ousadbazar/app/core/base/base_controller.dart';
+import 'package:ousadbazar/app/core/helper/app_widgets.dart';
+import 'package:ousadbazar/app/core/helper/print_log.dart';
+import 'package:ousadbazar/app/data/remote/model/home/supplier_response.dart';
+import 'package:ousadbazar/app/data/remote/model/home/category_response.dart';
+import 'package:ousadbazar/app/data/remote/model/home/home_response.dart'
     hide Product, Category;
-import 'package:turi/app/data/remote/repository/home/home_repository.dart';
+import 'package:ousadbazar/app/data/remote/repository/home/home_repository.dart';
 
 import '../../../../generated/assets.dart';
 import '../../../data/remote/model/category/ecom_categories_response.dart';
