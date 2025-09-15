@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1076422636293",
+    "project_id": "ousadbazar",
+    "storage_bucket": "ousadbazar.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076422636293:android:f4fe969f865b9e4ec43d6c",
+        "android_client_info": {
+          "package_name": "com.ousadbazar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW910lIwgN0uyR8t8dZ58iJt7JPuFH9kE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
