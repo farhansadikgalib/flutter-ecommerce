@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:any_image_view/any_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -91,7 +92,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         },
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              _showFullScreenImageDialog(context, index);
+                            },
                             child: Hero(
                               tag: 'product-${product.id}',
                               child: AnyImageView(
@@ -125,11 +128,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   product.productImages?.length ?? 1,
                                   (index) => GestureDetector(
                                     onTap: () {
-                                      // pageanimateToPage(
-                                      //   index,
-                                      //   duration: Duration(milliseconds: 300),
-                                      //   curve: Curves.easeInOut,
-                                      // );
+                                      pageController.animateToPage(
+                                        index,
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeInOut,
+                                      );
+                                      _showFullScreenImageDialog(
+                                        context,
+                                        index,
+                                      );
                                     },
                                     child: Container(
                                       width: 50.h,
@@ -693,8 +700,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   deletedAt: null,
                                 )
                                 : null,
-                        productLocations:
-                            null, // Different structure between models
+                        productLocations: null,
+                        // Different structure between models
                         productImages:
                             item.productImages != null &&
                                     item.productImages!.isNotEmpty
@@ -827,6 +834,20 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         ),
       );
     });
+  }
+
+  // Full screen image dialog with zoom functionality
+  void _showFullScreenImageDialog(BuildContext context, int initialIndex) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.9),
+      builder: (BuildContext context) {
+        return _FullScreenImageDialog(
+          images: product.productImages ?? [],
+          initialIndex: initialIndex,
+        );
+      },
+    );
   }
 
   Widget _buildInfoRow(String label, String value) {
@@ -1017,5 +1038,128 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         ),
       );
     }
+  }
+}
+
+class _FullScreenImageDialog extends StatefulWidget {
+  final List<dynamic> images;
+  final int initialIndex;
+
+  const _FullScreenImageDialog({
+    required this.images,
+    required this.initialIndex,
+  });
+
+  @override
+  State<_FullScreenImageDialog> createState() => _FullScreenImageDialogState();
+}
+
+class _FullScreenImageDialogState extends State<_FullScreenImageDialog> {
+  late PageController pageController;
+  late int currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+    pageController = PageController(initialPage: widget.initialIndex);
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog.fullscreen(
+      backgroundColor: Colors.transparent,
+      child: Stack(
+        children: [
+          // Backdrop filter
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(color: Colors.white.withOpacity(0.8)),
+          ),
+
+          // Image PageView
+          PageView.builder(
+            controller: pageController,
+            itemCount: widget.images.isNotEmpty ? widget.images.length : 1,
+            onPageChanged: (index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
+            itemBuilder: (context, index) {
+              final imagePath =
+                  widget.images.isNotEmpty
+                      ? '${AppConfig.imageBasePath}${widget.images[index].path}'
+                      : Assets.pngNotFound;
+
+              return Center(
+                child: InteractiveViewer(
+                  panEnabled: true,
+                  boundaryMargin: EdgeInsets.all(20),
+                  minScale: 0.5,
+                  maxScale: 4.0,
+                  child: AnyImageView(
+                    imagePath: imagePath,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              );
+            },
+          ),
+
+          // Close button
+          Positioned(
+            top: 15.h,
+            right: 15.w,
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: Container(
+                width: 40.h,
+                height: 40.h,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.close, color: AppColors.white, size: 24.sp),
+              ),
+            ),
+          ),
+
+          // Page indicator (if multiple images)
+          if (widget.images.length > 1)
+            Positioned(
+              bottom: 50.h,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  widget.images.length,
+                  (index) => Container(
+                    width: 8.w,
+                    height: 8.h,
+                    margin: EdgeInsets.symmetric(horizontal: 4.w),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color:
+                          currentIndex == index
+                              ? Colors.white
+                              : Colors.white.withOpacity(0.4),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
