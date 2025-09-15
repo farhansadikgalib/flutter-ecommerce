@@ -36,8 +36,11 @@ dependencies:
   pinput:
   timeline_tile:
   flutter_dotenv:
-  icons_launcher:
-  android_notification_icons:
+  flutter_linkify:
+  firebase_core:
+  firebase_crashlytics:
+  firebase_messaging:
+  cloud_firestore:
 
 
 dev_dependencies:

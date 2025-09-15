@@ -8,14 +8,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_value/shared_value.dart';
 
 import 'app/core/binding/initial_binding.dart';
-import 'app/core/config/app_config.dart';
+import 'app/core/notification/notification_service.dart';
 import 'app/core/style/app_colors.dart';
 import 'app/routes/app_pages.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'firebase_options.dart';
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await NotificationService().initialize();
+
   runApp(ScreenUtilInit(
       designSize: const Size(360, 800),
       minTextAdapt: true,
@@ -39,7 +47,7 @@ Future<void> main() async {
               textScaler: const TextScaler.linear(1.0),
             ),
             child: GetMaterialApp(
-              title: "E-Commerce",
+              title: "OusadBazar",
               debugShowCheckedModeBanner: false,
               initialRoute: AppPages.INITIAL,
               initialBinding: InitialBinding(),
