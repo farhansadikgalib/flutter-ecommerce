@@ -1,12 +1,22 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+import java.util.Properties
+import java.io.FileInputStream
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 android {
-    namespace = "com.farhan.ecommerce"
+    namespace = "com.ousadbazar"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -20,25 +30,88 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.farhan.ecommerce"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // Application ID - use one consistent ID
+        applicationId = "com.ousadbazar"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true
+        
+        // ProGuard configuration for default config
+        proguardFiles(
+            getDefaultProguardFile("proguard-android-optimize.txt"),
+            "proguard-rules.pro"
+        )
+    }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String?
+            keyPassword = keystoreProperties["keyPassword"] as String?
+            storeFile = keystoreProperties["storeFile"]?.let { file(it.toString()) }
+            storePassword = keystoreProperties["storePassword"] as String?
+        }
     }
 
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+        debug {
+            // Debug build type
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = true
+            isJniDebuggable = true
+            isRenderscriptDebuggable = true
+            isPseudoLocalesEnabled = false
+            isZipAlignEnabled = false
         }
+        
+        release {
+            // Release build type with ProGuard enabled
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+            isJniDebuggable = false
+            isRenderscriptDebuggable = false
+            isPseudoLocalesEnabled = false
+            isZipAlignEnabled = true
+            
+            // ProGuard configuration files
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            
+            // NDK configuration
+            ndk {
+                abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64"))
+            }
+        }
+    }
+
+    // Lint options
+    lint {
+        disable.add("InvalidPackage")
+        checkReleaseBuilds = false
+        abortOnError = false
+    }
+
+    // Packaging options
+    packagingOptions {
+        pickFirst("**/libc++_shared.so")
+        pickFirst("**/libjsc.so")
     }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Add any additional dependencies here if needed
+    implementation("androidx.multidex:multidex:2.0.1")
+    
+    // Google Play Core for deferred components (optional - only if using split APKs)
+    implementation("com.google.android.play:core:1.10.3")
 }
