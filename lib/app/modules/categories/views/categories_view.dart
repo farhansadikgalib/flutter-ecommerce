@@ -1,157 +1,307 @@
+import 'package:any_image_view/any_image_view.dart';
 import 'package:flutter/material.dart';
-import '../../../data/remote/model/home/best_selling_product_response.dart';
-import '../../../core/widget/product_card.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import '../../../core/config/app_config.dart';
+import '../../../core/style/app_colors.dart';
+import '../../../core/widget/global_appbar.dart';
+import '../../../routes/app_pages.dart';
+import '../controllers/categories_controller.dart';
 
-class CategoriesView extends StatefulWidget {
+class CategoriesView extends GetView<CategoriesController> {
   const CategoriesView({Key? key}) : super(key: key);
 
   @override
-  State<CategoriesView> createState() => _CategoriesViewState();
-}
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.secondaryColor,
+      appBar: globalAppBar(context, 'Categories',showBackButton: false),
+      body: Obx(() {
+        if (controller.ecomCategories.isEmpty) {
+          return _buildLoadingState();
+        }
 
-class _CategoriesViewState extends State<CategoriesView> {
-  // Replace this with your actual ecomCategories data source
-
-  late final List<Category> categories;
-  late final ValueNotifier<int> selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    // Extract unique categories from products
-    // categories = products
-    //     .map((p) => p.category)
-    //     .whereType<Category>()
-    //     .toSet()
-    //     .toList();
-    // selectedIndex = ValueNotifier<int>(0);
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [AppColors.secondaryColor, AppColors.white],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(16.w),
+            child: GridView.builder(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.85,
+                crossAxisSpacing: 16.w,
+                mainAxisSpacing: 16.h,
+              ),
+              itemCount: controller.ecomCategories.length,
+              itemBuilder: (context, index) {
+                final category = controller.ecomCategories[index];
+                return _buildCategoryCard(category, index);
+              },
+            ),
+          ),
+        );
+      }),
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final selectedCategory = categories.isNotEmpty ? categories[selectedIndex.value] : null;
-    // final filteredProducts = selectedCategory == null
-    //     ? products
-    //     : products.where((p) => p.category?.id == selectedCategory.id).toList();
+  Widget _buildCategoryCard(dynamic category, int index) {
+    final colors = [
+      [const Color(0xFF6C5CE7), const Color(0xFFA29BFE)],
+      [const Color(0xFF00B894), const Color(0xFF55EFC4)],
+      [const Color(0xFFE17055), const Color(0xFFFFAB91)],
+      [const Color(0xFF0984E3), const Color(0xFF74B9FF)],
+      [const Color(0xFFE84393), const Color(0xFFFF7675)],
+      [const Color(0xFF00CEC9), const Color(0xFF81ECEC)],
+    ];
 
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFFe0eafc), Color(0xFFcfdef3)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: const Text(
-            'Categories',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 2,
-          centerTitle: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(18)),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Category selector
-              Container(
-                width: 130,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: ValueListenableBuilder<int>(
-                  valueListenable: selectedIndex,
-                  builder: (context, selected, _) {
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: categories.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 6),
-                      itemBuilder: (context, index) {
-                        final category = categories[index];
-                        final isSelected = selected == index;
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeInOut,
-                          decoration: BoxDecoration(
-                            color: isSelected ? Colors.green[100] : Colors.white,
-                            borderRadius: BorderRadius.circular(14),
-                            border: isSelected ? Border.all(color: Colors.green, width: 2) : null,
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
-                              onTap: () => selectedIndex.value = index,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                  horizontal: 10,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.category,
-                                      size: 26,
-                                      color: isSelected ? Colors.green : Colors.grey[600],
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        category.name ?? '',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: isSelected ? Colors.green[900] : Colors.black87,
-                                        ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        );
-                      },
-                    );
-                  },
-                ),
+    final colorSet = colors[index % colors.length];
+
+    return Hero(
+      tag: 'category-${category.id}',
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _navigateToProducts(category),
+          borderRadius: BorderRadius.circular(20.r),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.r),
+              gradient: LinearGradient(
+                colors: colorSet,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              const SizedBox(width: 28),
-              // Expanded(
-              //   child: GridView.builder(
-              //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //       crossAxisCount: 2,
-              //       childAspectRatio: 0.7,
-              //       crossAxisSpacing: 16,
-              //       mainAxisSpacing: 16,
-              //     ),
-              //     itemCount: filteredProducts.length,
-              //     itemBuilder: (context, index) {
-              //       return ProductCard(product: filteredProducts[index], index: index);
-              //     },
-              //   ),
-              // ),
-            ],
+              boxShadow: [
+                BoxShadow(
+                  color: colorSet[0].withOpacity(0.3),
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: Stack(
+              children: [
+                // Background pattern
+                Positioned(
+                  top: -20.h,
+                  right: -20.w,
+                  child: Container(
+                    width: 80.w,
+                    height: 80.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.1),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: -30.h,
+                  left: -30.w,
+                  child: Container(
+                    width: 60.w,
+                    height: 60.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.08),
+                    ),
+                  ),
+                ),
+
+                // Content
+                Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Category Icon/Image
+                      Container(
+                        width: 50.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(15.r),
+                        ),
+                        child:
+                            category.path != null &&
+                                    category.path.toString().isNotEmpty
+                                ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  child: AnyImageView(
+                                    imagePath:
+                                        '${AppConfig.imageBasePath}${category.path}',
+                                    width: 50.w,
+                                    height: 50.h,
+                                    fit: BoxFit.cover,
+                                    errorWidget: _buildDefaultIcon(),
+                                  ),
+                                )
+                                : _buildDefaultIcon(),
+                      ),
+
+                      const Spacer(),
+
+                      // Category Name
+                      Text(
+                        category.name ?? 'Category',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      SizedBox(height: 4.h),
+
+                      // Subcategories count
+                      if (category.childrenRecursive != null &&
+                          category.childrenRecursive!.isNotEmpty)
+                        Text(
+                          '${category.childrenRecursive!.length} subcategories',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+
+                      SizedBox(height: 8.h),
+
+                      // Arrow icon
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            width: 32.w,
+                            height: 32.h,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.white,
+                              size: 16.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDefaultIcon() {
+    return Icon(Icons.category_rounded, color: Colors.white, size: 28.sp);
+  }
+
+  Widget _buildLoadingState() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [AppColors.secondaryColor, AppColors.white],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.85,
+            crossAxisSpacing: 16.w,
+            mainAxisSpacing: 16.h,
+          ),
+          itemCount: 6, // Show 6 skeleton items
+          itemBuilder: (context, index) {
+            return _buildSkeletonCard();
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSkeletonCard() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.r),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Skeleton icon
+            Container(
+              width: 50.w,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(15.r),
+              ),
+            ),
+
+            const Spacer(),
+
+            // Skeleton text
+            Container(
+              width: double.infinity,
+              height: 16.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+
+            SizedBox(height: 8.h),
+
+            Container(
+              width: 80.w,
+              height: 12.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(6.r),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _navigateToProducts(dynamic category) {
+    Get.toNamed(
+      Routes.PRODUCT_CATEGORY,
+      arguments: {
+        'categoryId': category.id,
+        'categoryName': category.name ?? 'Products',
+        'fromSearch': false,
+      },
     );
   }
 }

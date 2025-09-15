@@ -6,7 +6,7 @@ import '../../../data/remote/repository/home/home_repository.dart';
 
 class CategoriesController extends GetxController {
   final ecomCategories = <EcomCategoriesResponse>[].obs;
-  final count = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
