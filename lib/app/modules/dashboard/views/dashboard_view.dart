@@ -113,9 +113,9 @@ class DashboardView extends GetView<DashboardController> {
             // Get.find<WishlistController>().getWishlist();
           }
           if (index == 2 && isLoggedIn.$) {
-
-            printLog('Cart Count: ${Get.find<CartController>().allCartProducts.length}');
-
+            printLog(
+              'Cart Count: ${Get.find<CartController>().allCartProducts.length}',
+            );
           }
         },
         backgroundColor: Colors.white,
@@ -131,5 +131,4 @@ class DashboardView extends GetView<DashboardController> {
       );
     });
   }
-
 }

@@ -9,5 +9,4 @@ class Assets {
   static const String pngLogo = 'assets/png/logo.png';
   static const String pngNotFound = 'assets/png/not_found.png';
   static const String turi = '.env';
-
 }

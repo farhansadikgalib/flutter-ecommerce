@@ -102,14 +102,22 @@ class CheckoutView extends BaseView<CheckoutController> {
                           ),
                         ),
                         initialValue: controller.selectedCountry.value,
-                        items: controller.countryList.isNotEmpty
-                            ? [DropdownMenuItem<CountryResponse>(
-                                value: controller.selectedCountry.value,
-                                child: Text(controller.selectedCountry.value?.name ?? ''),
-                              )]
-                            : [],
+                        items:
+                            controller.countryList.isNotEmpty
+                                ? [
+                                  DropdownMenuItem<CountryResponse>(
+                                    value: controller.selectedCountry.value,
+                                    child: Text(
+                                      controller.selectedCountry.value?.name ??
+                                          '',
+                                    ),
+                                  ),
+                                ]
+                                : [],
                         onChanged: null, // disables dropdown
-                        disabledHint: Text(controller.selectedCountry.value?.name ?? ''),
+                        disabledHint: Text(
+                          controller.selectedCountry.value?.name ?? '',
+                        ),
                       ),
                     ),
                   ),
@@ -149,14 +157,21 @@ class CheckoutView extends BaseView<CheckoutController> {
                           ),
                         ),
                         initialValue: controller.selectedCity.value,
-                        items: controller.cityList.isNotEmpty
-                            ? [DropdownMenuItem<CityResponse>(
-                                value: controller.selectedCity.value,
-                                child: Text(controller.selectedCity.value?.name ?? ''),
-                              )]
-                            : [],
+                        items:
+                            controller.cityList.isNotEmpty
+                                ? [
+                                  DropdownMenuItem<CityResponse>(
+                                    value: controller.selectedCity.value,
+                                    child: Text(
+                                      controller.selectedCity.value?.name ?? '',
+                                    ),
+                                  ),
+                                ]
+                                : [],
                         onChanged: null, // disables dropdown
-                        disabledHint: Text(controller.selectedCity.value?.name ?? ''),
+                        disabledHint: Text(
+                          controller.selectedCity.value?.name ?? '',
+                        ),
                       ),
                     ),
                   ),
@@ -196,14 +211,21 @@ class CheckoutView extends BaseView<CheckoutController> {
                           ),
                         ),
                         initialValue: controller.selectedArea.value,
-                        items: controller.areaList.isNotEmpty
-                            ? [DropdownMenuItem<AreaResponse>(
-                                value: controller.selectedArea.value,
-                                child: Text(controller.selectedArea.value?.name ?? ''),
-                              )]
-                            : [],
+                        items:
+                            controller.areaList.isNotEmpty
+                                ? [
+                                  DropdownMenuItem<AreaResponse>(
+                                    value: controller.selectedArea.value,
+                                    child: Text(
+                                      controller.selectedArea.value?.name ?? '',
+                                    ),
+                                  ),
+                                ]
+                                : [],
                         onChanged: null, // disables dropdown
-                        disabledHint: Text(controller.selectedArea.value?.name ?? ''),
+                        disabledHint: Text(
+                          controller.selectedArea.value?.name ?? '',
+                        ),
                       ),
                     ),
                   ),

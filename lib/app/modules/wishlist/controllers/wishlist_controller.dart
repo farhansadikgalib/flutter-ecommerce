@@ -8,11 +8,10 @@ class WishlistController extends GetxController {
   final wishlistItems = <ProductData>[].obs;
   final isLoading = false.obs;
 
-
-  void addToWishlist(ProductData product, ) {
+  void addToWishlist(ProductData product) {
     try {
       int existingIndex = wishlistItems.indexWhere(
-            (item) => item.id == product.id,
+        (item) => item.id == product.id,
       );
 
       if (existingIndex != -1) {
@@ -44,14 +43,12 @@ class WishlistController extends GetxController {
         wishlistItems.add(item);
       }
 
-
       AppWidgets().getSnackBar(
         title: 'Success',
         message: 'Product added to wishlist successfully!',
       );
 
-      printLog('Product added to wishlist: ${product.name}, Quantity: '
-          );
+      printLog('Product added to wishlist: ${product.name}, Quantity: ');
     } catch (e) {
       printLog('Error adding to wishlist: $e');
       AppWidgets().getSnackBar(
@@ -60,7 +57,6 @@ class WishlistController extends GetxController {
       );
     }
   }
-
 
   void removeFromWishlist(int productId) {
     try {
@@ -75,5 +71,4 @@ class WishlistController extends GetxController {
       printLog('Error removing from cart: $e');
     }
   }
-
 }

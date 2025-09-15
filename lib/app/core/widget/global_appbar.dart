@@ -9,7 +9,7 @@ AppBar globalAppBar(
 }) {
   return AppBar(
     elevation: 0.5,
-    titleSpacing: showBackButton? -10:10,
+    titleSpacing: showBackButton ? -10 : 10,
     backgroundColor: AppColors.white,
     leading:
         showBackButton

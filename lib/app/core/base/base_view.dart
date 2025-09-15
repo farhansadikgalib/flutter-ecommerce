@@ -20,18 +20,20 @@ abstract class BaseView<Controller extends BaseController>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Obx(() {
-          return Scaffold(
-            //sets ios status bar color
-              backgroundColor: AppColors.white,
-              // key: controller.globalKey,
-              appBar: appBar(context),
-              floatingActionButton: floatingActionButton(),
-              bottomNavigationBar: bottomNavigationBar(context),
-              drawer: drawer(context),
-              body: pageScaffold(context));
-        }));
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Obx(() {
+        return Scaffold(
+          //sets ios status bar color
+          backgroundColor: AppColors.white,
+          // key: controller.globalKey,
+          appBar: appBar(context),
+          floatingActionButton: floatingActionButton(),
+          bottomNavigationBar: bottomNavigationBar(context),
+          drawer: drawer(context),
+          body: pageScaffold(context),
+        );
+      }),
+    );
   }
 
   // widgets
@@ -39,11 +41,7 @@ abstract class BaseView<Controller extends BaseController>
     return SafeArea(
       top: false,
       bottom: false,
-      child: Column(
-        children: [
-          Expanded(child: pageContent(context)),
-        ],
-      ),
+      child: Column(children: [Expanded(child: pageContent(context))]),
     );
   }
 
@@ -54,9 +52,10 @@ abstract class BaseView<Controller extends BaseController>
   //optional
   Widget? bottomNavigationBar(BuildContext context) {
     return BottomAppBar(
-      child: _connectionController.isInternetConnected.value
-          ? const SizedBox()
-          : connectionStatusView() ?? const SizedBox(),
+      child:
+          _connectionController.isInternetConnected.value
+              ? const SizedBox()
+              : connectionStatusView() ?? const SizedBox(),
     );
   }
 
@@ -70,15 +69,16 @@ abstract class BaseView<Controller extends BaseController>
 
   Widget? connectionStatusView() {
     return Container(
-        width: double.infinity,
-        height: 30,
-        padding: REdgeInsets.symmetric(horizontal: 16),
-        color: AppColors.primaryColor,
-        child: Center(
-          child: Text(
-            _connectionController.connectedStatusMessage.value,
-            style: textRegularStyle(isWhiteColor: true),
-          ),
-        ));
+      width: double.infinity,
+      height: 30,
+      padding: REdgeInsets.symmetric(horizontal: 16),
+      color: AppColors.primaryColor,
+      child: Center(
+        child: Text(
+          _connectionController.connectedStatusMessage.value,
+          style: textRegularStyle(isWhiteColor: true),
+        ),
+      ),
+    );
   }
 }

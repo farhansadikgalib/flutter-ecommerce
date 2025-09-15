@@ -6,11 +6,7 @@ import '../controllers/product_category_controller.dart';
 class ProductCategoryBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ProductCategoryController>(
-      () => ProductCategoryController(),
-    );
-    Get.lazyPut<CartController>(
-          () => CartController(),
-    );
+    Get.lazyPut<ProductCategoryController>(() => ProductCategoryController());
+    Get.lazyPut<CartController>(() => CartController());
   }
 }

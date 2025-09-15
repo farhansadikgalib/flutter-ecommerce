@@ -1,8 +1,11 @@
 import 'dart:convert';
 
-List<AreaResponse> areaResponseFromJson(String str) => List<AreaResponse>.from(json.decode(str).map((x) => AreaResponse.fromJson(x)));
+List<AreaResponse> areaResponseFromJson(String str) => List<AreaResponse>.from(
+  json.decode(str).map((x) => AreaResponse.fromJson(x)),
+);
 
-String areaResponseToJson(List<AreaResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String areaResponseToJson(List<AreaResponse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AreaResponse {
   int? id;

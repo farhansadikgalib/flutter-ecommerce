@@ -3,8 +3,7 @@ import 'package:ousadbazar/app/data/remote/model/order/track_order_response.dart
 import '../../../../services/network_service/api_client.dart';
 import '../../../../services/network_service/api_end_points.dart';
 
-
-class OrderRepository{
+class OrderRepository {
   Future<OrderResponse> customerOrder() async {
     var response = await ApiClient().get(
       ApiEndPoints.allOrders,
@@ -15,7 +14,6 @@ class OrderRepository{
 
     return orderResponseFromJson(response.toString());
   }
-
 
   Future<TrackOrderData> trackOrder(String orderId) async {
     var response = await ApiClient().get(
@@ -31,9 +29,7 @@ class OrderRepository{
   Future<TrackOrderData> cancelOrder(String orderId) async {
     var response = await ApiClient().post(
       ApiEndPoints.cancelOrder(orderId: orderId),
-      {
-
-      },
+      {},
       cancelOrder,
       isHeaderRequired: true,
       isLoaderRequired: false,
@@ -41,9 +37,4 @@ class OrderRepository{
 
     return trackOrderDataFromJson(response.toString());
   }
-
-
-
-
-
 }

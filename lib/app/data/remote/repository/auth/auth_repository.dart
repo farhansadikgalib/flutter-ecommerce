@@ -36,13 +36,10 @@ class AuthRepository {
     return signUpResponseFromJson(response.toString());
   }
 
-  Future<OtpVerifyResponse> verifyOTP(
-      String email,
-      String code,
-      ) async {
+  Future<OtpVerifyResponse> verifyOTP(String email, String code) async {
     var response = await ApiClient().post(
       ApiEndPoints.verifyOtp,
-      { "email": email, "code": code},
+      {"email": email, "code": code},
       verifyOTP,
       isHeaderRequired: false,
       isLoaderRequired: true,
@@ -50,8 +47,6 @@ class AuthRepository {
 
     return otpVerifyResponseFromJson(response.toString());
   }
-
-
 
   Future<ForgetPasswordResponse> forgetPassword(String email) async {
     var response = await ApiClient().post(
@@ -66,10 +61,10 @@ class AuthRepository {
   }
 
   Future<UpdatePasswordResponse> updatePassword(
-      String code,
-      String email,
-      String password,
-      ) async {
+    String code,
+    String email,
+    String password,
+  ) async {
     var response = await ApiClient().post(
       ApiEndPoints.updatePassword,
       {"code": code, "email": email, "password": password},
@@ -80,7 +75,6 @@ class AuthRepository {
 
     return updatePasswordResponseFromJson(response.toString());
   }
-
 
   Future<LogoutResponse> getUserLogOut() async {
     var response = await ApiClient().get(

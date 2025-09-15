@@ -7,158 +7,139 @@ import '../style/app_style.dart';
 
 class AppWidgets {
   Widget gapH(double height) {
-    return SizedBox(
-      height: height,
-    );
+    return SizedBox(height: height);
   }
 
   Widget gapW(double width) {
-    return SizedBox(
-      width: width,
-    );
+    return SizedBox(width: width);
   }
 
   Widget gapW8() {
-    return const SizedBox(
-      width: 8,
-    );
+    return const SizedBox(width: 8);
   }
 
   Widget gapH8() {
-    return const SizedBox(
-      height: 8,
-    );
+    return const SizedBox(height: 8);
   }
 
   Widget gapH16() {
-    return const SizedBox(
-      height: 16,
-    );
+    return const SizedBox(height: 16);
   }
 
   Widget gapW16() {
-    return const SizedBox(
-      width: 16,
-    );
+    return const SizedBox(width: 16);
   }
 
   Widget gapW12() {
-    return const SizedBox(
-      width: 12,
-    );
+    return const SizedBox(width: 12);
   }
 
   Widget gapW24() {
-    return const SizedBox(
-      width: 24,
-    );
+    return const SizedBox(width: 24);
   }
 
   Widget gapH12() {
-    return const SizedBox(
-      height: 12,
-    );
+    return const SizedBox(height: 12);
   }
 
   Widget gapH24() {
-    return const SizedBox(
-      height: 24,
-    );
+    return const SizedBox(height: 24);
   }
 
   Widget settingScreenDivider() {
     return const Padding(
       padding: EdgeInsets.only(left: 16),
-      child: Divider(
-        height: 1,
-        color: AppColors.gray,
-      ),
+      child: Divider(height: 1, color: AppColors.gray),
     );
   }
 
-  SnackbarController getSnackBar(
-      {title = "Info",
-      message = " Some message",
-      int waitingTime = 2,
-      int animationDuration = 500,
-      snackPosition = SnackPosition.BOTTOM,
-      Color backgroundColor = AppColors.primaryColor,
-      double backgroundColorOpacity = .8,
-      bool closeAllSnacks = true,
-      colorText = AppColors.white}) {
+  SnackbarController getSnackBar({
+    title = "Info",
+    message = " Some message",
+    int waitingTime = 2,
+    int animationDuration = 500,
+    snackPosition = SnackPosition.BOTTOM,
+    Color backgroundColor = AppColors.primaryColor,
+    double backgroundColorOpacity = .8,
+    bool closeAllSnacks = true,
+    colorText = AppColors.white,
+  }) {
     if (closeAllSnacks) {
       Get.closeAllSnackbars();
     }
-    return Get.snackbar(title, message,
-        snackPosition: snackPosition,
-        duration: Duration(seconds: waitingTime),
-        animationDuration: Duration(milliseconds: animationDuration),
-        backgroundColor: backgroundColor.withOpacity(backgroundColorOpacity),
-        colorText: colorText);
+    return Get.snackbar(
+      title,
+      message,
+      snackPosition: snackPosition,
+      duration: Duration(seconds: waitingTime),
+      animationDuration: Duration(milliseconds: animationDuration),
+      backgroundColor: backgroundColor.withOpacity(backgroundColorOpacity),
+      colorText: colorText,
+    );
   }
 
-  Widget authTopText({
-    title = "Title",
-    subTitle = "Sub Title",
-  }) {
+  Widget authTopText({title = "Title", subTitle = "Sub Title"}) {
     return Column(
       children: [
-        Text(
-          title,
-          style: textAppBarStyle(fontSize: 16),
-        ),
+        Text(title, style: textAppBarStyle(fontSize: 16)),
         AppWidgets().gapH(4),
-        Text(
-          subTitle,
-          style: textRegularStyle(fontSize: 10),
-        ),
+        Text(subTitle, style: textRegularStyle(fontSize: 10)),
       ],
     );
   }
 
-// button
-  Row myTextButton(BuildContext context, title,
-      {callBack,
-      bool isPrefixTextRequired = false,
-      prefixText,
-      double fontSize = 14,
-      isUnderline = false,
-      FontWeight fontWeight = FontWeight.normal,
-      textColor = AppColors.primaryColor,
-      bool isCenterAlign = true}) {
+  // button
+  Row myTextButton(
+    BuildContext context,
+    title, {
+    callBack,
+    bool isPrefixTextRequired = false,
+    prefixText,
+    double fontSize = 14,
+    isUnderline = false,
+    FontWeight fontWeight = FontWeight.normal,
+    textColor = AppColors.primaryColor,
+    bool isCenterAlign = true,
+  }) {
     return Row(
       mainAxisAlignment:
           isCenterAlign ? MainAxisAlignment.center : MainAxisAlignment.end,
       children: [
-        Text(isPrefixTextRequired ? prefixText : "",
-            style: textRegularStyle(
-                color: AppColors.black,
-                fontWeight: fontWeight,
-                fontSize: fontSize.sp)),
+        Text(
+          isPrefixTextRequired ? prefixText : "",
+          style: textRegularStyle(
+            color: AppColors.black,
+            fontWeight: fontWeight,
+            fontSize: fontSize.sp,
+          ),
+        ),
         TextButton(
-            onPressed: () {
-              callBack();
-            },
-            child: Text(
-              title,
-              style: textRegularStyle(
-                      color: textColor,
-                      fontWeight: fontWeight,
-                      fontSize: fontSize.sp)
-                  .copyWith(
-                decoration: isUnderline
-                    ? TextDecoration.underline
-                    : TextDecoration.none,
-              ),
-            )),
+          onPressed: () {
+            callBack();
+          },
+          child: Text(
+            title,
+            style: textRegularStyle(
+              color: textColor,
+              fontWeight: fontWeight,
+              fontSize: fontSize.sp,
+            ).copyWith(
+              decoration:
+                  isUnderline ? TextDecoration.underline : TextDecoration.none,
+            ),
+          ),
+        ),
       ],
     );
   }
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(
-      BuildContext context, String? message) {
-    ScaffoldMessenger.of(context)
-        .hideCurrentSnackBar(); //dismiss all previous snackBar flutter
+    BuildContext context,
+    String? message,
+  ) {
+    ScaffoldMessenger.of(
+      context,
+    ).hideCurrentSnackBar(); //dismiss all previous snackBar flutter
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: AppColors.primaryColor.withOpacity(.8),
@@ -189,9 +170,10 @@ class AppWidgets {
             child: Text(
               text,
               style: textRegularStyle(
-                  isWhiteColor: false,
-                  fontSize: 15,
-                  fontWeight: FontWeight.normal),
+                isWhiteColor: false,
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+              ),
               textAlign: TextAlign.start,
             ),
           ),
@@ -215,9 +197,10 @@ class AppWidgets {
             child: Text(
               text,
               style: textRegularStyle(
-                  isWhiteColor: false,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
+                isWhiteColor: false,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.start,
             ),
           ),
@@ -292,9 +275,10 @@ class AppWidgets {
             child: Text(
               text,
               style: textButtonStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 16,
-                  color: AppColors.black),
+                fontWeight: FontWeight.normal,
+                fontSize: 16,
+                color: AppColors.black,
+              ),
               textAlign: TextAlign.start,
             ),
           ),
@@ -334,16 +318,17 @@ class AppWidgets {
                   Text(
                     text,
                     style: textButtonStyle(
-                        color: AppColors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16),
+                      color: AppColors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                    ),
                     textAlign: TextAlign.start,
                   ),
                   const Icon(
                     Icons.arrow_forward_ios,
                     color: AppColors.black,
                     size: 16,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -370,17 +355,20 @@ class AppWidgets {
                 Text(
                   primary,
                   style: textRegularStyle(
-                      isWhiteColor: false,
-                      fontSize: 15,
-                      fontWeight: FontWeight.normal),
+                    isWhiteColor: false,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                  ),
                   textAlign: TextAlign.start,
                 ),
                 Row(
                   children: [
                     Text(
                       secondary,
-                      style:
-                          textRegularStyle(isWhiteColor: false, fontSize: 16),
+                      style: textRegularStyle(
+                        isWhiteColor: false,
+                        fontSize: 16,
+                      ),
                       textAlign: TextAlign.start,
                     ),
                     AppWidgets().gapW(6),
@@ -390,7 +378,7 @@ class AppWidgets {
                       size: 16,
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -399,43 +387,36 @@ class AppWidgets {
     );
   }
 
-
   void bannedUserDialog({required message}) {
     Get.defaultDialog(
-        title: 'Attention',
-        titlePadding: EdgeInsets.only(top: 10.h),
-        titleStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
+      title: 'Attention',
+      titlePadding: EdgeInsets.only(top: 10.h),
+      titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      backgroundColor: AppColors.white,
+      cancelTextColor: AppColors.black,
+      confirmTextColor: AppColors.black,
+      buttonColor: AppColors.black,
+      barrierDismissible: true,
+      radius: 10,
+      actions: [
+        TextButton(
+          style: TextButton.styleFrom(backgroundColor: AppColors.primaryColor),
+          child: const Text("Ok", style: TextStyle(color: AppColors.white)),
+          onPressed: () => Get.back(),
         ),
-        backgroundColor: AppColors.white,
-        cancelTextColor: AppColors.black,
-        confirmTextColor: AppColors.black,
-        buttonColor: AppColors.black,
-        barrierDismissible: true,
-        radius: 10,
-        actions: [
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-            ),
-            child: const Text(
-              "Ok",
-              style: TextStyle(color: AppColors.white),
-            ),
-            onPressed: () => Get.back(),
-          ),
-        ],
-        content: SizedBox(
-          height: 50.h,
-          width: 200.h,
-          child: Center(
-              child: Text(
+      ],
+      content: SizedBox(
+        height: 50.h,
+        width: 200.h,
+        child: Center(
+          child: Text(
             message,
             maxLines: 5,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 14, color: Colors.black),
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

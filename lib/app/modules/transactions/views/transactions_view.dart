@@ -18,23 +18,40 @@ class TransactionsView extends GetView<TransactionsController> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
               elevation: 0,
               color: const Color(0xFFE6F0F3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            Text('RIFAT', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                            Text(
+                              'RIFAT',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
                             SizedBox(height: 4),
-                            Text('BALANCE', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                            Text(
+                              'BALANCE',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey,
+                              ),
+                            ),
                           ],
                         ),
                         // Replace with your logo asset
@@ -50,20 +67,36 @@ class TransactionsView extends GetView<TransactionsController> {
                         bottomRight: Radius.circular(12),
                       ),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
                     child: Row(
                       children: [
                         CircleAvatar(
                           backgroundColor: const Color(0xFFFFA726),
-                          child: const Text('৳', style: TextStyle(fontSize: 22, color: Colors.white)),
+                          child: const Text(
+                            '৳',
+                            style: TextStyle(fontSize: 22, color: Colors.white),
+                          ),
                         ),
                         const SizedBox(width: 16),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            Text('৳273', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+                            Text(
+                              '৳273',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                             SizedBox(height: 4),
-                            Text('Cash (Usable)', style: TextStyle(color: Colors.white)),
+                            Text(
+                              'Cash (Usable)',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ],
                         ),
                       ],
@@ -136,7 +169,10 @@ class TransactionsView extends GetView<TransactionsController> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.science), label: 'Lab Test'),
           BottomNavigationBarItem(icon: Icon(Icons.spa), label: 'Beauty'),
-          BottomNavigationBarItem(icon: Icon(Icons.medical_services), label: 'Healthcare'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.medical_services),
+            label: 'Healthcare',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         ],
         currentIndex: 0,
@@ -156,8 +192,10 @@ class TransactionsView extends GetView<TransactionsController> {
     String? tag,
   }) {
     final icon = isCredit ? Icons.trending_up : Icons.trending_down;
-    final iconColor = isCredit ? const Color(0xFFB2E3D3) : const Color(0xFFFDE2E2);
-    final amountColor = isCredit ? const Color(0xFF158A7E) : const Color(0xFFD32F2F);
+    final iconColor =
+        isCredit ? const Color(0xFFB2E3D3) : const Color(0xFFFDE2E2);
+    final amountColor =
+        isCredit ? const Color(0xFF158A7E) : const Color(0xFFD32F2F);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 0,
@@ -170,7 +208,10 @@ class TransactionsView extends GetView<TransactionsController> {
           children: [
             CircleAvatar(
               backgroundColor: iconColor,
-              child: Icon(icon, color: isCredit ? Colors.teal : Colors.redAccent),
+              child: Icon(
+                icon,
+                color: isCredit ? Colors.teal : Colors.redAccent,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -178,20 +219,42 @@ class TransactionsView extends GetView<TransactionsController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(type, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    type,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 4),
-                  Text('ProductOrder ID $orderId', style: const TextStyle(fontSize: 13, color: Colors.black87)),
-                  Text('Txn Id: $txnId', style: const TextStyle(fontSize: 13, color: Colors.grey)),
-                  Text(date, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                  Text(
+                    'ProductOrder ID $orderId',
+                    style: const TextStyle(fontSize: 13, color: Colors.black87),
+                  ),
+                  Text(
+                    'Txn Id: $txnId',
+                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                  Text(
+                    date,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
                   if (tag != null)
                     Container(
                       margin: const EdgeInsets.only(top: 6),
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFDE2B2),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Text(tag, style: const TextStyle(color: Color(0xFFD68B00), fontWeight: FontWeight.bold, fontSize: 12)),
+                      child: Text(
+                        tag,
+                        style: const TextStyle(
+                          color: Color(0xFFD68B00),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
                     ),
                 ],
               ),
@@ -199,7 +262,14 @@ class TransactionsView extends GetView<TransactionsController> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('৳$amount', style: TextStyle(fontWeight: FontWeight.bold, color: amountColor, fontSize: 16)),
+                Text(
+                  '৳$amount',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: amountColor,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
           ],

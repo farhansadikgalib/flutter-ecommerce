@@ -4,9 +4,13 @@
 
 import 'dart:convert';
 
-List<CountryResponse> countryResponseFromJson(String str) => List<CountryResponse>.from(json.decode(str).map((x) => CountryResponse.fromJson(x)));
+List<CountryResponse> countryResponseFromJson(String str) =>
+    List<CountryResponse>.from(
+      json.decode(str).map((x) => CountryResponse.fromJson(x)),
+    );
 
-String countryResponseToJson(List<CountryResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String countryResponseToJson(List<CountryResponse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class CountryResponse {
   int? id;
@@ -31,17 +35,18 @@ class CountryResponse {
     this.deletedBy,
   });
 
-  factory CountryResponse.fromJson(Map<String, dynamic> json) => CountryResponse(
-    id: json["id"],
-    name: json["name"],
-    status: json["status"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    deletedAt: json["deleted_at"],
-    createdBy: json["created_by"],
-    updatedBy: json["updated_by"],
-    deletedBy: json["deleted_by"],
-  );
+  factory CountryResponse.fromJson(Map<String, dynamic> json) =>
+      CountryResponse(
+        id: json["id"],
+        name: json["name"],
+        status: json["status"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        deletedAt: json["deleted_at"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        deletedBy: json["deleted_by"],
+      );
 
   Map<String, dynamic> toJson() => {
     "id": id,

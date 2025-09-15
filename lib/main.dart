@@ -15,16 +15,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
+
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await NotificationService().initialize();
 
-  runApp(ScreenUtilInit(
+  runApp(
+    ScreenUtilInit(
       designSize: const Size(360, 800),
       minTextAdapt: true,
       splitScreenMode: true,
@@ -34,18 +34,23 @@ Future<void> main() async {
           DeviceOrientation.portraitUp,
           DeviceOrientation.portraitDown,
         ]);
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
-            overlays: [SystemUiOverlay.bottom]);
+        SystemChrome.setEnabledSystemUIMode(
+          SystemUiMode.edgeToEdge,
+          overlays: [SystemUiOverlay.bottom],
+        );
 
-        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        SystemChrome.setSystemUIOverlayStyle(
+          const SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark));
+            statusBarIconBrightness: Brightness.dark,
+          ),
+        );
 
         return SharedValue.wrapApp(
           MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaler: const TextScaler.linear(1.0),
-            ),
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: const TextScaler.linear(1.0)),
             child: GetMaterialApp(
               title: "OusadBazar",
               debugShowCheckedModeBanner: false,
@@ -66,8 +71,10 @@ Future<void> main() async {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 2),
+                    borderSide: BorderSide(
+                      color: AppColors.primaryColor,
+                      width: 2,
+                    ),
                   ),
                   focusColor: AppColors.primaryColor,
                   disabledBorder: OutlineInputBorder(
@@ -76,8 +83,10 @@ Future<void> main() async {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 2),
+                    borderSide: BorderSide(
+                      color: AppColors.primaryColor,
+                      width: 2,
+                    ),
                   ),
                 ),
                 elevatedButtonTheme: ElevatedButtonThemeData(
@@ -96,5 +105,7 @@ Future<void> main() async {
             ),
           ),
         );
-      }));
+      },
+    ),
+  );
 }

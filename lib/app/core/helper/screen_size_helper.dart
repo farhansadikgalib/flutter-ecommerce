@@ -7,8 +7,9 @@ enum DeviceType { phone, tablet }
 class ScreenSizeHelper {
   static bool isTablet(MediaQueryData query) {
     var size = query.size;
-    var diagonal =
-        sqrt((size.width * size.width) + (size.height * size.height));
+    var diagonal = sqrt(
+      (size.width * size.width) + (size.height * size.height),
+    );
 
     /*
     print(
@@ -32,8 +33,8 @@ class ScreenSizeHelper {
     // The equivalent of the "smallestWidth" qualifier on Android.
     var shortestSide = MediaQuery.of(context).size.shortestSide;
 
-// Determine if we should use mobile layout or not, 600 here is
-// a common breakpoint for a typical 7-inch tablet.
+    // Determine if we should use mobile layout or not, 600 here is
+    // a common breakpoint for a typical 7-inch tablet.
 
     return shortestSide < 550;
   }

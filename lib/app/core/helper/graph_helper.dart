@@ -1,9 +1,5 @@
 class SalesChartData {
-  SalesChartData(
-    this.x,
-    this.y,
-    this.y1,
-  );
+  SalesChartData(this.x, this.y, this.y1);
 
   final String x;
   final double? y;

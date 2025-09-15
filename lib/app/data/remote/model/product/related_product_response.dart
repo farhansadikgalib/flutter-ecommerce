@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-RelatedProductResponse relatedProductResponseFromJson(String str) => RelatedProductResponse.fromJson(json.decode(str));
+RelatedProductResponse relatedProductResponseFromJson(String str) =>
+    RelatedProductResponse.fromJson(json.decode(str));
 
-String relatedProductResponseToJson(RelatedProductResponse data) => json.encode(data.toJson());
+String relatedProductResponseToJson(RelatedProductResponse data) =>
+    json.encode(data.toJson());
 
 class RelatedProductResponse {
   int? currentPage;
@@ -35,30 +37,41 @@ class RelatedProductResponse {
     this.total,
   });
 
-  factory RelatedProductResponse.fromJson(Map<String, dynamic> json) => RelatedProductResponse(
-    currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<RelatedProducts>.from(json["data"]!.map((x) => RelatedProducts.fromJson(x))),
-    firstPageUrl: json["first_page_url"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    lastPageUrl: json["last_page_url"],
-    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
-    nextPageUrl: json["next_page_url"],
-    path: json["path"],
-    perPage: json["per_page"],
-    prevPageUrl: json["prev_page_url"],
-    to: json["to"],
-    total: json["total"],
-  );
+  factory RelatedProductResponse.fromJson(Map<String, dynamic> json) =>
+      RelatedProductResponse(
+        currentPage: json["current_page"],
+        data:
+            json["data"] == null
+                ? []
+                : List<RelatedProducts>.from(
+                  json["data"]!.map((x) => RelatedProducts.fromJson(x)),
+                ),
+        firstPageUrl: json["first_page_url"],
+        from: json["from"],
+        lastPage: json["last_page"],
+        lastPageUrl: json["last_page_url"],
+        links:
+            json["links"] == null
+                ? []
+                : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+        nextPageUrl: json["next_page_url"],
+        path: json["path"],
+        perPage: json["per_page"],
+        prevPageUrl: json["prev_page_url"],
+        to: json["to"],
+        total: json["total"],
+      );
 
   Map<String, dynamic> toJson() => {
     "current_page": currentPage,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data":
+        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     "first_page_url": firstPageUrl,
     "from": from,
     "last_page": lastPage,
     "last_page_url": lastPageUrl,
-    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
+    "links":
+        links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
     "next_page_url": nextPageUrl,
     "path": path,
     "per_page": perPage,
@@ -135,7 +148,9 @@ class RelatedProducts {
     this.stockBatches,
   });
 
-  factory RelatedProducts.fromJson(Map<String, dynamic> json) => RelatedProducts(
+  factory RelatedProducts.fromJson(
+    Map<String, dynamic> json,
+  ) => RelatedProducts(
     id: json["id"],
     categoryId: json["category_id"],
     supplierId: json["supplier_id"],
@@ -157,16 +172,44 @@ class RelatedProducts {
     isBarcoded: json["is_barcoded"],
     deletedAt: json["deleted_at"],
     generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
-    category: json["category"] == null ? null : Category.fromJson(json["category"]),
-    supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
-    packSize: json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
-    productVariationAttributes: json["product_variation_attributes"] == null ? [] : List<dynamic>.from(json["product_variation_attributes"]!.map((x) => x)),
-    productVariations: json["product_variations"] == null ? [] : List<dynamic>.from(json["product_variations"]!.map((x) => x)),
-    productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
-    productInventories: json["product_inventories"] == null ? null : ProductInventories.fromJson(json["product_inventories"]),
-    productLocations: json["product_locations"] == null ? null : ProductLocations.fromJson(json["product_locations"]),
-    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
-    stockBatches: json["stock_batches"] == null ? [] : List<StockBatch>.from(json["stock_batches"]!.map((x) => StockBatch.fromJson(x))),
+    category:
+        json["category"] == null ? null : Category.fromJson(json["category"]),
+    supplier:
+        json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
+    packSize:
+        json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
+    productVariationAttributes:
+        json["product_variation_attributes"] == null
+            ? []
+            : List<dynamic>.from(
+              json["product_variation_attributes"]!.map((x) => x),
+            ),
+    productVariations:
+        json["product_variations"] == null
+            ? []
+            : List<dynamic>.from(json["product_variations"]!.map((x) => x)),
+    productPrices:
+        json["product_prices"] == null
+            ? null
+            : ProductPrices.fromJson(json["product_prices"]),
+    productInventories:
+        json["product_inventories"] == null
+            ? null
+            : ProductInventories.fromJson(json["product_inventories"]),
+    productLocations:
+        json["product_locations"] == null
+            ? null
+            : ProductLocations.fromJson(json["product_locations"]),
+    productImages:
+        json["product_images"] == null
+            ? []
+            : List<dynamic>.from(json["product_images"]!.map((x) => x)),
+    stockBatches:
+        json["stock_batches"] == null
+            ? []
+            : List<StockBatch>.from(
+              json["stock_batches"]!.map((x) => StockBatch.fromJson(x)),
+            ),
   );
 
   Map<String, dynamic> toJson() => {
@@ -194,13 +237,25 @@ class RelatedProducts {
     "category": category?.toJson(),
     "supplier": supplier?.toJson(),
     "pack_size": packSize?.toJson(),
-    "product_variation_attributes": productVariationAttributes == null ? [] : List<dynamic>.from(productVariationAttributes!.map((x) => x)),
-    "product_variations": productVariations == null ? [] : List<dynamic>.from(productVariations!.map((x) => x)),
+    "product_variation_attributes":
+        productVariationAttributes == null
+            ? []
+            : List<dynamic>.from(productVariationAttributes!.map((x) => x)),
+    "product_variations":
+        productVariations == null
+            ? []
+            : List<dynamic>.from(productVariations!.map((x) => x)),
     "product_prices": productPrices?.toJson(),
     "product_inventories": productInventories?.toJson(),
     "product_locations": productLocations?.toJson(),
-    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
-    "stock_batches": stockBatches == null ? [] : List<dynamic>.from(stockBatches!.map((x) => x.toJson())),
+    "product_images":
+        productImages == null
+            ? []
+            : List<dynamic>.from(productImages!.map((x) => x)),
+    "stock_batches":
+        stockBatches == null
+            ? []
+            : List<dynamic>.from(stockBatches!.map((x) => x.toJson())),
   };
 }
 
@@ -373,20 +428,21 @@ class ProductInventories {
     this.deletedAt,
   });
 
-  factory ProductInventories.fromJson(Map<String, dynamic> json) => ProductInventories(
-    id: json["id"],
-    productId: json["product_id"],
-    quantity: json["quantity"],
-    recorderLevel: json["recorder_level"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    replenishLevel: json["replenish_level"],
-    daysExpairation: json["days_expairation"],
-    damagedQuantity: json["damaged_quantity"],
-    inventoryAddSubtract: json["inventory_add_subtract"],
-    comments: json["comments"],
-    deletedAt: json["deleted_at"],
-  );
+  factory ProductInventories.fromJson(Map<String, dynamic> json) =>
+      ProductInventories(
+        id: json["id"],
+        productId: json["product_id"],
+        quantity: json["quantity"],
+        recorderLevel: json["recorder_level"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        replenishLevel: json["replenish_level"],
+        daysExpairation: json["days_expairation"],
+        damagedQuantity: json["damaged_quantity"],
+        inventoryAddSubtract: json["inventory_add_subtract"],
+        comments: json["comments"],
+        deletedAt: json["deleted_at"],
+      );
 
   Map<String, dynamic> toJson() => {
     "id": id,
@@ -431,19 +487,20 @@ class ProductLocations {
     this.deletedAt,
   });
 
-  factory ProductLocations.fromJson(Map<String, dynamic> json) => ProductLocations(
-    id: json["id"],
-    productId: json["product_id"],
-    locationAtStore: json["location_at_store"],
-    reorderLevel: json["reorder_level"],
-    replenishLevel: json["replenish_level"],
-    hideFromGrid: json["hide_from_grid"],
-    overridePrices: json["override_prices"],
-    overrideDefaultTax: json["override_default_tax"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    deletedAt: json["deleted_at"],
-  );
+  factory ProductLocations.fromJson(Map<String, dynamic> json) =>
+      ProductLocations(
+        id: json["id"],
+        productId: json["product_id"],
+        locationAtStore: json["location_at_store"],
+        reorderLevel: json["reorder_level"],
+        replenishLevel: json["replenish_level"],
+        hideFromGrid: json["hide_from_grid"],
+        overridePrices: json["override_prices"],
+        overrideDefaultTax: json["override_default_tax"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        deletedAt: json["deleted_at"],
+      );
 
   Map<String, dynamic> toJson() => {
     "id": id,
@@ -522,9 +579,11 @@ class ProductPrices {
     promoStartDate: json["promo_start_date"],
     promoEndDate: json["promo_end_date"],
     disableFromPriceRules: json["disable_from_price_rules"],
-    allowPriceOverrideRegardlessOfPermissions: json["allow_price_override_regardless_of_permissions"],
+    allowPriceOverrideRegardlessOfPermissions:
+        json["allow_price_override_regardless_of_permissions"],
     pricesIncludeTax: json["prices_include_tax"],
-    onlyAllowItemsToBeSoldInWholeNumbers: json["only_allow_items_to_be_sold_in_whole_numbers"],
+    onlyAllowItemsToBeSoldInWholeNumbers:
+        json["only_allow_items_to_be_sold_in_whole_numbers"],
     changeCostPriceDuringSale: json["change_cost_price_during_sale"],
     overrideDefaultCommission: json["override_default_commission"],
     overrideDefaultTax: json["override_default_tax"],
@@ -547,9 +606,11 @@ class ProductPrices {
     "promo_start_date": promoStartDate,
     "promo_end_date": promoEndDate,
     "disable_from_price_rules": disableFromPriceRules,
-    "allow_price_override_regardless_of_permissions": allowPriceOverrideRegardlessOfPermissions,
+    "allow_price_override_regardless_of_permissions":
+        allowPriceOverrideRegardlessOfPermissions,
     "prices_include_tax": pricesIncludeTax,
-    "only_allow_items_to_be_sold_in_whole_numbers": onlyAllowItemsToBeSoldInWholeNumbers,
+    "only_allow_items_to_be_sold_in_whole_numbers":
+        onlyAllowItemsToBeSoldInWholeNumbers,
     "change_cost_price_during_sale": changeCostPriceDuringSale,
     "override_default_commission": overrideDefaultCommission,
     "override_default_tax": overrideDefaultTax,
@@ -765,17 +826,10 @@ class Link {
   String? label;
   bool? active;
 
-  Link({
-    this.url,
-    this.label,
-    this.active,
-  });
+  Link({this.url, this.label, this.active});
 
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
+  factory Link.fromJson(Map<String, dynamic> json) =>
+      Link(url: json["url"], label: json["label"], active: json["active"]);
 
   Map<String, dynamic> toJson() => {
     "url": url,

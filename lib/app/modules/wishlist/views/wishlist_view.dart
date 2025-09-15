@@ -74,123 +74,129 @@ class WishlistView extends GetView<WishlistController> {
           }
 
           return ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: controller.wishlistItems.length,
-              itemBuilder: (context, index) {
-                final item = controller.wishlistItems[index];
-                return InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return ProductDetailsView(product:item);
-                    }));
-                  },
-                  child: Card(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: BorderSide(
-                        color: AppColors.primaryColor
-                      ),
+            padding: const EdgeInsets.all(16),
+            itemCount: controller.wishlistItems.length,
+            itemBuilder: (context, index) {
+              final item = controller.wishlistItems[index];
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ProductDetailsView(product: item);
+                      },
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: CachedNetworkImage(
-                              imageUrl: '${AppConfig
-                                  .imageBasePath}${item.productImages}' ?? '',
-                              height: 100,
-                              width: 100,
-                              fit: BoxFit.cover,
-                              placeholder:
-                                  (context, url) => Container(
-                                    color: Colors.grey[200],
-                                    child: const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
+                  );
+                },
+                child: Card(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: AppColors.primaryColor),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${AppConfig.imageBasePath}${item.productImages}' ??
+                                '',
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.cover,
+                            placeholder:
+                                (context, url) => Container(
+                                  color: Colors.grey[200],
+                                  child: const Center(
+                                    child: CircularProgressIndicator(),
                                   ),
-                              errorWidget:
-                                  (context, url, error) => Container(
-                                    color: Colors.grey[200],
-                                    child: const Icon(Icons.error),
-                                  ),
-                            ),
+                                ),
+                            errorWidget:
+                                (context, url, error) => Container(
+                                  color: Colors.grey[200],
+                                  child: const Icon(Icons.error),
+                                ),
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.name ?? 'No Title',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.name ?? 'No Title',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  ''
-                                  '${item.packSize!.sellingPrice } BDT',
-                                  style: const TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                ''
+                                '${item.packSize!.sellingPrice} BDT',
+                                style: const TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    OutlinedButton.icon(
-                                      style: OutlinedButton.styleFrom(
-                                        side: BorderSide(
-                                          color: AppColors.primaryColor,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  OutlinedButton.icon(
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                        color: AppColors.primaryColor,
                                       ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
 
-                                      onPressed: () {
-                                                                 },
-                                      icon: const Icon(Icons.shopping_cart,
-                                        color: AppColors.primaryColor,),
-                                      label: const Text('Add to Cart',style:
-                                      TextStyle(color: AppColors.primaryColor),),
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.shopping_cart,
+                                      color: AppColors.primaryColor,
                                     ),
-                                    Spacer(),
-                                    IconButton(
-                                      onPressed: () {
-                                        controller.removeFromWishlist(
-                                          item.id!
-                                        );
-                                      },
-                                      icon: const Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
-                                        size: 35,
+                                    label: const Text(
+                                      'Add to Cart',
+                                      style: TextStyle(
+                                        color: AppColors.primaryColor,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  Spacer(),
+                                  IconButton(
+                                    onPressed: () {
+                                      controller.removeFromWishlist(item.id!);
+                                    },
+                                    icon: const Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                      size: 35,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            );
-
+                ),
+              );
+            },
+          );
         }
       }),
     );
@@ -200,7 +206,7 @@ class WishlistView extends GetView<WishlistController> {
     return Skeletonizer(
       enabled: true,
       child: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 12,vertical: 5),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
         itemCount: 4, // Show 5 skeleton items while loading
         itemBuilder: (context, index) {
           return Card(

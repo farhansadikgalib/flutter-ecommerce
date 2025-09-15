@@ -1,25 +1,24 @@
 import 'dart:convert';
 
-OrderPlaceResponse orderPlaceResponseFromJson(String str) => OrderPlaceResponse.fromJson(json.decode(str));
+OrderPlaceResponse orderPlaceResponseFromJson(String str) =>
+    OrderPlaceResponse.fromJson(json.decode(str));
 
-String orderPlaceResponseToJson(OrderPlaceResponse data) => json.encode(data.toJson());
+String orderPlaceResponseToJson(OrderPlaceResponse data) =>
+    json.encode(data.toJson());
 
 class OrderPlaceResponse {
   String? message;
   Sale? sale;
   String? status;
 
-  OrderPlaceResponse({
-    this.message,
-    this.sale,
-    this.status,
-  });
+  OrderPlaceResponse({this.message, this.sale, this.status});
 
-  factory OrderPlaceResponse.fromJson(Map<String, dynamic> json) => OrderPlaceResponse(
-    message: json["message"],
-    sale: json["sale"] == null ? null : Sale.fromJson(json["sale"]),
-    status: json["status"],
-  );
+  factory OrderPlaceResponse.fromJson(Map<String, dynamic> json) =>
+      OrderPlaceResponse(
+        message: json["message"],
+        sale: json["sale"] == null ? null : Sale.fromJson(json["sale"]),
+        status: json["status"],
+      );
 
   Map<String, dynamic> toJson() => {
     "message": message,
@@ -57,7 +56,8 @@ class Sale {
 
   factory Sale.fromJson(Map<String, dynamic> json) => Sale(
     saleCode: json["sale_code"],
-    saleDate: json["sale_date"] == null ? null : DateTime.parse(json["sale_date"]),
+    saleDate:
+        json["sale_date"] == null ? null : DateTime.parse(json["sale_date"]),
     customerId: json["customer_id"],
     subTotal: json["sub_total"],
     total: json["total"],
@@ -71,7 +71,8 @@ class Sale {
 
   Map<String, dynamic> toJson() => {
     "sale_code": saleCode,
-    "sale_date": "${saleDate!.year.toString().padLeft(4, '0')}-${saleDate!.month.toString().padLeft(2, '0')}-${saleDate!.day.toString().padLeft(2, '0')}",
+    "sale_date":
+        "${saleDate!.year.toString().padLeft(4, '0')}-${saleDate!.month.toString().padLeft(2, '0')}-${saleDate!.day.toString().padLeft(2, '0')}",
     "customer_id": customerId,
     "sub_total": subTotal,
     "total": total,

@@ -1,13 +1,9 @@
-
-
 import 'package:ousadbazar/app/core/helper/shared_value_helper.dart';
 
 import '../../data/remote/model/auth/login_response.dart';
 
-
 class AuthHelper {
-  void setUserData(
-      LoginResponse loginResponse) {
+  void setUserData(LoginResponse loginResponse) {
     if (loginResponse.token != null) {
       isLoggedIn.$ = true;
       isLoggedIn.save();
@@ -23,8 +19,6 @@ class AuthHelper {
 
       userEmail.$ = loginResponse.user!.email!;
       userEmail.save();
-
-
     }
   }
 
@@ -35,17 +29,14 @@ class AuthHelper {
     accessToken.$ = "";
     accessToken.save();
 
-
     userId.$ = "";
     userId.save();
 
     userName.$ = "";
     userName.save();
 
-
     userEmail.$ = "";
     userEmail.save();
-
   }
 
   void loadItems() {

@@ -1,4 +1,3 @@
-
 class ApiEndPoints {
   //Authentication
   static String login = "user-login";
@@ -82,8 +81,7 @@ class ApiEndPoints {
   static String city({required String countryId}) =>
       "city/search?country_id=$countryId";
 
-  static String area({required String cityId}) =>
-      "area/search?city_id=$cityId";
+  static String area({required String cityId}) => "area/search?city_id=$cityId";
 
   //Checkout
 }

@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-SetUserAddressResponse setUserAddressResponseFromJson(String str) => SetUserAddressResponse.fromJson(json.decode(str));
+SetUserAddressResponse setUserAddressResponseFromJson(String str) =>
+    SetUserAddressResponse.fromJson(json.decode(str));
 
-String setUserAddressResponseToJson(SetUserAddressResponse data) => json.encode(data.toJson());
+String setUserAddressResponseToJson(SetUserAddressResponse data) =>
+    json.encode(data.toJson());
 
 class SetUserAddressResponse {
   Data? data;
@@ -14,19 +16,15 @@ class SetUserAddressResponse {
   dynamic token;
   String? message;
 
-  SetUserAddressResponse({
-    this.data,
-    this.status,
-    this.token,
-    this.message,
-  });
+  SetUserAddressResponse({this.data, this.status, this.token, this.message});
 
-  factory SetUserAddressResponse.fromJson(Map<String, dynamic> json) => SetUserAddressResponse(
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    status: json["status"],
-    token: json["token"],
-    message: json["message"],
-  );
+  factory SetUserAddressResponse.fromJson(Map<String, dynamic> json) =>
+      SetUserAddressResponse(
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        status: json["status"],
+        token: json["token"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
     "data": data?.toJson(),

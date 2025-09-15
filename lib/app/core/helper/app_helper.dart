@@ -108,10 +108,12 @@ class AppHelper {
     return MediaQuery.of(context).viewInsets.bottom != 0 ? false : true;
   }
 
-  String getFormattedDateOnly(DateTime dateTime,
-      {isWeekDayNameOnly = false,
-      isDateOnly = true,
-      isDayNameAndDateOnly = false}) {
+  String getFormattedDateOnly(
+    DateTime dateTime, {
+    isWeekDayNameOnly = false,
+    isDateOnly = true,
+    isDayNameAndDateOnly = false,
+  }) {
     if (isWeekDayNameOnly) {
       return DateFormat('EEEE').format(dateTime);
     } else if (isDateOnly) {

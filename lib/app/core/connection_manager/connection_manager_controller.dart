@@ -26,8 +26,9 @@ class ConnectionManagerController extends GetxController {
   void onInit() {
     super.onInit();
     _getConnectivityType();
-    _streamSubscription =
-        _connectivity.onConnectivityChanged.listen(_updateState);
+    _streamSubscription = _connectivity.onConnectivityChanged.listen(
+      _updateState,
+    );
   }
 
   @override
@@ -71,7 +72,9 @@ class ConnectionManagerController extends GetxController {
         break;
       default:
         AppWidgets().getSnackBar(
-            title: 'Error', message: 'Failed to get connection type');
+          title: 'Error',
+          message: 'Failed to get connection type',
+        );
         break;
     }
   }

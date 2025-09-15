@@ -2,12 +2,11 @@ import 'package:ousadbazar/app/data/remote/model/category/ecom_categories_respon
 import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:ousadbazar/app/data/remote/model/home/supplier_response.dart';
 import 'package:ousadbazar/app/data/remote/model/home/category_response.dart';
-import 'package:ousadbazar/app/data/remote/model/home/home_response.dart' hide Product, Category;
+import 'package:ousadbazar/app/data/remote/model/home/home_response.dart'
+    hide Product, Category;
 
 import '../../../../services/network_service/api_client.dart';
 import '../../../../services/network_service/api_end_points.dart';
-
-
 
 class HomeRepository {
   Future<HomeResponse> getHomeData() async {

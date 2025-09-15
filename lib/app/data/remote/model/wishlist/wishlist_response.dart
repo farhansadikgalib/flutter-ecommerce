@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-WishlistItemResponse wishlistItemResponseFromJson(String str) => WishlistItemResponse.fromJson(json.decode(str));
+WishlistItemResponse wishlistItemResponseFromJson(String str) =>
+    WishlistItemResponse.fromJson(json.decode(str));
 
-String wishlistItemResponseToJson(WishlistItemResponse data) => json.encode(data.toJson());
+String wishlistItemResponseToJson(WishlistItemResponse data) =>
+    json.encode(data.toJson());
 
 class WishlistItemResponse {
   Data? data;
@@ -10,19 +12,15 @@ class WishlistItemResponse {
   dynamic token;
   String? message;
 
-  WishlistItemResponse({
-    this.data,
-    this.status,
-    this.token,
-    this.message,
-  });
+  WishlistItemResponse({this.data, this.status, this.token, this.message});
 
-  factory WishlistItemResponse.fromJson(Map<String, dynamic> json) => WishlistItemResponse(
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    status: json["status"],
-    token: json["token"],
-    message: json["message"],
-  );
+  factory WishlistItemResponse.fromJson(Map<String, dynamic> json) =>
+      WishlistItemResponse(
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        status: json["status"],
+        token: json["token"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
     "data": data?.toJson(),
@@ -65,12 +63,20 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<WishlistItems>.from(json["data"]!.map((x) => WishlistItems.fromJson(x))),
+    data:
+        json["data"] == null
+            ? []
+            : List<WishlistItems>.from(
+              json["data"]!.map((x) => WishlistItems.fromJson(x)),
+            ),
     firstPageUrl: json["first_page_url"],
     from: json["from"],
     lastPage: json["last_page"],
     lastPageUrl: json["last_page_url"],
-    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+    links:
+        json["links"] == null
+            ? []
+            : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
     nextPageUrl: json["next_page_url"],
     path: json["path"],
     perPage: json["per_page"],
@@ -81,12 +87,14 @@ class Data {
 
   Map<String, dynamic> toJson() => {
     "current_page": currentPage,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data":
+        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     "first_page_url": firstPageUrl,
     "from": from,
     "last_page": lastPage,
     "last_page_url": lastPageUrl,
-    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
+    "links":
+        links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
     "next_page_url": nextPageUrl,
     "path": path,
     "per_page": perPage,
@@ -197,17 +205,10 @@ class Link {
   String? label;
   bool? active;
 
-  Link({
-    this.url,
-    this.label,
-    this.active,
-  });
+  Link({this.url, this.label, this.active});
 
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
+  factory Link.fromJson(Map<String, dynamic> json) =>
+      Link(url: json["url"], label: json["label"], active: json["active"]);
 
   Map<String, dynamic> toJson() => {
     "url": url,

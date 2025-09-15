@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-WishlistActionResponse wishlistActionResponseFromJson(String str) => WishlistActionResponse.fromJson(json.decode(str));
+WishlistActionResponse wishlistActionResponseFromJson(String str) =>
+    WishlistActionResponse.fromJson(json.decode(str));
 
-String wishlistActionResponseToJson(WishlistActionResponse data) => json.encode(data.toJson());
+String wishlistActionResponseToJson(WishlistActionResponse data) =>
+    json.encode(data.toJson());
 
 class WishlistActionResponse {
   Data? data;
@@ -10,19 +12,15 @@ class WishlistActionResponse {
   dynamic token;
   String? message;
 
-  WishlistActionResponse({
-    this.data,
-    this.status,
-    this.token,
-    this.message,
-  });
+  WishlistActionResponse({this.data, this.status, this.token, this.message});
 
-  factory WishlistActionResponse.fromJson(Map<String, dynamic> json) => WishlistActionResponse(
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    status: json["status"],
-    token: json["token"],
-    message: json["message"],
-  );
+  factory WishlistActionResponse.fromJson(Map<String, dynamic> json) =>
+      WishlistActionResponse(
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        status: json["status"],
+        token: json["token"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
     "data": data?.toJson(),
@@ -39,13 +37,7 @@ class Data {
   String? createdAt;
   int? id;
 
-  Data({
-    this.productId,
-    this.userId,
-    this.updatedAt,
-    this.createdAt,
-    this.id,
-  });
+  Data({this.productId, this.userId, this.updatedAt, this.createdAt, this.id});
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     productId: json["product_id"],

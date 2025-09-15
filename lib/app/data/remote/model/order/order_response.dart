@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-OrderResponse orderResponseFromJson(String str) => OrderResponse.fromJson(json.decode(str));
+OrderResponse orderResponseFromJson(String str) =>
+    OrderResponse.fromJson(json.decode(str));
 
 String orderResponseToJson(OrderResponse data) => json.encode(data.toJson());
 
@@ -39,12 +40,20 @@ class OrderResponse {
 
   factory OrderResponse.fromJson(Map<String, dynamic> json) => OrderResponse(
     currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<AllOrdersData>.from(json["data"]!.map((x) => AllOrdersData.fromJson(x))),
+    data:
+        json["data"] == null
+            ? []
+            : List<AllOrdersData>.from(
+              json["data"]!.map((x) => AllOrdersData.fromJson(x)),
+            ),
     firstPageUrl: json["first_page_url"],
     from: json["from"],
     lastPage: json["last_page"],
     lastPageUrl: json["last_page_url"],
-    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+    links:
+        json["links"] == null
+            ? []
+            : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
     nextPageUrl: json["next_page_url"],
     path: json["path"],
     perPage: json["per_page"],
@@ -56,12 +65,14 @@ class OrderResponse {
 
   Map<String, dynamic> toJson() => {
     "current_page": currentPage,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data":
+        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     "first_page_url": firstPageUrl,
     "from": from,
     "last_page": lastPage,
     "last_page_url": lastPageUrl,
-    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
+    "links":
+        links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
     "next_page_url": nextPageUrl,
     "path": path,
     "per_page": perPage,
@@ -172,11 +183,23 @@ class AllOrdersData {
     suspendRequest: json["suspend_request"],
     suspendRequestBy: json["suspend_request_by"],
     shippingCost: json["shipping_cost"],
-    saleProducts: json["sale_products"] == null ? [] : List<SaleProduct>.from(json["sale_products"]!.map((x) => SaleProduct.fromJson(x))),
-    paymentMethod: json["payment_method"] == null ? null : PaymentMethod.fromJson(json["payment_method"]),
-    soldUser: json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
+    saleProducts:
+        json["sale_products"] == null
+            ? []
+            : List<SaleProduct>.from(
+              json["sale_products"]!.map((x) => SaleProduct.fromJson(x)),
+            ),
+    paymentMethod:
+        json["payment_method"] == null
+            ? null
+            : PaymentMethod.fromJson(json["payment_method"]),
+    soldUser:
+        json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
     customer: json["customer"],
-    billingAddress: json["billing_address"] == null ? null : BillingAddress.fromJson(json["billing_address"]),
+    billingAddress:
+        json["billing_address"] == null
+            ? null
+            : BillingAddress.fromJson(json["billing_address"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -208,7 +231,10 @@ class AllOrdersData {
     "suspend_request": suspendRequest,
     "suspend_request_by": suspendRequestBy,
     "shipping_cost": shippingCost,
-    "sale_products": saleProducts == null ? [] : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
+    "sale_products":
+        saleProducts == null
+            ? []
+            : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
     "payment_method": paymentMethod?.toJson(),
     "sold_user": soldUser?.toJson(),
     "customer": customer,
@@ -469,17 +495,10 @@ class Link {
   String? label;
   bool? active;
 
-  Link({
-    this.url,
-    this.label,
-    this.active,
-  });
+  Link({this.url, this.label, this.active});
 
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
+  factory Link.fromJson(Map<String, dynamic> json) =>
+      Link(url: json["url"], label: json["label"], active: json["active"]);
 
   Map<String, dynamic> toJson() => {
     "url": url,

@@ -26,15 +26,15 @@ abstract class BaseController extends GetxController {
     super.onInit();
   }
 
-// // ----------drawer control -- start----------
-//
-//  openNavDrawer(){
-//     globalKey.currentState!.openDrawer();
-//  }
-//
-//  closeNavDrawer(){
-//    globalKey.currentState!.closeDrawer();
-//  }
-//
-// // ----------drawer control -- end----------
+  // // ----------drawer control -- start----------
+  //
+  //  openNavDrawer(){
+  //     globalKey.currentState!.openDrawer();
+  //  }
+  //
+  //  closeNavDrawer(){
+  //    globalKey.currentState!.closeDrawer();
+  //  }
+  //
+  // // ----------drawer control -- end----------
 }

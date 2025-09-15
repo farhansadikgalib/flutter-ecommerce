@@ -1,8 +1,12 @@
 import 'dart:convert';
 
-List<PaymentMethodResponse> paymentMethodResponseFromJson(String str) => List<PaymentMethodResponse>.from(json.decode(str).map((x) => PaymentMethodResponse.fromJson(x)));
+List<PaymentMethodResponse> paymentMethodResponseFromJson(String str) =>
+    List<PaymentMethodResponse>.from(
+      json.decode(str).map((x) => PaymentMethodResponse.fromJson(x)),
+    );
 
-String paymentMethodResponseToJson(List<PaymentMethodResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String paymentMethodResponseToJson(List<PaymentMethodResponse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class PaymentMethodResponse {
   int? id;
@@ -25,16 +29,17 @@ class PaymentMethodResponse {
     this.updatedAt,
   });
 
-  factory PaymentMethodResponse.fromJson(Map<String, dynamic> json) => PaymentMethodResponse(
-    id: json["id"],
-    name: json["name"],
-    slug: json["slug"],
-    code: json["code"],
-    note: json["note"],
-    status: json["status"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+  factory PaymentMethodResponse.fromJson(Map<String, dynamic> json) =>
+      PaymentMethodResponse(
+        id: json["id"],
+        name: json["name"],
+        slug: json["slug"],
+        code: json["code"],
+        note: json["note"],
+        status: json["status"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
     "id": id,

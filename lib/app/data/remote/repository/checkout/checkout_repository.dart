@@ -19,9 +19,6 @@ class CheckoutRepository {
     return shippingResponseFromJson(response.toString());
   }
 
-
-
-
   Future<SetUserAddressResponse> setShippingAddress(
     String name,
     String email,
@@ -59,8 +56,6 @@ class CheckoutRepository {
     );
     return orderPlaceResponseFromJson(response.toString());
   }
-
-
 
   Future<List<CountryResponse>> getCountry() async {
     var response = await ApiClient().get(
@@ -101,8 +96,4 @@ class CheckoutRepository {
     );
     return paymentMethodResponseFromJson(response.toString());
   }
-
-
-
-
 }

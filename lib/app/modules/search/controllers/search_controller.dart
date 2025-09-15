@@ -11,7 +11,6 @@ class SearchController extends GetxController {
   final searchProductList = <SearchProducts>[];
   final DebounceHelper debounceHelper = DebounceHelper();
 
-
   @override
   void onInit() {
     super.onInit();
@@ -20,12 +19,12 @@ class SearchController extends GetxController {
     });
   }
 
-
   @override
   void onClose() {
     searchFocusNode.dispose();
     super.onClose();
   }
+
   void searchProducts(String query) async {
     if (query.isNotEmpty) {
       searchProductList.clear();

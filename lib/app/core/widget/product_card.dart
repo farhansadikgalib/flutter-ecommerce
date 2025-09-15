@@ -22,7 +22,7 @@ class ProductCard extends StatefulWidget {
     required this.product,
     required this.index,
     this.promoPrice,
-    this.showDiscountTag =false
+    this.showDiscountTag = false,
   });
 
   @override
@@ -64,7 +64,7 @@ class _ProductCardState extends State<ProductCard> {
     final selling = double.tryParse(getOfferedPrice()) ?? 0;
     final promo = double.tryParse(getSellingPrice()) ?? 0;
     // Only show discount if both prices are > 0 and not equal
-    
+
     // printLog('selling: $selling, promo: $promo');
     if (selling > 0 && promo > 0 && promo != selling) {
       double percent = ((promo - selling).abs() / selling) * 100;
@@ -163,7 +163,10 @@ class _ProductCardState extends State<ProductCard> {
                     child: Visibility(
                       visible: widget.showDiscountTag,
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.redAccent,
 
@@ -173,16 +176,9 @@ class _ProductCardState extends State<ProductCard> {
                           ),
                         ),
                         child: Text(
-                         widget.showDiscountTag?  '${(((double.tryParse(widget
-                             .product
-        .productPrices!
-                              .sellingPrice!.toString()) ?? 1) -
-                              (double.tryParse(widget.product.productPrices!
-                                  .ecomFinalSellingPrice!.toString()) ?? 0)) /
-                              ((double.tryParse(widget.product.productPrices!
-                                  .sellingPrice!.toString()) ?? 1)) * 100)
-                              .abs()
-                              .toStringAsFixed(2)}% OFF': '',
+                          widget.showDiscountTag
+                              ? '${(((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1) - (double.tryParse(widget.product.productPrices!.ecomFinalSellingPrice!.toString()) ?? 0)) / ((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1)) * 100).abs().toStringAsFixed(2)}% OFF'
+                              : '',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

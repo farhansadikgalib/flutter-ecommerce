@@ -1,10 +1,8 @@
-
 import 'package:ousadbazar/app/data/remote/model/wishlist/wishlist_action_response.dart';
 import 'package:ousadbazar/app/data/remote/model/wishlist/wishlist_response.dart';
 
 import '../../../../services/network_service/api_client.dart';
 import '../../../../services/network_service/api_end_points.dart';
-
 
 class WishlistRepository {
   Future<WishlistActionResponse> addToWishlist(String productId) async {

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-OderPlaceRequest oderPlaceRequestFromJson(String str) => OderPlaceRequest.fromJson(json.decode(str));
+OderPlaceRequest oderPlaceRequestFromJson(String str) =>
+    OderPlaceRequest.fromJson(json.decode(str));
 
-String oderPlaceRequestToJson(OderPlaceRequest data) => json.encode(data.toJson());
+String oderPlaceRequestToJson(OderPlaceRequest data) =>
+    json.encode(data.toJson());
 
 class OderPlaceRequest {
   List<SaleProduct>? saleProducts;
@@ -23,18 +25,30 @@ class OderPlaceRequest {
     this.customerId,
   });
 
-  factory OderPlaceRequest.fromJson(Map<String, dynamic> json) => OderPlaceRequest(
-    saleProducts: json["sale_products"] == null ? [] : List<SaleProduct>.from(json["sale_products"]!.map((x) => SaleProduct.fromJson(x))),
-    subTotal: json["sub_total"],
-    total: json["total"],
-    shippingCost: json["shipping_cost"],
-    billingAddress: json["billing_address"] == null ? null : BillingAddress.fromJson(json["billing_address"]),
-    paymentMethodId: json["payment_method_id"],
-    customerId: json["customer_id"],
-  );
+  factory OderPlaceRequest.fromJson(Map<String, dynamic> json) =>
+      OderPlaceRequest(
+        saleProducts:
+            json["sale_products"] == null
+                ? []
+                : List<SaleProduct>.from(
+                  json["sale_products"]!.map((x) => SaleProduct.fromJson(x)),
+                ),
+        subTotal: json["sub_total"],
+        total: json["total"],
+        shippingCost: json["shipping_cost"],
+        billingAddress:
+            json["billing_address"] == null
+                ? null
+                : BillingAddress.fromJson(json["billing_address"]),
+        paymentMethodId: json["payment_method_id"],
+        customerId: json["customer_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "sale_products": saleProducts == null ? [] : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
+    "sale_products":
+        saleProducts == null
+            ? []
+            : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
     "sub_total": subTotal,
     "total": total,
     "shipping_cost": shippingCost,

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-OtpVerifyResponse otpVerifyResponseFromJson(String str) => OtpVerifyResponse.fromJson(json.decode(str));
+OtpVerifyResponse otpVerifyResponseFromJson(String str) =>
+    OtpVerifyResponse.fromJson(json.decode(str));
 
-String otpVerifyResponseToJson(OtpVerifyResponse data) => json.encode(data.toJson());
+String otpVerifyResponseToJson(OtpVerifyResponse data) =>
+    json.encode(data.toJson());
 
 class OtpVerifyResponse {
   Data? data;
@@ -10,19 +12,15 @@ class OtpVerifyResponse {
   dynamic token;
   String? message;
 
-  OtpVerifyResponse({
-    this.data,
-    this.status,
-    this.token,
-    this.message,
-  });
+  OtpVerifyResponse({this.data, this.status, this.token, this.message});
 
-  factory OtpVerifyResponse.fromJson(Map<String, dynamic> json) => OtpVerifyResponse(
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    status: json["status"],
-    token: json["token"],
-    message: json["message"],
-  );
+  factory OtpVerifyResponse.fromJson(Map<String, dynamic> json) =>
+      OtpVerifyResponse(
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        status: json["status"],
+        token: json["token"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
     "data": data?.toJson(),

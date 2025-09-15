@@ -231,8 +231,12 @@ class CartView extends BaseView<CartController> {
             // Cart items list
             Expanded(
               child: ListView.separated(
-                padding: EdgeInsets.only(left: 16,right: 16, top: 4,bottom:
-                Get.height/3),
+                padding: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 4,
+                  bottom: Get.height / 3,
+                ),
                 itemCount: controller.allCartProducts.length,
                 separatorBuilder: (_, __) => SizedBox(height: 10),
                 itemBuilder: (context, index) {
@@ -340,9 +344,7 @@ class CartView extends BaseView<CartController> {
                                   imagePath:
                                       product.productImages != null &&
                                               product.productImages!.isNotEmpty
-                                          ? '${AppConfig
-                                          .imageBasePath}${product
-                                          .productImages![0].path}'
+                                          ? '${AppConfig.imageBasePath}${product.productImages![0].path}'
                                           : Assets.pngNotFound,
                                 ),
                               ),
@@ -364,7 +366,8 @@ class CartView extends BaseView<CartController> {
                                   ),
                                   SizedBox(height: 6),
                                   // Stock information
-                                  Text('${product.name} ${product.productPrices!.packQuantity}',
+                                  Text(
+                                    '${product.name} ${product.productPrices!.packQuantity}',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: Colors.grey[600],
@@ -384,9 +387,7 @@ class CartView extends BaseView<CartController> {
                                   Row(
                                     children: [
                                       Text(
-                                        '৳${double.parse(product.productPrices!
-                                            .ecomFinalSellingPrice.toString())
-                                      .toStringAsFixed(2) }',
+                                        '৳${double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2)}',
                                         style: TextStyle(
                                           color: AppColors.primaryColor,
                                           fontSize: 15,
@@ -407,8 +408,7 @@ class CartView extends BaseView<CartController> {
                                   // Total price for this item
                                   Obx(
                                     () => Text(
-                                      'Sub Total: ৳${((double.parse((product
-                                          .productPrices?.sellingPrice ?? product.packSize?.sellingPrice ?? 0).toString())) * controller.getProductQuantity(product.id!)).toStringAsFixed(2)}',
+                                      'Sub Total: ৳${((double.parse((product.productPrices?.sellingPrice ?? product.packSize?.sellingPrice ?? 0).toString())) * controller.getProductQuantity(product.id!)).toStringAsFixed(2)}',
                                       style: TextStyle(
                                         color: Colors.grey[700],
                                         fontSize: 13,
@@ -488,7 +488,8 @@ class CartView extends BaseView<CartController> {
                           ],
                         ),
                       ),
-                    ));
+                    ),
+                  );
                 },
               ),
             ),
@@ -502,8 +503,11 @@ class CartView extends BaseView<CartController> {
   int getTotalStock(ProductData product) {
     final batches = product.stockBatches;
     if (batches == null || batches.isEmpty) return 0;
-    return batches.fold<int>(0, (sum, batch) => sum + (double.parse(batch
-        .balancedQuantity.toString()).toInt()));
+    return batches.fold<int>(
+      0,
+      (sum, batch) =>
+          sum + (double.parse(batch.balancedQuantity.toString()).toInt()),
+    );
   }
 
   // Confirmation dialog for swipe to remove

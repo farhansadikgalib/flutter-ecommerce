@@ -26,11 +26,11 @@ Widget commonTextField({
 
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(width:2,color: AppColors.primaryColor),
+          borderSide: BorderSide(width: 2, color: AppColors.primaryColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(width:1,color: AppColors.primaryColor),
+          borderSide: BorderSide(width: 1, color: AppColors.primaryColor),
         ),
         prefixIcon: Icon(icon),
       ),

@@ -43,8 +43,10 @@ class HomeController extends BaseController {
   }
 
   void _onScroll() {
-    if (bestSellingScrollController.position.pixels >= bestSellingScrollController.position.maxScrollExtent - 200) {
-      if (!isPaginationLoading.value && bestSellingCurrentPage.value < bestSellingTotalPage.value) {
+    if (bestSellingScrollController.position.pixels >=
+        bestSellingScrollController.position.maxScrollExtent - 200) {
+      if (!isPaginationLoading.value &&
+          bestSellingCurrentPage.value < bestSellingTotalPage.value) {
         bestSellingCurrentPage.value++;
         getBestSellingProducts(isLoadMore: true);
       }

@@ -5,9 +5,7 @@ import 'package:ousadbazar/app/data/remote/model/product/related_product_respons
 import '../../../../services/network_service/api_client.dart';
 import '../../../../services/network_service/api_end_points.dart';
 
-
-
-class ProductRepository{
+class ProductRepository {
   Future<ProductDetailsResponse> getProductDetails(String productId) async {
     var response = await ApiClient().get(
       ApiEndPoints.productDetails(productId: productId),

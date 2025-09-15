@@ -15,6 +15,5 @@ class InitialBinding extends Bindings {
     Get.put(CartController(), permanent: true);
     Get.put(WishlistController(), permanent: true);
     Get.put(LoginController(), permanent: true);
-
   }
 }

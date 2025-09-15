@@ -9,7 +9,7 @@ import 'package:ousadbazar/app/modules/order/controllers/order_controller.dart';
 class TrackOrderView extends StatelessWidget {
   final OrderController controller = Get.find<OrderController>();
 
-   TrackOrderView({super.key});
+  TrackOrderView({super.key});
 
   String _formatDate(String? dateString) {
     if (dateString == null) return 'N/A';

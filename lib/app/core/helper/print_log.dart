@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 
 import '../constants/app_constants.dart';
 
-
 /// [Level]s to control logging output. Logging can be enabled to include all
 /// levels above certain [Level].
 ///

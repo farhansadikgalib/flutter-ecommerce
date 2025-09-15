@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-DeleteCartResponse deleteCartResponseFromJson(String str) => DeleteCartResponse.fromJson(json.decode(str));
+DeleteCartResponse deleteCartResponseFromJson(String str) =>
+    DeleteCartResponse.fromJson(json.decode(str));
 
-String deleteCartResponseToJson(DeleteCartResponse data) => json.encode(data.toJson());
+String deleteCartResponseToJson(DeleteCartResponse data) =>
+    json.encode(data.toJson());
 
 class DeleteCartResponse {
   Data? data;
@@ -14,19 +16,15 @@ class DeleteCartResponse {
   dynamic token;
   String? message;
 
-  DeleteCartResponse({
-    this.data,
-    this.status,
-    this.token,
-    this.message,
-  });
+  DeleteCartResponse({this.data, this.status, this.token, this.message});
 
-  factory DeleteCartResponse.fromJson(Map<String, dynamic> json) => DeleteCartResponse(
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    status: json["status"],
-    token: json["token"],
-    message: json["message"],
-  );
+  factory DeleteCartResponse.fromJson(Map<String, dynamic> json) =>
+      DeleteCartResponse(
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        status: json["status"],
+        token: json["token"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
     "data": data?.toJson(),

@@ -21,84 +21,93 @@ class ApiClient {
 
   final String _accessToken = accessToken.$;
 
-
   ApiClient({customBaseUrl = ''}) {
     BaseOptions options = BaseOptions(
       baseUrl: customBaseUrl != '' ? customBaseUrl : AppConfig.basePath,
       connectTimeout: const Duration(seconds: 100),
       receiveTimeout: const Duration(seconds: 30),
-      responseType: ResponseType
-          .plain, // To Solve Flutter FormatException: Unexpected character (at character 1)
+      responseType:
+          ResponseType
+              .plain, // To Solve Flutter FormatException: Unexpected character (at character 1)
     );
     dio = Dio(options);
     // dio!.interceptors.clear();
     dio!.interceptors.add(
-      QueuedInterceptorsWrapper(onRequest:
-          (RequestOptions options, RequestInterceptorHandler handler) {
-        printLog("On request working");
-        return handler.next(options);
-      }, onResponse: (Response response, ResponseInterceptorHandler handler) {
-        printLog("On response working");
-        return handler.next(response);
-      }, onError: (DioException err, ErrorInterceptorHandler handler) async {
-        if (err.response?.statusCode == 401) {
-          AppHelper().logout();
+      QueuedInterceptorsWrapper(
+        onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+          printLog("On request working");
+          return handler.next(options);
+        },
+        onResponse: (Response response, ResponseInterceptorHandler handler) {
+          printLog("On response working");
+          return handler.next(response);
+        },
+        onError: (DioException err, ErrorInterceptorHandler handler) async {
+          if (err.response?.statusCode == 401) {
+            AppHelper().logout();
 
-          AppWidgets().getSnackBar(
-            title: "Info",
-            message: "Response error code: 401",
-          );
-
-          //accessToken.$ = "Bearer ${refreshToken.$}";
-          //accessToken.save();
-          dio?.options.headers["Authorization"] = _accessToken;
-          printLog("Refreshing token done");
-          return handler.next(err);
-        } else if (err.response?.statusCode == 400) {
-          var msg =
-              jsonDecode(err.response!.toString())["message"][0] as String;
-
-          //return handler.resolve(err.response!);
-          // await AppHelper().logout();
-          return handler.reject(err);
-          // return handler.next(err);
-        } else if (err.response?.statusCode == 503) {
-          AppWidgets().getSnackBar(
+            AppWidgets().getSnackBar(
               title: "Info",
-              message: jsonDecode(err.response!.toString())["message"][0]);
-          return handler.resolve(err.response!);
-        } else if (err.response?.statusCode == 500) {
-          await Future.delayed(const Duration(seconds: 1));
-          AppHelper().hideLoader();
-          AppWidgets()
-              .getSnackBar(title: "Info", message: "Response error code: 500");
-          return handler.resolve(err.response!);
-        } else if (err.response?.statusCode == 204) {
-          await Future.delayed(const Duration(seconds: 1));
-          AppHelper().hideLoader();
-          AppWidgets()
-              .getSnackBar(title: "Info", message: "Response error code: 500");
-          return handler.resolve(err.response!);
-        } else if (err.response?.statusCode == 401) {
-          // token.$ = "Bearer ${refreshToken.$}";
-          //token.save();
-          AppHelper().logout();
+              message: "Response error code: 401",
+            );
 
+            //accessToken.$ = "Bearer ${refreshToken.$}";
+            //accessToken.save();
+            dio?.options.headers["Authorization"] = _accessToken;
+            printLog("Refreshing token done");
+            return handler.next(err);
+          } else if (err.response?.statusCode == 400) {
+            var msg =
+                jsonDecode(err.response!.toString())["message"][0] as String;
 
-          AppWidgets().getSnackBar(
+            //return handler.resolve(err.response!);
+            // await AppHelper().logout();
+            return handler.reject(err);
+            // return handler.next(err);
+          } else if (err.response?.statusCode == 503) {
+            AppWidgets().getSnackBar(
               title: "Info",
-              message: "Response error "
-                  "code: 401");
-          return handler.resolve(err.response!);
-        } else {
-          AppWidgets().getSnackBar(
-            title: "Info",
-            message: jsonDecode(err.response.toString())["message"] ?? "",
-            // message: jsonDecode(err.response.toString())["message"][0] ?? "",
-          );
-          return handler.resolve(err.response!);
-        }
-      }),
+              message: jsonDecode(err.response!.toString())["message"][0],
+            );
+            return handler.resolve(err.response!);
+          } else if (err.response?.statusCode == 500) {
+            await Future.delayed(const Duration(seconds: 1));
+            AppHelper().hideLoader();
+            AppWidgets().getSnackBar(
+              title: "Info",
+              message: "Response error code: 500",
+            );
+            return handler.resolve(err.response!);
+          } else if (err.response?.statusCode == 204) {
+            await Future.delayed(const Duration(seconds: 1));
+            AppHelper().hideLoader();
+            AppWidgets().getSnackBar(
+              title: "Info",
+              message: "Response error code: 500",
+            );
+            return handler.resolve(err.response!);
+          } else if (err.response?.statusCode == 401) {
+            // token.$ = "Bearer ${refreshToken.$}";
+            //token.save();
+            AppHelper().logout();
+
+            AppWidgets().getSnackBar(
+              title: "Info",
+              message:
+                  "Response error "
+                  "code: 401",
+            );
+            return handler.resolve(err.response!);
+          } else {
+            AppWidgets().getSnackBar(
+              title: "Info",
+              message: jsonDecode(err.response.toString())["message"] ?? "",
+              // message: jsonDecode(err.response.toString())["message"][0] ?? "",
+            );
+            return handler.resolve(err.response!);
+          }
+        },
+      ),
     );
   }
 
@@ -115,7 +124,8 @@ class ApiClient {
       dio?.options.headers["isApp"] = true;
       if (kDebugMode) {
         printLog(
-            'URL:${AppConfig.basePath}$url\nQueryParameters: $mQueryParameters');
+          'URL:${AppConfig.basePath}$url\nQueryParameters: $mQueryParameters',
+        );
       }
 
       //todo make compatible with GetX
@@ -136,7 +146,8 @@ class ApiClient {
         var response = await dio?.get(url, queryParameters: mQueryParameters);
         if (kDebugMode) {
           logger.w(
-              'URL:  $url\nQueryParameters: $mQueryParameters\nResponse: $response');
+            'URL:  $url\nQueryParameters: $mQueryParameters\nResponse: $response',
+          );
         }
 
         if (isLoaderRequired) {
@@ -195,11 +206,12 @@ class ApiClient {
           if (isServiceCode) {
             dio?.options.headers["service_code"] = "sl_customer";
           }
-//application/json-patch+json application/json
+          //application/json-patch+json application/json
         }
         if (kDebugMode) {
           logger.i(
-              'before formData URL: ${dio?.options.baseUrl}$url Data:$data token: $_accessToken');
+            'before formData URL: ${dio?.options.baseUrl}$url Data:$data token: $_accessToken',
+          );
         }
         FormData formData = FormData();
 
@@ -215,19 +227,23 @@ class ApiClient {
 
         if (kDebugMode) {
           logger.i(
-              'URL:${dio?.options.baseUrl}$url Data:$data token: $_accessToken');
+            'URL:${dio?.options.baseUrl}$url Data:$data token: $_accessToken',
+          );
         }
 
-        var response = await dio?.post(url,
-            // data: formData,
-            data: isFormData
-                ? formData
-                : data == null
-                    ? null
-                    : isJsonEncodeRequired
-                        ? jsonEncode(data)
-                        : data,
-            queryParameters: mQueryParameters);
+        var response = await dio?.post(
+          url,
+          // data: formData,
+          data:
+              isFormData
+                  ? formData
+                  : data == null
+                  ? null
+                  : isJsonEncodeRequired
+                  ? jsonEncode(data)
+                  : data,
+          queryParameters: mQueryParameters,
+        );
 
         if (kDebugMode) {
           logger.i('URL:  $url\nData: $data\nResponse: $response');
@@ -354,7 +370,8 @@ class ApiClient {
 
       if (kDebugMode) {
         logger.i(
-            'URL:  ${AppConfig.basePath}$url\nQueryParameters: $mQueryParameters');
+          'URL:  ${AppConfig.basePath}$url\nQueryParameters: $mQueryParameters',
+        );
       }
       //todo make compatible with GetX
       /* AppHelper().showLoader();
@@ -370,11 +387,15 @@ class ApiClient {
         }
         FormData formData = FormData.fromMap(isFormData ? data : {});
 
-        Response? response = await dio?.delete(url,
-            data: data, queryParameters: mQueryParameters);
+        Response? response = await dio?.delete(
+          url,
+          data: data,
+          queryParameters: mQueryParameters,
+        );
 
         logger.w(
-            'URL:  $url\nQueryParameters: $mQueryParameters\nResponse: $response');
+          'URL:  $url\nQueryParameters: $mQueryParameters\nResponse: $response',
+        );
         // await Future.delayed(const Duration(seconds: 3));
         AppHelper().hideLoader();
         return response;
@@ -404,14 +425,14 @@ class ApiClient {
 
     if (e.response?.statusCode == HttpStatus.internalServerError) {
       if (kDebugMode) {
-        logger
-            .w('printCatch: Internal Server Error: ${e.response?.statusCode} ');
+        logger.w(
+          'printCatch: Internal Server Error: ${e.response?.statusCode} ',
+        );
       }
     }
 
     if (e.response?.statusCode == 400) {
     } else if (e.response?.statusCode == 401) {
-
       AppHelper().logout();
 
       /*   final jwt = JWT(
@@ -432,8 +453,9 @@ class ApiClient {
       // token.save();
     } else if (e.response?.statusCode == 503) {
       AppWidgets().getSnackBar(
-          title: "Info",
-          message: "Unable Connect with server. Please try again later.");
+        title: "Info",
+        message: "Unable Connect with server. Please try again later.",
+      );
     } else {
       //TODO clear
       /* AppWidgets().showSimpleDialog(context, "Failed",
@@ -466,9 +488,7 @@ class ApiClient {
 
   //todo remove
   Future<dynamic> getDynamicApiData(url) async {
-    var response = await Dio().get(
-      "${AppConfig.basePath}$url",
-    );
+    var response = await Dio().get("${AppConfig.basePath}$url");
     return response;
   }
 

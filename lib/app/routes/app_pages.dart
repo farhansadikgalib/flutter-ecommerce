@@ -35,21 +35,13 @@ class AppPages {
   static const INITIAL = Routes.SPLASH;
 
   static final routes = [
-    GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
-    ),
+    GetPage(name: _Paths.HOME, page: () => HomeView(), binding: HomeBinding()),
     GetPage(
       name: _Paths.DASHBOARD,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
     ),
-    GetPage(
-      name: _Paths.CART,
-      page: () => CartView(),
-      binding: CartBinding(),
-    ),
+    GetPage(name: _Paths.CART, page: () => CartView(), binding: CartBinding()),
     GetPage(
       name: _Paths.CHECKOUT,
       page: () => CheckoutView(),

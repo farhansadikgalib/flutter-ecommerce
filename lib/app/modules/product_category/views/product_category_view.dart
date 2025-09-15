@@ -12,7 +12,7 @@ import '../../../core/style/app_colors.dart';
 import '../../../core/widget/global_appbar.dart';
 import '../../../core/widget/product_card.dart';
 import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart'
-as BestSellingModel;
+    as BestSellingModel;
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../controllers/product_category_controller.dart';
@@ -187,7 +187,8 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                             )
                                             ?.id,
                                     onChanged: (value) {
-                                      for (var type in controller.deliveryType) {
+                                      for (var type
+                                          in controller.deliveryType) {
                                         type.isSelected = type.id == value;
                                       }
                                       printLog(
@@ -618,7 +619,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                         physics: AlwaysScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           final item = controller.categoryProducts[index];
-                          final product =BestSellingModel.ProductData(
+                          final product = BestSellingModel.ProductData(
                             id: item.id,
                             quantity: 0,
                             addToCart: false,
@@ -632,183 +633,199 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                             totalSoldQuantity: null,
                             totalBalancedQuantity: null,
                             generic:
-                            item.generic != null
-                                ? BestSellingModel.Generic(
-                              id: item.generic!.id,
-                              name: item.generic!.name,
-                              category: item.generic!.category,
-                              status: item.generic!.status,
-                              createdBy: item.generic!.createdBy,
-                              updatedBy: item.generic!.updatedBy,
-                              createdAt: item.generic!.createdAt,
-                              updatedAt: item.generic!.updatedAt,
-                            )
-                                : null,
+                                item.generic != null
+                                    ? BestSellingModel.Generic(
+                                      id: item.generic!.id,
+                                      name: item.generic!.name,
+                                      category: item.generic!.category,
+                                      status: item.generic!.status,
+                                      createdBy: item.generic!.createdBy,
+                                      updatedBy: item.generic!.updatedBy,
+                                      createdAt: item.generic!.createdAt,
+                                      updatedAt: item.generic!.updatedAt,
+                                    )
+                                    : null,
                             category:
-                            item.category != null
-                                ? BestSellingModel.Category(
-                              id: item.category!.id,
-                              name: item.category!.name,
-                              shortOrder: item.category!.shortOrder,
-                              createdAt: item.category!.createdAt,
-                              updatedAt: item.category!.updatedAt,
-                              status: item.category!.status,
-                              deletedAt: null,
-                            )
-                                : null,
+                                item.category != null
+                                    ? BestSellingModel.Category(
+                                      id: item.category!.id,
+                                      name: item.category!.name,
+                                      shortOrder: item.category!.shortOrder,
+                                      createdAt: item.category!.createdAt,
+                                      updatedAt: item.category!.updatedAt,
+                                      status: item.category!.status,
+                                      deletedAt: null,
+                                    )
+                                    : null,
                             supplier:
-                            item.supplier != null
-                                ? BestSellingModel.Supplier(
-                              id: item.supplier!.id,
-                              firstName: item.supplier!.firstName,
-                              lastName: item.supplier!.lastName,
-                              address1: item.supplier!.address1,
-                              address2: item.supplier!.address2,
-                              city: item.supplier!.city,
-                              stateOrProvince:
-                              item.supplier!.stateOrProvince,
-                              zip: item.supplier!.zip,
-                              country: item.supplier!.country,
-                              comments: item.supplier!.comments,
-                              contact: item.supplier!.contact,
-                              email: item.supplier!.email,
-                              companyName: item.supplier!.companyName,
-                              accountNo: item.supplier!.accountNo,
-                              imagePath: item.supplier!.imagePath,
-                              status: item.supplier!.status,
-                              createdAt: item.supplier!.createdAt,
-                              updatedAt: item.supplier!.updatedAt,
-                              type: item.supplier!.type,
-                              storeAccountBalance:
-                              item.supplier!.storeAccountBalance,
-                              payAmount: item.supplier!.payAmount,
-                              deletedAt: item.supplier!.deletedAt,
-                              deletedBy: item.supplier!.deletedBy,
-                            )
-                                : null,
+                                item.supplier != null
+                                    ? BestSellingModel.Supplier(
+                                      id: item.supplier!.id,
+                                      firstName: item.supplier!.firstName,
+                                      lastName: item.supplier!.lastName,
+                                      address1: item.supplier!.address1,
+                                      address2: item.supplier!.address2,
+                                      city: item.supplier!.city,
+                                      stateOrProvince:
+                                          item.supplier!.stateOrProvince,
+                                      zip: item.supplier!.zip,
+                                      country: item.supplier!.country,
+                                      comments: item.supplier!.comments,
+                                      contact: item.supplier!.contact,
+                                      email: item.supplier!.email,
+                                      companyName: item.supplier!.companyName,
+                                      accountNo: item.supplier!.accountNo,
+                                      imagePath: item.supplier!.imagePath,
+                                      status: item.supplier!.status,
+                                      createdAt: item.supplier!.createdAt,
+                                      updatedAt: item.supplier!.updatedAt,
+                                      type: item.supplier!.type,
+                                      storeAccountBalance:
+                                          item.supplier!.storeAccountBalance,
+                                      payAmount: item.supplier!.payAmount,
+                                      deletedAt: item.supplier!.deletedAt,
+                                      deletedBy: item.supplier!.deletedBy,
+                                    )
+                                    : null,
                             packSize:
-                            item.packSize != null
-                                ? BestSellingModel.PackSize(
-                              id: item.packSize!.id,
-                              productId: item.packSize!.productId,
-                              name: item.packSize!.name,
-                              quantity: item.packSize!.quantity,
-                              tp: item.packSize!.tp,
-                              vatPercent: item.packSize!.vatPercent,
-                              vat: item.packSize!.vat,
-                              sellingPrice: item.packSize!.sellingPrice,
-                              defaultUnit: item.packSize!.defaultUnit,
-                              createdAt: item.packSize!.createdAt,
-                              updatedAt: item.packSize!.updatedAt,
-                              deletedAt: item.packSize!.deletedAt,
-                            )
-                                : null,
+                                item.packSize != null
+                                    ? BestSellingModel.PackSize(
+                                      id: item.packSize!.id,
+                                      productId: item.packSize!.productId,
+                                      name: item.packSize!.name,
+                                      quantity: item.packSize!.quantity,
+                                      tp: item.packSize!.tp,
+                                      vatPercent: item.packSize!.vatPercent,
+                                      vat: item.packSize!.vat,
+                                      sellingPrice: item.packSize!.sellingPrice,
+                                      defaultUnit: item.packSize!.defaultUnit,
+                                      createdAt: item.packSize!.createdAt,
+                                      updatedAt: item.packSize!.updatedAt,
+                                      deletedAt: item.packSize!.deletedAt,
+                                    )
+                                    : null,
                             productVariationAttributes:
-                            item.productVariationAttributes ?? [],
+                                item.productVariationAttributes ?? [],
                             productVariations: item.productVariations ?? [],
                             productPrices:
-                            item.productPrices != null
-                                ? BestSellingModel.ProductPrices(
-                              id: item.productPrices!.id,
-                              productId: item.productPrices!.productId,
-                              costPriceWithoutTax:
-                              item.productPrices!.costPriceWithoutTax,
-                              sellingPrice:
-                              item.productPrices!.sellingPrice,
-                              tradePrice: item.productPrices!.tradePrice,
-                              vat: item.productPrices!.vat,
-                              wholesale: item.productPrices!.wholesale,
-                              wholesaleType:
-                              item.productPrices!.wholesaleType,
-                              promoPrice: item.productPrices!.promoPrice,
-                              promoStartDate:
-                              item.productPrices!.promoStartDate,
-                              promoEndDate:
-                              item.productPrices!.promoEndDate,
-                              disableFromPriceRules:
-                              item.productPrices!.disableFromPriceRules,
-                              allowPriceOverrideRegardlessOfPermissions:
-                              item
-                                  .productPrices!
-                                  .allowPriceOverrideRegardlessOfPermissions,
-                              pricesIncludeTax:
-                              item.productPrices!.pricesIncludeTax,
-                              onlyAllowItemsToBeSoldInWholeNumbers:
-                              item
-                                  .productPrices!
-                                  .onlyAllowItemsToBeSoldInWholeNumbers,
-                              changeCostPriceDuringSale:
-                              item
-                                  .productPrices!
-                                  .changeCostPriceDuringSale,
-                              overrideDefaultCommission:
-                              item
-                                  .productPrices!
-                                  .overrideDefaultCommission,
-                              overrideDefaultTax:
-                              item.productPrices!.overrideDefaultTax,
-                              createdAt: item.productPrices!.createdAt,
-                              updatedAt: item.productPrices!.updatedAt,
-                              deletedAt: item.productPrices!.deletedAt,
-                              isEditableInSale:
-                              item.productPrices!.isEditableInSale
-                                  ?.toString(),
-                              packQuantity: null,
-                              ecomDiscountPercentage: null,
-                              ecomDiscountAmount: null,
-                              ecomFinalSellingPrice: null,
-                            )
-                                : null,
+                                item.productPrices != null
+                                    ? BestSellingModel.ProductPrices(
+                                      id: item.productPrices!.id,
+                                      productId: item.productPrices!.productId,
+                                      costPriceWithoutTax:
+                                          item
+                                              .productPrices!
+                                              .costPriceWithoutTax,
+                                      sellingPrice:
+                                          item.productPrices!.sellingPrice,
+                                      tradePrice:
+                                          item.productPrices!.tradePrice,
+                                      vat: item.productPrices!.vat,
+                                      wholesale: item.productPrices!.wholesale,
+                                      wholesaleType:
+                                          item.productPrices!.wholesaleType,
+                                      promoPrice:
+                                          item.productPrices!.promoPrice,
+                                      promoStartDate:
+                                          item.productPrices!.promoStartDate,
+                                      promoEndDate:
+                                          item.productPrices!.promoEndDate,
+                                      disableFromPriceRules:
+                                          item
+                                              .productPrices!
+                                              .disableFromPriceRules,
+                                      allowPriceOverrideRegardlessOfPermissions:
+                                          item
+                                              .productPrices!
+                                              .allowPriceOverrideRegardlessOfPermissions,
+                                      pricesIncludeTax:
+                                          item.productPrices!.pricesIncludeTax,
+                                      onlyAllowItemsToBeSoldInWholeNumbers:
+                                          item
+                                              .productPrices!
+                                              .onlyAllowItemsToBeSoldInWholeNumbers,
+                                      changeCostPriceDuringSale:
+                                          item
+                                              .productPrices!
+                                              .changeCostPriceDuringSale,
+                                      overrideDefaultCommission:
+                                          item
+                                              .productPrices!
+                                              .overrideDefaultCommission,
+                                      overrideDefaultTax:
+                                          item
+                                              .productPrices!
+                                              .overrideDefaultTax,
+                                      createdAt: item.productPrices!.createdAt,
+                                      updatedAt: item.productPrices!.updatedAt,
+                                      deletedAt: item.productPrices!.deletedAt,
+                                      isEditableInSale:
+                                          item.productPrices!.isEditableInSale
+                                              ?.toString(),
+                                      packQuantity: null,
+                                      ecomDiscountPercentage: null,
+                                      ecomDiscountAmount: null,
+                                      ecomFinalSellingPrice: null,
+                                    )
+                                    : null,
                             productInventories:
-                            item.productInventories != null
-                                ? BestSellingModel.ProductInventories(
-                              id: item.productInventories!.id,
-                              productId: item.productInventories!.productId,
-                              quantity: item.productInventories!.quantity,
-                              recorderLevel: null,
-                              createdAt: item.productInventories!.createdAt,
-                              updatedAt: item.productInventories!.updatedAt,
-                              replenishLevel: null,
-                              daysExpairation: null,
-                              damagedQuantity: null,
-                              inventoryAddSubtract: null,
-                              comments: null,
-                              deletedAt: null,
-                            )
-                                : null,
+                                item.productInventories != null
+                                    ? BestSellingModel.ProductInventories(
+                                      id: item.productInventories!.id,
+                                      productId:
+                                          item.productInventories!.productId,
+                                      quantity:
+                                          item.productInventories!.quantity,
+                                      recorderLevel: null,
+                                      createdAt:
+                                          item.productInventories!.createdAt,
+                                      updatedAt:
+                                          item.productInventories!.updatedAt,
+                                      replenishLevel: null,
+                                      daysExpairation: null,
+                                      damagedQuantity: null,
+                                      inventoryAddSubtract: null,
+                                      comments: null,
+                                      deletedAt: null,
+                                    )
+                                    : null,
                             productLocations:
-                            null, // Different structure between models
+                                null, // Different structure between models
                             productImages:
-                            item.productImages != null &&
-                                item.productImages!.isNotEmpty
-                                ? item.productImages!
-                                .map(
-                                  (img) => BestSellingModel.ProductImage(
-                                id: img is Map ? img['id'] : img.id,
-                                productId:
-                                img is Map
-                                    ? img['product_id']
-                                    : img.productId,
-                                path:
-                                img is Map ? img['path'] : img.path,
-                                createdAt:
-                                img is Map
-                                    ? img['created_at']
-                                    : img.createdAt,
-                                updatedAt:
-                                img is Map
-                                    ? img['updated_at']
-                                    : img.updatedAt,
-                                deletedAt:
-                                img is Map
-                                    ? img['deleted_at']
-                                    : img.deletedAt,
-                              ),
-                            )
-                                .toList()
-                                : [],
+                                item.productImages != null &&
+                                        item.productImages!.isNotEmpty
+                                    ? item.productImages!
+                                        .map(
+                                          (
+                                            img,
+                                          ) => BestSellingModel.ProductImage(
+                                            id: img is Map ? img['id'] : img.id,
+                                            productId:
+                                                img is Map
+                                                    ? img['product_id']
+                                                    : img.productId,
+                                            path:
+                                                img is Map
+                                                    ? img['path']
+                                                    : img.path,
+                                            createdAt:
+                                                img is Map
+                                                    ? img['created_at']
+                                                    : img.createdAt,
+                                            updatedAt:
+                                                img is Map
+                                                    ? img['updated_at']
+                                                    : img.updatedAt,
+                                            deletedAt:
+                                                img is Map
+                                                    ? img['deleted_at']
+                                                    : img.deletedAt,
+                                          ),
+                                        )
+                                        .toList()
+                                    : [],
                             stockBatches:
-                            null, // Complex model conversion - simplified
+                                null, // Complex model conversion - simplified
                           );
                           return ProductCard(product: product, index: index);
                         },

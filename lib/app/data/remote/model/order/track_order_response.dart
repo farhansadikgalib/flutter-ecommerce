@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-TrackOrderData trackOrderDataFromJson(String str) => TrackOrderData.fromJson(json.decode(str));
+TrackOrderData trackOrderDataFromJson(String str) =>
+    TrackOrderData.fromJson(json.decode(str));
 
 String trackOrderDataToJson(TrackOrderData data) => json.encode(data.toJson());
 
@@ -108,11 +109,23 @@ class TrackOrderData {
     suspendRequest: json["suspend_request"],
     suspendRequestBy: json["suspend_request_by"],
     shippingCost: json["shipping_cost"],
-    saleProducts: json["sale_products"] == null ? [] : List<SaleProduct>.from(json["sale_products"]!.map((x) => SaleProduct.fromJson(x))),
-    paymentMethod: json["payment_method"] == null ? null : PaymentMethod.fromJson(json["payment_method"]),
-    soldUser: json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
+    saleProducts:
+        json["sale_products"] == null
+            ? []
+            : List<SaleProduct>.from(
+              json["sale_products"]!.map((x) => SaleProduct.fromJson(x)),
+            ),
+    paymentMethod:
+        json["payment_method"] == null
+            ? null
+            : PaymentMethod.fromJson(json["payment_method"]),
+    soldUser:
+        json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
     customer: json["customer"],
-    billingAddress: json["billing_address"] == null ? null : BillingAddress.fromJson(json["billing_address"]),
+    billingAddress:
+        json["billing_address"] == null
+            ? null
+            : BillingAddress.fromJson(json["billing_address"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -144,7 +157,10 @@ class TrackOrderData {
     "suspend_request": suspendRequest,
     "suspend_request_by": suspendRequestBy,
     "shipping_cost": shippingCost,
-    "sale_products": saleProducts == null ? [] : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
+    "sale_products":
+        saleProducts == null
+            ? []
+            : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
     "payment_method": paymentMethod?.toJson(),
     "sold_user": soldUser?.toJson(),
     "customer": customer,

@@ -4,15 +4,12 @@ import 'package:ousadbazar/app/data/remote/model/search/search_response.dart';
 import '../../../../services/network_service/api_client.dart';
 import '../../../../services/network_service/api_end_points.dart';
 
-
 class CategoryRepository {
   Future<CategoryWiseProductsResponse> getCategoryWiseProduct(
     int categoryId,
   ) async {
     var response = await ApiClient().get(
-      ApiEndPoints.categoryProductList(
-        categoryId: categoryId,
-      ),
+      ApiEndPoints.categoryProductList(categoryId: categoryId),
       getCategoryWiseProduct,
       isHeaderRequired: false,
       isLoaderRequired: false,
@@ -25,9 +22,7 @@ class CategoryRepository {
     int supplierId,
   ) async {
     var response = await ApiClient().get(
-      ApiEndPoints.supplierProductList(
-        categoryId: supplierId,
-      ),
+      ApiEndPoints.supplierProductList(categoryId: supplierId),
       getSupplierWiseProduct,
       isHeaderRequired: false,
       isLoaderRequired: false,

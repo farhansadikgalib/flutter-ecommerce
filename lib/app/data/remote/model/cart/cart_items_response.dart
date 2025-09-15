@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-CartItemsReponse cartItemsReponseFromJson(String str) => CartItemsReponse.fromJson(json.decode(str));
+CartItemsReponse cartItemsReponseFromJson(String str) =>
+    CartItemsReponse.fromJson(json.decode(str));
 
-String cartItemsReponseToJson(CartItemsReponse data) => json.encode(data.toJson());
+String cartItemsReponseToJson(CartItemsReponse data) =>
+    json.encode(data.toJson());
 
 class CartItemsReponse {
   List<CartProducts>? data;
@@ -10,22 +12,24 @@ class CartItemsReponse {
   dynamic token;
   String? message;
 
-  CartItemsReponse({
-    this.data,
-    this.status,
-    this.token,
-    this.message,
-  });
+  CartItemsReponse({this.data, this.status, this.token, this.message});
 
-  factory CartItemsReponse.fromJson(Map<String, dynamic> json) => CartItemsReponse(
-    data: json["data"] == null ? [] : List<CartProducts>.from(json["data"]!.map((x) => CartProducts.fromJson(x))),
-    status: json["status"],
-    token: json["token"],
-    message: json["message"],
-  );
+  factory CartItemsReponse.fromJson(Map<String, dynamic> json) =>
+      CartItemsReponse(
+        data:
+            json["data"] == null
+                ? []
+                : List<CartProducts>.from(
+                  json["data"]!.map((x) => CartProducts.fromJson(x)),
+                ),
+        status: json["status"],
+        token: json["token"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data":
+        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     "status": status,
     "token": token,
     "message": message,
@@ -68,8 +72,14 @@ class CartProducts {
     selected: json["selected"],
     shippingPlaceId: json["shipping_place_id"],
     shippingType: json["shipping_type"],
-    updatedInventory: json["updated_inventory"] == null ? null : UpdatedInventory.fromJson(json["updated_inventory"]),
-    flashProduct: json["flash_product"] == null ? null : FlashProduct.fromJson(json["flash_product"]),
+    updatedInventory:
+        json["updated_inventory"] == null
+            ? null
+            : UpdatedInventory.fromJson(json["updated_inventory"]),
+    flashProduct:
+        json["flash_product"] == null
+            ? null
+            : FlashProduct.fromJson(json["flash_product"]),
     shippingPlace: json["shipping_place"],
   );
 
@@ -139,9 +149,16 @@ class FlashProduct {
     shippingRuleId: json["shipping_rule_id"],
     price: json["price"],
     endTime: json["end_time"],
-    bundleDeal: json["bundle_deal"] == null ? null : BundleDeal.fromJson(json["bundle_deal"]),
-    taxRules: json["tax_rules"] == null ? null : TaxRules.fromJson(json["tax_rules"]),
-    shippingRule: json["shipping_rule"] == null ? null : ShippingRule.fromJson(json["shipping_rule"]),
+    bundleDeal:
+        json["bundle_deal"] == null
+            ? null
+            : BundleDeal.fromJson(json["bundle_deal"]),
+    taxRules:
+        json["tax_rules"] == null ? null : TaxRules.fromJson(json["tax_rules"]),
+    shippingRule:
+        json["shipping_rule"] == null
+            ? null
+            : ShippingRule.fromJson(json["shipping_rule"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -170,12 +187,7 @@ class BundleDeal {
   int? free;
   String? title;
 
-  BundleDeal({
-    this.id,
-    this.buy,
-    this.free,
-    this.title,
-  });
+  BundleDeal({this.id, this.buy, this.free, this.title});
 
   factory BundleDeal.fromJson(Map<String, dynamic> json) => BundleDeal(
     id: json["id"],
@@ -197,22 +209,26 @@ class ShippingRule {
   String? title;
   List<ShippingPlace>? shippingPlaces;
 
-  ShippingRule({
-    this.id,
-    this.title,
-    this.shippingPlaces,
-  });
+  ShippingRule({this.id, this.title, this.shippingPlaces});
 
   factory ShippingRule.fromJson(Map<String, dynamic> json) => ShippingRule(
     id: json["id"],
     title: json["title"],
-    shippingPlaces: json["shipping_places"] == null ? [] : List<ShippingPlace>.from(json["shipping_places"]!.map((x) => ShippingPlace.fromJson(x))),
+    shippingPlaces:
+        json["shipping_places"] == null
+            ? []
+            : List<ShippingPlace>.from(
+              json["shipping_places"]!.map((x) => ShippingPlace.fromJson(x)),
+            ),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "title": title,
-    "shipping_places": shippingPlaces == null ? [] : List<dynamic>.from(shippingPlaces!.map((x) => x.toJson())),
+    "shipping_places":
+        shippingPlaces == null
+            ? []
+            : List<dynamic>.from(shippingPlaces!.map((x) => x.toJson())),
   };
 }
 
@@ -315,15 +331,21 @@ class UpdatedInventory {
     this.inventoryAttributes,
   });
 
-  factory UpdatedInventory.fromJson(Map<String, dynamic> json) => UpdatedInventory(
-    id: json["id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    productId: json["product_id"],
-    quantity: json["quantity"],
-    price: json["price"],
-    inventoryAttributes: json["inventory_attributes"] == null ? [] : List<dynamic>.from(json["inventory_attributes"]!.map((x) => x)),
-  );
+  factory UpdatedInventory.fromJson(Map<String, dynamic> json) =>
+      UpdatedInventory(
+        id: json["id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        productId: json["product_id"],
+        quantity: json["quantity"],
+        price: json["price"],
+        inventoryAttributes:
+            json["inventory_attributes"] == null
+                ? []
+                : List<dynamic>.from(
+                  json["inventory_attributes"]!.map((x) => x),
+                ),
+      );
 
   Map<String, dynamic> toJson() => {
     "id": id,
@@ -332,6 +354,9 @@ class UpdatedInventory {
     "product_id": productId,
     "quantity": quantity,
     "price": price,
-    "inventory_attributes": inventoryAttributes == null ? [] : List<dynamic>.from(inventoryAttributes!.map((x) => x)),
+    "inventory_attributes":
+        inventoryAttributes == null
+            ? []
+            : List<dynamic>.from(inventoryAttributes!.map((x) => x)),
   };
 }

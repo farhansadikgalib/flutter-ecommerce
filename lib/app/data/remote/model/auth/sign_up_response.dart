@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-SignUpResponse signUpResponseFromJson(String str) => SignUpResponse.fromJson(json.decode(str));
+SignUpResponse signUpResponseFromJson(String str) =>
+    SignUpResponse.fromJson(json.decode(str));
 
 String signUpResponseToJson(SignUpResponse data) => json.encode(data.toJson());
 
@@ -10,12 +11,7 @@ class SignUpResponse {
   String? message;
   String? status;
 
-  SignUpResponse({
-    this.user,
-    this.token,
-    this.message,
-    this.status,
-  });
+  SignUpResponse({this.user, this.token, this.message, this.status});
 
   factory SignUpResponse.fromJson(Map<String, dynamic> json) => SignUpResponse(
     user: json["user"] == null ? null : User.fromJson(json["user"]),
@@ -39,13 +35,7 @@ class User {
   String? createdAt;
   int? id;
 
-  User({
-    this.name,
-    this.email,
-    this.updatedAt,
-    this.createdAt,
-    this.id,
-  });
+  User({this.name, this.email, this.updatedAt, this.createdAt, this.id});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     name: json["name"],

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-ProductDetailsResponse productDetailsResponseFromJson(String str) => ProductDetailsResponse.fromJson(json.decode(str));
+ProductDetailsResponse productDetailsResponseFromJson(String str) =>
+    ProductDetailsResponse.fromJson(json.decode(str));
 
-String productDetailsResponseToJson(ProductDetailsResponse data) => json.encode(data.toJson());
+String productDetailsResponseToJson(ProductDetailsResponse data) =>
+    json.encode(data.toJson());
 
 class ProductDetailsResponse {
   Product? product;
@@ -21,22 +23,58 @@ class ProductDetailsResponse {
     this.relatedProducts,
   });
 
-  factory ProductDetailsResponse.fromJson(Map<String, dynamic> json) => ProductDetailsResponse(
+  factory ProductDetailsResponse.fromJson(
+    Map<String, dynamic> json,
+  ) => ProductDetailsResponse(
     product: json["product"] == null ? null : Product.fromJson(json["product"]),
-    suppliers: json["suppliers"] == null ? [] : List<Supplier>.from(json["suppliers"]!.map((x) => Supplier.fromJson(x))),
-    categories: json["categories"] == null ? [] : List<Category>.from(json["categories"]!.map((x) => Category.fromJson(x))),
-    generics: json["generics"] == null ? [] : List<dynamic>.from(json["generics"]!.map((x) => x)),
-    manufacturers: json["manufacturers"] == null ? [] : List<dynamic>.from(json["manufacturers"]!.map((x) => x)),
-    relatedProducts: json["related_products"] == null ? [] : List<RelatedProduct>.from(json["related_products"]!.map((x) => RelatedProduct.fromJson(x))),
+    suppliers:
+        json["suppliers"] == null
+            ? []
+            : List<Supplier>.from(
+              json["suppliers"]!.map((x) => Supplier.fromJson(x)),
+            ),
+    categories:
+        json["categories"] == null
+            ? []
+            : List<Category>.from(
+              json["categories"]!.map((x) => Category.fromJson(x)),
+            ),
+    generics:
+        json["generics"] == null
+            ? []
+            : List<dynamic>.from(json["generics"]!.map((x) => x)),
+    manufacturers:
+        json["manufacturers"] == null
+            ? []
+            : List<dynamic>.from(json["manufacturers"]!.map((x) => x)),
+    relatedProducts:
+        json["related_products"] == null
+            ? []
+            : List<RelatedProduct>.from(
+              json["related_products"]!.map((x) => RelatedProduct.fromJson(x)),
+            ),
   );
 
   Map<String, dynamic> toJson() => {
     "product": product?.toJson(),
-    "suppliers": suppliers == null ? [] : List<dynamic>.from(suppliers!.map((x) => x.toJson())),
-    "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x.toJson())),
-    "generics": generics == null ? [] : List<dynamic>.from(generics!.map((x) => x)),
-    "manufacturers": manufacturers == null ? [] : List<dynamic>.from(manufacturers!.map((x) => x)),
-    "related_products": relatedProducts == null ? [] : List<dynamic>.from(relatedProducts!.map((x) => x.toJson())),
+    "suppliers":
+        suppliers == null
+            ? []
+            : List<dynamic>.from(suppliers!.map((x) => x.toJson())),
+    "categories":
+        categories == null
+            ? []
+            : List<dynamic>.from(categories!.map((x) => x.toJson())),
+    "generics":
+        generics == null ? [] : List<dynamic>.from(generics!.map((x) => x)),
+    "manufacturers":
+        manufacturers == null
+            ? []
+            : List<dynamic>.from(manufacturers!.map((x) => x)),
+    "related_products":
+        relatedProducts == null
+            ? []
+            : List<dynamic>.from(relatedProducts!.map((x) => x.toJson())),
   };
 }
 
@@ -150,7 +188,10 @@ class Product {
     name: json["name"],
     additionalItemNumbers: json["additional_item_numbers"],
     productId: json["product_id"],
-    tags: json["tags"] == null ? [] : List<dynamic>.from(json["tags"]!.map((x) => x)),
+    tags:
+        json["tags"] == null
+            ? []
+            : List<dynamic>.from(json["tags"]!.map((x) => x)),
     manufacturerId: json["manufacturer_id"],
     status: json["status"],
     createdAt: json["created_at"],
@@ -164,15 +205,32 @@ class Product {
     isEcommerceItem: json["is_ecommerce_item"],
     isBarcoded: json["is_barcoded"],
     deletedAt: json["deleted_at"],
-    category: json["category"] == null ? null : Category.fromJson(json["category"]),
-    supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
-    packSize: json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
-    productVariationAttributes: json["product_variation_attributes"] == null ? [] : List<dynamic>.from(json["product_variation_attributes"]!.map((x) => x)),
-    productVariations: json["product_variations"] == null ? [] : List<dynamic>.from(json["product_variations"]!.map((x) => x)),
-    productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
+    category:
+        json["category"] == null ? null : Category.fromJson(json["category"]),
+    supplier:
+        json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
+    packSize:
+        json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
+    productVariationAttributes:
+        json["product_variation_attributes"] == null
+            ? []
+            : List<dynamic>.from(
+              json["product_variation_attributes"]!.map((x) => x),
+            ),
+    productVariations:
+        json["product_variations"] == null
+            ? []
+            : List<dynamic>.from(json["product_variations"]!.map((x) => x)),
+    productPrices:
+        json["product_prices"] == null
+            ? null
+            : ProductPrices.fromJson(json["product_prices"]),
     productInventories: json["product_inventories"],
     productLocations: json["product_locations"],
-    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
+    productImages:
+        json["product_images"] == null
+            ? []
+            : List<dynamic>.from(json["product_images"]!.map((x) => x)),
     generic: json["generic"],
     manufacturer: json["manufacturer"],
   );
@@ -201,12 +259,21 @@ class Product {
     "category": category?.toJson(),
     "supplier": supplier?.toJson(),
     "pack_size": packSize?.toJson(),
-    "product_variation_attributes": productVariationAttributes == null ? [] : List<dynamic>.from(productVariationAttributes!.map((x) => x)),
-    "product_variations": productVariations == null ? [] : List<dynamic>.from(productVariations!.map((x) => x)),
+    "product_variation_attributes":
+        productVariationAttributes == null
+            ? []
+            : List<dynamic>.from(productVariationAttributes!.map((x) => x)),
+    "product_variations":
+        productVariations == null
+            ? []
+            : List<dynamic>.from(productVariations!.map((x) => x)),
     "product_prices": productPrices?.toJson(),
     "product_inventories": productInventories,
     "product_locations": productLocations,
-    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
+    "product_images":
+        productImages == null
+            ? []
+            : List<dynamic>.from(productImages!.map((x) => x)),
     "generic": generic,
     "manufacturer": manufacturer,
   };
@@ -334,9 +401,11 @@ class ProductPrices {
     promoStartDate: json["promo_start_date"],
     promoEndDate: json["promo_end_date"],
     disableFromPriceRules: json["disable_from_price_rules"],
-    allowPriceOverrideRegardlessOfPermissions: json["allow_price_override_regardless_of_permissions"],
+    allowPriceOverrideRegardlessOfPermissions:
+        json["allow_price_override_regardless_of_permissions"],
     pricesIncludeTax: json["prices_include_tax"],
-    onlyAllowItemsToBeSoldInWholeNumbers: json["only_allow_items_to_be_sold_in_whole_numbers"],
+    onlyAllowItemsToBeSoldInWholeNumbers:
+        json["only_allow_items_to_be_sold_in_whole_numbers"],
     changeCostPriceDuringSale: json["change_cost_price_during_sale"],
     overrideDefaultCommission: json["override_default_commission"],
     overrideDefaultTax: json["override_default_tax"],
@@ -359,9 +428,11 @@ class ProductPrices {
     "promo_start_date": promoStartDate,
     "promo_end_date": promoEndDate,
     "disable_from_price_rules": disableFromPriceRules,
-    "allow_price_override_regardless_of_permissions": allowPriceOverrideRegardlessOfPermissions,
+    "allow_price_override_regardless_of_permissions":
+        allowPriceOverrideRegardlessOfPermissions,
     "prices_include_tax": pricesIncludeTax,
-    "only_allow_items_to_be_sold_in_whole_numbers": onlyAllowItemsToBeSoldInWholeNumbers,
+    "only_allow_items_to_be_sold_in_whole_numbers":
+        onlyAllowItemsToBeSoldInWholeNumbers,
     "change_cost_price_during_sale": changeCostPriceDuringSale,
     "override_default_commission": overrideDefaultCommission,
     "override_default_tax": overrideDefaultTax,
@@ -520,7 +591,6 @@ class Generic {
   };
 }
 
-
 class RelatedProduct {
   int? id;
   String? categoryId;
@@ -599,12 +669,21 @@ class RelatedProduct {
     isEcommerceItem: json["is_ecommerce_item"],
     isBarcoded: json["is_barcoded"],
     deletedAt: json["deleted_at"],
-    category: json["category"] == null ? null : Category.fromJson(json["category"]),
-    supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
-    productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
-    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
+    category:
+        json["category"] == null ? null : Category.fromJson(json["category"]),
+    supplier:
+        json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
+    productPrices:
+        json["product_prices"] == null
+            ? null
+            : ProductPrices.fromJson(json["product_prices"]),
+    productImages:
+        json["product_images"] == null
+            ? []
+            : List<dynamic>.from(json["product_images"]!.map((x) => x)),
     generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
-    packSize: json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
+    packSize:
+        json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -631,7 +710,10 @@ class RelatedProduct {
     "category": category?.toJson(),
     "supplier": supplier?.toJson(),
     "product_prices": productPrices?.toJson(),
-    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
+    "product_images":
+        productImages == null
+            ? []
+            : List<dynamic>.from(productImages!.map((x) => x)),
     "generic": generic,
     "pack_size": packSize?.toJson(),
   };

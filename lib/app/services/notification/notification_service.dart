@@ -37,7 +37,9 @@ class NotificationService {
       // Delay navigation until after first frame
       WidgetsBinding.instance.addPostFrameCallback((_) {
         printLog('App opened from terminated state via notification');
-        printLog('Navigating to notification screen with data: ${initialMessage.data}');
+        printLog(
+          'Navigating to notification screen with data: ${initialMessage.data}',
+        );
         // Get.offAllNamed(Routes.NOTIFICATION, arguments: initialMessage);
         _handleInitialMessage(initialMessage);
       });
@@ -106,7 +108,7 @@ class NotificationService {
                       style: const TextStyle(fontSize: 16),
                       onOpen: (link) {
                         printLog('Link clicked: ${link.url}');
-                        launchURL(link.url,false);
+                        launchURL(link.url, false);
                       },
                     ),
                   ),
@@ -164,7 +166,6 @@ class NotificationService {
     }
   }
 }
-
 
 /*
 import 'package:flutter/material.dart';
