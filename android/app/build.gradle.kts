@@ -33,7 +33,7 @@ android {
         // Application ID - use one consistent ID
         applicationId = "com.ousadbazar"
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         multiDexEnabled = true
@@ -110,5 +110,4 @@ flutter {
 
 dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("com.google.android.play:core:1.10.3")
 }

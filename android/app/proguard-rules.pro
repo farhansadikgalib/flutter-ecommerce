@@ -260,24 +260,19 @@
 # Any Image View (if used)
 -keep class com.github.peng8350.flutter_pulltorefresh.** { *; }
 
-# Google Play Core (for deferred components and split APKs)
--keep class com.google.android.play.core.** { *; }
+# Google Play Services (modern approach - no longer using deprecated play:core)
 -dontwarn com.google.android.play.core.**
 
-# Flutter Play Store Split Application
--keep class io.flutter.embedding.android.FlutterPlayStoreSplitApplication { *; }
+# Flutter Play Store Split Application (if needed)
+-dontwarn io.flutter.embedding.android.FlutterPlayStoreSplitApplication
 
-# Flutter deferred components
--keep class io.flutter.embedding.engine.deferredcomponents.** { *; }
+# Flutter deferred components (if needed)
+-dontwarn io.flutter.embedding.engine.deferredcomponents.**
 
-# Missing classes that are referenced but not used
+# Missing classes that are referenced but not used (suppress warnings)
 -dontwarn com.google.android.play.core.splitcompat.SplitCompatApplication
 -dontwarn com.google.android.play.core.splitinstall.**
 -dontwarn com.google.android.play.core.tasks.**
-
-# Keep classes that might be missing but are referenced
--keep class * extends com.google.android.play.core.splitcompat.SplitCompatApplication
--keep class * implements com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 
 # R8 compatibility rules
 -keepattributes RuntimeVisibleAnnotations
