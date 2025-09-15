@@ -6,6 +6,7 @@ import '../../../data/remote/repository/home/home_repository.dart';
 
 class CategoriesController extends GetxController {
   final ecomCategories = <EcomCategoriesResponse>[].obs;
+  final selectedCategoryIndex = (-1).obs;
 
   @override
   void onInit() {
@@ -13,13 +14,20 @@ class CategoriesController extends GetxController {
     getEcomCategories();
   }
 
-  void getEcomCategories()async {
+  void getEcomCategories() async {
     var response = await HomeRepository().getEcomCategories();
-    if(response.isNotEmpty){
+    if (response.isNotEmpty) {
       ecomCategories.clear();
       ecomCategories.addAll(response);
       printLog('Ecom Categories: ${response.length}');
+      // Auto-select first category if available
+      if (response.isNotEmpty) {
+        selectedCategoryIndex.value = 0;
+      }
     }
+  }
 
+  void selectCategory(int index) {
+    selectedCategoryIndex.value = index;
   }
 }
