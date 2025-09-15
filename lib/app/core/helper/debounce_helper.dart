@@ -4,15 +4,15 @@ class DebounceHelper {
   static const String searchTextTag = "support_search_debounce";
   static const String buttonTag = "booking_search_debounce";
 
-  debounce({tag, onMethod, time = 500}) {
+  void debounce({tag, onMethod, time = 500}) {
     EasyDebounce.debounce(tag, Duration(milliseconds: time), () => onMethod());
   }
 
-  killDebounce({tag}) {
+  void killDebounce({tag}) {
     EasyDebounce.cancel(tag);
   }
 
-  killAllDebounce() {
+  void killAllDebounce() {
     EasyDebounce.cancelAll();
   }
 }

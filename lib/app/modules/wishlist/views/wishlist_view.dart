@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:ousadbazar/app/core/helper/print_log.dart';
 import 'package:ousadbazar/app/core/widget/global_appbar.dart';
-import 'package:ousadbazar/app/data/remote/model/home/home_response.dart';
-import 'package:ousadbazar/app/modules/cart/controllers/cart_controller.dart';
 import 'package:ousadbazar/app/modules/product_details/views/product_details_view.dart';
 import 'package:ousadbazar/app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,7 +11,7 @@ import '../../../core/style/app_colors.dart';
 import '../../../routes/app_pages.dart';
 
 class WishlistView extends GetView<WishlistController> {
-  const WishlistView({Key? key}) : super(key: key);
+  const WishlistView({super.key});
 
   @override
   Widget build(BuildContext context) {

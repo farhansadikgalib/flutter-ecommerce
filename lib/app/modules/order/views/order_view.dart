@@ -7,7 +7,6 @@ import 'package:ousadbazar/app/core/style/app_colors.dart';
 import 'package:ousadbazar/app/core/widget/global_appbar.dart';
 import 'package:ousadbazar/app/routes/app_pages.dart';
 import 'package:ousadbazar/generated/assets.dart';
-import '../../../core/config/app_config.dart';
 import '../../../data/remote/model/order/order_response.dart';
 import '../controllers/order_controller.dart';
 import 'package:intl/intl.dart';

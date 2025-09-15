@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:ousadbazar/app/core/helper/print_log.dart';
-import 'package:ousadbazar/app/data/remote/model/wishlist/wishlist_response.dart';
-import 'package:ousadbazar/app/data/remote/repository/wishlist/wishlist_repository.dart';
 
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 
@@ -10,11 +8,6 @@ class WishlistController extends GetxController {
   final wishlistItems = <ProductData>[].obs;
   final isLoading = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-
-  }
 
   void addToWishlist(ProductData product, ) {
     try {

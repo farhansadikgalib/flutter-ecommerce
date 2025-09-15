@@ -13,8 +13,6 @@ import '../../../core/style/app_colors.dart';
 import '../../../core/widget/product_card.dart';
 import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart'
     as BestSellingModel;
-import 'package:ousadbazar/app/data/remote/model/product/product_details_response.dart'
-    hide ProductPrices, PackSize, Supplier, Category, Generic;
 import 'package:ousadbazar/app/data/remote/repository/product/product_repository.dart';
 
 import '../../../data/remote/model/product/product_review_response.dart';
@@ -43,7 +41,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   final wishlistItem = false.obs;
   final relatedProducts = <RelatedProducts>[].obs;
 
-  getRelatedProduct() async {
+  Future<void> getRelatedProduct() async {
     var response = await ProductRepository().getRelatedProduct(
       product.genericId.toString(),
     );

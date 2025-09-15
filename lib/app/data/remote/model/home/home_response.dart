@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
 
 HomeResponse homeResponseFromJson(String str) => HomeResponse.fromJson(json.decode(str));
 

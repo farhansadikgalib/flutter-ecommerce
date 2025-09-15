@@ -117,7 +117,7 @@ class AppWidgets {
   }
 
 // button
-  myTextButton(BuildContext context, title,
+  Row myTextButton(BuildContext context, title,
       {callBack,
       bool isPrefixTextRequired = false,
       prefixText,
@@ -300,7 +300,7 @@ class AppWidgets {
           ),
           Switch(
             inactiveTrackColor: AppColors.white,
-            activeColor: AppColors.black,
+            activeThumbColor: AppColors.black,
             value: switchValue,
             onChanged: (value) {
               switchValue = value;
@@ -400,7 +400,7 @@ class AppWidgets {
   }
 
 
-  bannedUserDialog({required message}) {
+  void bannedUserDialog({required message}) {
     Get.defaultDialog(
         title: 'Attention',
         titlePadding: EdgeInsets.only(top: 10.h),

@@ -1,4 +1,3 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:ousadbazar/app/data/remote/model/checkout/area_response.dart';
 import 'package:ousadbazar/app/data/remote/model/checkout/city_response.dart';
 import 'package:ousadbazar/app/data/remote/model/checkout/country_response.dart';

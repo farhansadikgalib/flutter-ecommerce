@@ -49,7 +49,7 @@ class ConnectionManagerController extends GetxController {
     return _updateState(connectivityResult);
   }
 
-  _updateState(ConnectivityResult result) {
+  void _updateState(ConnectivityResult result) {
     switch (result) {
       case ConnectivityResult.wifi:
         connectionType.value = ConnectionType.wifi;

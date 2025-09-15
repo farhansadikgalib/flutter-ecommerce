@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:any_image_view/any_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 
 import '../constants/app_constants.dart';
 import '../style/app_colors.dart';
@@ -15,7 +13,7 @@ import 'debounce_helper.dart';
 
 
 class DialogHelper {
-  appExit(BuildContext context) {
+  void appExit(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -92,7 +90,7 @@ class DialogHelper {
             ));
   }
 
-  customDialogBox(BuildContext context, title,
+  Future customDialogBox(BuildContext context, title,
       {icon,
       leftButtonTitle = "No",
       rightButtonTitle = "Yes",
@@ -183,7 +181,7 @@ class DialogHelper {
             ));
   }
 
-  customBackDialog(BuildContext context, title,
+  Future customBackDialog(BuildContext context, title,
       {subTitle,
       icon,
       leftButtonTitle,
@@ -269,7 +267,7 @@ class DialogHelper {
             ));
   }
 
-  customDialogBoxWithBody(BuildContext context, title,
+  Future customDialogBoxWithBody(BuildContext context, title,
       {subtitle,
       icon,
       isSvgIcon = false,
@@ -295,7 +293,7 @@ class DialogHelper {
             ));
   }
 
-  buttonWidget({anotherStyle = false, title, onTap}) {
+  Container buttonWidget({anotherStyle = false, title, onTap}) {
     return Container(
       width: 100,
       decoration: BoxDecoration(

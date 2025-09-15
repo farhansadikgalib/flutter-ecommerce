@@ -38,11 +38,11 @@ class ScreenSizeHelper {
     return shortestSide < 550;
   }
 
-  getDeviceWidth(BuildContext context) {
+  double getDeviceWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
 
-  getDeviceHeight(BuildContext context) {
+  double getDeviceHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }
 }

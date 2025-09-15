@@ -472,7 +472,7 @@ class ApiClient {
     return response;
   }
 
-  handelException(DioException e) {
+  void handelException(DioException e) {
     /*    try {
       List<ErrorResponse> errorResponse =
           errorResponseFromJson(e.response.toString());

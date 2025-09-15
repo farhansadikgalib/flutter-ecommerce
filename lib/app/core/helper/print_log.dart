@@ -9,7 +9,7 @@ import '../constants/app_constants.dart';
 const showAllDebug = true;
 const singleKey = "112324";
 //todo change level to enum
-printLog(massage, {String level = "i", key = "1"}) {
+void printLog(massage, {String level = "i", key = "1"}) {
   // verbose,
   // debug,
   // info,

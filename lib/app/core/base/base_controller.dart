@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:ousadbazar/app/modules/cart/controllers/cart_controller.dart';
 import 'page_state.dart';
 
 abstract class BaseController extends GetxController {
@@ -13,13 +12,13 @@ abstract class BaseController extends GetxController {
   // final  connectionController = Get.find<ConnectionManagerController>().obs;
   PageState get pageState => _pageSateController.value;
 
-  updatePageState(PageState state) => _pageSateController(state);
+  PageState updatePageState(PageState state) => _pageSateController(state);
 
-  resetPageState() => _pageSateController(PageState.defaultState);
+  PageState resetPageState() => _pageSateController(PageState.defaultState);
 
-  showLoading() => updatePageState(PageState.loading);
+  dynamic showLoading() => updatePageState(PageState.loading);
 
-  hideLoading() => resetPageState();
+  dynamic hideLoading() => resetPageState();
 
   @override
   void onInit() {

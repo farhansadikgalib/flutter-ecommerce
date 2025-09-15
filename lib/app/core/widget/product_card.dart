@@ -8,7 +8,6 @@ import 'package:ousadbazar/app/core/helper/print_log.dart';
 import 'package:ousadbazar/app/core/style/app_colors.dart';
 import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:ousadbazar/app/modules/product_details/views/product_details_view.dart';
-import 'package:ousadbazar/app/routes/app_pages.dart';
 import 'package:ousadbazar/generated/assets.dart';
 import '../../modules/cart/controllers/cart_controller.dart';
 

@@ -101,7 +101,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                             ),
                           ),
                         ),
-                        value: controller.selectedCountry.value,
+                        initialValue: controller.selectedCountry.value,
                         items: controller.countryList.isNotEmpty
                             ? [DropdownMenuItem<CountryResponse>(
                                 value: controller.selectedCountry.value,
@@ -148,7 +148,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                             ),
                           ),
                         ),
-                        value: controller.selectedCity.value,
+                        initialValue: controller.selectedCity.value,
                         items: controller.cityList.isNotEmpty
                             ? [DropdownMenuItem<CityResponse>(
                                 value: controller.selectedCity.value,
@@ -195,7 +195,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                             ),
                           ),
                         ),
-                        value: controller.selectedArea.value,
+                        initialValue: controller.selectedArea.value,
                         items: controller.areaList.isNotEmpty
                             ? [DropdownMenuItem<AreaResponse>(
                                 value: controller.selectedArea.value,
@@ -296,7 +296,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                         RadioListTile<String>(
                           contentPadding: EdgeInsets.zero,
                           dense: true,
-                          fillColor: MaterialStateProperty.all<Color>(
+                          fillColor: WidgetStateProperty.all<Color>(
                             AppColors.primaryColor,
                           ),
                           controlAffinity: ListTileControlAffinity.leading,
@@ -333,7 +333,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                           return RadioListTile<String>(
                             contentPadding: EdgeInsets.zero,
                             dense: true,
-                            fillColor: MaterialStateProperty.all<Color>(
+                            fillColor: WidgetStateProperty.all<Color>(
                               AppColors.primaryColor,
                             ),
                             controlAffinity: ListTileControlAffinity.leading,
@@ -366,7 +366,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                               printLog('Selected shipping id: ${shipping.id}');
                             },
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),
@@ -491,7 +491,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                             return RadioListTile<String>(
                               contentPadding: EdgeInsets.zero,
                               dense: true,
-                              fillColor: MaterialStateProperty.all<Color>(
+                              fillColor: WidgetStateProperty.all<Color>(
                                 AppColors.primaryColor,
                               ),
                               controlAffinity: ListTileControlAffinity.leading,

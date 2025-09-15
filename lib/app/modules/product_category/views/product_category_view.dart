@@ -187,9 +187,9 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                             )
                                             ?.id,
                                     onChanged: (value) {
-                                      controller.deliveryType.forEach((type) {
+                                      for (var type in controller.deliveryType) {
                                         type.isSelected = type.id == value;
-                                      });
+                                      }
                                       printLog(
                                         'Selected Delivery Type ID: $value',
                                       );

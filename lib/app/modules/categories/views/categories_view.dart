@@ -10,7 +10,7 @@ import '../../../routes/app_pages.dart';
 import '../controllers/categories_controller.dart';
 
 class CategoriesView extends GetView<CategoriesController> {
-  const CategoriesView({Key? key}) : super(key: key);
+  const CategoriesView({super.key});
 
   @override
   Widget build(BuildContext context) {
