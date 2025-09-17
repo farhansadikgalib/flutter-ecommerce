@@ -322,20 +322,22 @@ class _ProductCardState extends State<ProductCard> {
 
   Widget _buildAddToCartButton() {
     return SizedBox(width: Get.width,
-    child:  ElevatedButton.icon(
+    child:  Center(
+      child: ElevatedButton.icon(
 
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        padding: REdgeInsets.symmetric(vertical: 10,horizontal: 10),
-      ),
-      onPressed: () {
-        cartController.addToCart(widget.product, quantity: 1);
-      },
-      icon: Icon(Icons.shopping_bag, color: Colors.white, size: 18),
-      label: Text(
-        'Add to Cart',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding: REdgeInsets.symmetric(vertical: 10,horizontal: 10),
+        ),
+        onPressed: () {
+          cartController.addToCart(widget.product, quantity: 1);
+        },
+        icon: Icon(Icons.shopping_bag, color: Colors.white, size: 18),
+        label: Text(
+          'Add to Cart',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
       ),
     ));
   }
