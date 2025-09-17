@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:any_image_view/any_image_view.dart';
@@ -76,11 +76,12 @@ class _ProductCardState extends State<ProductCard> {
 
   int getTotalStock() {
     final batches = widget.product.stockBatches;
+    printLog(batches?.length.toString());
     if (batches == null || batches.isEmpty) return 0;
     return batches.fold<int>(
       0,
-      (sum, batch) =>
-          sum + (double.parse(batch.balancedQuantity.toString()).toInt()),
+          (sum, batch) =>
+      sum + (double.parse(batch.balancedQuantity.toString()).toInt()),
     );
   }
 
@@ -98,200 +99,222 @@ class _ProductCardState extends State<ProductCard> {
           ),
         );
       },
-      child: Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(
-            color: AppColors.primaryColor.withOpacity(0.5),
-            width: 1,
+      child: SizedBox(
+        height: 280.h, // Fixed card height
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color: AppColors.primaryColor.withValues(alpha: 0.5),
+              width: 1,
+            ),
           ),
-        ),
-
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  AnyImageView(
-                    imagePath: getProductImage(),
-                    height: 120,
-                    width: 120,
-                    borderRadius: BorderRadius.circular(16),
-                    errorWidget: AnyImageView(
-                      imagePath: Assets.pngNotFound,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  if (widget.promoPrice.toString().isNotEmpty &&
-                      getDiscountInfo() != null)
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
+          child: Padding(
+            padding: EdgeInsets.all(8.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Image Stack - Fixed size
+                SizedBox(
+                  height: 100.h,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      AnyImageView(
+                        imagePath: getProductImage(),
+                        height: 100.h,
+                        width: double.infinity,
+                        borderRadius: BorderRadius.circular(16),
+                        errorWidget: AnyImageView(
+                          imagePath: Assets.pngNotFound,
+                          fit: BoxFit.cover,
                         ),
-                        decoration: BoxDecoration(
-                          color:
-                              getDiscountInfo()!['label'] == 'OFF'
+                      ),
+                      if (widget.promoPrice.toString().isNotEmpty &&
+                          getDiscountInfo() != null)
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 6.w,
+                              vertical: 2.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: getDiscountInfo()!['label'] == 'OFF'
                                   ? Colors.redAccent
                                   : AppColors.primaryColor,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            bottomRight: Radius.circular(12),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                bottomRight: Radius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              '${getDiscountInfo()!['percent'].toStringAsFixed(0)}% ${getDiscountInfo()!['label']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.sp,
+                              ),
+                            ),
                           ),
                         ),
-                        child: Text(
-                          '${getDiscountInfo()!['percent'].toStringAsFixed(0)}% ${getDiscountInfo()!['label']}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Visibility(
+                          visible: widget.showDiscountTag,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 6.w,
+                              vertical: 2.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                bottomRight: Radius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              widget.showDiscountTag
+                                  ? '${(((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1) - (double.tryParse(widget.product.productPrices!.ecomFinalSellingPrice!.toString()) ?? 0)) / ((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1)) * 100).abs().toStringAsFixed(2)}% OFF'
+                                  : '',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.sp,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Visibility(
-                      visible: widget.showDiscountTag,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent,
-
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            bottomRight: Radius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          widget.showDiscountTag
-                              ? '${(((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1) - (double.tryParse(widget.product.productPrices!.ecomFinalSellingPrice!.toString()) ?? 0)) / ((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1)) * 100).abs().toStringAsFixed(2)}% OFF'
-                              : '',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(height: 10),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  getProductTitle(),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: Colors.black87,
-                  ),
-                  textAlign: TextAlign.left,
                 ),
-              ),
-              SizedBox(height: 6),
 
-              // Price Section
-              Builder(
-                builder: (context) {
-                  final sellingPrice =
-                      widget.product.productPrices?.sellingPrice?.toString() ??
-                      '';
-                  final discountPrice =
-                      widget.product.productPrices?.ecomFinalSellingPrice
-                          ?.toString() ??
-                      '';
-                  if (discountPrice.isNotEmpty &&
-                      sellingPrice.isNotEmpty &&
-                      discountPrice != sellingPrice) {
-                    return Row(
-                      children: [
-                        Text(
-                          double.parse(discountPrice).toStringAsFixed(2),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Text(
+                SizedBox(height: 8.h),
+
+                // Product Title - Fixed height container
+                SizedBox(
+                  height: 35.h,
+                  child: Text(
+                    getProductTitle(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11.sp,
+                      color: Colors.black87,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+
+                SizedBox(height: 4.h),
+
+                // Price Section - Fixed height
+                SizedBox(
+                  height: 20.h,
+                  child: Builder(
+                    builder: (context) {
+                      final sellingPrice =
+                          widget.product.productPrices?.sellingPrice?.toString() ??
+                              '';
+                      final discountPrice =
+                          widget.product.productPrices?.ecomFinalSellingPrice
+                              ?.toString() ??
+                              '';
+                      if (discountPrice.isNotEmpty &&
+                          sellingPrice.isNotEmpty &&
+                          discountPrice != sellingPrice) {
+                        return Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                double.parse(discountPrice).toStringAsFixed(2),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.sp,
+                                  color: AppColors.primaryColor,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            SizedBox(width: 4.w),
+                            Flexible(
+                              child: Text(
+                                sellingPrice,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        );
+                      } else if (sellingPrice.isNotEmpty) {
+                        return Text(
                           sellingPrice,
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                            decoration: TextDecoration.lineThrough,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.sp,
+                            color: AppColors.primaryColor,
                           ),
-                        ),
-                      ],
-                    );
-                  } else if (sellingPrice.isNotEmpty) {
-                    return Text(
-                      sellingPrice,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: AppColors.primaryColor,
-                      ),
-                    );
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                },
-              ),
-              SizedBox(height: 6),
-
-              //stock
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Stock: ${getTotalStock()}',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: Colors.black87,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
                   ),
-                  textAlign: TextAlign.left,
                 ),
-              ),
 
-              Spacer(),
-              // Cart Section - Show quantity selector if in cart, otherwise show add button
-              Obx(() {
-                bool isInCart = cartController.isProductInCart(
-                  widget.product.id!,
-                );
-                int quantity = cartController.getProductQuantity(
-                  widget.product.id!,
-                );
+                SizedBox(height: 4.h),
 
-                if (isInCart && quantity > 0) {
-                  return _buildQuantitySelector(quantity);
-                } else {
-                  return _buildAddToCartButton();
-                }
-              }),
-            ],
+                // Stock - Fixed height
+                SizedBox(
+                  height: 15.h,
+                  child: Text(
+                    'Stock: ${getTotalStock()}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10.sp,
+                      color: Colors.black87,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+
+                SizedBox(height: 6.h),
+
+                // Cart Section - Fixed at bottom
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Obx(() {
+                      bool isInCart = cartController.isProductInCart(
+                        widget.product.id!,
+                      );
+                      int quantity = cartController.getProductQuantity(
+                        widget.product.id!,
+                      );
+
+                      if (isInCart && quantity > 0) {
+                        return _buildQuantitySelector(quantity);
+                      } else {
+                        return _buildAddToCartButton();
+                      }
+                    }),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -299,11 +322,13 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   Widget _buildAddToCartButton() {
-    return ElevatedButton.icon(
+    return SizedBox(width: Get.width,
+    child:  ElevatedButton.icon(
+
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: REdgeInsets.symmetric(vertical: 10,horizontal: 10),
       ),
       onPressed: () {
         cartController.addToCart(widget.product, quantity: 1);
@@ -313,7 +338,7 @@ class _ProductCardState extends State<ProductCard> {
         'Add to Cart',
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
-    );
+    ));
   }
 
   Widget _buildQuantitySelector(int quantity) {
