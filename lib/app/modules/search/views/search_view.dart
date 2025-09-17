@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide SearchController;
+﻿import 'package:flutter/material.dart' hide SearchController;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
@@ -94,6 +94,7 @@ class SearchView extends GetView<SearchController> {
                 () => TextField(
                   controller: controller.searchController.value,
                   focusNode: controller.searchFocusNode,
+                  textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 16.sp,
                     color: Colors.grey[800],
@@ -102,7 +103,7 @@ class SearchView extends GetView<SearchController> {
                   decoration: InputDecoration(
                     hintText: 'What are you looking for today?',
                     hintStyle: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: 14.sp,
                       color: Colors.grey[500],
                       fontWeight: FontWeight.w400,
                     ),
@@ -113,24 +114,18 @@ class SearchView extends GetView<SearchController> {
                                 controller.searchController.value.clear();
                                 controller.searchProducts('');
                               },
-                              child: Container(
-                                padding: EdgeInsets.all(12.w),
-                                child: Icon(
-                                  Icons.clear_rounded,
-                                  color: Colors.grey[400],
-                                  size: 20.sp,
-                                ),
-                              ),
-                            )
-                            : Container(
-                              padding: EdgeInsets.all(12.w),
                               child: Icon(
-                                Icons.search_rounded,
-                                color: AppColors.primaryColor.withValues(
-                                  alpha: 0.7,
-                                ),
+                                Icons.clear_rounded,
+                                color: Colors.grey[400],
                                 size: 20.sp,
                               ),
+                            )
+                            : Icon(
+                              Icons.search_rounded,
+                              color: AppColors.primaryColor.withValues(
+                                alpha: 0.7,
+                              ),
+                              size: 20.sp,
                             ),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
@@ -197,7 +192,7 @@ class SearchView extends GetView<SearchController> {
                   ),
                   SizedBox(width: 6.w),
                   Text(
-                    'Results: ${controller.searchProductList.length}',
+                    'Results: ',
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
@@ -312,39 +307,6 @@ class SearchView extends GetView<SearchController> {
     );
   }
 
-  Widget _buildSuggestionChip(String text) {
-    return GestureDetector(
-      onTap: () {
-        controller.searchController.value.text = text;
-        controller.searchProducts(text);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.primaryColor.withValues(alpha: 0.1),
-              AppColors.primaryColor.withValues(alpha: 0.05),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: AppColors.primaryColor.withValues(alpha: 0.2),
-            width: 1,
-          ),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-            color: AppColors.primaryColor,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildNoResultsFound(String searchText) {
     return Container(
       padding: EdgeInsets.all(40.w),
@@ -385,7 +347,7 @@ class SearchView extends GetView<SearchController> {
           SizedBox(height: 12.h),
 
           Text(
-            'We couldn\'t find any products for\n"$searchText"',
+            'We couldn\'t find any products for\n""',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16.sp,
@@ -464,8 +426,8 @@ class SearchView extends GetView<SearchController> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.66,
-          crossAxisSpacing: 16.w,
-          mainAxisSpacing: 16.h,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
         ),
         itemCount: controller.searchProductList.length,
         physics: const BouncingScrollPhysics(),
@@ -537,6 +499,34 @@ class SearchView extends GetView<SearchController> {
                       deletedBy: item.supplier!.deletedBy,
                     )
                     : null,
+            stockBatches:
+                item.stockBatches
+                    ?.map(
+                      (batch) => BestSellingModel.StockBatch(
+                        id: batch.id,
+                        productId: batch.productId,
+                        batchNo: batch.batchNo,
+                        expiryDate: batch.expiryDate,
+                        purchaseId: batch.purchaseId,
+                        purchaseProductId: batch.purchaseProductId,
+                        purchaseBonusProductId: batch.purchaseBonusProductId,
+                        receivedQuantity: batch.receivedQuantity,
+                        balancedQuantity: batch.balancedQuantity,
+                        locked: batch.locked,
+                        createdAt: batch.createdAt,
+                        updatedAt: batch.updatedAt,
+                        saleReturnId: batch.saleReturnId,
+                        saleReturnProductId: batch.saleReturnProductId,
+                        cost: batch.cost,
+                        reconciliationId: batch.reconciliationId,
+                        reconciliationProductId: batch.reconciliationProductId,
+                        reconciliationQuantity: batch.reconciliationQuantity,
+                        branchId: batch.branchId,
+                        purchaseReturnId: batch.purchaseReturnId,
+                        purchaseReturnDetailId: batch.purchaseReturnDetailId,
+                      ),
+                    )
+                    .toList(),
             packSize:
                 item.packSize != null
                     ? BestSellingModel.PackSize(

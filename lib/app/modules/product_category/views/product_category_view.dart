@@ -582,7 +582,34 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                         item.productImages
                                             ?.cast<ProductImage>() ??
                                         [],
-                                    stockBatches: null,
+                                    stockBatches:
+                                    item.stockBatches
+                                        ?.map(
+                                          (batch) => BestSellingModel.StockBatch(
+                                        id: batch.id,
+                                        productId: batch.productId,
+                                        batchNo: batch.batchNo,
+                                        expiryDate: batch.expiryDate,
+                                        purchaseId: batch.purchaseId,
+                                        purchaseProductId: batch.purchaseProductId,
+                                        purchaseBonusProductId: batch.purchaseBonusProductId,
+                                        receivedQuantity: batch.receivedQuantity,
+                                        balancedQuantity: batch.balancedQuantity,
+                                        locked: batch.locked,
+                                        createdAt: batch.createdAt,
+                                        updatedAt: batch.updatedAt,
+                                        saleReturnId: batch.saleReturnId,
+                                        saleReturnProductId: batch.saleReturnProductId,
+                                        cost: batch.cost,
+                                        reconciliationId: batch.reconciliationId,
+                                        reconciliationProductId: batch.reconciliationProductId,
+                                        reconciliationQuantity: batch.reconciliationQuantity,
+                                        branchId: batch.branchId,
+                                        purchaseReturnId: batch.purchaseReturnId,
+                                        purchaseReturnDetailId: batch.purchaseReturnDetailId,
+                                      ),
+                                    )
+                                        .toList(),
                                   );
 
                                   return ProductCard(
@@ -825,7 +852,33 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                         .toList()
                                     : [],
                             stockBatches:
-                                null, // Complex model conversion - simplified
+                            item.stockBatches
+                                ?.map(
+                                  (batch) => BestSellingModel.StockBatch(
+                                id: batch.id,
+                                productId: batch.productId,
+                                batchNo: batch.batchNo,
+                                expiryDate: batch.expiryDate,
+                                purchaseId: batch.purchaseId,
+                                purchaseProductId: batch.purchaseProductId,
+                                purchaseBonusProductId: batch.purchaseBonusProductId,
+                                receivedQuantity: batch.receivedQuantity,
+                                balancedQuantity: batch.balancedQuantity,
+                                locked: batch.locked,
+                                createdAt: batch.createdAt,
+                                updatedAt: batch.updatedAt,
+                                saleReturnId: batch.saleReturnId,
+                                saleReturnProductId: batch.saleReturnProductId,
+                                cost: batch.cost,
+                                reconciliationId: batch.reconciliationId,
+                                reconciliationProductId: batch.reconciliationProductId,
+                                reconciliationQuantity: batch.reconciliationQuantity,
+                                branchId: batch.branchId,
+                                purchaseReturnId: batch.purchaseReturnId,
+                                purchaseReturnDetailId: batch.purchaseReturnDetailId,
+                              ),
+                            )
+                                .toList(),
                           );
                           return ProductCard(product: product, index: index);
                         },
