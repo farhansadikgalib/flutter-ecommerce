@@ -16,12 +16,13 @@ class SplashView extends GetView<SplashController> {
     return Scaffold(
       body: Center(
         child: AnimationConfiguration.synchronized(
-          duration: const Duration(milliseconds: 2000),
+          duration: const Duration(milliseconds: 2100),
           child: FadeInAnimation(
             child: ScaleAnimation(
               child: AnyImageView(
                 imagePath: Assets.pngLogo,
                 height: 125,
+                width: Get.width * 0.6,
                 fit: BoxFit.contain,
               ),
             ),

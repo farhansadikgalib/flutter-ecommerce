@@ -360,8 +360,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 ),
                                 SizedBox(width: 6.w),
                                 Text(
-                                  'Lead time: ${product.stockBatches?.isNotEmpty == true ? '1-2'
-                                          ' days' : '5-10 days'}',
+                                  'Lead time: ${product.stockBatches?.isNotEmpty == true ? '1'
+                                          ' days' : '2 days'}',
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: Colors.grey[700],
