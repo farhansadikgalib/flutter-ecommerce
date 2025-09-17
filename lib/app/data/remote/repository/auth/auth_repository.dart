@@ -8,10 +8,10 @@ import '../../model/auth/login_response.dart';
 import '../../model/auth/logout_response.dart';
 
 class AuthRepository {
-  Future<LoginResponse> login(String email, String password) async {
+  Future<LoginResponse> login(String phone, String password) async {
     var response = await ApiClient().post(
       ApiEndPoints.login,
-      {"email": email, "password": password},
+      {"phone": phone, "password": password},
       login,
       isHeaderRequired: false,
       isLoaderRequired: true,
@@ -23,11 +23,12 @@ class AuthRepository {
   Future<SignUpResponse> signup(
     String name,
     String email,
+    String phone,
     String password,
   ) async {
     var response = await ApiClient().post(
       ApiEndPoints.signup,
-      {"name": name, "email": email, "password": password},
+      {"name": name, "phone": phone, "password": password, "email": email},
       signup,
       isHeaderRequired: false,
       isLoaderRequired: true,

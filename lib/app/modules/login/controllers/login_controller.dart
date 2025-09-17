@@ -12,6 +12,7 @@ import '../../../data/remote/repository/auth/auth_repository.dart';
 
 class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
@@ -45,8 +46,9 @@ class LoginController extends GetxController {
   void onInit() {
     super.onInit();
     if (kDebugMode) {
-      nameController.text = 'coheraw';
+      nameController.text = 'Farhan';
       emailController.text = 'rifat@gmail.com';
+      phoneController.text = '01800000000';
       passwordController.text = '12345678';
     }
   }
@@ -54,6 +56,7 @@ class LoginController extends GetxController {
   @override
   void onClose() {
     emailController.dispose();
+    phoneController.dispose();
     passwordController.dispose();
     nameController.dispose();
     pinController.dispose();
@@ -109,6 +112,16 @@ class LoginController extends GetxController {
     }
   }
 
+  void validatePhone(String value) {
+    final RegExp phoneRegExp = RegExp(r'^01\d{9}$');
+    String error = '';
+    if (value.isEmpty) {
+      error = 'Phone number is required';
+    } else if (!phoneRegExp.hasMatch(value)) {
+      error = 'Enter a valid phone number';
+    }
+  }
+
   void validatePassword(String value) {
     // Password validation logic
     passwordError.value = '';
@@ -128,12 +141,12 @@ class LoginController extends GetxController {
   }
 
   void login() async {
-    validateEmail(emailController.text);
+    validatePhone(emailController.text);
     validatePassword(passwordController.text);
 
     if (emailError.value.isEmpty && passwordError.value.isEmpty) {
       final response = await AuthRepository().login(
-        emailController.text.trim(),
+        phoneController.text.trim(),
         passwordController.text.trim(),
       );
 
@@ -151,6 +164,7 @@ class LoginController extends GetxController {
   void signUp() async {
     validateName(nameController.text);
     validateEmail(emailController.text);
+    validatePhone(phoneController.text);
     validatePassword(passwordController.text);
 
     if (nameError.value.isEmpty &&
@@ -159,11 +173,14 @@ class LoginController extends GetxController {
       final response = await AuthRepository().signup(
         nameController.text,
         emailController.text.trim(),
+        phoneController.text.trim(),
         passwordController.text.trim(),
       );
 
       if (response.status == 200) {
-        enterVerificationMode();
+        isSignUpMode.value = false;
+        // toggleAuthMode();
+        // enterVerificationMode();
         AppWidgets().getSnackBar(message: response.message);
       } else {
         AppWidgets().getSnackBar(message: response.message);

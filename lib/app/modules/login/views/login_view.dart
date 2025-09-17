@@ -31,6 +31,7 @@ class LoginView extends GetView<LoginController> {
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 500),
                       height: controller.isSignUpMode.value ? 100.h : 120.h,
+                      width: 200.w,
                       child: Image.asset(Assets.pngLogo),
                     ),
                   ),
@@ -174,7 +175,7 @@ class LoginView extends GetView<LoginController> {
                               ? 0
                               : controller.isForgotPasswordMode.value
                               ? 80.h
-                              : (controller.isSignUpMode.value ? 240.h : 175.h),
+                              : (controller.isSignUpMode.value ? 300.h : 190.h),
                       child: AnimatedOpacity(
                         opacity:
                             controller.isVerificationMode.value ? 0.0 : 1.0,
@@ -231,14 +232,58 @@ class LoginView extends GetView<LoginController> {
                             // Email Field - always visible except in verification mode
                             AnimatedContainer(
                               duration: const Duration(milliseconds: 500),
+                              height:
+                              controller.isSignUpMode.value &&
+                                  !controller.isForgotPasswordMode.value
+                                  ? 60.h
+                                  : 0,
+                              child: AnimatedOpacity(
+                                opacity:
+                                controller.isSignUpMode.value &&
+                                    !controller
+                                        .isForgotPasswordMode
+                                        .value
+                                    ? 1.0
+                                    : 0.0,
+                                duration: const Duration(milliseconds: 500),
+                                child: TextField(
+                                  controller: controller.emailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    labelText: "Email",
+                                    hintText: "Enter your email",
+                                    prefixIcon: const Icon(Icons.email_outlined),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    errorText:
+                                        controller.emailError.value.isEmpty
+                                            ? null
+                                            : controller.emailError.value,
+                                  ),
+                                  onChanged:
+                                      (value) => controller.validateEmail(value),
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(
+                              height:
+                                  controller.isForgotPasswordMode.value
+                                      ? 0.h
+                                      : 16.h,
+                            ),
+
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 500),
                               height: 60.h,
                               child: TextField(
-                                controller: controller.emailController,
-                                keyboardType: TextInputType.emailAddress,
+                                controller: controller.phoneController,
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
-                                  labelText: "Email",
-                                  hintText: "Enter your email",
-                                  prefixIcon: const Icon(Icons.email_outlined),
+                                  labelText: "Phone",
+                                  hintText: "Enter your phone number",
+                                  prefixIcon: const Icon(Icons.phone_android),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -248,7 +293,7 @@ class LoginView extends GetView<LoginController> {
                                           : controller.emailError.value,
                                 ),
                                 onChanged:
-                                    (value) => controller.validateEmail(value),
+                                    (value) => controller.validatePhone(value),
                               ),
                             ),
 
