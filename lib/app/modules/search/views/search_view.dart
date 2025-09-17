@@ -446,7 +446,18 @@ class SearchView extends GetView<SearchController> {
             ecommerceSalesQuantity: null,
             totalSoldQuantity: null,
             totalBalancedQuantity: null,
-            productImages: item.productImages?.cast<BestSellingModel.ProductImage>() ?? [],
+            productImages: item.productImages != null
+                ? item.productImages!
+                .map((img) => BestSellingModel.ProductImage(
+              id: img.id,
+              path: img.path,
+              productId: img.path,
+              createdAt: img.createdAt,
+              updatedAt: img.updatedAt,
+              deletedAt: img.deletedAt
+            ))
+                .toList()
+                : [],
             productInventories: item.productInventories as BestSellingModel.ProductInventories?,
             productLocations: item.productLocations as BestSellingModel.ProductLocations?,
             generic:

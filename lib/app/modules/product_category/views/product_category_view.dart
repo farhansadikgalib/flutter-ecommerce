@@ -578,10 +578,18 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                             : null,
                                     productInventories: null,
                                     productLocations: null,
-                                    productImages:
-                                        item.productImages
-                                            ?.cast<ProductImage>() ??
-                                        [],
+                                    productImages: item.productImages != null
+                                        ? item.productImages!
+                                        .map((img) => BestSellingModel.ProductImage(
+                                        id: img.id,
+                                        path: img.path,
+                                        productId: img.path,
+                                        createdAt: img.createdAt,
+                                        updatedAt: img.updatedAt,
+                                        deletedAt: img.deletedAt
+                                    ))
+                                        .toList()
+                                        : [],
                                     stockBatches:
                                     item.stockBatches
                                         ?.map(
@@ -818,39 +826,18 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                     : null,
                             productLocations:
                                 null, // Different structure between models
-                            productImages:
-                                item.productImages != null &&
-                                        item.productImages!.isNotEmpty
-                                    ? item.productImages!
-                                        .map(
-                                          (
-                                            img,
-                                          ) => BestSellingModel.ProductImage(
-                                            id: img is Map ? img['id'] : img.id,
-                                            productId:
-                                                img is Map
-                                                    ? img['product_id']
-                                                    : img.productId,
-                                            path:
-                                                img is Map
-                                                    ? img['path']
-                                                    : img.path,
-                                            createdAt:
-                                                img is Map
-                                                    ? img['created_at']
-                                                    : img.createdAt,
-                                            updatedAt:
-                                                img is Map
-                                                    ? img['updated_at']
-                                                    : img.updatedAt,
-                                            deletedAt:
-                                                img is Map
-                                                    ? img['deleted_at']
-                                                    : img.deletedAt,
-                                          ),
-                                        )
-                                        .toList()
-                                    : [],
+                            productImages: item.productImages != null
+                                ? item.productImages!
+                                .map((img) => BestSellingModel.ProductImage(
+                                id: img.id,
+                                path: img.path,
+                                productId: img.path,
+                                createdAt: img.createdAt,
+                                updatedAt: img.updatedAt,
+                                deletedAt: img.deletedAt
+                            ))
+                                .toList()
+                                : [],
                             stockBatches:
                             item.stockBatches
                                 ?.map(
