@@ -76,7 +76,6 @@ class _ProductCardState extends State<ProductCard> {
 
   int getTotalStock() {
     final batches = widget.product.stockBatches;
-    printLog(batches?.length.toString());
     if (batches == null || batches.isEmpty) return 0;
     return batches.fold<int>(
       0,
@@ -143,7 +142,7 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                             decoration: BoxDecoration(
                               color: getDiscountInfo()!['label'] == 'OFF'
-                                  ? Colors.redAccent
+                                  ? Colors.deepOrangeAccent
                                   : AppColors.primaryColor,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(12),

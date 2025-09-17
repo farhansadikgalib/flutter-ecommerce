@@ -192,7 +192,7 @@ class SearchView extends GetView<SearchController> {
                   ),
                   SizedBox(width: 6.w),
                   Text(
-                    'Results: ',
+                    'Results: ${controller.searchProductList.length}',
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
@@ -446,6 +446,9 @@ class SearchView extends GetView<SearchController> {
             ecommerceSalesQuantity: null,
             totalSoldQuantity: null,
             totalBalancedQuantity: null,
+            productImages: item.productImages?.cast<BestSellingModel.ProductImage>() ?? [],
+            productInventories: item.productInventories as BestSellingModel.ProductInventories?,
+            productLocations: item.productLocations as BestSellingModel.ProductLocations?,
             generic:
                 item.generic != null
                     ? BestSellingModel.Generic(
