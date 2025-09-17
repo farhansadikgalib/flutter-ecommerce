@@ -101,7 +101,7 @@ class ApiClient {
           } else {
             AppWidgets().getSnackBar(
               title: "Info",
-              message: jsonDecode(err.response.toString())["message"] ?? "",
+              message: jsonDecode(err.response.toString())?? "",
               // message: jsonDecode(err.response.toString())["message"][0] ?? "",
             );
             return handler.resolve(err.response!);
