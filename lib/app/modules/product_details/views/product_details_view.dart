@@ -48,6 +48,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     if (response.data!.isNotEmpty) {
       relatedProducts.clear();
       relatedProducts.addAll(response.data ?? []);
+      relatedProducts.removeWhere((item) => item.id == product.id);
     }
   }
 
