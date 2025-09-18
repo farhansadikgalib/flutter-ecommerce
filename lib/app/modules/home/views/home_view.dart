@@ -89,46 +89,46 @@ class HomeView extends BaseView<HomeController> {
                               ),
 
                               Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(Routes.TRANSACTIONS);
-                                },
-                                child: Container(
-                                  padding: REdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryColor.withOpacity(
-                                      0.1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8).r,
-                                    border: Border.all(
-                                      color: AppColors.primaryColor,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    '৳ 9999 ',
-                                    style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              AppWidgets().gapW8(),
-                              IconButton(
-                                icon: Icon(
-                                  FontAwesomeIcons.facebookMessenger,
-                                  color: AppColors.primaryColor,
-                                ),
-                                onPressed: () {
-                                  launchURL(
-                                    'https://m.me/chaardik.chaardik.7',
-                                    true,
-                                  );
-                                },
-                                tooltip: 'Message us on Messenger',
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Get.toNamed(Routes.TRANSACTIONS);
+                              //   },
+                              //   child: Container(
+                              //     padding: REdgeInsets.all(2),
+                              //     decoration: BoxDecoration(
+                              //       color: AppColors.primaryColor.withOpacity(
+                              //         0.1,
+                              //       ),
+                              //       borderRadius: BorderRadius.circular(8).r,
+                              //       border: Border.all(
+                              //         color: AppColors.primaryColor,
+                              //         width: 2,
+                              //       ),
+                              //     ),
+                              //     child: Text(
+                              //       '৳ 9999 ',
+                              //       style: TextStyle(
+                              //         color: AppColors.primaryColor,
+                              //         fontWeight: FontWeight.bold,
+                              //         fontSize: 14,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              // AppWidgets().gapW8(),
+                              // IconButton(
+                              //   icon: Icon(
+                              //     FontAwesomeIcons.facebookMessenger,
+                              //     color: AppColors.primaryColor,
+                              //   ),
+                              //   onPressed: () {
+                              //     launchURL(
+                              //       'https://m.me/chaardik.chaardik.7',
+                              //       true,
+                              //     );
+                              //   },
+                              //   tooltip: 'Message us on Messenger',
+                              // ),
                             ],
                           ),
                           Skeletonizer(
