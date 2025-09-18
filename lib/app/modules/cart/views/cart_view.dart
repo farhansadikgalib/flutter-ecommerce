@@ -24,94 +24,96 @@ class CartView extends BaseView<CartController> {
   @override
   Widget? floatingActionButton() {
     return Obx(
-      () =>
-          controller.cartCount.value > 0
-              ? Container(
-                width: Get.width,
-                margin: REdgeInsets.only(left: 26),
-                padding: REdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 2,
-                      blurRadius: 8,
-                      offset: const Offset(0, -2),
+          () =>
+      controller.cartCount.value > 0
+          ? Container(
+        width: Get.width,
+        margin: REdgeInsets.only(left: 26),
+        padding: REdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total Amount',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Total Amount',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                              fontWeight: FontWeight.w500,
-                            ),
+                  ),
+                  SizedBox(height: 2),
+                  Obx(
+                        () =>
+                        Text(
+                          '৳${controller.totalPrice.value.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryColor,
                           ),
-                          SizedBox(height: 2),
-                          Obx(
-                            () => Text(
-                              '৳${controller.totalPrice.value.toStringAsFixed(2)}',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    ElevatedButton(
-                      onPressed:
-                          () => Get.toNamed(
-                            Routes.CHECKOUT,
-                            arguments: {
-                              'cartProducts': controller.allCartProducts,
-                              'subTotal': controller.totalPrice.value,
-                            },
-                          ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.payment, size: 18),
-                          SizedBox(width: 8),
-                          Text(
-                            'Checkout',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 16),
+            ElevatedButton(
+              onPressed:
+                  () =>
+                  Get.toNamed(
+                    Routes.CHECKOUT,
+                    arguments: {
+                      'cartProducts': controller.allCartProducts,
+                      'subTotal': controller.totalPrice.value,
+                    },
+                  ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
                 ),
-              )
-              : SizedBox(),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 2,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.payment, size: 18),
+                  SizedBox(width: 8),
+                  Text(
+                    'Checkout',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      )
+          : SizedBox(),
     );
   }
 
@@ -126,7 +128,8 @@ class CartView extends BaseView<CartController> {
             itemCount: 4,
             padding: REdgeInsets.symmetric(horizontal: 16, vertical: 12),
             itemBuilder:
-                (context, index) => Card(
+                (context, index) =>
+                Card(
                   elevation: 3,
                   margin: REdgeInsets.only(bottom: 14),
                   shape: RoundedRectangleBorder(
@@ -299,11 +302,11 @@ class CartView extends BaseView<CartController> {
                             controller.addToCart(
                               product,
                               quantity:
-                                  controller.getProductQuantity(product.id!) > 0
-                                      ? controller.getProductQuantity(
-                                        product.id!,
-                                      )
-                                      : 1,
+                              controller.getProductQuantity(product.id!) > 0
+                                  ? controller.getProductQuantity(
+                                product.id!,
+                              )
+                                  : 1,
                             );
                             Get.closeCurrentSnackbar();
                           },
@@ -342,10 +345,11 @@ class CartView extends BaseView<CartController> {
                                   width: 64,
                                   fit: BoxFit.cover,
                                   imagePath:
-                                      product.productImages != null &&
-                                              product.productImages!.isNotEmpty
-                                          ? '${AppConfig.imageBasePath}${product.productImages![0].path}'
-                                          : Assets.pngNotFound,
+                                  product.productImages != null &&
+                                      product.productImages!.isNotEmpty
+                                      ? '${AppConfig.imageBasePath}${product
+                                      .productImages![0].path}'
+                                      : Assets.pngNotFound,
                                 ),
                               ),
                             ),
@@ -354,141 +358,144 @@ class CartView extends BaseView<CartController> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    product.name ?? 'Product Name',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: Colors.black87,
+                              Text(
+                              product.name ?? 'Product Name',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  color: Colors.black87,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ), // Stock information
+
+                              SizedBox(height: 6),
+                              Text(
+                                'Stock: ${getTotalStock(product)}',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+
+
+                              SizedBox(height: 4),
+
+                              Text(
+                                '${double.parse(product.productPrices!
+                                    .packQuantity.toString())
+                                    .toStringAsFixed(0)} '
+                                    '${product.category?.name} / '
+                                    '${product.packSize?.name}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              // Total price for this item
+
+                                    Text(
+                                      'Sub Total: ৳ ${(product.productPrices
+                                          ?.ecomFinalSellingPrice != null &&
+                                          product.productPrices?.packQuantity !=
+                                              null
+                                          ? (() {
+                                        final price = double.parse(
+                                            product.productPrices!
+                                                .ecomFinalSellingPrice
+                                                .toString());
+                                        final packQuantity = double.parse(
+                                            product.productPrices!.packQuantity
+                                                .toString());
+                                        return (price * packQuantity *
+                                            product.quantity!.toDouble())
+                                            .toStringAsFixed(
+                                            2);
+                                      })()
+                                          : '0.00')}' ,style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 6),
-                                  // Stock information
-                                  Text(
-                                    '${product.name} ${product.productPrices!.packQuantity}',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey[600],
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(height: 6),
-                                  Text(
-                                    'Stock: ${getTotalStock(product)}',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey[700],
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '৳${double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        'each',
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4),
-                                  // Total price for this item
-                                  Obx(
-                                    () => Text(
-                                      'Sub Total: ৳${((double.parse((product.productPrices?.sellingPrice ?? product.packSize?.sellingPrice ?? 0).toString())) * controller.getProductQuantity(product.id!)).toStringAsFixed(2)}',
-                                      style: TextStyle(
-                                        color: Colors.grey[700],
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              ),
+
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      // Enhanced quantity selector with proper cart integration
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.primaryColor,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: FaIcon(
+                                controller.getProductQuantity(
+                                  product.id!,
+                                ) ==
+                                    1
+                                    ? FontAwesomeIcons.trash
+                                    : FontAwesomeIcons.minus,
+                                color: AppColors.primaryColor,
+                                size: 14,
+                              ),
+                              onPressed: () {
+                                controller.decreaseQuantity(product.id!);
+                              },
+                              constraints: BoxConstraints(
+                                minWidth: 32,
+                                minHeight: 32,
                               ),
                             ),
-                            SizedBox(width: 12),
-                            // Enhanced quantity selector with proper cart integration
                             Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.primaryColor,
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: FaIcon(
-                                      controller.getProductQuantity(
-                                                product.id!,
-                                              ) ==
-                                              1
-                                          ? FontAwesomeIcons.trash
-                                          : FontAwesomeIcons.minus,
-                                      color: AppColors.primaryColor,
-                                      size: 14,
-                                    ),
-                                    onPressed: () {
-                                      controller.decreaseQuantity(product.id!);
-                                    },
-                                    constraints: BoxConstraints(
-                                      minWidth: 32,
-                                      minHeight: 32,
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                    ),
-                                    child: Obx(
-                                      () => Text(
-                                        controller
-                                            .getProductQuantity(product.id!)
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: AppColors.primaryColor,
-                                        ),
+                              child: Obx(
+                                    () =>
+                                    Text(
+                                      controller
+                                          .getProductQuantity(product.id!)
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: AppColors.primaryColor,
                                       ),
                                     ),
-                                  ),
-                                  IconButton(
-                                    icon: FaIcon(
-                                      FontAwesomeIcons.plus,
-                                      color: AppColors.primaryColor,
-                                      size: 14,
-                                    ),
-                                    onPressed: () {
-                                      controller.increaseQuantity(product.id!);
-                                    },
-                                    constraints: BoxConstraints(
-                                      minWidth: 32,
-                                      minHeight: 32,
-                                    ),
-                                  ),
-                                ],
+                              ),
+                            ),
+                            IconButton(
+                              icon: FaIcon(
+                                FontAwesomeIcons.plus,
+                                color: AppColors.primaryColor,
+                                size: 14,
+                              ),
+                              onPressed: () {
+                                controller.increaseQuantity(product.id!);
+                              },
+                              constraints: BoxConstraints(
+                                minWidth: 32,
+                                minHeight: 32,
                               ),
                             ),
                           ],
                         ),
                       ),
+                      ],
                     ),
+                  ),)
+                  ,
                   );
                 },
               ),
@@ -505,16 +512,14 @@ class CartView extends BaseView<CartController> {
     if (batches == null || batches.isEmpty) return 0;
     return batches.fold<int>(
       0,
-      (sum, batch) =>
-          sum + (double.parse(batch.balancedQuantity.toString()).toInt()),
+          (sum, batch) =>
+      sum + (double.parse(batch.balancedQuantity.toString()).toInt()),
     );
   }
 
   // Confirmation dialog for swipe to remove
-  Future<bool?> _showRemoveConfirmationDialog(
-    BuildContext context,
-    String productName,
-  ) {
+  Future<bool?> _showRemoveConfirmationDialog(BuildContext context,
+      String productName,) {
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
