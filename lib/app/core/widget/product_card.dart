@@ -79,8 +79,8 @@ class _ProductCardState extends State<ProductCard> {
     if (batches == null || batches.isEmpty) return 0;
     return batches.fold<int>(
       0,
-          (sum, batch) =>
-      sum + (double.parse(batch.balancedQuantity.toString()).toInt()),
+      (sum, batch) =>
+          sum + (double.parse(batch.balancedQuantity.toString()).toInt()),
     );
   }
 
@@ -141,9 +141,10 @@ class _ProductCardState extends State<ProductCard> {
                               vertical: 2.h,
                             ),
                             decoration: BoxDecoration(
-                              color: getDiscountInfo()!['label'] == 'OFF'
-                                  ? Colors.deepOrangeAccent
-                                  : AppColors.primaryColor,
+                              color:
+                                  getDiscountInfo()!['label'] == 'OFF'
+                                      ? Colors.deepOrangeAccent
+                                      : AppColors.primaryColor,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(12),
                                 bottomRight: Radius.circular(12),
@@ -219,12 +220,13 @@ class _ProductCardState extends State<ProductCard> {
                   child: Builder(
                     builder: (context) {
                       final sellingPrice =
-                          widget.product.productPrices?.sellingPrice?.toString() ??
-                              '';
+                          widget.product.productPrices?.sellingPrice
+                              ?.toString() ??
+                          '';
                       final discountPrice =
                           widget.product.productPrices?.ecomFinalSellingPrice
                               ?.toString() ??
-                              '';
+                          '';
                       if (discountPrice.isNotEmpty &&
                           sellingPrice.isNotEmpty &&
                           discountPrice != sellingPrice) {
@@ -321,25 +323,31 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   Widget _buildAddToCartButton() {
-    return SizedBox(width: Get.width,
-    child:  Center(
-      child: ElevatedButton.icon(
-
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          padding: REdgeInsets.symmetric(vertical: 10,horizontal: 10),
-        ),
-        onPressed: () {
-          cartController.addToCart(widget.product, quantity: 1);
-        },
-        icon: Icon(Icons.shopping_bag, color: Colors.white, size: 18),
-        label: Text(
-          'Add to Cart',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    return SizedBox(
+      width: 1.sw,
+      child: Center(
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          onPressed: () {
+            cartController.addToCart(widget.product, quantity: 1);
+          },
+          icon: Icon(Icons.shopping_bag, color: Colors.white, size: 18.sp),
+          label: Text(
+            'Add to Cart',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14.sp,
+            ),
+          ),
         ),
       ),
-    ));
+    );
   }
 
   Widget _buildQuantitySelector(int quantity) {
