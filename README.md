@@ -9,6 +9,12 @@ ECommerce is a comprehensive Flutter application designed to provide a seamless 
 - Order tracking
 - Wishlist management
 - Responsive design for mobile and web
+- Firebase integration
+- Push notifications
+- Multi-platform support (Android, iOS, Web, Windows, Linux, macOS)
+- Modular architecture
+- State management with GetX
+- REST API integration
 
 ## Project Structure
 ```
@@ -18,20 +24,24 @@ turi/
   ├── ios/
   ├── lib/
   │   ├── app/
+  │   │   ├── generated/
+  │   │   ├── modules/
+  │   │   │   ├── cart/
+  │   │   │   ├── checkout/
+  │   │   │   ├── dashboard/
+  │   │   │   ├── home/
+  │   │   │   ├── login/
+  │   │   │   ├── order/
+  │   │   │   ├── product_category/
+  │   │   │   ├── product_details/
+  │   │   │   ├── profile/
+  │   │   │   ├── splash/
+  │   │   │   └── wishlist/
   │   ├── data/
-  │   ├── modules/
-  │   │   ├── cart/
-  │   │   ├── checkout/
-  │   │   ├── dashboard/
-  │   │   ├── home/
-  │   │   ├── login/
-  │   │   ├── order/
-  │   │   ├── product_category/
-  │   │   ├── product_details/
-  │   │   ├── profile/
-  │   │   ├── splash/
-  │   │   └── wishlist/
-  │   ├── network_service/
+  │   │   ├── remote/
+  │   │   │   ├── model/
+  │   │   │   ├── repository/
+  │   │   └── network_service/
   │   └── routes/
   ├── linux/
   ├── macos/
