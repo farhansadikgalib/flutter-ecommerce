@@ -11,7 +11,12 @@ final SharedValue<String> accessToken = SharedValue(
 
 final SharedValue<String> userEmail = SharedValue(
   value: "",
-  key: "designation",
+  key: "userEmail",
+);
+
+final SharedValue<String> userPhone = SharedValue(
+  value: "",
+  key: "userPhone",
 );
 final SharedValue<String> userName = SharedValue(value: "", key: "userName");
 

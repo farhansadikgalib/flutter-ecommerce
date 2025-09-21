@@ -69,6 +69,12 @@ class ProfileView extends GetView<ProfileController> {
                 ),
                 const SizedBox(height: 4),
                 Text(
+                  userPhone.$,
+                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+
+                ),
+                const SizedBox(height: 4),
+                Text(
                   userEmail.$,
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),

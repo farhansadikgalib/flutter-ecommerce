@@ -19,6 +19,9 @@ class AuthHelper {
 
       userEmail.$ = loginResponse.user!.email!;
       userEmail.save();
+
+      userPhone.$ = loginResponse.user!.phone ?? "";
+      userPhone.save();
     }
   }
 
@@ -37,6 +40,9 @@ class AuthHelper {
 
     userEmail.$ = "";
     userEmail.save();
+
+    userPhone.$ = "";
+    userPhone.save();
   }
 
   void loadItems() {
@@ -45,6 +51,7 @@ class AuthHelper {
     userName.load();
     userId.load();
     userEmail.load();
+    userPhone.load();
     userRole.load();
   }
 }

@@ -338,16 +338,14 @@ class CheckoutView extends BaseView<CheckoutController> {
                               ),
                             ],
                           ),
-                          value: 'Inside Dhaka',
+                          value: '0', // Use ID as string
                           groupValue: controller.selectedShippingMethod.value,
                           onChanged: (value) {
                             controller.selectedShippingMethod.value = value!;
                             controller.delivery.value = 60.0;
-                            // Set a default shipping ID for cash on delivery
                             controller.shippingId.value = 0;
-                            printLog(
-                              'Selected shipping: Cash on Delivery - 60 BDT',
-                            );
+                            printLog(controller.selectedShippingMethod.value);
+                            printLog('Selected shipping: Cash on Delivery - 60 BDT');
                           },
                         ),
                         // Dynamic shipping methods from API
@@ -375,16 +373,12 @@ class CheckoutView extends BaseView<CheckoutController> {
                                 ),
                               ],
                             ),
-                            value: shipping.title.toString(),
+                            value: shipping.id.toString(), // Use ID as string
                             groupValue: controller.selectedShippingMethod.value,
                             onChanged: (value) {
                               controller.selectedShippingMethod.value = value!;
-                              controller.delivery.value = double.parse(
-                                shipping.price.toString(),
-                              );
-                              controller.shippingId.value = int.parse(
-                                shipping.id.toString(),
-                              );
+                              controller.delivery.value = double.parse(shipping.price.toString());
+                              controller.shippingId.value = int.parse(shipping.id.toString());
                               printLog('Selected shipping id: ${shipping.id}');
                             },
                           );
@@ -521,13 +515,14 @@ class CheckoutView extends BaseView<CheckoutController> {
                                 paymentMethod.name ?? '',
                                 style: TextStyle(fontSize: 14),
                               ),
-                              value: paymentMethod.name ?? '',
+                              value: paymentMethod.id.toString(), // Use ID as string
                               groupValue:
                                   controller.selectedPaymentMethod.value,
                               onChanged: (value) {
                                 controller.selectedPaymentMethod.value = value!;
+                                printLog(controller.selectedShippingMethod.value);
                                 printLog(
-                                  'Selected payment method: ${paymentMethod.name}',
+                                  'Selected payment method id: ${paymentMethod.id}',
                                 );
                               },
                             );

@@ -32,6 +32,7 @@ class User {
   int? id;
   String? name;
   String? email;
+  String? phone;
   dynamic emailVerifiedAt;
   String? status;
   String? createdAt;
@@ -43,6 +44,7 @@ class User {
     this.id,
     this.name,
     this.email,
+    this.phone,
     this.emailVerifiedAt,
     this.status,
     this.createdAt,
@@ -54,6 +56,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     name: json["name"],
+    phone: json["phone"],
     email: json["email"],
     emailVerifiedAt: json["email_verified_at"],
     status: json["status"],

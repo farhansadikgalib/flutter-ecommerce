@@ -18,7 +18,7 @@ import '../../../data/remote/repository/checkout/checkout_repository.dart';
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 
 class CheckoutController extends BaseController {
-  final selectedShippingMethod = ''.obs;
+  final selectedShippingMethod = '0'.obs;
   final selectedPaymentMethod = ''.obs;
   final name = TextEditingController().obs;
   final mobile = TextEditingController().obs;
@@ -43,24 +43,31 @@ class CheckoutController extends BaseController {
   final args = Get.arguments;
   final cartProducts = <ProductData>[].obs;
   final subTotal = 0.0.obs;
-  final delivery = 0.0.obs;
+  final delivery = 60.0.obs;
   final couponAmount = 0.0.obs;
   final shippingId = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
+    name.value.text = userName.$;
+    email.value.text = userEmail.$;
+    mobile.value.text = userPhone.$;
+
+
     if (args != null) {
       cartProducts.addAll(args['cartProducts']);
       subTotal.value = args['subTotal'];
     }
 
+/*
     if (kDebugMode) {
       name.value.text = 'Test User';
       mobile.value.text = '01773076754';
       email.value.text = 'test@gmail.com';
       address.value.text = 'Test Address';
     }
+*/
 
     Future.microtask(() async {
       await getCountryList();
@@ -74,6 +81,7 @@ class CheckoutController extends BaseController {
     var response = await CheckoutRepository().paymentMethods();
     paymentMethods.clear();
     paymentMethods.addAll(response);
+    selectedPaymentMethod.value =  '1';
   }
 
   Future<void> getCountryList() async {
@@ -230,8 +238,7 @@ class CheckoutController extends BaseController {
         areaId: selectedArea.value?.id.toString(),
         notes: '',
       ),
-      paymentMethodId: 1,
-      // Assuming 1 for Cash on Delivery
+      paymentMethodId: int.tryParse(selectedPaymentMethod.value) ?? 1, // Use selected payment method
       customerId: int.tryParse(userId.$) ?? 0,
     );
 
