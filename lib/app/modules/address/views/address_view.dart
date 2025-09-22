@@ -482,7 +482,7 @@ class AddressView extends GetView<AddressController> {
         ),
         body: Padding(
           padding: EdgeInsets.all(16.w),
-          child: Column(
+          child: ListView(
             children: [
               // Title Field
               _buildStyledField(
