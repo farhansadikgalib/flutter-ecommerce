@@ -98,36 +98,40 @@ class _ProductCardState extends State<ProductCard> {
           ),
         );
       },
-      child: SizedBox(
-        height: 280.h, // Fixed card height
+      child: Container(
+        height: 0.35.sh, // Responsive height based on screen height
         child: Card(
-          elevation: 3,
+          elevation: 2.r,
+          margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             side: BorderSide(
-              color: AppColors.primaryColor.withValues(alpha: 0.5),
-              width: 1,
+              color: AppColors.primaryColor.withValues(alpha: 0.3),
+              width: 0.5.w,
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(8.w),
+            padding: EdgeInsets.all(6.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Image Stack - Fixed size
-                SizedBox(
-                  height: 100.h,
+                // Image Stack - Responsive size
+                Expanded(
+                  flex: 8,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      AnyImageView(
-                        imagePath: getProductImage(),
-                        height: 100.h,
-                        width: double.infinity,
-                        borderRadius: BorderRadius.circular(16),
-                        errorWidget: AnyImageView(
-                          imagePath: Assets.pngNotFound,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: AnyImageView(
+                          imagePath: getProductImage(),
+                          height: double.infinity,
+                          width: double.infinity,
                           fit: BoxFit.cover,
+                          errorWidget: AnyImageView(
+                            imagePath: Assets.pngNotFound,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       if (widget.promoPrice.toString().isNotEmpty &&
@@ -137,7 +141,7 @@ class _ProductCardState extends State<ProductCard> {
                           left: 0,
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 6.w,
+                              horizontal: 4.w,
                               vertical: 2.h,
                             ),
                             decoration: BoxDecoration(
@@ -146,8 +150,8 @@ class _ProductCardState extends State<ProductCard> {
                                       ? Colors.deepOrangeAccent
                                       : AppColors.primaryColor,
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                bottomRight: Radius.circular(12),
+                                topLeft: Radius.circular(8.r),
+                                bottomRight: Radius.circular(8.r),
                               ),
                             ),
                             child: Text(
@@ -155,7 +159,7 @@ class _ProductCardState extends State<ProductCard> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10.sp,
+                                fontSize: 8.sp,
                               ),
                             ),
                           ),
@@ -167,14 +171,14 @@ class _ProductCardState extends State<ProductCard> {
                           visible: widget.showDiscountTag,
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 6.w,
+                              horizontal: 4.w,
                               vertical: 2.h,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.redAccent,
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                bottomRight: Radius.circular(12),
+                                topRight: Radius.circular(8.r),
+                                bottomLeft: Radius.circular(8.r),
                               ),
                             ),
                             child: Text(
@@ -184,7 +188,7 @@ class _ProductCardState extends State<ProductCard> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10.sp,
+                                fontSize: 8.sp,
                               ),
                             ),
                           ),
@@ -194,19 +198,20 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                 ),
 
-                SizedBox(height: 8.h),
+                SizedBox(height: 6.h),
 
-                // Product Title - Fixed height container
-                SizedBox(
-                  height: 35.h,
+                // Product Title - Flexible height
+                Expanded(
+                  flex: 4,
                   child: Text(
                     getProductTitle(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 11.sp,
+                      fontSize: 12.sp,
                       color: Colors.black87,
+                      height: 1.2,
                     ),
                     textAlign: TextAlign.left,
                   ),
@@ -214,9 +219,9 @@ class _ProductCardState extends State<ProductCard> {
 
                 SizedBox(height: 4.h),
 
-                // Price Section - Fixed height
-                SizedBox(
-                  height: 20.h,
+                // Price Section - Flexible height
+                Expanded(
+                  flex: 2,
                   child: Builder(
                     builder: (context) {
                       final sellingPrice =
@@ -234,10 +239,10 @@ class _ProductCardState extends State<ProductCard> {
                           children: [
                             Flexible(
                               child: Text(
-                                double.parse(discountPrice).toStringAsFixed(2),
+                                '৳${double.parse(discountPrice).toStringAsFixed(0)}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14.sp,
+                                  fontSize: 13.sp,
                                   color: AppColors.primaryColor,
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -246,10 +251,10 @@ class _ProductCardState extends State<ProductCard> {
                             SizedBox(width: 4.w),
                             Flexible(
                               child: Text(
-                                sellingPrice,
+                                '৳$sellingPrice',
                                 style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: Colors.grey,
+                                  fontSize: 10.sp,
+                                  color: Colors.grey[600],
                                   decoration: TextDecoration.lineThrough,
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -259,10 +264,10 @@ class _ProductCardState extends State<ProductCard> {
                         );
                       } else if (sellingPrice.isNotEmpty) {
                         return Text(
-                          sellingPrice,
+                          '৳$sellingPrice',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 14.sp,
+                            fontSize: 13.sp,
                             color: AppColors.primaryColor,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -274,45 +279,43 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                 ),
 
-                SizedBox(height: 4.h),
+                SizedBox(height: 3.h),
 
-                // Stock - Fixed height
-                SizedBox(
-                  height: 15.h,
+                // Stock - Flexible height
+                Expanded(
+                  flex: 2,
                   child: Text(
                     'Stock: ${getTotalStock()}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: 10.sp,
-                      color: Colors.black87,
+                      color: Colors.grey[700],
                     ),
                     textAlign: TextAlign.left,
                   ),
                 ),
 
-                SizedBox(height: 6.h),
+                SizedBox(height: 4.h),
 
                 // Cart Section - Fixed at bottom
                 Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Obx(() {
-                      bool isInCart = cartController.isProductInCart(
-                        widget.product.id!,
-                      );
-                      int quantity = cartController.getProductQuantity(
-                        widget.product.id!,
-                      );
+                  flex: 3,
+                  child: Obx(() {
+                    bool isInCart = cartController.isProductInCart(
+                      widget.product.id!,
+                    );
+                    int quantity = cartController.getProductQuantity(
+                      widget.product.id!,
+                    );
 
-                      if (isInCart && quantity > 0) {
-                        return _buildQuantitySelector(quantity);
-                      } else {
-                        return _buildAddToCartButton();
-                      }
-                    }),
-                  ),
+                    if (isInCart && quantity > 0) {
+                      return _buildQuantitySelector(quantity);
+                    } else {
+                      return _buildAddToCartButton();
+                    }
+                  }),
                 ),
               ],
             ),
@@ -324,26 +327,27 @@ class _ProductCardState extends State<ProductCard> {
 
   Widget _buildAddToCartButton() {
     return SizedBox(
-      width: 1.sw,
-      child: Center(
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.r),
-            ),
+      width: double.infinity,
+      height: 50.h,
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryColor,
+          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.r),
           ),
-          onPressed: () {
-            cartController.addToCart(widget.product, quantity: 1);
-          },
-          icon: Icon(Icons.shopping_bag, color: Colors.white, size: 18.sp),
-          label: Text(
-            'Add to Cart',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 14.sp,
-            ),
+        ),
+        onPressed: () {
+          cartController.addToCart(widget.product, quantity: 1);
+        },
+        icon: Icon(Icons.shopping_bag, color: Colors.white, size: 14.sp),
+        label: Text(
+          'Add to Cart',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 12.sp,
           ),
         ),
       ),
@@ -352,42 +356,46 @@ class _ProductCardState extends State<ProductCard> {
 
   Widget _buildQuantitySelector(int quantity) {
     return Container(
-      height: 40.h,
+      height: 50.h,
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.primaryColor, width: 1),
+        borderRadius: BorderRadius.circular(5.r),
+        border: Border.all(color: AppColors.primaryColor, width: 1.w),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          IconButton(
-            onPressed:
-                () => cartController.decreaseQuantity(widget.product.id!),
-            icon: FaIcon(
-              quantity == 1 ? FontAwesomeIcons.trash : FontAwesomeIcons.minus,
-              size: 14,
-              color: AppColors.primaryColor,
+          InkWell(
+            onTap: () => cartController.decreaseQuantity(widget.product.id!),
+            child: Container(
+              padding: EdgeInsets.all(4.w),
+              child: FaIcon(
+                quantity == 1 ? FontAwesomeIcons.trash : FontAwesomeIcons.minus,
+                size: 10.sp,
+                color: AppColors.primaryColor,
+              ),
             ),
           ),
           Text(
             quantity.toString(),
             style: TextStyle(
               color: AppColors.primaryColor,
-              fontSize: 16,
+              fontSize: 12.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
-          IconButton(
-            onPressed: () {
+          InkWell(
+            onTap: () {
               cartController.increaseQuantity(widget.product.id!);
               widget.product.reactive;
             },
-            icon: FaIcon(
-              FontAwesomeIcons.plus,
-              size: 14,
-              color: AppColors.primaryColor,
+            child: Container(
+              padding: EdgeInsets.all(4.w),
+              child: FaIcon(
+                FontAwesomeIcons.plus,
+                size: 10.sp,
+                color: AppColors.primaryColor,
+              ),
             ),
           ),
         ],
