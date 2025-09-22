@@ -25,7 +25,7 @@ Future<void> main() async {
 
   runApp(
     ScreenUtilInit(
-      designSize: const Size(360, 800),
+      designSize: const Size(360, 700),
       minTextAdapt: true,
       splitScreenMode: true,
       useInheritedMediaQuery: true,
