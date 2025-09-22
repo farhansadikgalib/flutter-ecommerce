@@ -43,7 +43,7 @@ class CheckoutController extends BaseController {
   final args = Get.arguments;
   final cartProducts = <ProductData>[].obs;
   final subTotal = 0.0.obs;
-  final delivery = 60.0.obs;
+  final delivery = 0.0.obs;
   final couponAmount = 0.0.obs;
   final shippingId = 0.obs;
 
