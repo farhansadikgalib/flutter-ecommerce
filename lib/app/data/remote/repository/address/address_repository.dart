@@ -1,3 +1,4 @@
+import 'package:ousadbazar/app/data/remote/model/address/create_address_response.dart';
 import 'package:ousadbazar/app/data/remote/model/address/default_response.dart';
 import 'package:ousadbazar/app/data/remote/model/address/shipping_address_response.dart';
 import '../../../../services/network_service/api_client.dart';
@@ -36,14 +37,27 @@ class AddressRepository {
     return defaultResponseFromJson(response.toString());
   }
 
-  Future<DefaultResponse> createAddress(body) async {
+  Future<CreateAddressResponse> createAddress(
+    String title,
+    String address,
+    String notes,
+    String countryId,
+    String cityId,
+    String areaId,
+  ) async {
     var response = await ApiClient().post(
       ApiEndPoints.addCustomerAddress,
-      body,
+      {
+        "title": title,
+        "address": address,
+        "country_id": countryId,
+        "city_id": cityId,
+        "area_id": areaId,
+      },
       createAddress,
       isHeaderRequired: true,
       isLoaderRequired: true,
     );
-    return defaultResponseFromJson(response.toString());
+    return createAddressResponseFromJson(response.toString());
   }
 }
