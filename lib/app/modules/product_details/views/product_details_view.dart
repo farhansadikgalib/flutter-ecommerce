@@ -535,8 +535,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.66,
-                      crossAxisSpacing: 8.w,
-                      mainAxisSpacing: 8.h,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
                     ),
                     itemCount: relatedProducts.length,
                     itemBuilder: (BuildContext context, int index) {

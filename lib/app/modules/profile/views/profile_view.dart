@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/helper/app_helper.dart';
 import 'package:ousadbazar/app/core/helper/shared_value_helper.dart';
 import 'package:ousadbazar/app/core/style/app_colors.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -19,7 +20,7 @@ class ProfileView extends GetView<ProfileController> {
       {
         'icon': Icons.location_on,
         'title': 'Address',
-        'onTap': () => Get.toNamed('/address'),
+        'onTap': () => Get.toNamed(Routes.ADDRESS),
       },
       {
         'icon': Icons.payment,

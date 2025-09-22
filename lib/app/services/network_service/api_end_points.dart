@@ -13,6 +13,7 @@ class ApiEndPoints {
   static String home = "home";
   static String categories = "category_all";
   static String supplier = "all-supplier";
+
   static String bestSellingProduct({required int page}) =>
       "best-selling-product?page=$page&limit=30";
   static String ecomCategories = "all-ecom-categories";
@@ -84,4 +85,21 @@ class ApiEndPoints {
   static String area({required String cityId}) => "area/search?city_id=$cityId";
 
   //Checkout
+
+  // Address
+
+  static String customerAddress = "get-customer-address";
+  static String addCustomerAddress = "customer-address-store";
+
+  static String updateCustomerAddress({required String id}) =>
+      "customer-addr"
+      "ess-update/$id";
+
+  static String deleteCustomerAddress({required String id}) =>
+      "customer-addr"
+      "ess-delete/$id";
+
+  static String defaultCustomerAddress({required String id}) =>
+      "customer-address-default-s"
+      "elect/$id";
 }
