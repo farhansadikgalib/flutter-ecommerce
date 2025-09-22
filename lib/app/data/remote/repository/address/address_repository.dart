@@ -40,13 +40,36 @@ class AddressRepository {
   Future<CreateAddressResponse> createAddress(
     String title,
     String address,
-    String notes,
     String countryId,
     String cityId,
     String areaId,
   ) async {
     var response = await ApiClient().post(
       ApiEndPoints.addCustomerAddress,
+      {
+        "title": title,
+        "address": address,
+        "country_id": countryId,
+        "city_id": cityId,
+        "area_id": areaId,
+      },
+      createAddress,
+      isHeaderRequired: true,
+      isLoaderRequired: true,
+    );
+    return createAddressResponseFromJson(response.toString());
+  }
+
+  Future<CreateAddressResponse> updateAddress(
+    String id,
+    String title,
+    String address,
+    String countryId,
+    String cityId,
+    String areaId,
+  ) async {
+    var response = await ApiClient().post(
+      ApiEndPoints.updateCustomerAddress(id: id),
       {
         "title": title,
         "address": address,

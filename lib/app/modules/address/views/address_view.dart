@@ -409,15 +409,6 @@ class AddressView extends GetView<AddressController> {
     );
   }
 
-  String _formatDate(String dateString) {
-    try {
-      final date = DateTime.parse(dateString);
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (e) {
-      return dateString;
-    }
-  }
-
   Widget _buildSimpleFAB() {
     return FloatingActionButton.extended(
       onPressed: () => _showAddressDialog(),
@@ -465,115 +456,48 @@ class AddressView extends GetView<AddressController> {
         }
       }
     } else {
-      titleController.text = 'Home';
-      addressController.text = 'Comilla';
+      titleController.text = '';
+      addressController.text = '';
     }
 
     Get.to(
       () => Scaffold(
-        backgroundColor: Colors.grey[50],
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
+          titleSpacing: -10,
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.close, color: AppColors.black),
+            icon: Icon(Icons.arrow_back_ios, color: AppColors.primaryColor),
             onPressed: () => Get.back(),
           ),
           title: Text(
-            isEditing ? 'Edit Address' : 'Add New Address',
-            style: textAppBarStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.black,
+            isEditing ? 'Edit Address' : 'Add Address',
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.primaryColor,
             ),
           ),
-          centerTitle: true,
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (titleController.text.trim().isEmpty ||
-                    addressController.text.trim().isEmpty ||
-                    controller.selectedCountry.value == null ||
-                    controller.selectedCity.value == null ||
-                    controller.selectedArea.value == null) {
-                  Get.snackbar(
-                    'Error',
-                    'Please fill in all required fields and select location',
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: Colors.red,
-                    colorText: Colors.white,
-                  );
-                  return;
-                }
-
-                if (isEditing) {
-                  controller.editAddress(
-                    addressId: address.id!,
-                    title: titleController.text.trim(),
-                    address: addressController.text.trim(),
-                    notes: '',
-                    countryId:
-                        controller.selectedCountry.value?.id?.toString() ??
-                        address.countryId ??
-                        '1',
-                    cityId:
-                        controller.selectedCity.value?.id?.toString() ??
-                        address.cityId ??
-                        '1',
-                    areaId:
-                        controller.selectedArea.value?.id?.toString() ??
-                        address.areaId ??
-                        '1',
-                  );
-                } else {
-                  controller.createAddress(
-                    title: titleController.text.trim(),
-                    address: addressController.text.trim(),
-                    notes: '',
-                    countryId:
-                        controller.selectedCountry.value?.id?.toString() ?? '1',
-                    cityId:
-                        controller.selectedCity.value?.id?.toString() ?? '1',
-                    areaId:
-                        controller.selectedArea.value?.id?.toString() ?? '1',
-                  );
-                }
-
-                Get.back();
-              },
-              child: Text(
-                'SAVE',
-                style: textRegularStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-            ),
-          ],
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(20.w),
+        body: Padding(
+          padding: EdgeInsets.all(16.w),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20.h),
-
               // Title Field
-              _buildSimpleField(
+              _buildStyledField(
                 controller: titleController,
                 label: 'Title',
                 icon: Icons.label_outline,
+                hintText: 'Enter address title (e.g., Home, Office)',
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 16.h),
 
               // Country Dropdown
               Obx(
-                () => _buildSimpleDropdownField(
+                () => _buildStyledDropdownField(
                   label: 'Country',
-                  value:
-                      controller.selectedCountry.value?.name ??
-                      'Select Country',
+                  value: controller.selectedCountry.value?.name ?? 'Bangladesh',
                   icon: Icons.public,
                   items:
                       controller.countryList
@@ -591,13 +515,13 @@ class AddressView extends GetView<AddressController> {
                   },
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 16.h),
 
               // City Dropdown
               Obx(
-                () => _buildSimpleDropdownField(
+                () => _buildStyledDropdownField(
                   label: 'City',
-                  value: controller.selectedCity.value?.name ?? 'Select City',
+                  value: controller.selectedCity.value?.name ?? 'Dhaka',
                   icon: Icons.location_city,
                   items:
                       controller.cityList
@@ -615,13 +539,13 @@ class AddressView extends GetView<AddressController> {
                   },
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 16.h),
 
               // Area Dropdown
               Obx(
-                () => _buildSimpleDropdownField(
+                () => _buildStyledDropdownField(
                   label: 'Area',
-                  value: controller.selectedArea.value?.name ?? 'Select Area',
+                  value: controller.selectedArea.value?.name ?? 'Aftab Nagar',
                   icon: Icons.location_city_outlined,
                   items:
                       controller.areaList
@@ -637,17 +561,94 @@ class AddressView extends GetView<AddressController> {
                   },
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 16.h),
 
-              // Street Address Field (moved to end)
-              _buildSimpleField(
+              // Street Address Field
+              _buildStyledField(
                 controller: addressController,
-                label: 'Street Address',
-                icon: Icons.location_on_outlined,
-                maxLines: 3,
+                label: 'Address',
+                icon: Icons.location_on,
+                hintText: 'Enter your detailed address',
+                maxLines: 1,
               ),
 
-              SizedBox(height: 40.h),
+              SizedBox(height: 24.h),
+
+              // Save Button
+              SizedBox(
+                width: double.infinity,
+                height: 48.h,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (titleController.text.trim().isEmpty ||
+                        addressController.text.trim().isEmpty ||
+                        controller.selectedCountry.value == null ||
+                        controller.selectedCity.value == null ||
+                        controller.selectedArea.value == null) {
+                      Get.snackbar(
+                        'Error',
+                        'Please fill all fields',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                      return;
+                    }
+
+                    if (isEditing) {
+                      controller.editAddress(
+                        addressId: address.id!,
+                        title: titleController.text.trim(),
+                        address: addressController.text.trim(),
+                        notes: '',
+                        countryId:
+                            controller.selectedCountry.value?.id?.toString() ??
+                            address.countryId ??
+                            '1',
+                        cityId:
+                            controller.selectedCity.value?.id?.toString() ??
+                            address.cityId ??
+                            '1',
+                        areaId:
+                            controller.selectedArea.value?.id?.toString() ??
+                            address.areaId ??
+                            '1',
+                      );
+                    } else {
+                      controller.createAddress(
+                        title: titleController.text.trim(),
+                        address: addressController.text.trim(),
+                        notes: '',
+                        countryId:
+                            controller.selectedCountry.value?.id?.toString() ??
+                            '1',
+                        cityId:
+                            controller.selectedCity.value?.id?.toString() ??
+                            '1',
+                        areaId:
+                            controller.selectedArea.value?.id?.toString() ??
+                            '1',
+                      );
+                    }
+
+                    Get.back();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  child: Text(
+                    isEditing ? 'Update Address' : 'Save Address',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 20.h),
             ],
           ),
         ),
@@ -706,6 +707,194 @@ class AddressView extends GetView<AddressController> {
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
               vertical: 16.h,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStyledField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    String? hintText,
+    int maxLines = 1,
+  }) {
+    return TextField(
+      controller: controller,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        hintText: hintText ?? label,
+        hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
+        prefixIcon: Icon(icon, color: AppColors.primaryColor, size: 20.sp),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: AppColors.primaryColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: AppColors.primaryColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      ),
+    );
+  }
+
+  Widget _buildStyledDropdownField({
+    required String label,
+    required String value,
+    required IconData icon,
+    required List<String> items,
+    required Function(String?) onChanged,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: AppColors.primaryColor, size: 20.sp),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: items.contains(value) ? value : null,
+                hint: Text(
+                  label,
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
+                ),
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: AppColors.primaryColor,
+                  size: 20.sp,
+                ),
+                isExpanded: true,
+                items:
+                    items.map((String item) {
+                      return DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.black,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                onChanged: onChanged,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCleanField({
+    required TextEditingController controller,
+    required String label,
+    int maxLines = 1,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey[600],
+          ),
+        ),
+        SizedBox(height: 8.h),
+        TextField(
+          controller: controller,
+          maxLines: maxLines,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(color: AppColors.primaryColor),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+              vertical: 12.h,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCleanDropdownField({
+    required String label,
+    required String value,
+    required List<String> items,
+    required Function(String?) onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey[600],
+          ),
+        ),
+        SizedBox(height: 8.h),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey[300]!),
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: items.contains(value) ? value : null,
+              hint: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color:
+                      value.startsWith('Select')
+                          ? Colors.grey[500]
+                          : Colors.black,
+                ),
+              ),
+              icon: Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.grey[500],
+                size: 20.sp,
+              ),
+              isExpanded: true,
+              items:
+                  items.map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                      ),
+                    );
+                  }).toList(),
+              onChanged: onChanged,
             ),
           ),
         ),

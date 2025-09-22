@@ -21,6 +21,7 @@ class AddressController extends GetxController {
   final selectedCountry = Rx<CountryResponse?>(null);
   final selectedCity = Rx<CityResponse?>(null);
   final selectedArea = Rx<AreaResponse?>(null);
+
   @override
   void onInit() {
     super.onInit();
@@ -145,9 +146,12 @@ class AddressController extends GetxController {
     required String cityId,
     required String areaId,
   }) async {
-
     var response = await AddressRepository().createAddress(
-      title, address, notes, countryId, cityId, areaId,
+      title,
+      address,
+      countryId,
+      cityId,
+      areaId,
     );
     if (response.status == "success") {
       AppWidgets().getSnackBar(
@@ -161,8 +165,6 @@ class AddressController extends GetxController {
         message: response.message ?? 'Failed to create address',
       );
     }
-
-
   }
 
   Future<void> editAddress({
@@ -174,34 +176,25 @@ class AddressController extends GetxController {
     required String cityId,
     required String areaId,
   }) async {
-    try {
-      isLoading.value = true;
-
-      // Here you would typically call the API to update the address
-      // var response = await AddressRepository().editAddress(addressId, {
-      //   'title': title,
-      //   'address': address,
-      //   'notes': notes,
-      //   'country_id': countryId,
-      //   'city_id': cityId,
-      //   'area_id': areaId,
-      // });
-
-      // For now, showing success message and refreshing the list
+    var response = await AddressRepository().updateAddress(
+      addressId.toString(),
+      title,
+      address,
+      countryId,
+      cityId,
+      areaId,
+    );
+    if (response.status == "success") {
       AppWidgets().getSnackBar(
         title: 'Success',
-        message: 'Address updated successfully',
+        message: response.message ?? 'Address created successfully',
       );
-
-      // Refresh the address list
       getAllShippingAddress();
-    } catch (e) {
+    } else {
       AppWidgets().getSnackBar(
         title: 'Error',
-        message: 'Failed to update address',
+        message: response.message ?? 'Failed to create address',
       );
-    } finally {
-      isLoading.value = false;
     }
   }
 
