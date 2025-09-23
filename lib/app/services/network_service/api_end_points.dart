@@ -16,7 +16,15 @@ class ApiEndPoints {
 
   static String bestSellingProduct({required int page}) =>
       "best-selling-product?page=$page&limit=30";
+
+
+  static String categoryWiseProduct({required String categoryId}) =>
+      "all-products-paginated?page=1&search=&paginate=20&supplier_id=&sort_by"
+          "=asc&ecom_category_id=$categoryId";
+
   static String ecomCategories = "all-ecom-categories";
+
+
 
   //Home
 

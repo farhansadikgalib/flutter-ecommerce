@@ -63,4 +63,16 @@ class HomeRepository {
 
     return ecomCategoriesResponseFromJson(response.toString());
   }
+
+  Future<BestSellingProductResponse> getCategoryWiseProduct(String categoryId)
+  async {
+    var response = await ApiClient().get(
+      ApiEndPoints.categoryWiseProduct(categoryId: categoryId.toString()),
+      getBestSellingProducts,
+      isHeaderRequired: true,
+      isLoaderRequired: false,
+    );
+
+    return bestSellingProductResponseFromJson(response.toString());
+  }
 }

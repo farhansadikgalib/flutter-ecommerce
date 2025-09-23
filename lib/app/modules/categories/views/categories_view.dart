@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
+import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/global_appbar.dart';
+import '../../../core/widget/product_card.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/categories_controller.dart';
 
@@ -239,10 +241,22 @@ class CategoriesView extends GetView<CategoriesController> {
           key: ValueKey(selectedIndex),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Category header
+            Container(
+              padding: EdgeInsets.all(20.w),
+              child: Text(
+                selectedCategory.name ?? 'Category',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+            ),
             Expanded(
               child:
                   subcategories.isEmpty
-                      ? _buildDirectCategoryNavigation(selectedCategory)
+                      ? _buildProductsGrid()
                       : _buildSubcategoriesGrid(subcategories),
             ),
           ],
@@ -270,7 +284,7 @@ class CategoriesView extends GetView<CategoriesController> {
 
   Widget _buildSubcategoryCard(dynamic subcategory, int index) {
     return GestureDetector(
-      onTap: () => {},
+      onTap: () => _navigateToProducts(subcategory),
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300 + (index * 100)),
         curve: Curves.easeOutBack,
@@ -351,6 +365,98 @@ class CategoriesView extends GetView<CategoriesController> {
     );
   }
 
+  Widget _buildProductsGrid() {
+    return Obx(() {
+      if (controller.categoryWiseProducts.isEmpty) {
+        return _buildEmptyProductsState();
+      }
+
+      return GridView.builder(
+        padding: EdgeInsets.all(16.w),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.6,
+        ),
+        itemCount: controller.categoryWiseProducts.length,
+        itemBuilder: (context, index) {
+          final product = controller.categoryWiseProducts[index];
+          return ProductCard(
+            product: product,
+            index: index,
+            showDiscountTag: true,
+          );
+        },
+      );
+    });
+  }
+
+  Widget _buildEmptyProductsState() {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.all(40.w),
+        padding: EdgeInsets.all(32.w),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white, Colors.grey[50]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Empty state icon
+            Container(
+              width: 100.w,
+              height: 100.h,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.grey.withOpacity(0.1),
+                    Colors.grey.withOpacity(0.05),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(30.r),
+              ),
+              child: Icon(
+                Icons.shopping_bag_outlined,
+                color: Colors.grey[400],
+                size: 50.sp,
+              ),
+            ),
+
+            SizedBox(height: 24.h),
+
+            Text(
+              'No Products Found',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[600],
+              ),
+            ),
+
+            SizedBox(height: 8.h),
+
+            Text(
+              'This category doesn\'t have any\nproducts available right now',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildDirectCategoryNavigation(dynamic category) {
     return Center(
       child: Container(
@@ -409,6 +515,7 @@ class CategoriesView extends GetView<CategoriesController> {
 
             Text(
               'This category has products ready\nfor you to discover',
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
             ),
           ],
