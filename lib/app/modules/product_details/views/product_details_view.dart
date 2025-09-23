@@ -792,11 +792,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
             // Bottom Add to Cart Bar with improved styling
             Positioned(
-              bottom: 0,
+              bottom: 18.h,
               left: 0,
               right: 0,
               child: Container(
-                height: 70.h,
+                height: 50.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -808,7 +808,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ),
                   ],
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 5.h),
                 child: Row(
                   children: [
                     // Add to Cart/Quantity buttons - Same logic as ProductCard
@@ -828,7 +828,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ),
 
                     SizedBox(width: 12.w),
-
+/*
                     // Wishlist button
                     Container(
                       decoration: BoxDecoration(
@@ -851,7 +851,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           wishlistItem.value = !wishlistItem.value;
                         },
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
