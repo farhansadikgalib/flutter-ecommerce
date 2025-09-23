@@ -127,7 +127,7 @@ class _ProductCardState extends State<ProductCard> {
                           imagePath: getProductImage(),
                           height: double.infinity,
                           width: double.infinity,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           errorWidget: AnyImageView(
                             imagePath: Assets.pngNotFound,
                             fit: BoxFit.cover,
