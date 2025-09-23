@@ -25,22 +25,11 @@ class CheckoutController extends BaseController {
   final name = TextEditingController().obs;
   final mobile = TextEditingController().obs;
   final email = TextEditingController().obs;
-  final address = TextEditingController().obs;
   final coupon = TextEditingController().obs;
-  final city = ''.obs;
-  final area = ''.obs;
-
-  // Country and City Selection
-  final selectedCountry = Rx<CountryResponse?>(null);
-  final selectedCity = Rx<CityResponse?>(null);
-  final selectedArea = Rx<AreaResponse?>(null);
 
   final shippingInfo = <ShippingInfo>[].obs;
 
   final paymentMethods = <PaymentMethodResponse>[].obs;
-  final countryList = <CountryResponse>[].obs;
-  final cityList = <CityResponse>[].obs;
-  final areaList = <AreaResponse>[].obs;
 
   final args = Get.arguments;
   final cartProducts = <ProductData>[].obs;
@@ -59,26 +48,18 @@ class CheckoutController extends BaseController {
 
     loadAddressData();
 
+    // Listen to address controller changes
+    final addressController = Get.find<AddressController>();
+    ever(addressController.shippingAddressList, (addresses) {
+      printLog('CheckoutController: Address list changed, syncing...');
+      shippingAddressList.clear();
+      shippingAddressList.addAll(addresses);
+    });
+
     if (args != null) {
       cartProducts.addAll(args['cartProducts']);
       subTotal.value = args['subTotal'];
     }
-
-    /*
-    if (kDebugMode) {
-      name.value.text = 'Test User';
-      mobile.value.text = '01773076754';
-      email.value.text = 'test@gmail.com';
-      address.value.text = 'Test Address';
-    }
-*/
-
-    // Future.microtask(() async {
-    //   await getCountryList();
-    //   await getCityList();
-    //   await getAreaList();
-    // });
-
     getPaymentMethods();
   }
 
@@ -86,7 +67,6 @@ class CheckoutController extends BaseController {
     try {
       var addressController = Get.find<AddressController>();
 
-      // Ensure address controller is properly initialized
       if (addressController.shippingAddressList.isEmpty) {
         await addressController.getAllShippingAddress();
       }
@@ -100,48 +80,26 @@ class CheckoutController extends BaseController {
     }
   }
 
+  Future<void> refreshAddressList() async {
+    try {
+      var addressController = Get.find<AddressController>();
+      await addressController.getAllShippingAddress();
+      shippingAddressList.clear();
+      shippingAddressList.addAll(addressController.shippingAddressList);
+      printLog(
+        'CheckoutController: Refreshed address list - ${shippingAddressList.length} addresses',
+      );
+    } catch (e) {
+      printLog('CheckoutController: Error refreshing address data: $e');
+    }
+  }
+
   Future<void> getPaymentMethods() async {
     var response = await CheckoutRepository().paymentMethods();
     paymentMethods.clear();
     paymentMethods.addAll(response);
     selectedPaymentMethod.value = '1';
   }
-
-  // Future<void> getCountryList() async {
-  //   var response = await CheckoutRepository().getCountry();
-  //   countryList.clear();
-  //   countryList.addAll(response);
-  //   // Auto-select the first country and prevent user changes
-  //   if (countryList.isNotEmpty) {
-  //     selectedCountry.value = countryList.first;
-  //   }
-  // }
-  //
-  // Future<void> getCityList() async {
-  //   var response = await CheckoutRepository().getCity(
-  //     countryList.first.id.toString(),
-  //   );
-  //   printLog(response);
-  //   cityList.clear();
-  //   cityList.addAll(response);
-  //   // Auto-select the first city and prevent user changes
-  //   if (cityList.isNotEmpty) {
-  //     selectedCity.value = cityList.first;
-  //   }
-  // }
-  //
-  // Future<void> getAreaList() async {
-  //   var response = await CheckoutRepository().getArea(
-  //     cityList.first.id.toString(),
-  //   );
-  //   printLog(response);
-  //   areaList.clear();
-  //   areaList.addAll(response);
-  //   // Auto-select the first area and prevent user changes
-  //   if (areaList.isNotEmpty) {
-  //     selectedArea.value = areaList.first;
-  //   }
-  // }
 
   Future<void> getShippingInfo() async {
     var response = await CheckoutRepository().getShippingInfo();
@@ -187,20 +145,7 @@ class CheckoutController extends BaseController {
       );
       return;
     }
-    // if (address.value.text.isEmpty) {
-    //   AppWidgets().getSnackBar(
-    //     title: 'Error',
-    //     message: 'Please enter your address',
-    //   );
-    //   return;
-    // }
-    // if (city.value.isEmpty) {
-    //   AppWidgets().getSnackBar(
-    //     title: 'Error',
-    //     message: 'Please select your city',
-    //   );
-    //   return;
-    // }
+
     if (selectedPaymentMethod.value.isEmpty) {
       AppWidgets().getSnackBar(
         title: 'Error',
@@ -217,11 +162,51 @@ class CheckoutController extends BaseController {
       return;
     }
 
+    // Validate address selection
+    if (shippingAddressList.isEmpty) {
+      AppWidgets().getSnackBar(
+        title: 'Error',
+        message: 'Please add a shipping address',
+      );
+      return;
+    }
+
+    final addressController = Get.find<AddressController>();
+    if (addressController.selectedAddressId.value == null &&
+        addressController.defaultAddress == null) {
+      AppWidgets().getSnackBar(
+        title: 'Error',
+        message: 'Please select a shipping address',
+      );
+      return;
+    }
+
     placeOrder();
   }
 
   void placeOrder() async {
     printLog('place order');
+
+    // Get the selected address data
+    final addressController = Get.find<AddressController>();
+    AddressResponse? selectedAddress;
+
+    if (addressController.selectedAddressId.value != null) {
+      selectedAddress = shippingAddressList.firstWhereOrNull(
+        (addr) => addr.id == addressController.selectedAddressId.value,
+      );
+    }
+
+    selectedAddress ??= addressController.defaultAddress;
+    selectedAddress ??=
+        shippingAddressList.isNotEmpty ? shippingAddressList.first : null;
+
+    printLog(
+      'Selected address for order: ${selectedAddress?.id} - ${selectedAddress?.title}',
+    );
+    printLog(
+      'Address details: ${selectedAddress?.address}, ${selectedAddress?.city?.name}',
+    );
 
     OderPlaceRequest orderRequest = OderPlaceRequest(
       saleProducts:
@@ -255,15 +240,14 @@ class CheckoutController extends BaseController {
       billingAddress: BillingAddress(
         fullName: name.value.text,
         mobile: mobile.value.text,
-        address: address.value.text,
-        countryId: selectedCountry.value?.id.toString(),
-        cityId: selectedCity.value?.id.toString(),
-        areaId: selectedArea.value?.id.toString(),
-        notes: '',
+        address: selectedAddress?.address ?? '',
+        countryId: selectedAddress?.countryId.toString(),
+        cityId: selectedAddress?.cityId.toString(),
+        areaId: selectedAddress?.areaId.toString(),
+        customerAddressId: selectedAddress?.id?.toString(),
+        notes: selectedAddress?.notes ?? '',
       ),
-      paymentMethodId:
-          int.tryParse(selectedPaymentMethod.value) ??
-          1, // Use selected payment method
+      paymentMethodId: int.tryParse(selectedPaymentMethod.value) ?? 1,
       customerId: int.tryParse(userId.$) ?? 0,
     );
 
@@ -282,26 +266,6 @@ class CheckoutController extends BaseController {
         title: 'Error',
         message: response.message.toString(),
       );
-    }
-  }
-
-  // Method to fetch cities by country ID
-  Future<void> getCitiesByCountry(int countryId) async {
-    try {
-      showLoading();
-      cityList.clear();
-      selectedCity.value = null;
-
-      var response = await CheckoutRepository().getCity(countryId.toString());
-      printLog(response);
-      cityList.addAll(response);
-    } catch (e) {
-      AppWidgets().getSnackBar(
-        title: 'Error',
-        message: 'Failed to load cities: $e',
-      );
-    } finally {
-      hideLoading();
     }
   }
 }

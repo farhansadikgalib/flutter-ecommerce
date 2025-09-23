@@ -582,8 +582,13 @@ class CheckoutView extends BaseView<CheckoutController> {
       }
 
       // Sync address list if checkout controller is empty but address controller has data
-      if (controller.shippingAddressList.isEmpty &&
-          addressController.shippingAddressList.isNotEmpty) {
+      // Sync address list if checkout controller is out of sync with address controller
+      if (controller.shippingAddressList.length !=
+          addressController.shippingAddressList.length) {
+        print(
+          'CheckoutView: Address lists out of sync (${controller.shippingAddressList.length} vs ${addressController.shippingAddressList.length}) - refreshing',
+        );
+        controller.shippingAddressList.clear();
         controller.shippingAddressList.addAll(
           addressController.shippingAddressList,
         );
@@ -754,7 +759,7 @@ class CheckoutView extends BaseView<CheckoutController> {
   Widget _buildEmptyAddressState() {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.symmetric(horizontal:40.w,vertical: 8.h),
         decoration: BoxDecoration(
           color: Colors.grey[50],
           borderRadius: BorderRadius.circular(8.r),
@@ -971,12 +976,7 @@ class CheckoutView extends BaseView<CheckoutController> {
   }
 
   Future<void> _refreshAddressList() async {
-    final addressController = Get.find<AddressController>();
-    await addressController.getAllShippingAddress();
-    controller.shippingAddressList.clear();
-    controller.shippingAddressList.addAll(
-      addressController.shippingAddressList,
-    );
+    await controller.refreshAddressList();
   }
 
   void _showAddressSelectionDialog() {
