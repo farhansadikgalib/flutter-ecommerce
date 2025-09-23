@@ -803,111 +803,132 @@ class CheckoutView extends BaseView<CheckoutController> {
   }
 
   Widget _buildSelectedAddress() {
-    final addressController = Get.find<AddressController>();
-    final selectedAddress =
-        addressController.defaultAddress ??
-        controller.shippingAddressList.first;
+    return Obx(() {
+      final addressController = Get.find<AddressController>();
 
-    return Container(
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: AppColors.primaryColor, width: 1.5),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(6.w),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                child: Icon(
-                  Icons.location_on,
-                  color: AppColors.primaryColor,
-                  size: 16.sp,
-                ),
-              ),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: Text(
-                  selectedAddress.title ?? 'Address',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.black,
-                  ),
-                ),
-              ),
-              if ((selectedAddress.addressResponseDefault == "1" ||
-                  selectedAddress.addressResponseDefault == "true"))
+      // Try to get selected address, then default, then first available
+      AddressResponse? selectedAddress;
+
+      if (addressController.selectedAddressId.value != null) {
+        selectedAddress = controller.shippingAddressList.firstWhereOrNull(
+          (addr) => addr.id == addressController.selectedAddressId.value,
+        );
+      }
+
+      selectedAddress ??= addressController.defaultAddress;
+      selectedAddress ??=
+          controller.shippingAddressList.isNotEmpty
+              ? controller.shippingAddressList.first
+              : null;
+
+      if (selectedAddress == null) {
+        return _buildEmptyAddressState();
+      }
+
+      return Container(
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(color: AppColors.primaryColor, width: 1.5),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                  padding: EdgeInsets.all(6.w),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(10.r),
+                    color: AppColors.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
+                  child: Icon(
+                    Icons.location_on,
+                    color: AppColors.primaryColor,
+                    size: 16.sp,
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
                   child: Text(
-                    'DEFAULT',
+                    selectedAddress.title ?? 'Address',
                     style: TextStyle(
-                      fontSize: 8.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: AppColors.black,
                     ),
                   ),
                 ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (selectedAddress.address?.isNotEmpty == true)
-                  _buildAddressDetailRow(
-                    icon: Icons.home_outlined,
-                    label: 'Address',
-                    value: selectedAddress.address!,
+                if ((selectedAddress.addressResponseDefault == "1" ||
+                    selectedAddress.addressResponseDefault == "true"))
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.w,
+                      vertical: 2.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Text(
+                      'DEFAULT',
+                      style: TextStyle(
+                        fontSize: 8.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                if (selectedAddress.area?.name != null) ...[
-                  SizedBox(height: 4.h),
-                  _buildAddressDetailRow(
-                    icon: Icons.location_city_outlined,
-                    label: 'Area',
-                    value: selectedAddress.area!.name!,
-                  ),
-                ],
-                if (selectedAddress.city?.name != null) ...[
-                  SizedBox(height: 4.h),
-                  _buildAddressDetailRow(
-                    icon: Icons.location_city,
-                    label: 'City',
-                    value: selectedAddress.city!.name!,
-                  ),
-                ],
-                if (selectedAddress.country?.name != null) ...[
-                  SizedBox(height: 4.h),
-                  _buildAddressDetailRow(
-                    icon: Icons.public,
-                    label: 'Country',
-                    value: selectedAddress.country!.name!,
-                  ),
-                ],
               ],
             ),
-          ),
-        ],
-      ),
-    );
+            SizedBox(height: 8.h),
+            Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(6.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (selectedAddress.address?.isNotEmpty == true)
+                    _buildAddressDetailRow(
+                      icon: Icons.home_outlined,
+                      label: 'Address',
+                      value: selectedAddress.address!,
+                    ),
+                  if (selectedAddress.area?.name != null) ...[
+                    SizedBox(height: 4.h),
+                    _buildAddressDetailRow(
+                      icon: Icons.location_city_outlined,
+                      label: 'Area',
+                      value: selectedAddress.area!.name!,
+                    ),
+                  ],
+                  if (selectedAddress.city?.name != null) ...[
+                    SizedBox(height: 4.h),
+                    _buildAddressDetailRow(
+                      icon: Icons.location_city,
+                      label: 'City',
+                      value: selectedAddress.city!.name!,
+                    ),
+                  ],
+                  if (selectedAddress.country?.name != null) ...[
+                    SizedBox(height: 4.h),
+                    _buildAddressDetailRow(
+                      icon: Icons.public,
+                      label: 'Country',
+                      value: selectedAddress.country!.name!,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildAddressDetailRow({
@@ -945,14 +966,17 @@ class CheckoutView extends BaseView<CheckoutController> {
       duration: const Duration(milliseconds: 300),
     )?.then((_) {
       // Refresh address list when returning from form
-      final addressController = Get.find<AddressController>();
-      addressController.getAllShippingAddress().then((_) {
-        controller.shippingAddressList.clear();
-        controller.shippingAddressList.addAll(
-          addressController.shippingAddressList,
-        );
-      });
+      _refreshAddressList();
     });
+  }
+
+  Future<void> _refreshAddressList() async {
+    final addressController = Get.find<AddressController>();
+    await addressController.getAllShippingAddress();
+    controller.shippingAddressList.clear();
+    controller.shippingAddressList.addAll(
+      addressController.shippingAddressList,
+    );
   }
 
   void _showAddressSelectionDialog() {

@@ -83,21 +83,49 @@ class AddressController extends GetxController {
           'AddressController: Updated shippingAddressList with ${shippingAddressList.length} addresses',
         );
 
-        // Set the first default address as selected if any
-        final defaultAddress = response.firstWhereOrNull(
-          (address) =>
-              address.addressResponseDefault == "1" ||
-              address.addressResponseDefault == "true",
-        );
-        if (defaultAddress != null) {
-          selectedAddressId.value = defaultAddress.id;
-          printLog(
-            'AddressController: Set default address as selected: ${defaultAddress.id}',
+        // Set the first default address as selected if no address is currently selected
+        if (selectedAddressId.value == null) {
+          final defaultAddress = response.firstWhereOrNull(
+            (address) =>
+                address.addressResponseDefault == "1" ||
+                address.addressResponseDefault == "true",
           );
+          if (defaultAddress != null) {
+            selectedAddressId.value = defaultAddress.id;
+            printLog(
+              'AddressController: Set default address as selected: ${defaultAddress.id}',
+            );
+          } else if (response.isNotEmpty) {
+            // If no default, select the first address
+            selectedAddressId.value = response.first.id;
+            printLog(
+              'AddressController: Set first address as selected: ${response.first.id}',
+            );
+          }
+        } else {
+          // Verify that the currently selected address still exists
+          final stillExists = response.any(
+            (addr) => addr.id == selectedAddressId.value,
+          );
+          if (!stillExists) {
+            // If selected address was deleted, select default or first available
+            final defaultAddress = response.firstWhereOrNull(
+              (address) =>
+                  address.addressResponseDefault == "1" ||
+                  address.addressResponseDefault == "true",
+            );
+            selectedAddressId.value = defaultAddress?.id ?? response.first.id;
+            printLog(
+              'AddressController: Selected address no longer exists, switched to: ${selectedAddressId.value}',
+            );
+          }
         }
       } else {
         shippingAddressList.clear();
-        printLog('AddressController: No addresses found, cleared list');
+        selectedAddressId.value = null;
+        printLog(
+          'AddressController: No addresses found, cleared list and selection',
+        );
       }
     } catch (e) {
       Get.snackbar(
@@ -172,7 +200,16 @@ class AddressController extends GetxController {
         title: 'Success',
         message: response.message ?? 'Address created successfully',
       );
-      getAllShippingAddress();
+      await getAllShippingAddress();
+
+      // Select the newly created address (usually the last one if no ID is returned)
+      if (shippingAddressList.isNotEmpty) {
+        // Try to find the most recently created address or select the last one
+        selectedAddressId.value = shippingAddressList.last.id;
+        printLog(
+          'AddressController: Selected newly created address: ${selectedAddressId.value}',
+        );
+      }
     } else {
       AppWidgets().getSnackBar(
         title: 'Error',
@@ -201,13 +238,17 @@ class AddressController extends GetxController {
     if (response.status == "success") {
       AppWidgets().getSnackBar(
         title: 'Success',
-        message: response.message ?? 'Address created successfully',
+        message: response.message ?? 'Address updated successfully',
       );
-      getAllShippingAddress();
+
+      // Keep the edited address selected
+      selectedAddressId.value = addressId;
+      await getAllShippingAddress();
+      printLog('AddressController: Kept edited address selected: $addressId');
     } else {
       AppWidgets().getSnackBar(
         title: 'Error',
-        message: response.message ?? 'Failed to create address',
+        message: response.message ?? 'Failed to update address',
       );
     }
   }

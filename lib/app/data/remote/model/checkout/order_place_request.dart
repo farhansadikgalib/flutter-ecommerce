@@ -66,6 +66,7 @@ class BillingAddress {
   String? cityId;
   String? areaId;
   String? notes;
+  String? customerAddressId;
 
   BillingAddress({
     this.fullName,
@@ -75,6 +76,7 @@ class BillingAddress {
     this.cityId,
     this.areaId,
     this.notes,
+    this.customerAddressId
   });
 
   factory BillingAddress.fromJson(Map<String, dynamic> json) => BillingAddress(
@@ -85,6 +87,7 @@ class BillingAddress {
     cityId: json["city_id"],
     areaId: json["area_id"],
     notes: json["notes"],
+    customerAddressId: json["customer_address_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -95,6 +98,7 @@ class BillingAddress {
     "city_id": cityId,
     "area_id": areaId,
     "notes": notes,
+    "customer_address_id": customerAddressId,
   };
 }
 
