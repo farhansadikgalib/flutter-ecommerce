@@ -9,9 +9,11 @@ import 'package:ousadbazar/app/data/remote/model/checkout/area_response.dart';
 import 'package:ousadbazar/app/data/remote/model/checkout/city_response.dart';
 import 'package:ousadbazar/app/data/remote/model/checkout/country_response.dart';
 import 'package:ousadbazar/app/data/remote/model/checkout/payment_method_response.dart';
+import 'package:ousadbazar/app/modules/address/controllers/address_controller.dart';
 import 'package:ousadbazar/app/modules/cart/controllers/cart_controller.dart';
 import 'package:ousadbazar/app/routes/app_pages.dart';
 
+import '../../../data/remote/model/address/shipping_address_response.dart';
 import '../../../data/remote/model/checkout/order_place_request.dart';
 import '../../../data/remote/model/checkout/shipping_info_response.dart';
 import '../../../data/remote/repository/checkout/checkout_repository.dart';
@@ -46,6 +48,8 @@ class CheckoutController extends BaseController {
   final delivery = 0.0.obs;
   final couponAmount = 0.0.obs;
   final shippingId = 0.obs;
+  final shippingAddressList = <AddressResponse>[].obs;
+
 
   @override
   void onInit() {
@@ -54,6 +58,9 @@ class CheckoutController extends BaseController {
     email.value.text = userEmail.$;
     mobile.value.text = userPhone.$;
 
+    var controller = Get.find<AddressController>();
+    controller.onInit();
+    shippingAddressList.addAll(controller.shippingAddressList);
 
     if (args != null) {
       cartProducts.addAll(args['cartProducts']);
@@ -69,12 +76,15 @@ class CheckoutController extends BaseController {
     }
 */
 
-    Future.microtask(() async {
-      await getCountryList();
-      await getCityList();
-      await getAreaList();
-      getPaymentMethods();
-    });
+    // Future.microtask(() async {
+    //   await getCountryList();
+    //   await getCityList();
+    //   await getAreaList();
+    // });
+
+    getPaymentMethods();
+
+
   }
 
   Future<void> getPaymentMethods() async {
@@ -84,41 +94,41 @@ class CheckoutController extends BaseController {
     selectedPaymentMethod.value =  '1';
   }
 
-  Future<void> getCountryList() async {
-    var response = await CheckoutRepository().getCountry();
-    countryList.clear();
-    countryList.addAll(response);
-    // Auto-select the first country and prevent user changes
-    if (countryList.isNotEmpty) {
-      selectedCountry.value = countryList.first;
-    }
-  }
-
-  Future<void> getCityList() async {
-    var response = await CheckoutRepository().getCity(
-      countryList.first.id.toString(),
-    );
-    printLog(response);
-    cityList.clear();
-    cityList.addAll(response);
-    // Auto-select the first city and prevent user changes
-    if (cityList.isNotEmpty) {
-      selectedCity.value = cityList.first;
-    }
-  }
-
-  Future<void> getAreaList() async {
-    var response = await CheckoutRepository().getArea(
-      cityList.first.id.toString(),
-    );
-    printLog(response);
-    areaList.clear();
-    areaList.addAll(response);
-    // Auto-select the first area and prevent user changes
-    if (areaList.isNotEmpty) {
-      selectedArea.value = areaList.first;
-    }
-  }
+  // Future<void> getCountryList() async {
+  //   var response = await CheckoutRepository().getCountry();
+  //   countryList.clear();
+  //   countryList.addAll(response);
+  //   // Auto-select the first country and prevent user changes
+  //   if (countryList.isNotEmpty) {
+  //     selectedCountry.value = countryList.first;
+  //   }
+  // }
+  //
+  // Future<void> getCityList() async {
+  //   var response = await CheckoutRepository().getCity(
+  //     countryList.first.id.toString(),
+  //   );
+  //   printLog(response);
+  //   cityList.clear();
+  //   cityList.addAll(response);
+  //   // Auto-select the first city and prevent user changes
+  //   if (cityList.isNotEmpty) {
+  //     selectedCity.value = cityList.first;
+  //   }
+  // }
+  //
+  // Future<void> getAreaList() async {
+  //   var response = await CheckoutRepository().getArea(
+  //     cityList.first.id.toString(),
+  //   );
+  //   printLog(response);
+  //   areaList.clear();
+  //   areaList.addAll(response);
+  //   // Auto-select the first area and prevent user changes
+  //   if (areaList.isNotEmpty) {
+  //     selectedArea.value = areaList.first;
+  //   }
+  // }
 
   Future<void> getShippingInfo() async {
     var response = await CheckoutRepository().getShippingInfo();

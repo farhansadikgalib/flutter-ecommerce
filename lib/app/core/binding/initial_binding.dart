@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ousadbazar/app/core/helper/auth_helper.dart';
 import 'package:ousadbazar/app/modules/address/controllers/address_controller.dart';
 import 'package:ousadbazar/app/modules/categories/controllers/categories_controller.dart';
 import 'package:ousadbazar/app/modules/wishlist/controllers/wishlist_controller.dart';
@@ -11,11 +12,10 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     ConnectionManagerBinding().dependencies();
-    Get.put(CategoriesController(), permanent: true);
     Get.put(HomeController(), permanent: true);
     Get.put(CartController(), permanent: true);
+    Get.put(CategoriesController(), permanent: true);
     Get.put(WishlistController(), permanent: true);
     Get.put(LoginController(), permanent: true);
-    Get.put(AddressController(), permanent: true);
   }
 }

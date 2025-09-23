@@ -6,12 +6,15 @@ import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:ousadbazar/app/core/helper/print_log.dart';
 import 'package:ousadbazar/app/core/style/app_colors.dart';
 import 'package:ousadbazar/app/core/widget/global_appbar.dart';
+import 'package:ousadbazar/app/routes/app_pages.dart';
 
+import '../../../core/style/app_style.dart';
 import '../../../core/widget/common_textfield.dart';
 import '../../../data/remote/model/checkout/area_response.dart';
 import '../../../data/remote/model/checkout/country_response.dart';
 import '../../../data/remote/model/checkout/city_response.dart';
 import '../../../data/remote/model/checkout/payment_method_response.dart';
+import '../../address/views/address_form_view.dart';
 import '../controllers/checkout_controller.dart';
 
 class CheckoutView extends BaseView<CheckoutController> {
@@ -67,8 +70,14 @@ class CheckoutView extends BaseView<CheckoutController> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   AppWidgets().gapH8(),
+                  controller.shippingAddressList.isEmpty? _buildEmptyState(): SizedBox.shrink(),
+
+
+
+
+
                   // Country Dropdown (read-only)
-                  SizedBox(
+       /*           SizedBox(
                     height: 40.h,
                     child: Obx(
                       () => DropdownButtonFormField<CountryResponse>(
@@ -234,7 +243,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                     controller: controller.address.value,
                     labelText: 'Address',
                     icon: Icons.location_on,
-                  ),
+                  ),*/
                 ],
               ),
             ),
@@ -553,4 +562,42 @@ class CheckoutView extends BaseView<CheckoutController> {
       ),
     );
   }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 24.h),
+            Text(
+              'No Addresses Found',
+              style: textHeaderStyle(fontSize: 20, color: AppColors.black),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Add your first address to get started',
+              textAlign: TextAlign.center,
+              style: textRegularStyle(fontSize: 14, color: AppColors.textColor),
+            ),
+            SizedBox(height: 32.h),
+            ElevatedButton(
+              onPressed: () =>     Get.toNamed(Routes.ADDRESS),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+              ),
+              child: Text('Add Address', style: textButtonStyle(fontSize: 14)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
 }

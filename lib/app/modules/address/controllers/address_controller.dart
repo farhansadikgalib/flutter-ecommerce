@@ -25,12 +25,12 @@ class AddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getAllShippingAddress();
     Future.microtask(() async {
       await getCountryList();
       await getCityList();
       await getAreaList();
     });
-    getAllShippingAddress();
   }
 
   Future<void> getCountryList() async {
