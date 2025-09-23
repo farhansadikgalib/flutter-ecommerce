@@ -47,8 +47,8 @@ class LoginController extends GetxController {
     super.onInit();
     if (kDebugMode) {
       nameController.text = 'Farhan';
-      emailController.text = 'rifat@gmail.com';
-      phoneController.text = '01800000000';
+      emailController.text = 'farhan@gmail.com';
+      phoneController.text = '01773076754';
       passwordController.text = '12345678';
     }
   }
@@ -127,8 +127,8 @@ class LoginController extends GetxController {
     passwordError.value = '';
     if (value.isEmpty) {
       passwordError.value = 'Password is required';
-    } else if (value.length < 6) {
-      passwordError.value = 'Password must be at least 6 characters';
+    } else if (value.length < 8) {
+      passwordError.value = 'Password must be at least 8 characters';
     }
   }
 
