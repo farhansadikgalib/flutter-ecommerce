@@ -320,7 +320,7 @@ class CheckoutView extends BaseView<CheckoutController> {
 
                   AppWidgets().gapH8(),
                   Obx(
-                    () => Column(
+                        () => Column(
                       children: [
                         // Cash on Delivery - Hardcoded shipping method
                         RadioListTile<String>(
@@ -513,38 +513,38 @@ class CheckoutView extends BaseView<CheckoutController> {
                   Divider(color: AppColors.primaryColor),
                   AppWidgets().gapH8(),
                   Obx(
-                    () => Column(
+                        () => Column(
                       children:
-                          controller.paymentMethods.map((
-                            PaymentMethodResponse paymentMethod,
+                      controller.paymentMethods.map((
+                          PaymentMethodResponse paymentMethod,
                           ) {
-                            return RadioListTile<String>(
-                              contentPadding: EdgeInsets.zero,
-                              dense: true,
-                              fillColor: WidgetStateProperty.all<Color>(
-                                AppColors.primaryColor,
-                              ),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              title: Text(
-                                paymentMethod.name ?? '',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              value:
-                                  paymentMethod.id
-                                      .toString(), // Use ID as string
-                              groupValue:
-                                  controller.selectedPaymentMethod.value,
-                              onChanged: (value) {
-                                controller.selectedPaymentMethod.value = value!;
-                                printLog(
-                                  controller.selectedShippingMethod.value,
-                                );
-                                printLog(
-                                  'Selected payment method id: ${paymentMethod.id}',
-                                );
-                              },
+                        return RadioListTile<String>(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          fillColor: WidgetStateProperty.all<Color>(
+                            AppColors.primaryColor,
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(
+                            paymentMethod.name ?? '',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          value:
+                          paymentMethod.id
+                              .toString(), // Use ID as string
+                          groupValue:
+                          controller.selectedPaymentMethod.value,
+                          onChanged: (value) {
+                            controller.selectedPaymentMethod.value = value!;
+                            printLog(
+                              controller.selectedShippingMethod.value,
                             );
-                          }).toList(),
+                            printLog(
+                              'Selected payment method id: ${paymentMethod.id}',
+                            );
+                          },
+                        );
+                      }).toList(),
                     ),
                   ),
                 ],
@@ -634,18 +634,20 @@ class CheckoutView extends BaseView<CheckoutController> {
           _buildSelectedAddress(),
           if (controller.shippingAddressList.length > 1) ...[
             SizedBox(height: 8.h),
-            TextButton.icon(
-              onPressed: () => _showAddressSelectionDialog(),
-              icon: Icon(
-                Icons.swap_horiz,
-                size: 16.sp,
-                color: AppColors.primaryColor,
-              ),
-              label: Text(
-                'Change Address',
-                style: TextStyle(
-                  fontSize: 12.sp,
+            Center(
+              child: TextButton.icon(
+                onPressed: () => _showAddressSelectionDialog(),
+                icon: Icon(
+                  Icons.swap_horiz,
+                  size: 16.sp,
                   color: AppColors.primaryColor,
+                ),
+                label: Text(
+                  'Change Address',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ),
             ),
@@ -816,15 +818,15 @@ class CheckoutView extends BaseView<CheckoutController> {
 
       if (addressController.selectedAddressId.value != null) {
         selectedAddress = controller.shippingAddressList.firstWhereOrNull(
-          (addr) => addr.id == addressController.selectedAddressId.value,
+              (addr) => addr.id == addressController.selectedAddressId.value,
         );
       }
 
       selectedAddress ??= addressController.defaultAddress;
       selectedAddress ??=
-          controller.shippingAddressList.isNotEmpty
-              ? controller.shippingAddressList.first
-              : null;
+      controller.shippingAddressList.isNotEmpty
+          ? controller.shippingAddressList.first
+          : null;
 
       if (selectedAddress == null) {
         return _buildEmptyAddressState();
@@ -966,7 +968,7 @@ class CheckoutView extends BaseView<CheckoutController> {
 
   void _navigateToAddressForm({AddressResponse? address}) {
     Get.to(
-      () => AddressFormView(address: address),
+          () => AddressFormView(address: address),
       transition: Transition.rightToLeft,
       duration: const Duration(milliseconds: 300),
     )?.then((_) {
@@ -1027,15 +1029,15 @@ class CheckoutView extends BaseView<CheckoutController> {
                     padding: EdgeInsets.all(12.w),
                     decoration: BoxDecoration(
                       color:
-                          isSelected
-                              ? AppColors.primaryColor.withOpacity(0.1)
-                              : Colors.white,
+                      isSelected
+                          ? AppColors.primaryColor.withOpacity(0.1)
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(8.r),
                       border: Border.all(
                         color:
-                            isSelected
-                                ? AppColors.primaryColor
-                                : Colors.grey.shade300,
+                        isSelected
+                            ? AppColors.primaryColor
+                            : Colors.grey.shade300,
                         width: isSelected ? 2 : 1,
                       ),
                     ),

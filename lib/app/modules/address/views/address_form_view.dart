@@ -86,7 +86,7 @@ class AddressFormView extends GetView<AddressController> {
               icon: Icons.label_outline,
               hintText: 'Enter address title (e.g., Home, Office)',
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 4.h),
 
             // Country Dropdown
             Obx(
@@ -110,7 +110,7 @@ class AddressFormView extends GetView<AddressController> {
                 },
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 4.h),
 
             // City Dropdown
             Obx(
@@ -132,7 +132,7 @@ class AddressFormView extends GetView<AddressController> {
                 },
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 4.h),
 
             // Area Dropdown
             Obx(
@@ -152,7 +152,7 @@ class AddressFormView extends GetView<AddressController> {
                 },
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 4.h),
 
             // Street Address Field
             _buildStyledField(
@@ -163,12 +163,21 @@ class AddressFormView extends GetView<AddressController> {
               maxLines: 1,
             ),
 
-            SizedBox(height: 24.h),
+            SizedBox(height: 4.h),
 
             // Save Button
-            SizedBox(
+            Container(
               width: double.infinity,
-              height: 48.h,
+              height: 42.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryColor,
+                    AppColors.primaryColor.withOpacity(0.8),
+                  ],
+                ),
+              ),
               child: ElevatedButton(
                 onPressed: () {
                   if (titleController.text.trim().isEmpty ||
@@ -221,23 +230,24 @@ class AddressFormView extends GetView<AddressController> {
                   Get.back();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.white,
+                  shadowColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 child: Text(
                   isEditing ? 'Update Address' : 'Save Address',
                   style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
 
-            SizedBox(height: 20.h),
+            SizedBox(height: 4.h),
           ],
         ),
       ),
@@ -251,26 +261,22 @@ class AddressFormView extends GetView<AddressController> {
     String? hintText,
     int maxLines = 1,
   }) {
-    return TextField(
-      controller: controller,
-      maxLines: maxLines,
-      decoration: InputDecoration(
-        hintText: hintText ?? label,
-        hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
-        prefixIcon: Icon(icon, color: AppColors.primaryColor, size: 20.sp),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(color: AppColors.primaryColor),
+    return SizedBox(
+      height: 50.h,
+      child: TextField(
+        controller: controller,
+        maxLines: maxLines,
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hintText ?? 'Enter your $label',
+          prefixIcon: Icon(icon, size: 18.sp),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 12.w,
+            vertical: 10.h,
+          ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(color: AppColors.primaryColor),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
-        ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        style: TextStyle(fontSize: 14.sp, color: Colors.black),
       ),
     );
   }
@@ -282,48 +288,45 @@ class AddressFormView extends GetView<AddressController> {
     required List<String> items,
     required Function(String?) onChanged,
   }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.primaryColor),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: AppColors.primaryColor, size: 20.sp),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: items.contains(value) ? value : null,
-                hint: Text(
-                  label,
-                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
-                ),
-                icon: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: AppColors.primaryColor,
-                  size: 20.sp,
-                ),
-                isExpanded: true,
-                items:
-                    items.map((String item) {
-                      return DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: Colors.black,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                onChanged: onChanged,
-              ),
-            ),
+    return SizedBox(
+      height: 50.h,
+      child: DropdownButtonFormField<String>(
+        value: items.contains(value) ? value : null,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon, size: 18.sp),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 12.w,
+            vertical: 10.h,
           ),
-        ],
+        ),
+        style: TextStyle(fontSize: 14.sp, color: Colors.black),
+        items:
+            (() {
+              // Create a new list with the current value first, then the rest
+              List<String> reorderedItems = [];
+              if (items.contains(value) && value.isNotEmpty) {
+                reorderedItems.add(value);
+                reorderedItems.addAll(items.where((item) => item != value));
+              } else {
+                reorderedItems = items;
+              }
+
+              return reorderedItems.map((String item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                );
+              }).toList();
+            })(),
+        onChanged: onChanged,
+        isExpanded: true,
       ),
     );
   }

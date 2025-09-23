@@ -808,7 +808,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ),
                   ],
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 5.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
                 child: Row(
                   children: [
                     // Add to Cart/Quantity buttons - Same logic as ProductCard

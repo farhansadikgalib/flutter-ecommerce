@@ -14,36 +14,38 @@ class AddressView extends GetView<AddressController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: globalAppBar(context, 'Addresses', showBackButton: true),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return _buildLoadingState();
-        }
+    return Obx(() {
+      return Scaffold(
+        backgroundColor: Colors.grey[50],
+        appBar: globalAppBar(context, 'Addresses', showBackButton: true),
+        body: Obx(() {
+          if (controller.isLoading.value) {
+            return _buildLoadingState();
+          }
 
-        if (controller.shippingAddressList.isEmpty) {
-          return _buildEmptyState();
-        }
+          if (controller.shippingAddressList.isEmpty) {
+            return _buildEmptyState();
+          }
 
-        return RefreshIndicator(
-          onRefresh: controller.getAllShippingAddress,
-          color: AppColors.primaryColor,
-          child: ListView.builder(
-            padding: EdgeInsets.all(16.w),
-            itemCount: controller.shippingAddressList.length,
-            itemBuilder: (context, index) {
-              final address = controller.shippingAddressList[index];
-              return _buildEnhancedAddressCard(address, index);
-            },
-          ),
-        );
-      }),
-      floatingActionButton:
-          controller.shippingAddressList.isEmpty
-              ? SizedBox()
-              : _buildSimpleFAB(),
-    );
+          return RefreshIndicator(
+            onRefresh: controller.getAllShippingAddress,
+            color: AppColors.primaryColor,
+            child: ListView.builder(
+              padding: EdgeInsets.all(16.w),
+              itemCount: controller.shippingAddressList.length,
+              itemBuilder: (context, index) {
+                final address = controller.shippingAddressList[index];
+                return _buildEnhancedAddressCard(address, index);
+              },
+            ),
+          );
+        }),
+        floatingActionButton:
+        controller.shippingAddressList.isEmpty
+            ? SizedBox()
+            : _buildSimpleFAB(),
+      );
+    });
   }
 
   Widget _buildLoadingState() {
@@ -94,7 +96,7 @@ class AddressView extends GetView<AddressController> {
   Widget _buildEnhancedAddressCard(AddressResponse address, int index) {
     final isDefault =
         address.addressResponseDefault == "1" ||
-        address.addressResponseDefault == "true";
+            address.addressResponseDefault == "true";
     final isSelected = controller.selectedAddressId.value == address.id;
 
     return Container(
@@ -350,7 +352,8 @@ class AddressView extends GetView<AddressController> {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed:
-                          () => controller.showDeleteConfirmation(
+                          () =>
+                          controller.showDeleteConfirmation(
                             address.id!,
                             address.title ?? 'Address ${index + 1}',
                           ),
@@ -424,7 +427,7 @@ class AddressView extends GetView<AddressController> {
 
   void _navigateToAddressForm({AddressResponse? address}) {
     Get.to(
-      () => AddressFormView(address: address),
+          () => AddressFormView(address: address),
       transition: Transition.rightToLeft,
       duration: const Duration(milliseconds: 300),
     );
