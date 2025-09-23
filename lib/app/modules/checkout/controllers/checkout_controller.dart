@@ -50,7 +50,6 @@ class CheckoutController extends BaseController {
   final shippingId = 0.obs;
   final shippingAddressList = <AddressResponse>[].obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -58,16 +57,14 @@ class CheckoutController extends BaseController {
     email.value.text = userEmail.$;
     mobile.value.text = userPhone.$;
 
-    var controller = Get.find<AddressController>();
-    controller.onInit();
-    shippingAddressList.addAll(controller.shippingAddressList);
+    loadAddressData();
 
     if (args != null) {
       cartProducts.addAll(args['cartProducts']);
       subTotal.value = args['subTotal'];
     }
 
-/*
+    /*
     if (kDebugMode) {
       name.value.text = 'Test User';
       mobile.value.text = '01773076754';
@@ -83,15 +80,31 @@ class CheckoutController extends BaseController {
     // });
 
     getPaymentMethods();
+  }
 
+  Future<void> loadAddressData() async {
+    try {
+      var addressController = Get.find<AddressController>();
 
+      // Ensure address controller is properly initialized
+      if (addressController.shippingAddressList.isEmpty) {
+        await addressController.getAllShippingAddress();
+      }
+
+      shippingAddressList.clear();
+      shippingAddressList.addAll(addressController.shippingAddressList);
+
+      printLog('Loaded ${shippingAddressList.length} addresses in checkout');
+    } catch (e) {
+      printLog('Error loading address data: $e');
+    }
   }
 
   Future<void> getPaymentMethods() async {
     var response = await CheckoutRepository().paymentMethods();
     paymentMethods.clear();
     paymentMethods.addAll(response);
-    selectedPaymentMethod.value =  '1';
+    selectedPaymentMethod.value = '1';
   }
 
   // Future<void> getCountryList() async {
@@ -248,7 +261,9 @@ class CheckoutController extends BaseController {
         areaId: selectedArea.value?.id.toString(),
         notes: '',
       ),
-      paymentMethodId: int.tryParse(selectedPaymentMethod.value) ?? 1, // Use selected payment method
+      paymentMethodId:
+          int.tryParse(selectedPaymentMethod.value) ??
+          1, // Use selected payment method
       customerId: int.tryParse(userId.$) ?? 0,
     );
 

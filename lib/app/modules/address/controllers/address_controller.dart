@@ -73,8 +73,16 @@ class AddressController extends GetxController {
     try {
       isLoading.value = true;
       var response = await AddressRepository().getShippingAddress();
+      printLog(
+        'AddressController: Loaded ${response.length} addresses from API',
+      );
+
       if (response.isNotEmpty) {
         shippingAddressList.value = response;
+        printLog(
+          'AddressController: Updated shippingAddressList with ${shippingAddressList.length} addresses',
+        );
+
         // Set the first default address as selected if any
         final defaultAddress = response.firstWhereOrNull(
           (address) =>
@@ -83,7 +91,13 @@ class AddressController extends GetxController {
         );
         if (defaultAddress != null) {
           selectedAddressId.value = defaultAddress.id;
+          printLog(
+            'AddressController: Set default address as selected: ${defaultAddress.id}',
+          );
         }
+      } else {
+        shippingAddressList.clear();
+        printLog('AddressController: No addresses found, cleared list');
       }
     } catch (e) {
       Get.snackbar(

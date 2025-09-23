@@ -14,8 +14,11 @@ import '../../../data/remote/model/checkout/area_response.dart';
 import '../../../data/remote/model/checkout/country_response.dart';
 import '../../../data/remote/model/checkout/city_response.dart';
 import '../../../data/remote/model/checkout/payment_method_response.dart';
+import '../../../data/remote/model/address/shipping_address_response.dart';
 import '../../address/views/address_form_view.dart';
+import '../../address/controllers/address_controller.dart';
 import '../controllers/checkout_controller.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class CheckoutView extends BaseView<CheckoutController> {
   CheckoutView({super.key});
@@ -70,14 +73,10 @@ class CheckoutView extends BaseView<CheckoutController> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   AppWidgets().gapH8(),
-                  controller.shippingAddressList.isEmpty? _buildEmptyState(): SizedBox.shrink(),
-
-
-
-
+                  _buildAddressSection(),
 
                   // Country Dropdown (read-only)
-       /*           SizedBox(
+                  /*           SizedBox(
                     height: 40.h,
                     child: Obx(
                       () => DropdownButtonFormField<CountryResponse>(
@@ -341,7 +340,7 @@ class CheckoutView extends BaseView<CheckoutController> {
                               Padding(
                                 padding: EdgeInsets.only(right: 20),
                                 child: Text(
-                                  '60 BDT',
+                                  'Free',
                                   style: TextStyle(fontSize: 14),
                                 ),
                               ),
@@ -354,7 +353,9 @@ class CheckoutView extends BaseView<CheckoutController> {
                             controller.delivery.value = 60.0;
                             controller.shippingId.value = 0;
                             printLog(controller.selectedShippingMethod.value);
-                            printLog('Selected shipping: Cash on Delivery - 60 BDT');
+                            printLog(
+                              'Selected shipping: Cash on Delivery - 60 BDT',
+                            );
                           },
                         ),
                         // Dynamic shipping methods from API
@@ -386,8 +387,12 @@ class CheckoutView extends BaseView<CheckoutController> {
                             groupValue: controller.selectedShippingMethod.value,
                             onChanged: (value) {
                               controller.selectedShippingMethod.value = value!;
-                              controller.delivery.value = double.parse(shipping.price.toString());
-                              controller.shippingId.value = int.parse(shipping.id.toString());
+                              controller.delivery.value = double.parse(
+                                shipping.price.toString(),
+                              );
+                              controller.shippingId.value = int.parse(
+                                shipping.id.toString(),
+                              );
                               printLog('Selected shipping id: ${shipping.id}');
                             },
                           );
@@ -524,12 +529,16 @@ class CheckoutView extends BaseView<CheckoutController> {
                                 paymentMethod.name ?? '',
                                 style: TextStyle(fontSize: 14),
                               ),
-                              value: paymentMethod.id.toString(), // Use ID as string
+                              value:
+                                  paymentMethod.id
+                                      .toString(), // Use ID as string
                               groupValue:
                                   controller.selectedPaymentMethod.value,
                               onChanged: (value) {
                                 controller.selectedPaymentMethod.value = value!;
-                                printLog(controller.selectedShippingMethod.value);
+                                printLog(
+                                  controller.selectedShippingMethod.value,
+                                );
                                 printLog(
                                   'Selected payment method id: ${paymentMethod.id}',
                                 );
@@ -563,35 +572,229 @@ class CheckoutView extends BaseView<CheckoutController> {
     );
   }
 
-  Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 24.h),
-            Text(
-              'No Addresses Found',
-              style: textHeaderStyle(fontSize: 20, color: AppColors.black),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              'Add your first address to get started',
-              textAlign: TextAlign.center,
-              style: textRegularStyle(fontSize: 14, color: AppColors.textColor),
-            ),
-            SizedBox(height: 32.h),
-            ElevatedButton(
-              onPressed: () =>     Get.toNamed(Routes.ADDRESS),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
+  Widget _buildAddressSection() {
+    return Obx(() {
+      final addressController = Get.find<AddressController>();
+
+      // Show loading skeleton if address controller is loading
+      if (addressController.isLoading.value) {
+        return _buildAddressSkeletonLoader();
+      }
+
+      // Sync address list if checkout controller is empty but address controller has data
+      if (controller.shippingAddressList.isEmpty &&
+          addressController.shippingAddressList.isNotEmpty) {
+        controller.shippingAddressList.addAll(
+          addressController.shippingAddressList,
+        );
+      }
+
+      if (controller.shippingAddressList.isEmpty) {
+        return _buildEmptyAddressState();
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                'Shipping Address',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
                 ),
               ),
-              child: Text('Add Address', style: textButtonStyle(fontSize: 14)),
+              Spacer(),
+              TextButton.icon(
+                onPressed: () => _navigateToAddressForm(),
+                icon: Icon(
+                  Icons.add,
+                  size: 16.sp,
+                  color: AppColors.primaryColor,
+                ),
+                label: Text(
+                  'Add New',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(color: AppColors.primaryColor),
+          SizedBox(height: 8.h),
+          _buildSelectedAddress(),
+          if (controller.shippingAddressList.length > 1) ...[
+            SizedBox(height: 8.h),
+            TextButton.icon(
+              onPressed: () => _showAddressSelectionDialog(),
+              icon: Icon(
+                Icons.swap_horiz,
+                size: 16.sp,
+                color: AppColors.primaryColor,
+              ),
+              label: Text(
+                'Change Address',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+            ),
+          ],
+        ],
+      );
+    });
+  }
+
+  Widget _buildAddressSkeletonLoader() {
+    return Skeletonizer(
+      effect: ShimmerEffect(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        duration: const Duration(milliseconds: 1000),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                'Shipping Address',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+              Spacer(),
+              Bone.button(width: 80.w, height: 28.h),
+            ],
+          ),
+          Divider(color: AppColors.primaryColor),
+          SizedBox(height: 8.h),
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: AppColors.primaryColor, width: 1.5),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(6.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: Bone.square(size: 16.sp),
+                    ),
+                    SizedBox(width: 8.w),
+                    Expanded(child: Bone.text(words: 2)),
+                    Bone.button(width: 50.w, height: 20.h),
+                  ],
+                ),
+                SizedBox(height: 8.h),
+                Container(
+                  padding: EdgeInsets.all(8.w),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Bone.square(size: 10.sp),
+                          SizedBox(width: 4.w),
+                          Bone.text(words: 1),
+                          SizedBox(width: 4.w),
+                          Expanded(child: Bone.text(words: 4)),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+                      Row(
+                        children: [
+                          Bone.square(size: 10.sp),
+                          SizedBox(width: 4.w),
+                          Bone.text(words: 1),
+                          SizedBox(width: 4.w),
+                          Expanded(child: Bone.text(words: 2)),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+                      Row(
+                        children: [
+                          Bone.square(size: 10.sp),
+                          SizedBox(width: 4.w),
+                          Bone.text(words: 1),
+                          SizedBox(width: 4.w),
+                          Expanded(child: Bone.text(words: 2)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyAddressState() {
+    return Center(
+      child: Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: Colors.grey[50],
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              Icons.location_off_outlined,
+              size: 48.sp,
+              color: AppColors.gray,
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              'No Address Found',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
+              ),
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              'Please add a shipping address to continue',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12.sp, color: AppColors.textColor),
+            ),
+            SizedBox(height: 16.h),
+            ElevatedButton.icon(
+              onPressed: () => _navigateToAddressForm(),
+              icon: Icon(Icons.add, size: 16.sp),
+              label: Text('Add Address'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.r),
+                ),
+              ),
             ),
           ],
         ),
@@ -599,5 +802,272 @@ class CheckoutView extends BaseView<CheckoutController> {
     );
   }
 
+  Widget _buildSelectedAddress() {
+    final addressController = Get.find<AddressController>();
+    final selectedAddress =
+        addressController.defaultAddress ??
+        controller.shippingAddressList.first;
 
+    return Container(
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.primaryColor, width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(6.w),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(6.r),
+                ),
+                child: Icon(
+                  Icons.location_on,
+                  color: AppColors.primaryColor,
+                  size: 16.sp,
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: Text(
+                  selectedAddress.title ?? 'Address',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.black,
+                  ),
+                ),
+              ),
+              if ((selectedAddress.addressResponseDefault == "1" ||
+                  selectedAddress.addressResponseDefault == "true"))
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Text(
+                    'DEFAULT',
+                    style: TextStyle(
+                      fontSize: 8.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade50,
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (selectedAddress.address?.isNotEmpty == true)
+                  _buildAddressDetailRow(
+                    icon: Icons.home_outlined,
+                    label: 'Address',
+                    value: selectedAddress.address!,
+                  ),
+                if (selectedAddress.area?.name != null) ...[
+                  SizedBox(height: 4.h),
+                  _buildAddressDetailRow(
+                    icon: Icons.location_city_outlined,
+                    label: 'Area',
+                    value: selectedAddress.area!.name!,
+                  ),
+                ],
+                if (selectedAddress.city?.name != null) ...[
+                  SizedBox(height: 4.h),
+                  _buildAddressDetailRow(
+                    icon: Icons.location_city,
+                    label: 'City',
+                    value: selectedAddress.city!.name!,
+                  ),
+                ],
+                if (selectedAddress.country?.name != null) ...[
+                  SizedBox(height: 4.h),
+                  _buildAddressDetailRow(
+                    icon: Icons.public,
+                    label: 'Country',
+                    value: selectedAddress.country!.name!,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAddressDetailRow({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, color: AppColors.primaryColor, size: 10.sp),
+        SizedBox(width: 4.w),
+        Text(
+          '$label: ',
+          style: TextStyle(
+            fontSize: 10.sp,
+            fontWeight: FontWeight.w600,
+            color: AppColors.black,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 10.sp, color: AppColors.textColor),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _navigateToAddressForm({AddressResponse? address}) {
+    Get.to(
+      () => AddressFormView(address: address),
+      transition: Transition.rightToLeft,
+      duration: const Duration(milliseconds: 300),
+    )?.then((_) {
+      // Refresh address list when returning from form
+      final addressController = Get.find<AddressController>();
+      addressController.getAllShippingAddress().then((_) {
+        controller.shippingAddressList.clear();
+        controller.shippingAddressList.addAll(
+          addressController.shippingAddressList,
+        );
+      });
+    });
+  }
+
+  void _showAddressSelectionDialog() {
+    Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.r),
+            topRight: Radius.circular(16.r),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Select Address',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.black,
+                  ),
+                ),
+                Spacer(),
+                IconButton(
+                  onPressed: () => Get.back(),
+                  icon: Icon(Icons.close, size: 20.sp),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            SizedBox(
+              height: 300.h,
+              child: ListView.builder(
+                itemCount: controller.shippingAddressList.length,
+                itemBuilder: (context, index) {
+                  final address = controller.shippingAddressList[index];
+                  final addressController = Get.find<AddressController>();
+                  final isSelected =
+                      address.id == addressController.selectedAddressId.value;
+
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    padding: EdgeInsets.all(12.w),
+                    decoration: BoxDecoration(
+                      color:
+                          isSelected
+                              ? AppColors.primaryColor.withOpacity(0.1)
+                              : Colors.white,
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(
+                        color:
+                            isSelected
+                                ? AppColors.primaryColor
+                                : Colors.grey.shade300,
+                        width: isSelected ? 2 : 1,
+                      ),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        addressController.selectAddress(address.id);
+                        Get.back();
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: AppColors.primaryColor,
+                                size: 16.sp,
+                              ),
+                              SizedBox(width: 8.w),
+                              Expanded(
+                                child: Text(
+                                  address.title ?? 'Address ${index + 1}',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ),
+                              if (isSelected)
+                                Icon(
+                                  Icons.check_circle,
+                                  color: AppColors.primaryColor,
+                                  size: 20.sp,
+                                ),
+                            ],
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            addressController.getFullAddress(address),
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
 }
