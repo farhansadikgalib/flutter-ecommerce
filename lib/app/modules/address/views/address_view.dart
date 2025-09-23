@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/widget/global_appbar.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/style/app_colors.dart';
 import '../../../core/style/app_style.dart';
@@ -41,15 +42,128 @@ class AddressView extends GetView<AddressController> {
           );
         }),
         floatingActionButton:
-        controller.shippingAddressList.isEmpty
-            ? SizedBox()
-            : _buildSimpleFAB(),
+            controller.shippingAddressList.isEmpty
+                ? SizedBox()
+                : _buildSimpleFAB(),
       );
     });
   }
 
   Widget _buildLoadingState() {
-    return const Center(child: SizedBox.shrink());
+    return Skeletonizer(
+      effect: ShimmerEffect(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        duration: const Duration(milliseconds: 1000),
+      ),
+      child: ListView.builder(
+        padding: EdgeInsets.all(16.w),
+        itemCount: 3, // Show 3 skeleton cards
+        itemBuilder: (context, index) {
+          return _buildSkeletonAddressCard();
+        },
+      ),
+    );
+  }
+
+  Widget _buildSkeletonAddressCard() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with title and icon
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8.w),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Bone.square(size: 20.sp),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Bone.text(words: 2)],
+                  ),
+                ),
+                Bone.button(width: 60.w, height: 20.h),
+              ],
+            ),
+
+            SizedBox(height: 16.h),
+
+            // Address details skeleton
+            Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSkeletonDetailRow(),
+                  SizedBox(height: 8.h),
+                  _buildSkeletonDetailRow(),
+                  SizedBox(height: 8.h),
+                  _buildSkeletonDetailRow(),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 16.h),
+
+            // Action buttons skeleton
+            Row(
+              children: [
+                Expanded(
+                  child: Bone.button(width: double.infinity, height: 32.h),
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Bone.button(width: double.infinity, height: 32.h),
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Bone.button(width: double.infinity, height: 32.h),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSkeletonDetailRow() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Bone.square(size: 14.sp),
+        SizedBox(width: 8.w),
+        Bone.text(words: 1),
+        SizedBox(width: 8.w),
+        Expanded(child: Bone.text(words: 3)),
+      ],
+    );
   }
 
   Widget _buildEmptyState() {
@@ -96,7 +210,7 @@ class AddressView extends GetView<AddressController> {
   Widget _buildEnhancedAddressCard(AddressResponse address, int index) {
     final isDefault =
         address.addressResponseDefault == "1" ||
-            address.addressResponseDefault == "true";
+        address.addressResponseDefault == "true";
     final isSelected = controller.selectedAddressId.value == address.id;
 
     return Container(
@@ -352,8 +466,7 @@ class AddressView extends GetView<AddressController> {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed:
-                          () =>
-                          controller.showDeleteConfirmation(
+                          () => controller.showDeleteConfirmation(
                             address.id!,
                             address.title ?? 'Address ${index + 1}',
                           ),
@@ -427,7 +540,7 @@ class AddressView extends GetView<AddressController> {
 
   void _navigateToAddressForm({AddressResponse? address}) {
     Get.to(
-          () => AddressFormView(address: address),
+      () => AddressFormView(address: address),
       transition: Transition.rightToLeft,
       duration: const Duration(milliseconds: 300),
     );
