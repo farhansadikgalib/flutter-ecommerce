@@ -213,15 +213,17 @@ class CheckoutController extends BaseController {
           cartProducts.map((product) {
             final price =
                 double.tryParse(
-                  product.packSize?.sellingPrice?.toString() ??
-                      product.productPrices?.sellingPrice?.toString() ??
-                      '0',
-                ) ??
-                0.0;
-            final quantity = product.quantity ?? 1;
-            final packQuantity =
-                int.tryParse(product.packSize?.quantity?.toString() ?? '1') ??
-                1;
+                      product.productPrices!.sellingPrice!.toString()
+                );
+
+            final finalPrice =
+                double.tryParse(
+                      product.productPrices!.ecomFinalSellingPrice!.toString()
+                );
+            final quantity = product.quantity;
+            final packQuantity = double.parse(product.productPrices!
+                .packQuantity
+                .toString());
 
             return SaleProduct(
               productId: product.id.toString(),
@@ -230,8 +232,15 @@ class CheckoutController extends BaseController {
               quantity: quantity.toString(),
               packSizeId: product.packSize?.id.toString(),
               packSizeQuantity: packQuantity.toString(),
-              totalQuantity: (quantity * packQuantity).toString(),
-              total: (price * quantity).toString(),
+              totalQuantity: (quantity! * packQuantity).toString(),
+              total: (price! * quantity).toString(),
+              ecomDiscountAmount: product.productPrices?.ecomDiscountAmount
+                  .toString(),
+              ecomDiscountPercentage: (finalPrice != null && price != 0)
+                  ? (((price - finalPrice) / price) * 100).toStringAsFixed(2)
+                  : '0' ,
+              ecomFinalSellingPrice:product.productPrices
+                  ?.ecomFinalSellingPrice.toString(),
             );
           }).toList(),
       subTotal: subTotal.value.toInt(),
