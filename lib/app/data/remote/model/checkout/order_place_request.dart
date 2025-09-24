@@ -111,6 +111,9 @@ class SaleProduct {
   String? packSizeQuantity;
   String? totalQuantity;
   String? total;
+  String? ecomDiscountPercentage;
+  String? ecomDiscountAmount;
+  String? ecomFinalSellingPrice;
 
   SaleProduct({
     this.productId,
@@ -121,6 +124,9 @@ class SaleProduct {
     this.packSizeQuantity,
     this.totalQuantity,
     this.total,
+    this.ecomDiscountPercentage,
+    this.ecomDiscountAmount,
+    this.ecomFinalSellingPrice,
   });
 
   factory SaleProduct.fromJson(Map<String, dynamic> json) => SaleProduct(
@@ -132,6 +138,9 @@ class SaleProduct {
     packSizeQuantity: json["pack_size_quantity"],
     totalQuantity: json["total_quantity"],
     total: json["total"],
+    ecomDiscountPercentage: json["ecom_discount_percentage"],
+    ecomDiscountAmount: json["ecom_discount_amount"],
+    ecomFinalSellingPrice: json["ecom_final_selling_price"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -143,5 +152,8 @@ class SaleProduct {
     "pack_size_quantity": packSizeQuantity,
     "total_quantity": totalQuantity,
     "total": total,
+    "ecom_discount_percentage": ecomDiscountPercentage,
+    "ecom_discount_amount": ecomDiscountAmount,
+    "ecom_final_selling_price": ecomFinalSellingPrice,
   };
 }

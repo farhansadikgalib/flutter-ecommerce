@@ -69,107 +69,112 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   Widget build(BuildContext context) {
     getRelatedProduct();
     return Obx(() {
-      return Scaffold(
-        body: Stack(
-          children: [
-            ListView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.only(bottom: 80.h),
-              children: [
-                // Product Image Carousel with improved styling
-                Container(
-                  height: 350.h,
-                  color: Colors.white,
-                  child: Stack(
-                    children: [
-                      // Main image carousel
-                      PageView.builder(
-                        controller: pageController,
-                        itemCount: 1,
-                        onPageChanged: (index) {
-                          currentPage.value = index;
-                        },
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              _showFullScreenImageDialog(context, index);
-                            },
-                            child: Hero(
-                              tag: 'product-${product.id}',
-                              child: AnyImageView(
-                                imagePath:
-                                    product.productImages != null &&
-                                            product.productImages!.isNotEmpty
-                                        ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
-                                        : Assets.pngNotFound,
-                                width: double.infinity,
-                                height: 350.h,
-                                fit: BoxFit.cover,
+      return SafeArea(
+        bottom:false,
+        top: false,
+          maintainBottomViewPadding: true,
+          child:Scaffold(
+          body: Stack(
+            children: [
+              ListView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.only(bottom: 80.h),
+                children: [
+                  // Product Image Carousel with improved styling
+                  Container(
+                    height: 350.h,
+                    color: Colors.white,
+                    child: Stack(
+                      children: [
+                        // Main image carousel
+                        PageView.builder(
+                          controller: pageController,
+                          itemCount: 1,
+                          onPageChanged: (index) {
+                            currentPage.value = index;
+                          },
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                _showFullScreenImageDialog(context, index);
+                              },
+                              child: Hero(
+                                tag: 'product-${product.id}',
+                                child: AnyImageView(
+                                  imagePath:
+                                  product.productImages != null &&
+                                      product.productImages!.isNotEmpty
+                                      ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
+                                      : Assets.pngNotFound,
+                                  width: double.infinity,
+                                  height: 350.h,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
+                            );
+                          },
+                        ),
 
-                      Positioned(
-                        bottom: 10.h,
-                        left: 0,
-                        right: 0,
-                        child: SizedBox(
-                          height: 60.h,
-                          child: Center(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                  product.productImages?.length ?? 1,
-                                  (index) => GestureDetector(
-                                    onTap: () {
-                                      pageController.animateToPage(
-                                        index,
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.easeInOut,
-                                      );
-                                      _showFullScreenImageDialog(
-                                        context,
-                                        index,
-                                      );
-                                    },
-                                    child: Container(
-                                      width: 50.h,
-                                      height: 50.h,
-                                      margin: EdgeInsets.symmetric(
-                                        horizontal: 4.w,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color:
-                                              currentPage.value == index
-                                                  ? AppColors.primaryColor
-                                                  : Colors.grey[300]!,
-                                          width: 2,
+                        Positioned(
+                          bottom: 10.h,
+                          left: 0,
+                          right: 0,
+                          child: SizedBox(
+                            height: 60.h,
+                            child: Center(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(
+                                    product.productImages?.length ?? 1,
+                                        (index) => GestureDetector(
+                                      onTap: () {
+                                        pageController.animateToPage(
+                                          index,
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeInOut,
+                                        );
+                                        _showFullScreenImageDialog(
+                                          context,
+                                          index,
+                                        );
+                                      },
+                                      child: Container(
+                                        width: 50.h,
+                                        height: 50.h,
+                                        margin: EdgeInsets.symmetric(
+                                          horizontal: 4.w,
                                         ),
-                                        borderRadius: BorderRadius.circular(
-                                          2.r,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color:
+                                            currentPage.value == index
+                                                ? AppColors.primaryColor
+                                                : Colors.grey[300]!,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            2.r,
+                                          ),
                                         ),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          1.r,
-                                        ),
-                                        child: AnyImageView(
-                                          imagePath:
-                                              product.productImages != null &&
-                                                      product
-                                                          .productImages!
-                                                          .isNotEmpty
-                                                  ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
-                                                  : 'https://via.placeholder.com/46x46?text=No+Image',
-                                          width: 46.w,
-                                          height: 46.h,
-                                          fit: BoxFit.cover,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            1.r,
+                                          ),
+                                          child: AnyImageView(
+                                            imagePath:
+                                            product.productImages != null &&
+                                                product
+                                                    .productImages!
+                                                    .isNotEmpty
+                                                ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
+                                                : 'https://via.placeholder.com/46x46?text=No+Image',
+                                            width: 46.w,
+                                            height: 46.h,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -179,655 +184,654 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
 
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Category badge
-                      if (product.category?.name != null)
-                        Container(
-                          margin: EdgeInsets.only(bottom: 8.h),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
-                            vertical: 4.h,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4.r),
-                          ),
-                          child: Text(
-                            product.category!.name!,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.primaryColor,
+                  Container(
+                    padding: EdgeInsets.all(16.w),
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Category badge
+                        if (product.category?.name != null)
+                          Container(
+                            margin: EdgeInsets.only(bottom: 8.h),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 4.h,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                            child: Text(
+                              product.category!.name!,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
+
+                        // Product title with slightly smaller font than Amazon
+                        Text(
+                          product.name ?? 'Product Name',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87,
+                          ),
                         ),
 
-                      // Product title with slightly smaller font than Amazon
-                      Text(
-                        product.name ?? 'Product Name',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black87,
-                        ),
-                      ),
-
-                      // Stock availability indicator
-                      if (product.productInventories?.quantity != null)
-                        Container(
-                          margin: EdgeInsets.only(bottom: 8.h),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.inventory_2_outlined,
-                                size: 16.sp,
-                                color:
+                        // Stock availability indicator
+                        if (product.productInventories?.quantity != null)
+                          Container(
+                            margin: EdgeInsets.only(bottom: 8.h),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.inventory_2_outlined,
+                                  size: 16.sp,
+                                  color:
+                                  int.parse(
+                                    product
+                                        .productInventories!
+                                        .quantity
+                                        .toString(),
+                                  ) >
+                                      0
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  int.parse(
+                                    product.productInventories!.quantity
+                                        .toString(),
+                                  ) >
+                                      0
+                                      ? 'In Stock (${product.productInventories!.quantity} available)'
+                                      : 'Out of Stock',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color:
                                     int.parse(
-                                              product
-                                                  .productInventories!
-                                                  .quantity
-                                                  .toString(),
-                                            ) >
-                                            0
+                                      product
+                                          .productInventories!
+                                          .quantity
+                                          .toString(),
+                                    ) >
+                                        0
                                         ? Colors.green
                                         : Colors.red,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                        // Price section in Alibaba style (larger, with range format)
+                        _buildPriceSection(product),
+
+                        SizedBox(height: 4.h),
+
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 3.h,
                               ),
-                              SizedBox(width: 4.w),
-                              Text(
-                                int.parse(
-                                          product.productInventories!.quantity
-                                              .toString(),
-                                        ) >
-                                        0
-                                    ? 'In Stock (${product.productInventories!.quantity} available)'
-                                    : 'Out of Stock',
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFFF0E5),
+                                border: Border.all(
+                                  color: Color(0xFFFF6A00),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(2.r),
+                              ),
+                              child: Text(
+                                'Special Offer',
                                 style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color:
-                                      int.parse(
-                                                product
-                                                    .productInventories!
-                                                    .quantity
-                                                    .toString(),
-                                              ) >
-                                              0
-                                          ? Colors.green
-                                          : Colors.red,
+                                  fontSize: 10.sp,
+                                  color: Color(0xFFFF6A00),
                                   fontWeight: FontWeight.w500,
                                 ),
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 3.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFE6F7FF),
+                                border: Border.all(
+                                  color: Color(0xFF1890FF),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(2.r),
+                              ),
+                              child: Text(
+                                'Free Shipping',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: Color(0xFF1890FF),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 16.h),
+
+                        // Alibaba-style trade info row
+                        Container(
+                          padding: EdgeInsets.all(12.w),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF5F5F5),
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.local_shipping_outlined,
+                                    size: 16.sp,
+                                    color: Colors.grey[700],
+                                  ),
+                                  SizedBox(width: 6.w),
+                                  Text(
+                                    'Ships from ${product.supplier?.country ?? product.supplier?.city ?? 'Bangladesh'}',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.timer_outlined,
+                                    size: 16.sp,
+                                    color: Colors.grey[700],
+                                  ),
+                                  SizedBox(width: 6.w),
+                                  Text(
+                                    'Lead time: ${product.stockBatches?.isNotEmpty == true ? '1'
+                                        ' days' : '2 days'}',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.receipt_long_outlined,
+                                    size: 16.sp,
+                                    color: Colors.grey[700],
+                                  ),
+                                  SizedBox(width: 6.w),
+                                  Text(
+                                    'Returns accepted',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.verified_user_outlined,
+                                    size: 16.sp,
+                                    color: Colors.grey[700],
+                                  ),
+                                  SizedBox(width: 6.w),
+                                  Text(
+                                    '${product.supplier?.companyName ?? 'Verified'} Seller',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
-
-                      // Price section in Alibaba style (larger, with range format)
-                      _buildPriceSection(product),
-
-                      SizedBox(height: 4.h),
-
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8.w,
-                              vertical: 3.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFFF0E5),
-                              border: Border.all(
-                                color: Color(0xFFFF6A00),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(2.r),
-                            ),
-                            child: Text(
-                              'Special Offer',
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                color: Color(0xFFFF6A00),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8.w,
-                              vertical: 3.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE6F7FF),
-                              border: Border.all(
-                                color: Color(0xFF1890FF),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(2.r),
-                            ),
-                            child: Text(
-                              'Free Shipping',
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                color: Color(0xFF1890FF),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 16.h),
-
-                      // Alibaba-style trade info row
-                      Container(
-                        padding: EdgeInsets.all(12.w),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF5F5F5),
-                          borderRadius: BorderRadius.circular(4.r),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.local_shipping_outlined,
-                                  size: 16.sp,
-                                  color: Colors.grey[700],
-                                ),
-                                SizedBox(width: 6.w),
-                                Text(
-                                  'Ships from ${product.supplier?.country ?? product.supplier?.city ?? 'Bangladesh'}',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.grey[700],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.timer_outlined,
-                                  size: 16.sp,
-                                  color: Colors.grey[700],
-                                ),
-                                SizedBox(width: 6.w),
-                                Text(
-                                  'Lead time: ${product.stockBatches?.isNotEmpty == true ? '1'
-                                          ' days' : '2 days'}',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.grey[700],
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.receipt_long_outlined,
-                                  size: 16.sp,
-                                  color: Colors.grey[700],
-                                ),
-                                SizedBox(width: 6.w),
-                                Text(
-                                  'Returns accepted',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.grey[700],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.verified_user_outlined,
-                                  size: 16.sp,
-                                  color: Colors.grey[700],
-                                ),
-                                SizedBox(width: 6.w),
-                                Text(
-                                  '${product.supplier?.companyName ?? 'Verified'} Seller',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.grey[700],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Product Description Section
-                Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.all(16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Product Features
-                      if (product.generic?.name != null ||
-                          product.category?.name != null ||
-                          product.packSize?.quantity != null)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Product Specifications',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            SizedBox(height: 12.h),
-
-                            // Specifications Table
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey[300]!),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              child: Column(
-                                children: [
-                                  // Generic Information
-                                  if (product.generic?.name != null)
-                                    _buildSpecificationRow(
-                                      'Generic Name',
-                                      product.generic!.name!,
-                                      isFirst: true,
-                                    ),
-                                  if (product.generic?.category != null)
-                                    _buildSpecificationRow(
-                                      'Generic Category',
-                                      product.generic!.category!,
-                                    ),
-
-                                  // Product Category
-                                  if (product.category?.name != null)
-                                    _buildSpecificationRow(
-                                      'Product Category',
-                                      product.category!.name!,
-                                    ),
-
-                                  // Product Unit Price
-                                  if (product.productPrices?.sellingPrice !=
-                                      null)
-                                    _buildSpecificationRow(
-                                      'Unit Selling Price',
-                                      '৳${product.productPrices!.sellingPrice}',
-                                    ),
-
-                                  // Pack Size Information
-                                  if (product.packSize?.name != null)
-                                    _buildSpecificationRow(
-                                      'Pack Size Name',
-                                      product.packSize!.name!,
-                                    ),
-                                  if (product.packSize?.quantity != null)
-                                    _buildSpecificationRow(
-                                      'Pack Quantity',
-                                      '${product.packSize!.quantity} ',
-                                    ),
-                                  if (product.packSize?.sellingPrice != null)
-                                    _buildSpecificationRow(
-                                      'Pack Selling Price',
-                                      '৳${product.packSize!.sellingPrice}',
-                                    ),
-
-                                  // Additional Product Information
-                                  if (product.productInventories?.quantity !=
-                                      null)
-                                    _buildSpecificationRow(
-                                      'Available Stock',
-                                      '${product.productInventories!.quantity} units',
-                                    ),
-                                  if (product.totalSoldQuantity != null)
-                                    _buildSpecificationRow(
-                                      'Total Sold',
-                                      '${product.totalSoldQuantity} units',
-                                      isLast: true,
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-
-                Visibility(
-                  visible: relatedProducts.isNotEmpty,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Text(
-                      'Related Products',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                      ),
+                      ],
                     ),
                   ),
-                ),
 
-                Container(
-                  height: Get.height,
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.66,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemCount: relatedProducts.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final item = relatedProducts[index];
-                      final relatedProduct = BestSellingModel.ProductData(
-                        id: item.id,
-                        quantity: 0,
-                        addToCart: false,
-                        addToWishlist: false,
-                        name: item.name,
-                        genericId: item.genericId,
-                        categoryId: item.categoryId,
-                        supplierId: item.supplierId,
-                        pharmaSalesQuantity: null,
-                        ecommerceSalesQuantity: null,
-                        totalSoldQuantity: null,
-                        totalBalancedQuantity: null,
-                        generic:
-                            item.generic != null
-                                ? BestSellingModel.Generic(
-                                  id: item.generic!.id,
-                                  name: item.generic!.name,
-                                  category: item.generic!.category,
-                                  status: item.generic!.status,
-                                  createdBy: item.generic!.createdBy,
-                                  updatedBy: item.generic!.updatedBy,
-                                  createdAt: item.generic!.createdAt,
-                                  updatedAt: item.generic!.updatedAt,
-                                )
-                                : null,
-                        stockBatches:
-                        item.stockBatches
-                            ?.map(
-                              (batch) => BestSellingModel.StockBatch(
-                            id: batch.id,
-                            productId: batch.productId,
-                            batchNo: batch.batchNo,
-                            expiryDate: batch.expiryDate,
-                            purchaseId: batch.purchaseId,
-                            purchaseProductId: batch.purchaseProductId,
-                            purchaseBonusProductId: batch.purchaseBonusProductId,
-                            receivedQuantity: batch.receivedQuantity,
-                            balancedQuantity: batch.balancedQuantity,
-                            locked: batch.locked,
-                            createdAt: batch.createdAt,
-                            updatedAt: batch.updatedAt,
-                            saleReturnId: batch.saleReturnId,
-                            saleReturnProductId: batch.saleReturnProductId,
-                            cost: batch.cost,
-                            reconciliationId: batch.reconciliationId,
-                            reconciliationProductId: batch.reconciliationProductId,
-                            reconciliationQuantity: batch.reconciliationQuantity,
-                            branchId: batch.branchId,
-                            purchaseReturnId: batch.purchaseReturnId,
-                            purchaseReturnDetailId: batch.purchaseReturnDetailId,
-                          ),
-                        )
-                            .toList(),
-                        category:
-                            item.category != null
-                                ? BestSellingModel.Category(
-                                  id: item.category!.id,
-                                  name: item.category!.name,
-                                  shortOrder: item.category!.shortOrder,
-                                  createdAt: item.category!.createdAt,
-                                  updatedAt: item.category!.updatedAt,
-                                  status: item.category!.status,
-                                  deletedAt: null,
-                                )
-                                : null,
-                        supplier:
-                            item.supplier != null
-                                ? BestSellingModel.Supplier(
-                                  id: item.supplier!.id,
-                                  firstName: item.supplier!.firstName,
-                                  lastName: item.supplier!.lastName,
-                                  address1: item.supplier!.address1,
-                                  address2: item.supplier!.address2,
-                                  city: item.supplier!.city,
-                                  stateOrProvince:
-                                      item.supplier!.stateOrProvince,
-                                  zip: item.supplier!.zip,
-                                  country: item.supplier!.country,
-                                  comments: item.supplier!.comments,
-                                  contact: item.supplier!.contact,
-                                  email: item.supplier!.email,
-                                  companyName: item.supplier!.companyName,
-                                  accountNo: item.supplier!.accountNo,
-                                  imagePath: item.supplier!.imagePath,
-                                  status: item.supplier!.status,
-                                  createdAt: item.supplier!.createdAt,
-                                  updatedAt: item.supplier!.updatedAt,
-                                  type: item.supplier!.type,
-                                  storeAccountBalance:
-                                      item.supplier!.storeAccountBalance,
-                                  payAmount: item.supplier!.payAmount,
-                                  deletedAt: item.supplier!.deletedAt,
-                                  deletedBy: item.supplier!.deletedBy,
-                                )
-                                : null,
-                        packSize:
-                            item.packSize != null
-                                ? BestSellingModel.PackSize(
-                                  id: item.packSize!.id,
-                                  productId: item.packSize!.productId,
-                                  name: item.packSize!.name,
-                                  quantity: item.packSize!.quantity,
-                                  tp: item.packSize!.tp,
-                                  vatPercent: item.packSize!.vatPercent,
-                                  vat: item.packSize!.vat,
-                                  sellingPrice: item.packSize!.sellingPrice,
-                                  defaultUnit: item.packSize!.defaultUnit,
-                                  createdAt: item.packSize!.createdAt,
-                                  updatedAt: item.packSize!.updatedAt,
-                                  deletedAt: item.packSize!.deletedAt,
-                                )
-                                : null,
-                        productVariationAttributes:
-                            item.productVariationAttributes ?? [],
-                        productVariations: item.productVariations ?? [],
-                        productPrices:
-                            item.productPrices != null
-                                ? BestSellingModel.ProductPrices(
-                                  id: item.productPrices!.id,
-                                  productId: item.productPrices!.productId,
-                                  costPriceWithoutTax:
-                                      item.productPrices!.costPriceWithoutTax,
-                                  sellingPrice:
-                                      item.productPrices!.sellingPrice,
-                                  tradePrice: item.productPrices!.tradePrice,
-                                  vat: item.productPrices!.vat,
-                                  wholesale: item.productPrices!.wholesale,
-                                  wholesaleType:
-                                      item.productPrices!.wholesaleType,
-                                  promoPrice: item.productPrices!.promoPrice,
-                                  promoStartDate:
-                                      item.productPrices!.promoStartDate,
-                                  promoEndDate:
-                                      item.productPrices!.promoEndDate,
-                                  disableFromPriceRules:
-                                      item.productPrices!.disableFromPriceRules,
-                                  allowPriceOverrideRegardlessOfPermissions:
-                                      item
-                                          .productPrices!
-                                          .allowPriceOverrideRegardlessOfPermissions,
-                                  pricesIncludeTax:
-                                      item.productPrices!.pricesIncludeTax,
-                                  onlyAllowItemsToBeSoldInWholeNumbers:
-                                      item
-                                          .productPrices!
-                                          .onlyAllowItemsToBeSoldInWholeNumbers,
-                                  changeCostPriceDuringSale:
-                                      item
-                                          .productPrices!
-                                          .changeCostPriceDuringSale,
-                                  overrideDefaultCommission:
-                                      item
-                                          .productPrices!
-                                          .overrideDefaultCommission,
-                                  overrideDefaultTax:
-                                      item.productPrices!.overrideDefaultTax,
-                                  createdAt: item.productPrices!.createdAt,
-                                  updatedAt: item.productPrices!.updatedAt,
-                                  deletedAt: item.productPrices!.deletedAt,
-                                  isEditableInSale:
-                                      item.productPrices!.isEditableInSale
-                                          ?.toString(),
-                                  packQuantity: null,
-                                  ecomDiscountPercentage: null,
-                                  ecomDiscountAmount: null,
-                                  ecomFinalSellingPrice: null,
-                                )
-                                : null,
-                        productInventories:
-                            item.productInventories != null
-                                ? BestSellingModel.ProductInventories(
-                                  id: item.productInventories!.id,
-                                  productId: item.productInventories!.productId,
-                                  quantity: item.productInventories!.quantity,
-                                  recorderLevel: null,
-                                  createdAt: item.productInventories!.createdAt,
-                                  updatedAt: item.productInventories!.updatedAt,
-                                  replenishLevel: null,
-                                  daysExpairation: null,
-                                  damagedQuantity: null,
-                                  inventoryAddSubtract: null,
-                                  comments: null,
-                                  deletedAt: null,
-                                )
-                                : null,
-                        productLocations: null,
-                        // Different structure between models
-                        productImages:
-                            item.productImages != null &&
-                                    item.productImages!.isNotEmpty
-                                ? item.productImages!
-                                    .map(
-                                      (img) => BestSellingModel.ProductImage(
-                                        id: img is Map ? img['id'] : img.id,
-                                        productId:
-                                            img is Map
-                                                ? img['product_id']
-                                                : img.productId,
-                                        path:
-                                            img is Map ? img['path'] : img.path,
-                                        createdAt:
-                                            img is Map
-                                                ? img['created_at']
-                                                : img.createdAt,
-                                        updatedAt:
-                                            img is Map
-                                                ? img['updated_at']
-                                                : img.updatedAt,
-                                        deletedAt:
-                                            img is Map
-                                                ? img['deleted_at']
-                                                : img.deletedAt,
+                  // Product Description Section
+                  Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Product Features
+                        if (product.generic?.name != null ||
+                            product.category?.name != null ||
+                            product.packSize?.quantity != null)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Product Specifications',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              SizedBox(height: 12.h),
+
+                              // Specifications Table
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey[300]!),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Column(
+                                  children: [
+                                    // Generic Information
+                                    if (product.generic?.name != null)
+                                      _buildSpecificationRow(
+                                        'Generic Name',
+                                        product.generic!.name!,
+                                        isFirst: true,
                                       ),
-                                    )
-                                    .toList()
-                                : [],
+                                    if (product.generic?.category != null)
+                                      _buildSpecificationRow(
+                                        'Generic Category',
+                                        product.generic!.category!,
+                                      ),
 
-                      );
-                      return ProductCard(
-                        product: relatedProduct,
-                        index: index,
-                        promoPrice:
-                            product.productPrices?.sellingPrice?.toString(),
-                      );
-                    },
+                                    // Product Category
+                                    if (product.category?.name != null)
+                                      _buildSpecificationRow(
+                                        'Product Category',
+                                        product.category!.name!,
+                                      ),
+
+                                    // Product Unit Price
+                                    if (product.productPrices?.sellingPrice !=
+                                        null)
+                                      _buildSpecificationRow(
+                                        'Unit Selling Price',
+                                        '৳${product.productPrices!.sellingPrice}',
+                                      ),
+
+                                    // Pack Size Information
+                                    if (product.packSize?.name != null)
+                                      _buildSpecificationRow(
+                                        'Pack Size Name',
+                                        product.packSize!.name!,
+                                      ),
+                                    if (product.packSize?.quantity != null)
+                                      _buildSpecificationRow(
+                                        'Pack Quantity',
+                                        '${product.packSize!.quantity} ',
+                                      ),
+                                    if (product.packSize?.sellingPrice != null)
+                                      _buildSpecificationRow(
+                                        'Pack Selling Price',
+                                        '৳${product.packSize!.sellingPrice}',
+                                      ),
+
+                                    // Additional Product Information
+                                    if (product.productInventories?.quantity !=
+                                        null)
+                                      _buildSpecificationRow(
+                                        'Available Stock',
+                                        '${product.productInventories!.quantity} units',
+                                      ),
+                                    if (product.totalSoldQuantity != null)
+                                      _buildSpecificationRow(
+                                        'Total Sold',
+                                        '${product.totalSoldQuantity} units',
+                                        isLast: true,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
 
-            Positioned(
-              top: 50,
-              left: 10,
-              child: InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: CircleAvatar(
-                  backgroundColor: AppColors.primaryColor,
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 5),
-                    child: Icon(
-                      Icons.arrow_back_ios_new_outlined,
-                      color: AppColors.white,
+                  Visibility(
+                    visible: relatedProducts.isNotEmpty,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Text(
+                        'Related Products',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    height: Get.height,
+                    margin: EdgeInsets.zero,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.66,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                      ),
+                      itemCount: relatedProducts.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final item = relatedProducts[index];
+                        final relatedProduct = BestSellingModel.ProductData(
+                          id: item.id,
+                          quantity: 0,
+                          addToCart: false,
+                          addToWishlist: false,
+                          name: item.name,
+                          genericId: item.genericId,
+                          categoryId: item.categoryId,
+                          supplierId: item.supplierId,
+                          pharmaSalesQuantity: null,
+                          ecommerceSalesQuantity: null,
+                          totalSoldQuantity: null,
+                          totalBalancedQuantity: null,
+                          generic:
+                          item.generic != null
+                              ? BestSellingModel.Generic(
+                            id: item.generic!.id,
+                            name: item.generic!.name,
+                            category: item.generic!.category,
+                            status: item.generic!.status,
+                            createdBy: item.generic!.createdBy,
+                            updatedBy: item.generic!.updatedBy,
+                            createdAt: item.generic!.createdAt,
+                            updatedAt: item.generic!.updatedAt,
+                          )
+                              : null,
+                          stockBatches:
+                          item.stockBatches
+                              ?.map(
+                                (batch) => BestSellingModel.StockBatch(
+                              id: batch.id,
+                              productId: batch.productId,
+                              batchNo: batch.batchNo,
+                              expiryDate: batch.expiryDate,
+                              purchaseId: batch.purchaseId,
+                              purchaseProductId: batch.purchaseProductId,
+                              purchaseBonusProductId: batch.purchaseBonusProductId,
+                              receivedQuantity: batch.receivedQuantity,
+                              balancedQuantity: batch.balancedQuantity,
+                              locked: batch.locked,
+                              createdAt: batch.createdAt,
+                              updatedAt: batch.updatedAt,
+                              saleReturnId: batch.saleReturnId,
+                              saleReturnProductId: batch.saleReturnProductId,
+                              cost: batch.cost,
+                              reconciliationId: batch.reconciliationId,
+                              reconciliationProductId: batch.reconciliationProductId,
+                              reconciliationQuantity: batch.reconciliationQuantity,
+                              branchId: batch.branchId,
+                              purchaseReturnId: batch.purchaseReturnId,
+                              purchaseReturnDetailId: batch.purchaseReturnDetailId,
+                            ),
+                          )
+                              .toList(),
+                          category:
+                          item.category != null
+                              ? BestSellingModel.Category(
+                            id: item.category!.id,
+                            name: item.category!.name,
+                            shortOrder: item.category!.shortOrder,
+                            createdAt: item.category!.createdAt,
+                            updatedAt: item.category!.updatedAt,
+                            status: item.category!.status,
+                            deletedAt: null,
+                          )
+                              : null,
+                          supplier:
+                          item.supplier != null
+                              ? BestSellingModel.Supplier(
+                            id: item.supplier!.id,
+                            firstName: item.supplier!.firstName,
+                            lastName: item.supplier!.lastName,
+                            address1: item.supplier!.address1,
+                            address2: item.supplier!.address2,
+                            city: item.supplier!.city,
+                            stateOrProvince:
+                            item.supplier!.stateOrProvince,
+                            zip: item.supplier!.zip,
+                            country: item.supplier!.country,
+                            comments: item.supplier!.comments,
+                            contact: item.supplier!.contact,
+                            email: item.supplier!.email,
+                            companyName: item.supplier!.companyName,
+                            accountNo: item.supplier!.accountNo,
+                            imagePath: item.supplier!.imagePath,
+                            status: item.supplier!.status,
+                            createdAt: item.supplier!.createdAt,
+                            updatedAt: item.supplier!.updatedAt,
+                            type: item.supplier!.type,
+                            storeAccountBalance:
+                            item.supplier!.storeAccountBalance,
+                            payAmount: item.supplier!.payAmount,
+                            deletedAt: item.supplier!.deletedAt,
+                            deletedBy: item.supplier!.deletedBy,
+                          )
+                              : null,
+                          packSize:
+                          item.packSize != null
+                              ? BestSellingModel.PackSize(
+                            id: item.packSize!.id,
+                            productId: item.packSize!.productId,
+                            name: item.packSize!.name,
+                            quantity: item.packSize!.quantity,
+                            tp: item.packSize!.tp,
+                            vatPercent: item.packSize!.vatPercent,
+                            vat: item.packSize!.vat,
+                            sellingPrice: item.packSize!.sellingPrice,
+                            defaultUnit: item.packSize!.defaultUnit,
+                            createdAt: item.packSize!.createdAt,
+                            updatedAt: item.packSize!.updatedAt,
+                            deletedAt: item.packSize!.deletedAt,
+                          )
+                              : null,
+                          productVariationAttributes:
+                          item.productVariationAttributes ?? [],
+                          productVariations: item.productVariations ?? [],
+                          productPrices:
+                          item.productPrices != null
+                              ? BestSellingModel.ProductPrices(
+                            id: item.productPrices!.id,
+                            productId: item.productPrices!.productId,
+                            costPriceWithoutTax:
+                            item.productPrices!.costPriceWithoutTax,
+                            sellingPrice:
+                            item.productPrices!.sellingPrice,
+                            tradePrice: item.productPrices!.tradePrice,
+                            vat: item.productPrices!.vat,
+                            wholesale: item.productPrices!.wholesale,
+                            wholesaleType:
+                            item.productPrices!.wholesaleType,
+                            promoPrice: item.productPrices!.promoPrice,
+                            promoStartDate:
+                            item.productPrices!.promoStartDate,
+                            promoEndDate:
+                            item.productPrices!.promoEndDate,
+                            disableFromPriceRules:
+                            item.productPrices!.disableFromPriceRules,
+                            allowPriceOverrideRegardlessOfPermissions:
+                            item
+                                .productPrices!
+                                .allowPriceOverrideRegardlessOfPermissions,
+                            pricesIncludeTax:
+                            item.productPrices!.pricesIncludeTax,
+                            onlyAllowItemsToBeSoldInWholeNumbers:
+                            item
+                                .productPrices!
+                                .onlyAllowItemsToBeSoldInWholeNumbers,
+                            changeCostPriceDuringSale:
+                            item
+                                .productPrices!
+                                .changeCostPriceDuringSale,
+                            overrideDefaultCommission:
+                            item
+                                .productPrices!
+                                .overrideDefaultCommission,
+                            overrideDefaultTax:
+                            item.productPrices!.overrideDefaultTax,
+                            createdAt: item.productPrices!.createdAt,
+                            updatedAt: item.productPrices!.updatedAt,
+                            deletedAt: item.productPrices!.deletedAt,
+                            isEditableInSale:
+                            item.productPrices!.isEditableInSale
+                                ?.toString(),
+                            packQuantity: null,
+                            ecomDiscountPercentage: null,
+                            ecomDiscountAmount: null,
+                            ecomFinalSellingPrice: null,
+                          )
+                              : null,
+                          productInventories:
+                          item.productInventories != null
+                              ? BestSellingModel.ProductInventories(
+                            id: item.productInventories!.id,
+                            productId: item.productInventories!.productId,
+                            quantity: item.productInventories!.quantity,
+                            recorderLevel: null,
+                            createdAt: item.productInventories!.createdAt,
+                            updatedAt: item.productInventories!.updatedAt,
+                            replenishLevel: null,
+                            daysExpairation: null,
+                            damagedQuantity: null,
+                            inventoryAddSubtract: null,
+                            comments: null,
+                            deletedAt: null,
+                          )
+                              : null,
+                          productLocations: null,
+                          // Different structure between models
+                          productImages:
+                          item.productImages != null &&
+                              item.productImages!.isNotEmpty
+                              ? item.productImages!
+                              .map(
+                                (img) => BestSellingModel.ProductImage(
+                              id: img is Map ? img['id'] : img.id,
+                              productId:
+                              img is Map
+                                  ? img['product_id']
+                                  : img.productId,
+                              path:
+                              img is Map ? img['path'] : img.path,
+                              createdAt:
+                              img is Map
+                                  ? img['created_at']
+                                  : img.createdAt,
+                              updatedAt:
+                              img is Map
+                                  ? img['updated_at']
+                                  : img.updatedAt,
+                              deletedAt:
+                              img is Map
+                                  ? img['deleted_at']
+                                  : img.deletedAt,
+                            ),
+                          )
+                              .toList()
+                              : [],
+
+                        );
+                        return ProductCard(
+                          product: relatedProduct,
+                          index: index,
+                          promoPrice:
+                          product.productPrices?.sellingPrice?.toString(),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+
+              Positioned(
+                top: 50,
+                left: 10,
+                child: InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: CircleAvatar(
+                    backgroundColor: AppColors.primaryColor,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: AppColors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
 
-            // Bottom Add to Cart Bar with improved styling
-            Positioned(
-              bottom: 18.h,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 50.h,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, -2),
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
-                child: Row(
-                  children: [
-                    // Add to Cart/Quantity buttons - Same logic as ProductCard
-                    Expanded(
-                      child: Obx(() {
-                        bool isInCart = Get.find<CartController>()
-                            .isProductInCart(product.id!);
-                        int quantity = Get.find<CartController>()
-                            .getProductQuantity(product.id!);
+              // Bottom Add to Cart Bar with improved styling
+              Positioned(
+                bottom: 18.h,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: Offset(0, -2),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
+                  child: Row(
+                    children: [
+                      // Add to Cart/Quantity buttons - Same logic as ProductCard
+                      Expanded(
+                        child: Obx(() {
+                          bool isInCart = Get.find<CartController>()
+                              .isProductInCart(product.id!);
+                          int quantity = Get.find<CartController>()
+                              .getProductQuantity(product.id!);
 
-                        if (isInCart && quantity > 0) {
-                          return _buildQuantitySelector(quantity);
-                        } else {
-                          return _buildAddToCartButton();
-                        }
-                      }),
-                    ),
+                          if (isInCart && quantity > 0) {
+                            return _buildQuantitySelector(quantity);
+                          } else {
+                            return _buildAddToCartButton();
+                          }
+                        }),
+                      ),
 
-                    SizedBox(width: 12.w),
+                      SizedBox(width: 12.w),
 /*
                     // Wishlist button
                     Container(
@@ -852,12 +856,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         },
                       ),
                     ),*/
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        )
       );
     });
   }
