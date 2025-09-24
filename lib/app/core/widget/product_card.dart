@@ -327,7 +327,6 @@ class _ProductCardState extends State<ProductCard> {
 
   Widget _buildAddToCartButton() {
     return SizedBox(
-      width: double.infinity,
       height: 50.h,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
@@ -346,8 +345,8 @@ class _ProductCardState extends State<ProductCard> {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 12.sp,
+            fontWeight: FontWeight.bold,
+            fontSize: 10.sp,
           ),
         ),
       ),
