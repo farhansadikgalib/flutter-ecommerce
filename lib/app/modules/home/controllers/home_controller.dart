@@ -3,7 +3,6 @@ import 'package:flutter_gallery_3d/gallery3d.dart';
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/base/base_controller.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
-import 'package:ousadbazar/app/core/helper/auth_helper.dart';
 import 'package:ousadbazar/app/core/helper/print_log.dart';
 import 'package:ousadbazar/app/data/remote/model/home/supplier_response.dart';
 import 'package:ousadbazar/app/data/remote/model/home/category_response.dart';
