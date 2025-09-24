@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/global_appbar.dart';
@@ -196,24 +197,6 @@ class CategoriesView extends GetView<CategoriesController> {
                       ),
                     ),
 
-                    // Selection indicator dot
-                    if (isSelected)
-                      Container(
-                        margin: EdgeInsets.only(top: 4.h),
-                        width: 4.w,
-                        height: 4.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.5),
-                              blurRadius: 3,
-                              spreadRadius: 1,
-                            ),
-                          ],
-                        ),
-                      ),
                   ],
                 ),
               ),
@@ -241,18 +224,6 @@ class CategoriesView extends GetView<CategoriesController> {
           key: ValueKey(selectedIndex),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Category header
-            Container(
-              padding: EdgeInsets.all(20.w),
-              child: Text(
-                selectedCategory.name ?? 'Category',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-            ),
             Expanded(
               child:
                   subcategories.isEmpty
@@ -367,6 +338,10 @@ class CategoriesView extends GetView<CategoriesController> {
 
   Widget _buildProductsGrid() {
     return Obx(() {
+      if (controller.isCategoryProductsLoading.value) {
+        return _buildProductsLoadingSkeleton();
+      }
+
       if (controller.categoryWiseProducts.isEmpty) {
         return _buildEmptyProductsState();
       }
@@ -388,6 +363,76 @@ class CategoriesView extends GetView<CategoriesController> {
         },
       );
     });
+  }
+
+  Widget _buildProductsLoadingSkeleton() {
+    return Skeletonizer(
+      enabled: true,
+      child: GridView.builder(
+        padding: EdgeInsets.all(16.w),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.6,
+          crossAxisSpacing: 4,
+          mainAxisSpacing: 4,
+        ),
+        itemCount: 6,
+        itemBuilder: (context, index) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Product Image
+                Container(
+                  height: 100.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(12.r),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.all(8.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Product Name
+                      AppWidgets().gapH(30),
+                      // Product Description
+                      Container(
+                        width: 100.w,
+                        height: 20.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                      ),
+
+                      SizedBox(height: 4.h),
+
+
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Widget _buildEmptyProductsState() {

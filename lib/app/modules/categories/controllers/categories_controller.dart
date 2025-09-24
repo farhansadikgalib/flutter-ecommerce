@@ -10,6 +10,7 @@ class CategoriesController extends GetxController {
   final selectedCategoryIndex = (-1).obs;
 
   final categoryWiseProducts = <ProductData>[].obs;
+  final isCategoryProductsLoading = false.obs;
 
   @override
   void onInit() {
@@ -31,15 +32,14 @@ class CategoriesController extends GetxController {
     }
   }
 
-  Future<void> getCategoryWiseProduct( String categoryId)async {
+  Future<void> getCategoryWiseProduct(String categoryId) async {
+    isCategoryProductsLoading.value = true;
     categoryWiseProducts.clear();
     var response = await HomeRepository().getCategoryWiseProduct(categoryId);
-    categoryWiseProducts.addAll(response.data??[]);
+    categoryWiseProducts.addAll(response.data ?? []);
+    isCategoryProductsLoading.value = false;
     printLog('Category Wise Products: ${response.data?.length}');
   }
-
-
-
 
   void selectCategory(int index) {
     selectedCategoryIndex.value = index;
