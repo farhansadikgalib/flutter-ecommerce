@@ -1,10 +1,12 @@
+// To parse this JSON data, do
+//
+//     final categoryWiseProductsResponse = categoryWiseProductsResponseFromJson(jsonString);
+
 import 'dart:convert';
 
-CategoryWiseProductsResponse categoryWiseProductsResponseFromJson(String str) =>
-    CategoryWiseProductsResponse.fromJson(json.decode(str));
+CategoryWiseProductsResponse categoryWiseProductsResponseFromJson(String str) => CategoryWiseProductsResponse.fromJson(json.decode(str));
 
-String categoryWiseProductsResponseToJson(CategoryWiseProductsResponse data) =>
-    json.encode(data.toJson());
+String categoryWiseProductsResponseToJson(CategoryWiseProductsResponse data) => json.encode(data.toJson());
 
 class CategoryWiseProductsResponse {
   int? currentPage;
@@ -14,7 +16,7 @@ class CategoryWiseProductsResponse {
   int? lastPage;
   String? lastPageUrl;
   List<Link>? links;
-  dynamic nextPageUrl;
+  String? nextPageUrl;
   String? path;
   int? perPage;
   dynamic prevPageUrl;
@@ -37,41 +39,30 @@ class CategoryWiseProductsResponse {
     this.total,
   });
 
-  factory CategoryWiseProductsResponse.fromJson(Map<String, dynamic> json) =>
-      CategoryWiseProductsResponse(
-        currentPage: json["current_page"],
-        data:
-            json["data"] == null
-                ? []
-                : List<CategoryWiseProduct>.from(
-                  json["data"]!.map((x) => CategoryWiseProduct.fromJson(x)),
-                ),
-        firstPageUrl: json["first_page_url"],
-        from: json["from"],
-        lastPage: json["last_page"],
-        lastPageUrl: json["last_page_url"],
-        links:
-            json["links"] == null
-                ? []
-                : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
-        nextPageUrl: json["next_page_url"],
-        path: json["path"],
-        perPage: json["per_page"],
-        prevPageUrl: json["prev_page_url"],
-        to: json["to"],
-        total: json["total"],
-      );
+  factory CategoryWiseProductsResponse.fromJson(Map<String, dynamic> json) => CategoryWiseProductsResponse(
+    currentPage: json["current_page"],
+    data: json["data"] == null ? [] : List<CategoryWiseProduct>.from(json["data"]!.map((x) => CategoryWiseProduct.fromJson(x))),
+    firstPageUrl: json["first_page_url"],
+    from: json["from"],
+    lastPage: json["last_page"],
+    lastPageUrl: json["last_page_url"],
+    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+    nextPageUrl: json["next_page_url"],
+    path: json["path"],
+    perPage: json["per_page"],
+    prevPageUrl: json["prev_page_url"],
+    to: json["to"],
+    total: json["total"],
+  );
 
   Map<String, dynamic> toJson() => {
     "current_page": currentPage,
-    "data":
-        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     "first_page_url": firstPageUrl,
     "from": from,
     "last_page": lastPage,
     "last_page_url": lastPageUrl,
-    "links":
-        links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
+    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
     "next_page_url": nextPageUrl,
     "path": path,
     "per_page": perPage,
@@ -102,15 +93,12 @@ class CategoryWiseProduct {
   String? isEcommerceItem;
   String? isBarcoded;
   dynamic deletedAt;
+  dynamic ecomCategoryId;
   Generic? generic;
   Category? category;
   Supplier? supplier;
   PackSize? packSize;
-  List<dynamic>? productVariationAttributes;
-  List<dynamic>? productVariations;
   ProductPrices? productPrices;
-  ProductInventories? productInventories;
-  ProductLocations? productLocations;
   List<dynamic>? productImages;
   List<StockBatch>? stockBatches;
 
@@ -135,22 +123,17 @@ class CategoryWiseProduct {
     this.isEcommerceItem,
     this.isBarcoded,
     this.deletedAt,
+    this.ecomCategoryId,
     this.generic,
     this.category,
     this.supplier,
     this.packSize,
-    this.productVariationAttributes,
-    this.productVariations,
     this.productPrices,
-    this.productInventories,
-    this.productLocations,
     this.productImages,
     this.stockBatches,
   });
 
-  factory CategoryWiseProduct.fromJson(
-    Map<String, dynamic> json,
-  ) => CategoryWiseProduct(
+  factory CategoryWiseProduct.fromJson(Map<String, dynamic> json) => CategoryWiseProduct(
     id: json["id"],
     categoryId: json["category_id"],
     supplierId: json["supplier_id"],
@@ -171,45 +154,14 @@ class CategoryWiseProduct {
     isEcommerceItem: json["is_ecommerce_item"],
     isBarcoded: json["is_barcoded"],
     deletedAt: json["deleted_at"],
+    ecomCategoryId: json["ecom_category_id"],
     generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
-    category:
-        json["category"] == null ? null : Category.fromJson(json["category"]),
-    supplier:
-        json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
-    packSize:
-        json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
-    productVariationAttributes:
-        json["product_variation_attributes"] == null
-            ? []
-            : List<dynamic>.from(
-              json["product_variation_attributes"]!.map((x) => x),
-            ),
-    productVariations:
-        json["product_variations"] == null
-            ? []
-            : List<dynamic>.from(json["product_variations"]!.map((x) => x)),
-    productPrices:
-        json["product_prices"] == null
-            ? null
-            : ProductPrices.fromJson(json["product_prices"]),
-    productInventories:
-        json["product_inventories"] == null
-            ? null
-            : ProductInventories.fromJson(json["product_inventories"]),
-    productLocations:
-        json["product_locations"] == null
-            ? null
-            : ProductLocations.fromJson(json["product_locations"]),
-    productImages:
-        json["product_images"] == null
-            ? []
-            : List<dynamic>.from(json["product_images"]!.map((x) => x)),
-    stockBatches:
-        json["stock_batches"] == null
-            ? []
-            : List<StockBatch>.from(
-              json["stock_batches"]!.map((x) => StockBatch.fromJson(x)),
-            ),
+    category: json["category"] == null ? null : Category.fromJson(json["category"]),
+    supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
+    packSize: json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
+    productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
+    productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
+    stockBatches: json["stock_batches"] == null ? [] : List<StockBatch>.from(json["stock_batches"]!.map((x) => StockBatch.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -233,29 +185,14 @@ class CategoryWiseProduct {
     "is_ecommerce_item": isEcommerceItem,
     "is_barcoded": isBarcoded,
     "deleted_at": deletedAt,
+    "ecom_category_id": ecomCategoryId,
     "generic": generic?.toJson(),
     "category": category?.toJson(),
     "supplier": supplier?.toJson(),
     "pack_size": packSize?.toJson(),
-    "product_variation_attributes":
-        productVariationAttributes == null
-            ? []
-            : List<dynamic>.from(productVariationAttributes!.map((x) => x)),
-    "product_variations":
-        productVariations == null
-            ? []
-            : List<dynamic>.from(productVariations!.map((x) => x)),
     "product_prices": productPrices?.toJson(),
-    "product_inventories": productInventories?.toJson(),
-    "product_locations": productLocations?.toJson(),
-    "product_images":
-        productImages == null
-            ? []
-            : List<dynamic>.from(productImages!.map((x) => x)),
-    "stock_batches":
-        stockBatches == null
-            ? []
-            : List<dynamic>.from(stockBatches!.map((x) => x.toJson())),
+    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
+    "stock_batches": stockBatches == null ? [] : List<dynamic>.from(stockBatches!.map((x) => x.toJson())),
   };
 }
 
@@ -266,6 +203,7 @@ class Category {
   String? createdAt;
   dynamic updatedAt;
   String? status;
+  dynamic deletedAt;
 
   Category({
     this.id,
@@ -274,6 +212,7 @@ class Category {
     this.createdAt,
     this.updatedAt,
     this.status,
+    this.deletedAt,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
@@ -283,6 +222,7 @@ class Category {
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     status: json["status"],
+    deletedAt: json["deleted_at"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -292,6 +232,7 @@ class Category {
     "created_at": createdAt,
     "updated_at": updatedAt,
     "status": status,
+    "deleted_at": deletedAt,
   };
 }
 
@@ -300,7 +241,7 @@ class Generic {
   String? name;
   String? category;
   String? status;
-  String? createdBy;
+  dynamic createdBy;
   dynamic updatedBy;
   String? createdAt;
   String? updatedAt;
@@ -399,124 +340,6 @@ class PackSize {
   };
 }
 
-class ProductInventories {
-  int? id;
-  String? productId;
-  dynamic quantity;
-  dynamic recorderLevel;
-  String? createdAt;
-  String? updatedAt;
-  dynamic replenishLevel;
-  dynamic daysExpairation;
-  dynamic damagedQuantity;
-  dynamic inventoryAddSubtract;
-  dynamic comments;
-  dynamic deletedAt;
-
-  ProductInventories({
-    this.id,
-    this.productId,
-    this.quantity,
-    this.recorderLevel,
-    this.createdAt,
-    this.updatedAt,
-    this.replenishLevel,
-    this.daysExpairation,
-    this.damagedQuantity,
-    this.inventoryAddSubtract,
-    this.comments,
-    this.deletedAt,
-  });
-
-  factory ProductInventories.fromJson(Map<String, dynamic> json) =>
-      ProductInventories(
-        id: json["id"],
-        productId: json["product_id"],
-        quantity: json["quantity"],
-        recorderLevel: json["recorder_level"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        replenishLevel: json["replenish_level"],
-        daysExpairation: json["days_expairation"],
-        damagedQuantity: json["damaged_quantity"],
-        inventoryAddSubtract: json["inventory_add_subtract"],
-        comments: json["comments"],
-        deletedAt: json["deleted_at"],
-      );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "product_id": productId,
-    "quantity": quantity,
-    "recorder_level": recorderLevel,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "replenish_level": replenishLevel,
-    "days_expairation": daysExpairation,
-    "damaged_quantity": damagedQuantity,
-    "inventory_add_subtract": inventoryAddSubtract,
-    "comments": comments,
-    "deleted_at": deletedAt,
-  };
-}
-
-class ProductLocations {
-  int? id;
-  String? productId;
-  dynamic locationAtStore;
-  dynamic reorderLevel;
-  dynamic replenishLevel;
-  String? hideFromGrid;
-  String? overridePrices;
-  String? overrideDefaultTax;
-  String? createdAt;
-  String? updatedAt;
-  dynamic deletedAt;
-
-  ProductLocations({
-    this.id,
-    this.productId,
-    this.locationAtStore,
-    this.reorderLevel,
-    this.replenishLevel,
-    this.hideFromGrid,
-    this.overridePrices,
-    this.overrideDefaultTax,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
-  });
-
-  factory ProductLocations.fromJson(Map<String, dynamic> json) =>
-      ProductLocations(
-        id: json["id"],
-        productId: json["product_id"],
-        locationAtStore: json["location_at_store"],
-        reorderLevel: json["reorder_level"],
-        replenishLevel: json["replenish_level"],
-        hideFromGrid: json["hide_from_grid"],
-        overridePrices: json["override_prices"],
-        overrideDefaultTax: json["override_default_tax"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        deletedAt: json["deleted_at"],
-      );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "product_id": productId,
-    "location_at_store": locationAtStore,
-    "reorder_level": reorderLevel,
-    "replenish_level": replenishLevel,
-    "hide_from_grid": hideFromGrid,
-    "override_prices": overridePrices,
-    "override_default_tax": overrideDefaultTax,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "deleted_at": deletedAt,
-  };
-}
-
 class ProductPrices {
   int? id;
   String? productId;
@@ -540,6 +363,10 @@ class ProductPrices {
   String? updatedAt;
   dynamic deletedAt;
   String? isEditableInSale;
+  String? packQuantity;
+  String? ecomDiscountPercentage;
+  String? ecomDiscountAmount;
+  double? ecomFinalSellingPrice;
 
   ProductPrices({
     this.id,
@@ -564,6 +391,10 @@ class ProductPrices {
     this.updatedAt,
     this.deletedAt,
     this.isEditableInSale,
+    this.packQuantity,
+    this.ecomDiscountPercentage,
+    this.ecomDiscountAmount,
+    this.ecomFinalSellingPrice,
   });
 
   factory ProductPrices.fromJson(Map<String, dynamic> json) => ProductPrices(
@@ -579,11 +410,9 @@ class ProductPrices {
     promoStartDate: json["promo_start_date"],
     promoEndDate: json["promo_end_date"],
     disableFromPriceRules: json["disable_from_price_rules"],
-    allowPriceOverrideRegardlessOfPermissions:
-        json["allow_price_override_regardless_of_permissions"],
+    allowPriceOverrideRegardlessOfPermissions: json["allow_price_override_regardless_of_permissions"],
     pricesIncludeTax: json["prices_include_tax"],
-    onlyAllowItemsToBeSoldInWholeNumbers:
-        json["only_allow_items_to_be_sold_in_whole_numbers"],
+    onlyAllowItemsToBeSoldInWholeNumbers: json["only_allow_items_to_be_sold_in_whole_numbers"],
     changeCostPriceDuringSale: json["change_cost_price_during_sale"],
     overrideDefaultCommission: json["override_default_commission"],
     overrideDefaultTax: json["override_default_tax"],
@@ -591,6 +420,10 @@ class ProductPrices {
     updatedAt: json["updated_at"],
     deletedAt: json["deleted_at"],
     isEditableInSale: json["is_editable_in_sale"],
+    packQuantity: json["pack_quantity"],
+    ecomDiscountPercentage: json["ecom_discount_percentage"],
+    ecomDiscountAmount: json["ecom_discount_amount"],
+    ecomFinalSellingPrice: json["ecom_final_selling_price"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -606,11 +439,9 @@ class ProductPrices {
     "promo_start_date": promoStartDate,
     "promo_end_date": promoEndDate,
     "disable_from_price_rules": disableFromPriceRules,
-    "allow_price_override_regardless_of_permissions":
-        allowPriceOverrideRegardlessOfPermissions,
+    "allow_price_override_regardless_of_permissions": allowPriceOverrideRegardlessOfPermissions,
     "prices_include_tax": pricesIncludeTax,
-    "only_allow_items_to_be_sold_in_whole_numbers":
-        onlyAllowItemsToBeSoldInWholeNumbers,
+    "only_allow_items_to_be_sold_in_whole_numbers": onlyAllowItemsToBeSoldInWholeNumbers,
     "change_cost_price_during_sale": changeCostPriceDuringSale,
     "override_default_commission": overrideDefaultCommission,
     "override_default_tax": overrideDefaultTax,
@@ -618,6 +449,10 @@ class ProductPrices {
     "updated_at": updatedAt,
     "deleted_at": deletedAt,
     "is_editable_in_sale": isEditableInSale,
+    "pack_quantity": packQuantity,
+    "ecom_discount_percentage": ecomDiscountPercentage,
+    "ecom_discount_amount": ecomDiscountAmount,
+    "ecom_final_selling_price": ecomFinalSellingPrice,
   };
 }
 
@@ -735,12 +570,12 @@ class Supplier {
   dynamic imagePath;
   String? status;
   dynamic createdAt;
-  String? updatedAt;
+  dynamic updatedAt;
   String? type;
   String? storeAccountBalance;
   String? payAmount;
   dynamic deletedAt;
-  String? deletedBy;
+  dynamic deletedBy;
 
   Supplier({
     this.id,
@@ -826,10 +661,17 @@ class Link {
   String? label;
   bool? active;
 
-  Link({this.url, this.label, this.active});
+  Link({
+    this.url,
+    this.label,
+    this.active,
+  });
 
-  factory Link.fromJson(Map<String, dynamic> json) =>
-      Link(url: json["url"], label: json["label"], active: json["active"]);
+  factory Link.fromJson(Map<String, dynamic> json) => Link(
+    url: json["url"],
+    label: json["label"],
+    active: json["active"],
+  );
 
   Map<String, dynamic> toJson() => {
     "url": url,
