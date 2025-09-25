@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-TrackOrderData trackOrderDataFromJson(String str) =>
-    TrackOrderData.fromJson(json.decode(str));
+TrackOrderData trackOrderDataFromJson(String str) => TrackOrderData.fromJson(json.decode(str));
 
 String trackOrderDataToJson(TrackOrderData data) => json.encode(data.toJson());
 
@@ -18,8 +17,8 @@ class TrackOrderData {
   dynamic note;
   String? subTotal;
   String? total;
-  dynamic paidAmount;
-  dynamic amountDue;
+  String? paidAmount;
+  String? amountDue;
   String? commentOnReceipt;
   String? createdBy;
   String? createdAt;
@@ -31,17 +30,20 @@ class TrackOrderData {
   dynamic discountReason;
   dynamic itemTire;
   String? verifyStatus;
-  dynamic verifiedBy;
-  dynamic verifiedAt;
+  String? verifiedBy;
+  String? verifiedAt;
   dynamic suspendedBy;
   dynamic customerName;
   String? suspendRequest;
   dynamic suspendRequestBy;
-  dynamic shippingCost;
+  String? shippingCost;
+  String? deliveryManId;
+  String? deliveryStatus;
+  dynamic deliveryRejectReason;
+  String? deliveredAt;
   List<SaleProduct>? saleProducts;
   PaymentMethod? paymentMethod;
   SoldUser? soldUser;
-  dynamic customer;
   BillingAddress? billingAddress;
 
   TrackOrderData({
@@ -73,10 +75,13 @@ class TrackOrderData {
     this.suspendRequest,
     this.suspendRequestBy,
     this.shippingCost,
+    this.deliveryManId,
+    this.deliveryStatus,
+    this.deliveryRejectReason,
+    this.deliveredAt,
     this.saleProducts,
     this.paymentMethod,
     this.soldUser,
-    this.customer,
     this.billingAddress,
   });
 
@@ -109,23 +114,14 @@ class TrackOrderData {
     suspendRequest: json["suspend_request"],
     suspendRequestBy: json["suspend_request_by"],
     shippingCost: json["shipping_cost"],
-    saleProducts:
-        json["sale_products"] == null
-            ? []
-            : List<SaleProduct>.from(
-              json["sale_products"]!.map((x) => SaleProduct.fromJson(x)),
-            ),
-    paymentMethod:
-        json["payment_method"] == null
-            ? null
-            : PaymentMethod.fromJson(json["payment_method"]),
-    soldUser:
-        json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
-    customer: json["customer"],
-    billingAddress:
-        json["billing_address"] == null
-            ? null
-            : BillingAddress.fromJson(json["billing_address"]),
+    deliveryManId: json["delivery_man_id"],
+    deliveryStatus: json["delivery_status"],
+    deliveryRejectReason: json["delivery_reject_reason"],
+    deliveredAt: json["delivered_at"],
+    saleProducts: json["sale_products"] == null ? [] : List<SaleProduct>.from(json["sale_products"]!.map((x) => SaleProduct.fromJson(x))),
+    paymentMethod: json["payment_method"] == null ? null : PaymentMethod.fromJson(json["payment_method"]),
+    soldUser: json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
+    billingAddress: json["billing_address"] == null ? null : BillingAddress.fromJson(json["billing_address"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -157,13 +153,13 @@ class TrackOrderData {
     "suspend_request": suspendRequest,
     "suspend_request_by": suspendRequestBy,
     "shipping_cost": shippingCost,
-    "sale_products":
-        saleProducts == null
-            ? []
-            : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
+    "delivery_man_id": deliveryManId,
+    "delivery_status": deliveryStatus,
+    "delivery_reject_reason": deliveryRejectReason,
+    "delivered_at": deliveredAt,
+    "sale_products": saleProducts == null ? [] : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
     "payment_method": paymentMethod?.toJson(),
     "sold_user": soldUser?.toJson(),
-    "customer": customer,
     "billing_address": billingAddress?.toJson(),
   };
 }
@@ -174,12 +170,14 @@ class BillingAddress {
   String? fullName;
   String? mobile;
   String? address;
-  dynamic countryId;
+  String? countryId;
   String? cityId;
   dynamic notes;
   String? createdAt;
   String? updatedAt;
   dynamic deletedAt;
+  String? areaId;
+  String? customerAddressId;
 
   BillingAddress({
     this.id,
@@ -193,6 +191,8 @@ class BillingAddress {
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
+    this.areaId,
+    this.customerAddressId,
   });
 
   factory BillingAddress.fromJson(Map<String, dynamic> json) => BillingAddress(
@@ -207,6 +207,8 @@ class BillingAddress {
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     deletedAt: json["deleted_at"],
+    areaId: json["area_id"],
+    customerAddressId: json["customer_address_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -221,6 +223,8 @@ class BillingAddress {
     "created_at": createdAt,
     "updated_at": updatedAt,
     "deleted_at": deletedAt,
+    "area_id": areaId,
+    "customer_address_id": customerAddressId,
   };
 }
 
@@ -286,6 +290,9 @@ class SaleProduct {
   String? packSizeId;
   String? packSizeQuantity;
   String? totalQuantity;
+  String? ecomDiscountPercentage;
+  String? ecomDiscountAmount;
+  String? ecomFinalSellingPrice;
 
   SaleProduct({
     this.id,
@@ -305,6 +312,9 @@ class SaleProduct {
     this.packSizeId,
     this.packSizeQuantity,
     this.totalQuantity,
+    this.ecomDiscountPercentage,
+    this.ecomDiscountAmount,
+    this.ecomFinalSellingPrice,
   });
 
   factory SaleProduct.fromJson(Map<String, dynamic> json) => SaleProduct(
@@ -325,6 +335,9 @@ class SaleProduct {
     packSizeId: json["pack_size_id"],
     packSizeQuantity: json["pack_size_quantity"],
     totalQuantity: json["total_quantity"],
+    ecomDiscountPercentage: json["ecom_discount_percentage"],
+    ecomDiscountAmount: json["ecom_discount_amount"],
+    ecomFinalSellingPrice: json["ecom_final_selling_price"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -345,6 +358,9 @@ class SaleProduct {
     "pack_size_id": packSizeId,
     "pack_size_quantity": packSizeQuantity,
     "total_quantity": totalQuantity,
+    "ecom_discount_percentage": ecomDiscountPercentage,
+    "ecom_discount_amount": ecomDiscountAmount,
+    "ecom_final_selling_price": ecomFinalSellingPrice,
   };
 }
 
@@ -356,10 +372,10 @@ class SoldUser {
   String? status;
   String? createdAt;
   String? updatedAt;
-  String? branchId;
+  dynamic branchId;
   String? userType;
   dynamic username;
-  dynamic phone;
+  String? phone;
   dynamic dob;
   dynamic gender;
   dynamic address;

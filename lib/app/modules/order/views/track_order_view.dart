@@ -150,7 +150,7 @@ class TrackOrderView extends StatelessWidget {
                         status: data.verifyStatus,
                         createdAt: data.createdAt,
                         shippedAt: data.updatedAt,
-                        deliveredAt: data.verifiedAt,
+                        deliveredAt: data.deliveredAt,
                       ),
                     ],
                   ),
@@ -196,14 +196,60 @@ class _OrderTimeline extends StatelessWidget {
   });
 
   int get currentStep {
-    switch (status?.toLowerCase()) {
+    // Handle both string and integer status values
+    String statusStr = '';
+    if (status != null) {
+      // Check if it's a number (verifyStatus or deliveryStatus from API)
+      if (int.tryParse(status!) != null) {
+        int statusCode = int.parse(status!);
+
+        // Handle deliveryStatus: 3=delivered, 2=shipped, 1=confirmed, 0=pending
+        if (statusCode == 3) {
+          statusStr = 'delivered';
+        } else if (statusCode == 2) {
+          statusStr = 'shipped';
+        } else if (statusCode == 1) {
+          statusStr = 'confirmed';
+        } else if (statusCode == 0) {
+          statusStr = 'pending';
+        } else {
+          // Fallback for other status codes
+          switch (statusCode) {
+            case 0:
+              statusStr = 'pending';
+              break;
+            case 1:
+              statusStr = 'confirmed';
+              break;
+            case 2:
+              statusStr = 'shipped'; // Updated mapping
+              break;
+            case 3:
+              statusStr = 'delivered'; // Updated mapping
+              break;
+            default:
+              statusStr = 'pending';
+          }
+        }
+      } else {
+        statusStr = status!.toLowerCase();
+      }
+    }
+
+    switch (statusStr) {
       case 'delivered':
-        return 3;
+        return 4;
       case 'shipped':
       case 'out for delivery':
-        return 2;
+        return 3;
+      case 'confirmed':
       case 'processing':
+        return 2;
+      case 'pending':
         return 1;
+      case 'cancelled':
+      case 'cancel':
+        return -1; // Special case for cancelled orders
       default:
         return 0;
     }
@@ -211,9 +257,41 @@ class _OrderTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Handle cancelled orders differently
+    if (currentStep == -1) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(12),
+            child: Icon(Icons.cancel, color: Colors.white, size: 32),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Order Cancelled',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Your order has been cancelled',
+            style: TextStyle(color: Colors.grey[600], fontSize: 14),
+          ),
+        ],
+      );
+    }
+
     final steps = [
       _TimelineStep(
-        title: 'Ordered',
+        title: 'Order Placed',
         subtitle:
             createdAt != null
                 ? DateFormat('MMM dd, yyyy').format(DateTime.parse(createdAt!))
@@ -223,87 +301,119 @@ class _OrderTimeline extends StatelessWidget {
         isDone: currentStep > 0,
       ),
       _TimelineStep(
-        title: 'Processing',
-        subtitle: '',
-        icon: Icons.settings,
+        title: 'Pending',
+        subtitle: 'Awaiting confirmation',
+        icon: Icons.hourglass_empty,
         isActive: currentStep >= 1,
         isDone: currentStep > 1,
+      ),
+      _TimelineStep(
+        title: 'Confirmed',
+        subtitle: 'Order confirmed & processing',
+        icon: Icons.check_circle_outline,
+        isActive: currentStep >= 2,
+        isDone: currentStep > 2,
       ),
       _TimelineStep(
         title: 'Shipped',
         subtitle:
             shippedAt != null
                 ? DateFormat('MMM dd, yyyy').format(DateTime.parse(shippedAt!))
-                : '',
+                : 'Out for delivery',
         icon: Icons.local_shipping,
-        isActive: currentStep >= 2,
-        isDone: currentStep > 2,
+        isActive: currentStep >= 3,
+        isDone: currentStep > 3,
+      ),
+      _TimelineStep(
+        title: 'Delivered',
+        subtitle:
+            deliveredAt != null
+                ? DateFormat(
+                  'MMM dd, yyyy',
+                ).format(DateTime.parse(deliveredAt!))
+                : '',
+        icon: Icons.check_circle,
+        isActive: currentStep >= 4,
+        isDone: currentStep > 4,
       ),
     ];
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: List.generate(steps.length, (i) {
         final step = steps[i];
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color:
-                        step.isActive
-                            ? AppColors.primaryColor
-                            : Colors.grey[300],
-                    shape: BoxShape.circle,
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  child: Icon(
-                    step.icon,
-                    color: step.isActive ? Colors.white : Colors.grey[500],
-                    size: 22,
-                  ),
-                ),
-                if (i < steps.length - 1)
+        return IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Timeline icon and line column
+              Column(
+                children: [
                   Container(
-                    width: 4,
-                    height: 36,
-                    color:
-                        step.isDone ? AppColors.primaryColor : Colors.grey[300],
-                  ),
-              ],
-            ),
-            const SizedBox(width: 16),
-            // Center the text column and remove Expanded
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  step.title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color:
-                        step.isActive
-                            ? AppColors.primaryColor
-                            : Colors.grey[600],
-                    fontSize: 15,
-                  ),
-                ),
-                if (step.subtitle.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2.0),
-                    child: Text(
-                      step.subtitle,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color:
+                          step.isActive
+                              ? AppColors.primaryColor
+                              : Colors.grey[300],
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      step.icon,
+                      color: step.isActive ? Colors.white : Colors.grey[500],
+                      size: 22,
                     ),
                   ),
-              ],
-            ),
-          ],
+                  if (i < steps.length - 1)
+                    Container(
+                      width: 2,
+                      height: 50,
+                      color:
+                          step.isDone
+                              ? AppColors.primaryColor
+                              : Colors.grey[300],
+                    ),
+                ],
+              ),
+              const SizedBox(width: 16),
+              // Text content aligned with icon center
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                  ), // Align with icon center
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        step.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color:
+                              step.isActive
+                                  ? AppColors.primaryColor
+                                  : Colors.grey[600],
+                          fontSize: 16,
+                        ),
+                      ),
+                      if (step.subtitle.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            step.subtitle,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       }),
     );

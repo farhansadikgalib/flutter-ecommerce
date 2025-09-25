@@ -31,9 +31,9 @@ class Sale {
   String? saleCode;
   DateTime? saleDate;
   int? customerId;
-  int? subTotal;
-  int? total;
-  int? shippingCost;
+  dynamic subTotal;
+  dynamic total;
+  dynamic shippingCost;
   int? paymentMethodId;
   int? createdBy;
   String? updatedAt;
