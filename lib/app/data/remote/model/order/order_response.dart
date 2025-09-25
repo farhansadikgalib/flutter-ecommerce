@@ -1,7 +1,10 @@
+// To parse this JSON data, do
+//
+//     final orderResponse = orderResponseFromJson(jsonString);
+
 import 'dart:convert';
 
-OrderResponse orderResponseFromJson(String str) =>
-    OrderResponse.fromJson(json.decode(str));
+OrderResponse orderResponseFromJson(String str) => OrderResponse.fromJson(json.decode(str));
 
 String orderResponseToJson(OrderResponse data) => json.encode(data.toJson());
 
@@ -13,7 +16,7 @@ class OrderResponse {
   int? lastPage;
   String? lastPageUrl;
   List<Link>? links;
-  String? nextPageUrl;
+  dynamic nextPageUrl;
   String? path;
   int? perPage;
   dynamic prevPageUrl;
@@ -40,20 +43,12 @@ class OrderResponse {
 
   factory OrderResponse.fromJson(Map<String, dynamic> json) => OrderResponse(
     currentPage: json["current_page"],
-    data:
-        json["data"] == null
-            ? []
-            : List<AllOrdersData>.from(
-              json["data"]!.map((x) => AllOrdersData.fromJson(x)),
-            ),
+    data: json["data"] == null ? [] : List<AllOrdersData>.from(json["data"]!.map((x) => AllOrdersData.fromJson(x))),
     firstPageUrl: json["first_page_url"],
     from: json["from"],
     lastPage: json["last_page"],
     lastPageUrl: json["last_page_url"],
-    links:
-        json["links"] == null
-            ? []
-            : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
     nextPageUrl: json["next_page_url"],
     path: json["path"],
     perPage: json["per_page"],
@@ -65,14 +60,12 @@ class OrderResponse {
 
   Map<String, dynamic> toJson() => {
     "current_page": currentPage,
-    "data":
-        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     "first_page_url": firstPageUrl,
     "from": from,
     "last_page": lastPage,
     "last_page_url": lastPageUrl,
-    "links":
-        links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
+    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
     "next_page_url": nextPageUrl,
     "path": path,
     "per_page": perPage,
@@ -92,8 +85,8 @@ class AllOrdersData {
   dynamic note;
   String? subTotal;
   String? total;
-  dynamic paidAmount;
-  dynamic amountDue;
+  String? paidAmount;
+  String? amountDue;
   String? commentOnReceipt;
   String? createdBy;
   String? createdAt;
@@ -112,10 +105,13 @@ class AllOrdersData {
   String? suspendRequest;
   dynamic suspendRequestBy;
   String? shippingCost;
+  dynamic deliveryManId;
+  dynamic deliveryStatus;
+  dynamic deliveryRejectReason;
+  dynamic deliveredAt;
   List<SaleProduct>? saleProducts;
   PaymentMethod? paymentMethod;
   SoldUser? soldUser;
-  dynamic customer;
   BillingAddress? billingAddress;
 
   AllOrdersData({
@@ -147,10 +143,13 @@ class AllOrdersData {
     this.suspendRequest,
     this.suspendRequestBy,
     this.shippingCost,
+    this.deliveryManId,
+    this.deliveryStatus,
+    this.deliveryRejectReason,
+    this.deliveredAt,
     this.saleProducts,
     this.paymentMethod,
     this.soldUser,
-    this.customer,
     this.billingAddress,
   });
 
@@ -183,23 +182,14 @@ class AllOrdersData {
     suspendRequest: json["suspend_request"],
     suspendRequestBy: json["suspend_request_by"],
     shippingCost: json["shipping_cost"],
-    saleProducts:
-        json["sale_products"] == null
-            ? []
-            : List<SaleProduct>.from(
-              json["sale_products"]!.map((x) => SaleProduct.fromJson(x)),
-            ),
-    paymentMethod:
-        json["payment_method"] == null
-            ? null
-            : PaymentMethod.fromJson(json["payment_method"]),
-    soldUser:
-        json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
-    customer: json["customer"],
-    billingAddress:
-        json["billing_address"] == null
-            ? null
-            : BillingAddress.fromJson(json["billing_address"]),
+    deliveryManId: json["delivery_man_id"],
+    deliveryStatus: json["delivery_status"],
+    deliveryRejectReason: json["delivery_reject_reason"],
+    deliveredAt: json["delivered_at"],
+    saleProducts: json["sale_products"] == null ? [] : List<SaleProduct>.from(json["sale_products"]!.map((x) => SaleProduct.fromJson(x))),
+    paymentMethod: json["payment_method"] == null ? null : PaymentMethod.fromJson(json["payment_method"]),
+    soldUser: json["sold_user"] == null ? null : SoldUser.fromJson(json["sold_user"]),
+    billingAddress: json["billing_address"] == null ? null : BillingAddress.fromJson(json["billing_address"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -231,13 +221,13 @@ class AllOrdersData {
     "suspend_request": suspendRequest,
     "suspend_request_by": suspendRequestBy,
     "shipping_cost": shippingCost,
-    "sale_products":
-        saleProducts == null
-            ? []
-            : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
+    "delivery_man_id": deliveryManId,
+    "delivery_status": deliveryStatus,
+    "delivery_reject_reason": deliveryRejectReason,
+    "delivered_at": deliveredAt,
+    "sale_products": saleProducts == null ? [] : List<dynamic>.from(saleProducts!.map((x) => x.toJson())),
     "payment_method": paymentMethod?.toJson(),
     "sold_user": soldUser?.toJson(),
-    "customer": customer,
     "billing_address": billingAddress?.toJson(),
   };
 }
@@ -250,10 +240,12 @@ class BillingAddress {
   String? address;
   String? countryId;
   String? cityId;
-  String? notes;
+  dynamic notes;
   String? createdAt;
   String? updatedAt;
   dynamic deletedAt;
+  String? areaId;
+  String? customerAddressId;
 
   BillingAddress({
     this.id,
@@ -267,6 +259,8 @@ class BillingAddress {
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
+    this.areaId,
+    this.customerAddressId,
   });
 
   factory BillingAddress.fromJson(Map<String, dynamic> json) => BillingAddress(
@@ -281,6 +275,8 @@ class BillingAddress {
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     deletedAt: json["deleted_at"],
+    areaId: json["area_id"],
+    customerAddressId: json["customer_address_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -295,6 +291,8 @@ class BillingAddress {
     "created_at": createdAt,
     "updated_at": updatedAt,
     "deleted_at": deletedAt,
+    "area_id": areaId,
+    "customer_address_id": customerAddressId,
   };
 }
 
@@ -360,6 +358,9 @@ class SaleProduct {
   String? packSizeId;
   String? packSizeQuantity;
   String? totalQuantity;
+  String? ecomDiscountPercentage;
+  String? ecomDiscountAmount;
+  String? ecomFinalSellingPrice;
 
   SaleProduct({
     this.id,
@@ -379,6 +380,9 @@ class SaleProduct {
     this.packSizeId,
     this.packSizeQuantity,
     this.totalQuantity,
+    this.ecomDiscountPercentage,
+    this.ecomDiscountAmount,
+    this.ecomFinalSellingPrice,
   });
 
   factory SaleProduct.fromJson(Map<String, dynamic> json) => SaleProduct(
@@ -399,6 +403,9 @@ class SaleProduct {
     packSizeId: json["pack_size_id"],
     packSizeQuantity: json["pack_size_quantity"],
     totalQuantity: json["total_quantity"],
+    ecomDiscountPercentage: json["ecom_discount_percentage"],
+    ecomDiscountAmount: json["ecom_discount_amount"],
+    ecomFinalSellingPrice: json["ecom_final_selling_price"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -419,6 +426,9 @@ class SaleProduct {
     "pack_size_id": packSizeId,
     "pack_size_quantity": packSizeQuantity,
     "total_quantity": totalQuantity,
+    "ecom_discount_percentage": ecomDiscountPercentage,
+    "ecom_discount_amount": ecomDiscountAmount,
+    "ecom_final_selling_price": ecomFinalSellingPrice,
   };
 }
 
@@ -430,10 +440,10 @@ class SoldUser {
   String? status;
   String? createdAt;
   String? updatedAt;
-  String? branchId;
+  dynamic branchId;
   String? userType;
   dynamic username;
-  dynamic phone;
+  String? phone;
   dynamic dob;
   dynamic gender;
   dynamic address;
@@ -495,10 +505,17 @@ class Link {
   String? label;
   bool? active;
 
-  Link({this.url, this.label, this.active});
+  Link({
+    this.url,
+    this.label,
+    this.active,
+  });
 
-  factory Link.fromJson(Map<String, dynamic> json) =>
-      Link(url: json["url"], label: json["label"], active: json["active"]);
+  factory Link.fromJson(Map<String, dynamic> json) => Link(
+    url: json["url"],
+    label: json["label"],
+    active: json["active"],
+  );
 
   Map<String, dynamic> toJson() => {
     "url": url,

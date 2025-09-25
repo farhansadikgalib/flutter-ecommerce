@@ -70,272 +70,220 @@ class OrderView extends GetView<OrderController> {
           );
         }
 
-        return ListView.builder(
-          padding: const EdgeInsets.all(12),
-          itemCount: controller.orderData.length,
-          itemBuilder: (context, index) {
-            final order = controller.orderData[index];
+        return RefreshIndicator(
+          onRefresh: () async {
+            await controller.getOrders();
+          },
+          color: AppColors.primaryColor,
+          child: ListView.builder(
+            padding: const EdgeInsets.all(12),
+            itemCount: controller.orderData.length,
+            itemBuilder: (context, index) {
+              final order = controller.orderData[index];
 
-            // Format date if possible
-            String formattedDate = '';
-            try {
-              final date = DateTime.parse(order.createdAt.toString());
-              formattedDate = DateFormat('MMM d, yyyy').format(date);
-            } catch (e) {
-              formattedDate = order.createdAt.toString();
-            }
+              // Format date if possible
+              String formattedDate = '';
+              try {
+                final date = DateTime.parse(order.createdAt.toString());
+                formattedDate = DateFormat('MMM d, yyyy').format(date);
+              } catch (e) {
+                formattedDate = order.createdAt.toString();
+              }
 
-            // Get order status
-            final orderStatus = getOrderStatus(order);
+              // Get order status
+              final orderStatus = getOrderStatus(order);
 
-            return Card(
-              margin: const EdgeInsets.only(bottom: 16),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Simple order header
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Order #${order.id}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              formattedDate,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: getStatusColor(
-                                  orderStatus,
-                                ).withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: getStatusColor(orderStatus),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Text(
-                                orderStatus,
-                                style: TextStyle(
-                                  color: getStatusColor(orderStatus),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '৳ ${order.total ?? '0.00'}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Divider
-                  Divider(height: 1, color: Colors.grey[300]),
-
-                  // Order items
-                  if (order.saleProducts != null &&
-                      order.saleProducts!.isNotEmpty)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+              return Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Simple order header
+                    Padding(
                       padding: const EdgeInsets.all(16),
-                      itemCount: order.saleProducts!.length,
-                      itemBuilder: (context, i) {
-                        final product = order.saleProducts![i];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[50],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Product image
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[100],
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Icon(
-                                    Icons.shopping_bag_outlined,
-                                    color: AppColors.primaryColor.withOpacity(
-                                      0.6,
-                                    ),
-                                    size: 28,
-                                  ),
+                              Text(
+                                'Order #${order.id}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primaryColor,
                                 ),
                               ),
-                              const SizedBox(width: 12),
-
-                              // Product details
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      product.productName ?? 'Product',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Qty: ${product.totalQuantity ?? 1}',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey[600],
-                                          ),
-                                        ),
-                                        Text(
-                                          ' • ',
-                                          style: TextStyle(
-                                            color: Colors.grey[400],
-                                          ),
-                                        ),
-                                        Text(
-                                          '৳${product.total ?? '0.00'}',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppColors.primaryColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                              const SizedBox(height: 4),
+                              Text(
+                                formattedDate,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[600],
                                 ),
                               ),
                             ],
                           ),
-                        );
-                      },
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: getStatusColor(
+                                    orderStatus,
+                                  ).withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: getStatusColor(orderStatus),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  orderStatus,
+                                  style: TextStyle(
+                                    color: getStatusColor(orderStatus),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '৳ ${order.total ?? '0.00'}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
 
-                  // Action buttons
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              printLog('start tracking');
-                              controller.trackOrder(order.saleCode.toString());
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                color: AppColors.primaryColor,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                    // Divider
+                    Divider(height: 1, color: Colors.grey[300]),
+
+                    // Order items
+                    if (order.saleProducts != null &&
+                        order.saleProducts!.isNotEmpty)
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(16),
+                        itemCount: order.saleProducts!.length,
+                        itemBuilder: (context, i) {
+                          final product = order.saleProducts![i];
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[50],
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            icon: const Icon(
-                              Icons.local_shipping_outlined,
-                              size: 18,
-                              color: AppColors.primaryColor,
-                            ),
-                            label: const Text(
-                              'Track Order',
-                              style: TextStyle(
-                                color: AppColors.primaryColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (orderStatus != "Delivered" &&
-                            orderStatus != "Cancelled" &&
-                            orderStatus != "Cancel") ...[
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder:
-                                      (context) => AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
+                            child: Row(
+                              children: [
+                                // Product image
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Icon(
+                                      Icons.shopping_bag_outlined,
+                                      color: AppColors.primaryColor.withOpacity(
+                                        0.6,
+                                      ),
+                                      size: 28,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+
+                                // Product details
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        product.productName ?? 'Product',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        title: const Text('Cancel Order'),
-                                        content: const Text(
-                                          'Are you sure you want to cancel this order?',
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed:
-                                                () => Navigator.pop(context),
-                                            child: const Text('No'),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              controller.cancelOrder(
-                                                order.id.toString(),
-                                              );
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.red,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Qty: ${double.parse(product
+                                                .totalQuantity.toString()).toInt()}',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey[600],
                                             ),
-                                            child: const Text('Yes, Cancel'),
+                                          ),
+                                          Text(
+                                            ' • ',
+                                            style: TextStyle(
+                                              color: Colors.grey[400],
+                                            ),
+                                          ),
+                                          Text(
+                                            '৳${
+                          double.parse(product
+                              .totalQuantity.toString()).toInt()}',
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.primaryColor,
+                                            ),
                                           ),
                                         ],
                                       ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+
+                    // Action buttons
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                printLog('start tracking');
+                                controller.trackOrder(
+                                  order.saleCode.toString(),
                                 );
                               },
                               style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Colors.red),
+                                side: const BorderSide(
+                                  color: AppColors.primaryColor,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -344,27 +292,93 @@ class OrderView extends GetView<OrderController> {
                                 ),
                               ),
                               icon: const Icon(
-                                Icons.cancel_outlined,
+                                Icons.local_shipping_outlined,
                                 size: 18,
-                                color: Colors.red,
+                                color: AppColors.primaryColor,
                               ),
                               label: const Text(
-                                'Cancel',
+                                'Track Order',
                                 style: TextStyle(
-                                  color: Colors.red,
+                                  color: AppColors.primaryColor,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
                           ),
+                          if (orderStatus != "Delivered" &&
+                              orderStatus != "Cancelled" &&
+                              orderStatus != "Cancel") ...[
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder:
+                                        (context) => AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          title: const Text('Cancel Order'),
+                                          content: const Text(
+                                            'Are you sure you want to cancel this order?',
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed:
+                                                  () => Navigator.pop(context),
+                                              child: const Text('No'),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                controller.cancelOrder(
+                                                  order.id.toString(),
+                                                );
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.red,
+                                              ),
+                                              child: const Text('Yes, Cancel'),
+                                            ),
+                                          ],
+                                        ),
+                                  );
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(color: Colors.red),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                ),
+                                icon: const Icon(
+                                  Icons.cancel_outlined,
+                                  size: 18,
+                                  color: Colors.red,
+                                ),
+                                label: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
+                  ],
+                ),
+              );
+            },
+          ),
         );
       }),
     );
