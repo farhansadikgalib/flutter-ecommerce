@@ -326,22 +326,33 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   Widget _buildAddToCartButton() {
+    final int stock = getTotalStock();
+    final bool isOutOfStock = stock <= 0;
+
     return SizedBox(
       height: 50.h,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor:
+              isOutOfStock ? Colors.grey[400] : AppColors.primaryColor,
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.r),
           ),
         ),
-        onPressed: () {
-          cartController.addToCart(widget.product, quantity: 1);
-        },
-        icon: Icon(Icons.shopping_bag, color: Colors.white, size: 14.sp),
+        onPressed:
+            isOutOfStock
+                ? null
+                : () {
+                  cartController.addToCart(widget.product, quantity: 1);
+                },
+        icon: Icon(
+          isOutOfStock ? Icons.remove_shopping_cart : Icons.shopping_bag,
+          color: Colors.white,
+          size: 14.sp,
+        ),
         label: Text(
-          'Add to Cart',
+          isOutOfStock ? 'Out of Stock' : 'Add to Cart',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -385,8 +396,12 @@ class _ProductCardState extends State<ProductCard> {
           ),
           InkWell(
             onTap: () {
-              cartController.increaseQuantity(widget.product.id!);
-              widget.product.reactive;
+              final availableStock = getTotalStock();
+
+              if (quantity < availableStock) {
+                cartController.increaseQuantity(widget.product.id!);
+                widget.product.reactive;
+              }
             },
             child: Container(
               padding: EdgeInsets.all(4.w),
