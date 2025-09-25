@@ -323,78 +323,65 @@ class CartView extends BaseView<CartController> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Row(
-                          children: [
-                            // Product Image with better styling
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Colors.grey[300]!,
-                                  width: 0.5,
-                                ),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: AnyImageView(
-                                  height: 64,
-                                  width: 64,
-                                  fit: BoxFit.cover,
-                                  imagePath:
-                                      product.productImages != null &&
-                                              product.productImages!.isNotEmpty
-                                          ? '${AppConfig.imageBasePath}${product.productImages![0].path}'
-                                          : Assets.pngNotFound,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Product name - simple and clean
-                                  Text(
-                                    product.name ?? 'Product Name',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: Colors.black87,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Row(
+                              children: [
+                                // Product Image with stock below
+                                Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: Colors.grey[300]!,
+                                          width: 0.5,
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: AnyImageView(
+                                          height: 64,
+                                          width: 64,
+                                          fit: BoxFit.cover,
+                                          imagePath:
+                                              product.productImages != null &&
+                                                      product
+                                                          .productImages!
+                                                          .isNotEmpty
+                                                  ? '${AppConfig.imageBasePath}${product.productImages![0].path}'
+                                                  : Assets.pngNotFound,
+                                        ),
+                                      ),
                                     ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 8),
-
-                                  // Simple product details
-                                  Text(
-                                    '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${product.category?.name} • ${product.packSize?.name}',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(height: 6),
-
-                                  // Simple stock status
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.inventory_2_outlined,
-                                        size: 16,
+                                    SizedBox(height: 6),
+                                    // Stock status below image
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
                                         color:
                                             getTotalStock(product) > 0
-                                                ? Colors.green[600]
-                                                : Colors.red[600],
+                                                ? Colors.green[50]
+                                                : Colors.red[50],
+                                        borderRadius: BorderRadius.circular(4),
+                                        border: Border.all(
+                                          color:
+                                              getTotalStock(product) > 0
+                                                  ? Colors.green[200]!
+                                                  : Colors.red[200]!,
+                                          width: 0.5,
+                                        ),
                                       ),
-                                      SizedBox(width: 4),
-                                      Text(
+                                      child: Text(
                                         'Stock: ${getTotalStock(product)}',
                                         style: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: 10,
                                           color:
                                               getTotalStock(product) > 0
                                                   ? Colors.green[700]
@@ -402,183 +389,234 @@ class CartView extends BaseView<CartController> {
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-
-                                  // Unit price - simple
-                                  Text(
-                                    'Unit: ৳${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'}',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
                                     ),
-                                  ),
-                                  SizedBox(height: 8),
-
-                                  // Simple pricing row
-                                  Row(
+                                  ],
+                                ),
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      // Current price
+                                      // Product name - simple and clean
                                       Text(
-                                        '৳${(product.productPrices?.ecomFinalSellingPrice != null && product.productPrices?.packQuantity != null ? (() {
-                                              final price = double.parse(product.productPrices!.ecomFinalSellingPrice.toString());
-                                              final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
-                                              return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
-                                            })() : '0.00')}',
+                                        product.name ?? 'Product Name',
                                         style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                          color: Colors.black87,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(height: 4),
+
+                                      // Simple product details
+                                      Text(
+                                        '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${product.category?.name} / ${product.packSize?.name}',
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      SizedBox(width: 12),
+                                      SizedBox(height: 4),
 
-                                      // Original price if different
-                                      if (product.productPrices?.sellingPrice !=
-                                          null)
-                                        Text(
-                                          '৳${(product.productPrices?.sellingPrice != null && product.productPrices?.packQuantity != null ? (() {
-                                                final price = double.parse(product.productPrices!.sellingPrice.toString());
-                                                final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
-                                                return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
-                                              })() : '0.00')}',
-                                          style: TextStyle(
-                                            color: Colors.grey[500],
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                          ),
+                                      // Unit price - simple
+                                      Text(
+                                        'Unit: ৳${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'}',
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                    ],
-                                  ),
+                                      ),
+                                      SizedBox(height: 4),
 
-                                  // Simple discount info
-                                  if (product.productPrices?.sellingPrice !=
-                                          null &&
-                                      product
-                                              .productPrices
-                                              ?.ecomFinalSellingPrice !=
-                                          null)
-                                    Builder(
-                                      builder: (context) {
-                                        final originalPrice = double.parse(
-                                          product.productPrices!.sellingPrice
-                                              .toString(),
-                                        );
-                                        final discountedPrice = double.parse(
-                                          product
-                                              .productPrices!
-                                              .ecomFinalSellingPrice
-                                              .toString(),
-                                        );
-                                        final packQuantity = double.parse(
-                                          product.productPrices!.packQuantity
-                                              .toString(),
-                                        );
+                                      // Simple pricing row
+                                      Row(
+                                        children: [
+                                          // Current price
+                                          Text(
+                                            '৳${(product.productPrices?.ecomFinalSellingPrice != null && product.productPrices?.packQuantity != null ? (() {
+                                                  final price = double.parse(product.productPrices!.ecomFinalSellingPrice.toString());
+                                                  final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
+                                                  return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
+                                                })() : '0.00')}',
+                                            style: TextStyle(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(width: 12),
 
-                                        final originalTotal =
-                                            originalPrice *
-                                            packQuantity *
-                                            product.quantity!.toDouble();
-                                        final discountedTotal =
-                                            discountedPrice *
-                                            packQuantity *
-                                            product.quantity!.toDouble();
-                                        final savings =
-                                            originalTotal - discountedTotal;
-                                        final discountPercentage =
-                                            ((savings / originalTotal) * 100);
-
-                                        if (savings > 0) {
-                                          return Padding(
-                                            padding: EdgeInsets.only(top: 6),
-                                            child: Text(
-                                              'You save ৳${savings.toStringAsFixed(2)} (${discountPercentage.toStringAsFixed(0)}% off)',
+                                          // Original price if different
+                                          if (product
+                                                  .productPrices
+                                                  ?.sellingPrice !=
+                                              null)
+                                            Text(
+                                              '৳${(product.productPrices?.sellingPrice != null && product.productPrices?.packQuantity != null ? (() {
+                                                    final price = double.parse(product.productPrices!.sellingPrice.toString());
+                                                    final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
+                                                    return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
+                                                  })() : '0.00')}',
                                               style: TextStyle(
-                                                color: Colors.green[700],
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
+                                                color: Colors.grey[500],
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
                                               ),
                                             ),
-                                          );
-                                        }
-                                        return SizedBox.shrink();
-                                      },
-                                    ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 12),
-                            // Enhanced quantity selector with proper cart integration
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.primaryColor,
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: FaIcon(
-                                      controller.getProductQuantity(
-                                                product.id!,
-                                              ) ==
-                                              1
-                                          ? FontAwesomeIcons.trash
-                                          : FontAwesomeIcons.minus,
-                                      color: AppColors.primaryColor,
-                                      size: 14,
-                                    ),
-                                    onPressed: () {
-                                      controller.decreaseQuantity(product.id!);
-                                    },
-                                    constraints: BoxConstraints(
-                                      minWidth: 32,
-                                      minHeight: 32,
-                                    ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
+                                ),
+                                SizedBox(width: 12),
+                                // Enhanced quantity selector with proper cart integration
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: AppColors.primaryColor,
+                                      width: 1,
                                     ),
-                                    child: Obx(
-                                      () => Text(
-                                        controller
-                                            .getProductQuantity(product.id!)
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        icon: FaIcon(
+                                          controller.getProductQuantity(
+                                                    product.id!,
+                                                  ) ==
+                                                  1
+                                              ? FontAwesomeIcons.trash
+                                              : FontAwesomeIcons.minus,
                                           color: AppColors.primaryColor,
+                                          size: 14,
+                                        ),
+                                        onPressed: () {
+                                          controller.decreaseQuantity(
+                                            product.id!,
+                                          );
+                                        },
+                                        constraints: BoxConstraints(
+                                          minWidth: 32,
+                                          minHeight: 32,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                        child: Obx(
+                                          () => Text(
+                                            controller
+                                                .getProductQuantity(product.id!)
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: AppColors.primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: FaIcon(
+                                          FontAwesomeIcons.plus,
+                                          color: AppColors.primaryColor,
+                                          size: 14,
+                                        ),
+                                        onPressed: () {
+                                          controller.increaseQuantity(
+                                            product.id!,
+                                          );
+                                        },
+                                        constraints: BoxConstraints(
+                                          minWidth: 32,
+                                          minHeight: 32,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Savings tag positioned in top-right corner
+                          if (product.productPrices?.sellingPrice != null &&
+                              product.productPrices?.ecomFinalSellingPrice !=
+                                  null)
+                            Builder(
+                              builder: (context) {
+                                final originalPrice = double.parse(
+                                  product.productPrices!.sellingPrice
+                                      .toString(),
+                                );
+                                final discountedPrice = double.parse(
+                                  product.productPrices!.ecomFinalSellingPrice
+                                      .toString(),
+                                );
+                                final packQuantity = double.parse(
+                                  product.productPrices!.packQuantity
+                                      .toString(),
+                                );
+
+                                final originalTotal =
+                                    originalPrice *
+                                    packQuantity *
+                                    product.quantity!.toDouble();
+                                final discountedTotal =
+                                    discountedPrice *
+                                    packQuantity *
+                                    product.quantity!.toDouble();
+                                final savings = originalTotal - discountedTotal;
+                                final discountPercentage =
+                                    ((savings / originalTotal) * 100);
+
+                                if (savings > 0) {
+                                  return Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red[500],
+                                        borderRadius: BorderRadius.circular(4),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.red.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 3,
+                                            offset: Offset(0, 1),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Text(
+                                        '${discountPercentage.toStringAsFixed(0)}% OFF',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.3,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  IconButton(
-                                    icon: FaIcon(
-                                      FontAwesomeIcons.plus,
-                                      color: AppColors.primaryColor,
-                                      size: 14,
-                                    ),
-                                    onPressed: () {
-                                      controller.increaseQuantity(product.id!);
-                                    },
-                                    constraints: BoxConstraints(
-                                      minWidth: 32,
-                                      minHeight: 32,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                  );
+                                }
+                                return SizedBox.shrink();
+                              },
                             ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
                   );
