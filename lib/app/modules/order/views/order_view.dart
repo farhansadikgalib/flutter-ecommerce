@@ -233,8 +233,7 @@ class OrderView extends GetView<OrderController> {
                                       Row(
                                         children: [
                                           Text(
-                                            'Qty: ${double.parse(product
-                                                .totalQuantity.toString()).toInt()}',
+                                            'Qty: ${double.parse(product.totalQuantity.toString()).toInt()}',
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: Colors.grey[600],
@@ -247,9 +246,7 @@ class OrderView extends GetView<OrderController> {
                                             ),
                                           ),
                                           Text(
-                                            '৳${
-                          double.parse(product
-                              .totalQuantity.toString()).toInt()}',
+                                            '৳${(double.parse(product.ecomFinalSellingPrice.toString()) * double.parse(product.totalQuantity.toString())).toStringAsFixed(2)}',
                                             style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600,
