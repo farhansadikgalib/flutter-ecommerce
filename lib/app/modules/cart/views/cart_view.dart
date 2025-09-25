@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:ousadbazar/app/core/base/base_view.dart';
 import 'package:ousadbazar/app/core/widget/global_appbar.dart';
@@ -354,6 +355,7 @@ class CartView extends BaseView<CartController> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // Product name - simple and clean
                                   Text(
                                     product.name ?? 'Product Name',
                                     style: TextStyle(
@@ -363,51 +365,149 @@ class CartView extends BaseView<CartController> {
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                  ), // Stock information
+                                  ),
+                                  SizedBox(height: 8),
+
+                                  // Simple product details
                                   Text(
-                                    'Stock: ${getTotalStock(product)}',
+                                    '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${product.category?.name} • ${product.packSize?.name}',
                                     style: TextStyle(
+                                      color: Colors.grey[600],
                                       fontSize: 13,
-                                      color: Colors.grey[700],
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
+                                  SizedBox(height: 6),
 
+                                  // Simple stock status
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.inventory_2_outlined,
+                                        size: 16,
+                                        color:
+                                            getTotalStock(product) > 0
+                                                ? Colors.green[600]
+                                                : Colors.red[600],
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'Stock: ${getTotalStock(product)}',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color:
+                                              getTotalStock(product) > 0
+                                                  ? Colors.green[700]
+                                                  : Colors.red[700],
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+
+                                  // Unit price - simple
                                   Text(
-                                    'Each ${product.packSize?.name} '
-                                    '৳ ${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'}',
+                                    'Unit: ৳${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'}',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.grey[600],
                                       fontSize: 12,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w500,
                                     ),
+                                  ),
+                                  SizedBox(height: 8),
+
+                                  // Simple pricing row
+                                  Row(
+                                    children: [
+                                      // Current price
+                                      Text(
+                                        '৳${(product.productPrices?.ecomFinalSellingPrice != null && product.productPrices?.packQuantity != null ? (() {
+                                              final price = double.parse(product.productPrices!.ecomFinalSellingPrice.toString());
+                                              final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
+                                              return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
+                                            })() : '0.00')}',
+                                        style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(width: 12),
+
+                                      // Original price if different
+                                      if (product.productPrices?.sellingPrice !=
+                                          null)
+                                        Text(
+                                          '৳${(product.productPrices?.sellingPrice != null && product.productPrices?.packQuantity != null ? (() {
+                                                final price = double.parse(product.productPrices!.sellingPrice.toString());
+                                                final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
+                                                return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
+                                              })() : '0.00')}',
+                                          style: TextStyle(
+                                            color: Colors.grey[500],
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
+                                        ),
+                                    ],
                                   ),
 
-                                  Text(
-                                    '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} '
-                                    '${product.category?.name} / '
-                                    '${product.packSize?.name}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4),
+                                  // Simple discount info
+                                  if (product.productPrices?.sellingPrice !=
+                                          null &&
+                                      product
+                                              .productPrices
+                                              ?.ecomFinalSellingPrice !=
+                                          null)
+                                    Builder(
+                                      builder: (context) {
+                                        final originalPrice = double.parse(
+                                          product.productPrices!.sellingPrice
+                                              .toString(),
+                                        );
+                                        final discountedPrice = double.parse(
+                                          product
+                                              .productPrices!
+                                              .ecomFinalSellingPrice
+                                              .toString(),
+                                        );
+                                        final packQuantity = double.parse(
+                                          product.productPrices!.packQuantity
+                                              .toString(),
+                                        );
 
-                                  // Total price for this item
-                                  Text(
-                                    'Sub Total: ৳ ${(product.productPrices?.ecomFinalSellingPrice != null && product.productPrices?.packQuantity != null ? (() {
-                                          final price = double.parse(product.productPrices!.ecomFinalSellingPrice.toString());
-                                          final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
-                                          return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
-                                        })() : '0.00')}',
-                                    style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
+                                        final originalTotal =
+                                            originalPrice *
+                                            packQuantity *
+                                            product.quantity!.toDouble();
+                                        final discountedTotal =
+                                            discountedPrice *
+                                            packQuantity *
+                                            product.quantity!.toDouble();
+                                        final savings =
+                                            originalTotal - discountedTotal;
+                                        final discountPercentage =
+                                            ((savings / originalTotal) * 100);
+
+                                        if (savings > 0) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(top: 6),
+                                            child: Text(
+                                              'You save ৳${savings.toStringAsFixed(2)} (${discountPercentage.toStringAsFixed(0)}% off)',
+                                              style: TextStyle(
+                                                color: Colors.green[700],
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return SizedBox.shrink();
+                                      },
                                     ),
-                                  ),
                                 ],
                               ),
                             ),
