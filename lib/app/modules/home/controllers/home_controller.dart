@@ -36,9 +36,9 @@ class HomeController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    getBestSellingProducts();
     getCategoriesData();
     getSupplierData();
-    getBestSellingProducts();
     bestSellingScrollController.addListener(_onScroll);
   }
 
