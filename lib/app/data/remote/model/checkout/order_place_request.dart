@@ -8,9 +8,9 @@ String oderPlaceRequestToJson(OderPlaceRequest data) =>
 
 class OderPlaceRequest {
   List<SaleProduct>? saleProducts;
-  int? subTotal;
-  int? total;
-  int? shippingCost;
+  double? subTotal;
+  double? total;
+  double? shippingCost;
   BillingAddress? billingAddress;
   int? paymentMethodId;
   int? customerId;

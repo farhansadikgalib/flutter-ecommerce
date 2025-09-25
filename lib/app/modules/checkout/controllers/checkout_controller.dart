@@ -243,9 +243,9 @@ class CheckoutController extends BaseController {
                   ?.ecomFinalSellingPrice.toString(),
             );
           }).toList(),
-      subTotal: subTotal.value.toInt(),
-      total: (subTotal.value + delivery.value - couponAmount.value).toInt(),
-      shippingCost: delivery.value.toInt(),
+      subTotal: subTotal.value,
+      total: (subTotal.value + delivery.value - couponAmount.value),
+      shippingCost: delivery.value,
       billingAddress: BillingAddress(
         fullName: name.value.text,
         mobile: mobile.value.text,
