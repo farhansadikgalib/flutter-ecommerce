@@ -458,8 +458,7 @@ class SearchView extends GetView<SearchController> {
             ))
                 .toList()
                 : [],
-            productInventories: item.productInventories as BestSellingModel.ProductInventories?,
-            productLocations: item.productLocations as BestSellingModel.ProductLocations?,
+
             generic:
                 item.generic != null
                     ? BestSellingModel.Generic(
@@ -558,8 +557,7 @@ class SearchView extends GetView<SearchController> {
                       deletedAt: item.packSize!.deletedAt,
                     )
                     : null,
-            productVariationAttributes: item.productVariationAttributes ?? [],
-            productVariations: item.productVariations ?? [],
+
             productPrices:
                 item.productPrices != null
                     ? BestSellingModel.ProductPrices(
@@ -597,10 +595,10 @@ class SearchView extends GetView<SearchController> {
                       deletedAt: item.productPrices!.deletedAt,
                       isEditableInSale:
                           item.productPrices!.isEditableInSale?.toString(),
-                      packQuantity: null,
-                      ecomDiscountPercentage: null,
-                      ecomDiscountAmount: null,
-                      ecomFinalSellingPrice: null,
+                      packQuantity: item.productPrices!.packQuantity,
+                      ecomDiscountPercentage: item.productPrices!.ecomDiscountPercentage,
+                      ecomDiscountAmount: item.productPrices!.ecomDiscountAmount,
+                      ecomFinalSellingPrice: item.productPrices!.ecomFinalSellingPrice,
                     )
                     : null,
           );
@@ -608,7 +606,8 @@ class SearchView extends GetView<SearchController> {
           return AnimatedContainer(
             duration: Duration(milliseconds: 300 + (index * 50)),
             curve: Curves.easeOutBack,
-            child: ProductCard(product: product, index: index),
+            child: ProductCard(product: product, index: index,
+              showDiscountTag: true,),
           );
         },
       ),
