@@ -239,7 +239,8 @@ class _ProductCardState extends State<ProductCard> {
                           children: [
                             Flexible(
                               child: Text(
-                                '৳${double.parse(discountPrice).toStringAsFixed(0)}',
+                                '৳${double.parse(discountPrice)
+                                    .toStringAsFixed(2)}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13.sp,
