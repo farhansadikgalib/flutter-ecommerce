@@ -70,13 +70,14 @@ class HomeView extends BaseView<HomeController> {
               physics: AlwaysScrollableScrollPhysics(),
               slivers: [
                 SliverAppBar(
-                  pinned: false,
-                  floating: true,
+                  pinned: true,
+                  floating: false,
                   snap: false,
                   elevation: 0,
                   backgroundColor: Colors.white,
                   expandedHeight: 85.h,
-                  automaticallyImplyLeading: true,
+                  automaticallyImplyLeading: false,
+                  collapsedHeight: 85.h, // Add this to ensure consistent height
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
                       margin: REdgeInsets.symmetric(
@@ -237,7 +238,7 @@ class HomeView extends BaseView<HomeController> {
                       ),
                       AppWidgets().gapH8(),
 
-          /*            Row(
+                      /*            Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -325,12 +326,14 @@ class HomeView extends BaseView<HomeController> {
                                         'type': 'Categories',
                                         'id':
                                             controller.categoriesData[index].id,
-                                        *//*                  'name':
+                                        */
+                      /*                  'name':
                                             controller.categoriesData[index].name,
                                         'slug':
                                             controller.categoriesData[index].id,
                                         'brandId': '',
-                                        'fromSearch': false,*//*
+                                        'fromSearch': false,*/
+                      /*
                                       },
                                     );
                                   },
@@ -392,12 +395,14 @@ class HomeView extends BaseView<HomeController> {
                                             ),
                                           ),
                                         ),
-                                        *//*          child: AnyImageView(
+                                        */
+                      /*          child: AnyImageView(
                                           imagePath:
                                               '${AppConfig
                                                   .imageBasePath}${controller.categoriesData[index]}',
                                           height: 75.h,
-                                        ),*//*
+                                        ),*/
+                      /*
                                       ),
                                       AppWidgets().gapH(4),
                                       Text(
@@ -413,7 +418,6 @@ class HomeView extends BaseView<HomeController> {
                               },
                             ),
                           ),*/
-
                       AppWidgets().gapH8(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
