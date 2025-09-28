@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import '../../../../generated/assets.dart';
@@ -280,6 +281,7 @@ class LoginView extends GetView<LoginController> {
                               child: TextField(
                                 controller: controller.phoneController,
                                 keyboardType: TextInputType.phone,
+                                inputFormatters: [LengthLimitingTextInputFormatter(11)],
                                 decoration: InputDecoration(
                                   labelText: "Phone",
                                   hintText: "Enter your phone number",
@@ -287,14 +289,9 @@ class LoginView extends GetView<LoginController> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  errorText:
-                                      controller.emailError.value.isEmpty
-                                          ? null
-                                          : controller.emailError.value,
+                                  counterText: '', // Hides the character counter
                                 ),
-                                onChanged:
-                                    (value) => controller.validatePhone(value),
-                              ),
+                              )
                             ),
 
                             SizedBox(
