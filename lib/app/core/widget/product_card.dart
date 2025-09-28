@@ -164,6 +164,7 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                           ),
                         ),
+
                       Positioned(
                         top: 0,
                         right: 0,
