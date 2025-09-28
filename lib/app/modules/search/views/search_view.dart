@@ -446,18 +446,21 @@ class SearchView extends GetView<SearchController> {
             ecommerceSalesQuantity: null,
             totalSoldQuantity: null,
             totalBalancedQuantity: null,
-            productImages: item.productImages != null
-                ? item.productImages!
-                .map((img) => BestSellingModel.ProductImage(
-              id: img.id,
-              path: img.path,
-              productId: img.path,
-              createdAt: img.createdAt,
-              updatedAt: img.updatedAt,
-              deletedAt: img.deletedAt
-            ))
-                .toList()
-                : [],
+            productImages:
+                item.productImages != null
+                    ? item.productImages!
+                        .map(
+                          (img) => BestSellingModel.ProductImage(
+                            id: img['id'],
+                            path: img['path'],
+                            productId: img['path'],
+                            createdAt: img['created_at'],
+                            updatedAt: img['updated_at'],
+                            deletedAt: img['deleted_at'],
+                          ),
+                        )
+                        .toList()
+                    : [],
 
             generic:
                 item.generic != null
@@ -596,9 +599,12 @@ class SearchView extends GetView<SearchController> {
                       isEditableInSale:
                           item.productPrices!.isEditableInSale?.toString(),
                       packQuantity: item.productPrices!.packQuantity,
-                      ecomDiscountPercentage: item.productPrices!.ecomDiscountPercentage,
-                      ecomDiscountAmount: item.productPrices!.ecomDiscountAmount,
-                      ecomFinalSellingPrice: item.productPrices!.ecomFinalSellingPrice,
+                      ecomDiscountPercentage:
+                          item.productPrices!.ecomDiscountPercentage,
+                      ecomDiscountAmount:
+                          item.productPrices!.ecomDiscountAmount,
+                      ecomFinalSellingPrice:
+                          item.productPrices!.ecomFinalSellingPrice,
                     )
                     : null,
           );
@@ -606,8 +612,11 @@ class SearchView extends GetView<SearchController> {
           return AnimatedContainer(
             duration: Duration(milliseconds: 300 + (index * 50)),
             curve: Curves.easeOutBack,
-            child: ProductCard(product: product, index: index,
-              showDiscountTag: true,),
+            child: ProductCard(
+              product: product,
+              index: index,
+              showDiscountTag: true,
+            ),
           );
         },
       ),

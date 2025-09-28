@@ -79,7 +79,10 @@ class HomeView extends BaseView<HomeController> {
                   automaticallyImplyLeading: true,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
-                      margin: REdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                      margin: REdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 0,
+                      ),
 
                       color: Colors.white,
                       child: SafeArea(
@@ -234,7 +237,7 @@ class HomeView extends BaseView<HomeController> {
                       ),
                       AppWidgets().gapH8(),
 
-                      Row(
+          /*            Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -258,7 +261,8 @@ class HomeView extends BaseView<HomeController> {
                                 itemCount: 5,
                                 itemBuilder: (context, index) {
                                   return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -269,7 +273,9 @@ class HomeView extends BaseView<HomeController> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: AppColors.black,
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                           boxShadow: [
                                             BoxShadow(
                                               color: AppColors.gray.withOpacity(
@@ -313,20 +319,24 @@ class HomeView extends BaseView<HomeController> {
                                       Routes.PRODUCT_CATEGORY,
                                       arguments: {
                                         'name':
-                                            controller.categoriesData[index].name,
+                                            controller
+                                                .categoriesData[index]
+                                                .name,
                                         'type': 'Categories',
-                                        'id': controller.categoriesData[index].id,
-                                        /*                  'name':
+                                        'id':
+                                            controller.categoriesData[index].id,
+                                        *//*                  'name':
                                             controller.categoriesData[index].name,
                                         'slug':
                                             controller.categoriesData[index].id,
                                         'brandId': '',
-                                        'fromSearch': false,*/
+                                        'fromSearch': false,*//*
                                       },
                                     );
                                   },
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -337,7 +347,9 @@ class HomeView extends BaseView<HomeController> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: AppColors.white,
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                           boxShadow: [
                                             BoxShadow(
                                               color: AppColors.gray.withOpacity(
@@ -380,12 +392,12 @@ class HomeView extends BaseView<HomeController> {
                                             ),
                                           ),
                                         ),
-                                        /*          child: AnyImageView(
+                                        *//*          child: AnyImageView(
                                           imagePath:
                                               '${AppConfig
                                                   .imageBasePath}${controller.categoriesData[index]}',
                                           height: 75.h,
-                                        ),*/
+                                        ),*//*
                                       ),
                                       AppWidgets().gapH(4),
                                       Text(
@@ -400,7 +412,7 @@ class HomeView extends BaseView<HomeController> {
                                 );
                               },
                             ),
-                          ),
+                          ),*/
 
                       AppWidgets().gapH8(),
                       Row(
@@ -428,7 +440,8 @@ class HomeView extends BaseView<HomeController> {
                                 itemCount: 5,
                                 itemBuilder: (context, index) {
                                   return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -439,7 +452,9 @@ class HomeView extends BaseView<HomeController> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: AppColors.black,
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                           boxShadow: [
                                             BoxShadow(
                                               color: AppColors.gray.withOpacity(
@@ -491,14 +506,16 @@ class HomeView extends BaseView<HomeController> {
                                                   .supplierData[index]
                                                   .companyName,
                                           'type': 'Suppliers',
-                                          'id': controller.supplierData[index].id,
+                                          'id':
+                                              controller.supplierData[index].id,
                                         },
                                       );
                                     },
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Container(
@@ -701,7 +718,8 @@ class HomeView extends BaseView<HomeController> {
                                           crossAxisCount: 2,
                                           itemCount: 2,
                                           shrinkWrap: true,
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           builder: (context, index) {
                                             return Card(
                                               margin: EdgeInsets.all(8.0),
@@ -719,7 +737,8 @@ class HomeView extends BaseView<HomeController> {
                                                     AppWidgets().gapH(4),
                                                     Text(
                                                       'Product Title',
-                                                      textAlign: TextAlign.center,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                         fontSize: 15,
                                                         color:
@@ -754,7 +773,8 @@ class HomeView extends BaseView<HomeController> {
                                                             style: TextStyle(
                                                               fontSize: 14.0,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               decoration:
                                                                   TextDecoration
                                                                       .lineThrough,
@@ -768,7 +788,8 @@ class HomeView extends BaseView<HomeController> {
                                                                   AppColors
                                                                       .primaryColor,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                         ],
@@ -777,15 +798,14 @@ class HomeView extends BaseView<HomeController> {
                                                     AppWidgets().gapH8(),
                                                     ElevatedButton(
                                                       onPressed: () {},
-                                                      style:
-                                                          ElevatedButton.styleFrom(
-                                                            side: BorderSide(
-                                                              color:
-                                                                  Colors
-                                                                      .transparent,
-                                                            ), // Set the border
-                                                            // color to grey
-                                                          ),
+                                                      style: ElevatedButton.styleFrom(
+                                                        side: BorderSide(
+                                                          color:
+                                                              Colors
+                                                                  .transparent,
+                                                        ), // Set the border
+                                                        // color to grey
+                                                      ),
                                                       child: Text(
                                                         '+ Add to Bag',
                                                         style: TextStyle(
