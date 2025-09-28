@@ -282,6 +282,7 @@ class LoginView extends GetView<LoginController> {
                                 controller: controller.phoneController,
                                 keyboardType: TextInputType.phone,
                                 inputFormatters: [LengthLimitingTextInputFormatter(11)],
+                                maxLength: 11,
                                 decoration: InputDecoration(
                                   labelText: "Phone",
                                   hintText: "Enter your phone number",
