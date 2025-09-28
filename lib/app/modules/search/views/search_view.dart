@@ -107,26 +107,41 @@ class SearchView extends GetView<SearchController> {
                       color: Colors.grey[500],
                       fontWeight: FontWeight.w400,
                     ),
-                    suffixIcon:
-                        controller.searchController.value.text.isNotEmpty
-                            ? GestureDetector(
-                              onTap: () {
-                                controller.searchController.value.clear();
-                                controller.searchProducts('');
-                              },
-                              child: Icon(
-                                Icons.clear_rounded,
-                                color: Colors.grey[400],
-                                size: 20.sp,
-                              ),
-                            )
-                            : Icon(
-                              Icons.search_rounded,
-                              color: AppColors.primaryColor.withValues(
-                                alpha: 0.7,
-                              ),
-                              size: 20.sp,
-                            ),
+                    suffixIcon: Obx(() {
+                      if (controller.isLoading.value) {
+                        return SizedBox(height: 0.h,width: 0.h,child:
+                        CircularProgressIndicator(
+                          padding: EdgeInsets.symmetric(horizontal:10,
+                              vertical: 10).r,
+                          strokeWidth: 4,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppColors.primaryColor,
+                          ),
+                        ),);
+                      } else if (controller
+                          .searchController
+                          .value
+                          .text
+                          .isNotEmpty) {
+                        return GestureDetector(
+                          onTap: () {
+                            controller.searchController.value.clear();
+                            controller.searchProducts('');
+                          },
+                          child: Icon(
+                            Icons.clear_rounded,
+                            color: Colors.grey[400],
+                            size: 20.sp,
+                          ),
+                        );
+                      } else {
+                        return Icon(
+                          Icons.search_rounded,
+                          color: AppColors.primaryColor.withValues(alpha: 0.7),
+                          size: 20.sp,
+                        );
+                      }
+                    }),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 20.w,
