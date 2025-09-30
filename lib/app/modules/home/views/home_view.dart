@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:ousadbazar/app/core/config/app_config.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:ousadbazar/app/core/helper/print_log.dart';
@@ -490,7 +491,7 @@ class HomeView extends BaseView<HomeController> {
                             ),
                           )
                           : SizedBox(
-                            height: 125.h,
+                            height: 135.h,
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
                               scrollDirection: Axis.horizontal,
@@ -519,9 +520,11 @@ class HomeView extends BaseView<HomeController> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.max,
                                       children: [
+                                        controller.supplierData[index]
+                                            .imagePath  == null ?
                                         Container(
                                           height: 75.h,
                                           width: 75.h,
@@ -554,39 +557,25 @@ class HomeView extends BaseView<HomeController> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        ),
-                                        /*     Container(
-                                        margin: REdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.white,
-                                          borderRadius: BorderRadius.circular(8),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppColors.gray.withOpacity(
-                                                0.5,
-                                              ),
-                                              blurRadius: 5,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                        ),
-                                        child: AnyImageView(
+                                        ) : AnyImageView(
                                           imagePath:
-                                              '${AppConfig
-                                                  .imageBasePath}${controller
+                                              '${AppConfig.imageBasePath}${controller
                                                   .supplierData[index].imagePath}',
                                           height: 75.h,
+                                          width: 75.h,
                                         ),
-                                      ),*/
                                         AppWidgets().gapH(4),
-                                        Text(
-                                          '${controller.supplierData[index].companyName}',
-                                          style: TextStyle(
-                                            color: AppColors.primaryColor,
-                                            fontWeight: FontWeight.bold,
+                                        SizedBox(
+                                          width: 75.w,
+                                          child: Text(
+                                            '${controller.supplierData[index].companyName}',
+                                            maxLines: 4,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: AppColors.primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ],
