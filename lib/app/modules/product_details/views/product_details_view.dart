@@ -328,15 +328,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      AppWidgets().gapH(4.h),
-
 
 
 
 
                       // Price section in Alibaba style (larger, with range format)
                       _buildPriceSection(product),
-                      SizedBox(height: 4.h),
+
                       // Product Info Tags
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 8.h),
@@ -396,8 +394,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           ],
                         ),
                       ),
-
-
 
 
                       Row(

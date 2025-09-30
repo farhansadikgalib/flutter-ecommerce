@@ -289,19 +289,6 @@ class _ProductCardState extends State<ProductCard> {
                   },
                 ),
               ),
-
-              SizedBox(height: 3.h),
-
-              Text(
-                '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name} / '
-                '${widget.product.packSize?.name}',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              SizedBox(height: 3.h),
               // Stock - Flexible height
               Expanded(
                 flex: 2,
@@ -315,6 +302,18 @@ class _ProductCardState extends State<ProductCard> {
                     color: Colors.grey[700],
                   ),
                   textAlign: TextAlign.left,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name} / '
+                  '${widget.product.packSize?.name}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
 
