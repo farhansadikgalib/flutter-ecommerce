@@ -86,38 +86,35 @@ class _ProductCardState extends State<ProductCard> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        printLog('clicked: ${widget.product.name}');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return ProductDetailsView(product: widget.product);
-            },
+    return SizedBox(
+      height: 0.35.sh, // Responsive height based on screen height
+      child: Card(
+        elevation: 2.r,
+        margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          side: BorderSide(
+            color: AppColors.primaryColor.withValues(alpha: 0.3),
+            width: 0.5.w,
           ),
-        );
-      },
-      child: Container(
-        height: 0.35.sh, // Responsive height based on screen height
-        child: Card(
-          elevation: 2.r,
-          margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-            side: BorderSide(
-              color: AppColors.primaryColor.withValues(alpha: 0.3),
-              width: 0.5.w,
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(6.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Image Stack - Responsive size
-                Expanded(
-                  flex: 8,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(6.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Image Stack - Responsive size
+              Expanded(
+                flex: 8,
+                child: InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ProductDetailsView(product: widget.product);
+                      },
+                    ),
+                  ),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -198,12 +195,22 @@ class _ProductCardState extends State<ProductCard> {
                     ],
                   ),
                 ),
+              ),
 
-                SizedBox(height: 6.h),
+              SizedBox(height: 6.h),
 
-                // Product Title - Flexible height
-                Expanded(
-                  flex: 4,
+              // Product Title - Flexible height
+              Expanded(
+                flex: 4,
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ProductDetailsView(product: widget.product);
+                      },
+                    ),
+                  ),
                   child: Text(
                     getProductTitle(),
                     maxLines: 2,
@@ -217,110 +224,122 @@ class _ProductCardState extends State<ProductCard> {
                     textAlign: TextAlign.left,
                   ),
                 ),
+              ),
 
-                SizedBox(height: 4.h),
+              SizedBox(height: 4.h),
 
-                // Price Section - Flexible height
-                Expanded(
-                  flex: 2,
-                  child: Builder(
-                    builder: (context) {
-                      final sellingPrice =
-                          widget.product.productPrices?.sellingPrice
-                              ?.toString() ??
-                          '';
-                      final discountPrice =
-                          widget.product.productPrices?.ecomFinalSellingPrice
-                              ?.toString() ??
-                          '';
-                      if (discountPrice.isNotEmpty &&
-                          sellingPrice.isNotEmpty &&
-                          discountPrice != sellingPrice) {
-                        return Row(
-                          children: [
-                            Flexible(
-                              child: Text(
-                                '৳${double.parse(discountPrice)
-                                    .toStringAsFixed(2)}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13.sp,
-                                  color: AppColors.primaryColor,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+              // Price Section - Flexible height
+              Expanded(
+                flex: 2,
+                child: Builder(
+                  builder: (context) {
+                    final sellingPrice =
+                        widget.product.productPrices?.sellingPrice
+                            ?.toString() ??
+                        '';
+                    final discountPrice =
+                        widget.product.productPrices?.ecomFinalSellingPrice
+                            ?.toString() ??
+                        '';
+                    if (discountPrice.isNotEmpty &&
+                        sellingPrice.isNotEmpty &&
+                        discountPrice != sellingPrice) {
+                      return Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              '৳${double.parse(discountPrice)
+                                  .toStringAsFixed(2)}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13.sp,
+                                color: AppColors.primaryColor,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            SizedBox(width: 4.w),
-                            Flexible(
-                              child: Text(
-                                '৳$sellingPrice',
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Colors.grey[600],
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        );
-                      } else if (sellingPrice.isNotEmpty) {
-                        return Text(
-                          '৳$sellingPrice',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13.sp,
-                            color: AppColors.primaryColor,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                    },
-                  ),
-                ),
-
-                SizedBox(height: 3.h),
-
-                // Stock - Flexible height
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    'Stock: ${getTotalStock()}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 10.sp,
-                      color: Colors.grey[700],
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-
-                SizedBox(height: 4.h),
-
-                // Cart Section - Fixed at bottom
-                Expanded(
-                  flex: 3,
-                  child: Obx(() {
-                    bool isInCart = cartController.isProductInCart(
-                      widget.product.id!,
-                    );
-                    int quantity = cartController.getProductQuantity(
-                      widget.product.id!,
-                    );
-
-                    if (isInCart && quantity > 0) {
-                      return _buildQuantitySelector(quantity);
+                          SizedBox(width: 4.w),
+                          Flexible(
+                            child: Text(
+                              '৳$sellingPrice',
+                              style: TextStyle(
+                                fontSize: 10.sp,
+                                color: Colors.grey[600],
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (sellingPrice.isNotEmpty) {
+                      return Text(
+                        '৳$sellingPrice',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13.sp,
+                          color: AppColors.primaryColor,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      );
                     } else {
-                      return _buildAddToCartButton();
+                      return SizedBox.shrink();
                     }
-                  }),
+                  },
                 ),
-              ],
-            ),
+              ),
+
+              SizedBox(height: 3.h),
+
+              Text(
+                '${double.parse(widget.product.productPrices!.packQuantity
+                    .toString
+                  ()).toStringAsFixed(0)} ${widget.product.category?.name} / '
+                    '${widget.product.packSize?.name}',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 3.h),
+              // Stock - Flexible height
+              Expanded(
+                flex: 2,
+                child: Text(
+                  'Stock: ${getTotalStock()}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 10.sp,
+                    color: Colors.grey[700],
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+
+              SizedBox(height: 4.h),
+
+              // Cart Section - Fixed at bottom
+              Expanded(
+                flex: 3,
+                child: Obx(() {
+                  bool isInCart = cartController.isProductInCart(
+                    widget.product.id!,
+                  );
+                  int quantity = cartController.getProductQuantity(
+                    widget.product.id!,
+                  );
+
+                  if (isInCart && quantity > 0) {
+                    return _buildQuantitySelector(quantity);
+                  } else {
+                    return _buildAddToCartButton();
+                  }
+                }),
+              ),
+            ],
           ),
         ),
       ),
