@@ -21,12 +21,8 @@ class ProductCategoryController extends GetxController {
 
   final isLoading = false.obs;
 
-  //search
-  final FocusNode searchFocusNode = FocusNode(canRequestFocus: true);
-  final searchController = TextEditingController().obs;
-  final searchProductList = <SearchProducts>[];
 
-  //search
+
 
   @override
   void onInit() {
@@ -36,16 +32,11 @@ class ProductCategoryController extends GetxController {
       getCategoryWiseProducts(id);
     } else if (type == 'Suppliers') {
       getSupplierWiseProducts(id);
-    } else if (type == 'Search') {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        searchFocusNode.requestFocus();
-      });
     }
   }
 
   @override
   void onClose() {
-    searchFocusNode.dispose();
     super.onClose();
   }
 
@@ -95,13 +86,4 @@ class ProductCategoryController extends GetxController {
     getCategoryWiseProducts(1);
   }
 
-  void searchProducts(String query) async {
-    if (query.isNotEmpty) {
-      searchProductList.clear();
-      var response = await CategoryRepository().getSearchItems(query);
-      searchProductList.addAll(response.products ?? []);
-      searchProductList.reactive;
-      searchController.refresh();
-    }
-  }
 }

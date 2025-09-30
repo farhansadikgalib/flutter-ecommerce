@@ -50,7 +50,8 @@ class ApiEndPoints {
       "product-category-wise/$categoryId";
 
   static String supplierProductList({required int categoryId}) =>
-      "product-supplier-wise/$categoryId";
+      "all-products-paginated?page=1&search=&paginate=20&supplier_id=$categoryId&sort_by"
+          "=asc&ecom_category_id=";
 
   //Category
 

@@ -26,54 +26,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
       return Scaffold(
         key: scaffoldKey,
         resizeToAvoidBottomInset: false,
-        appBar:
-            controller.fromSearch
-                ? AppBar(
-                  elevation: 0.0,
-                  titleSpacing: -20,
-                  centerTitle: false,
-                  backgroundColor: AppColors.white,
-                  leading: InkWell(
-                    onTap: () => Get.back(),
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  title: Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    height: 50.h,
-                    width: Get.width / 1.10,
-                    padding: REdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: TextField(
-                      cursorColor: AppColors.primaryColor,
-                      cursorHeight: 20,
-                      controller: controller.searchController.value,
-                      focusNode: controller.searchFocusNode,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        hintText: 'What are you looking for?',
-                        contentPadding: EdgeInsets.only(top: 5, left: 10),
-                        border: InputBorder.none,
-                        suffixIcon: Icon(
-                          Icons.search,
-                          color: AppColors.primaryColor,
-                          size: 30,
-                        ),
-                      ),
-                      onChanged: (value) {
-                        controller.debounceHelper.debounce(
-                          tag: DebounceHelper.searchTextTag,
-                          onMethod: () {
-                            controller.searchProducts(value);
-                          },
-                          time: 300,
-                        );
-                      },
-                    ),
-                  ),
-                )
-                : globalAppBar(context, controller.itemName),
+        appBar: globalAppBar(context, controller.itemName),
         drawer: Drawer(
           child: Column(
             children: [
@@ -385,14 +338,14 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                             generic:
                                 item.generic != null
                                     ? BestSellingModel.Generic(
-                                      id: item.generic!.id,
-                                      name: item.generic!.name,
-                                      category: item.generic!.category,
-                                      status: item.generic!.status,
-                                      createdBy: item.generic!.createdBy,
-                                      updatedBy: item.generic!.updatedBy,
-                                      createdAt: item.generic!.createdAt,
-                                      updatedAt: item.generic!.updatedAt,
+                                      id: item.generic!['id'],
+                                      name: item.generic!['name'],
+                                      category: item.generic!['category'],
+                                      status: item.generic!['status'],
+                                      createdBy: item.generic!['created_by'],
+                                      updatedBy: item.generic!['updated_by'],
+                                      createdAt: item.generic!['created_at'],
+                                      updatedAt: item.generic!['updated_at'],
                                     )
                                     : null,
                             category:
@@ -549,37 +502,37 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                 item.stockBatches
                                     ?.map(
                                       (batch) => BestSellingModel.StockBatch(
-                                        id: batch.id,
-                                        productId: batch.productId,
-                                        batchNo: batch.batchNo,
-                                        expiryDate: batch.expiryDate,
-                                        purchaseId: batch.purchaseId,
+                                        id: batch['id'],
+                                        productId: batch['product_id'],
+                                        batchNo: batch['batch_no'],
+                                        expiryDate: batch['expiry_date'],
+                                        purchaseId: batch['purchase_id'],
                                         purchaseProductId:
-                                            batch.purchaseProductId,
+                                            batch['purchase_product_id'],
                                         purchaseBonusProductId:
-                                            batch.purchaseBonusProductId,
+                                            batch['purchase_bonus_product_id'],
                                         receivedQuantity:
-                                            batch.receivedQuantity,
+                                            batch['received_quantity'],
                                         balancedQuantity:
-                                            batch.balancedQuantity,
-                                        locked: batch.locked,
-                                        createdAt: batch.createdAt,
-                                        updatedAt: batch.updatedAt,
-                                        saleReturnId: batch.saleReturnId,
+                                            batch['balanced_quantity'],
+                                        locked: batch['locked'],
+                                        createdAt: batch['created_at'],
+                                        updatedAt: batch['updated_at'],
+                                        saleReturnId: batch['sale_return_id'],
                                         saleReturnProductId:
-                                            batch.saleReturnProductId,
-                                        cost: batch.cost,
+                                            batch['sale_return_product_id'],
+                                        cost: batch['cost'],
                                         reconciliationId:
-                                            batch.reconciliationId,
+                                            batch['reconciliation_id'],
                                         reconciliationProductId:
-                                            batch.reconciliationProductId,
+                                            batch['reconciliation_product_id'],
                                         reconciliationQuantity:
-                                            batch.reconciliationQuantity,
-                                        branchId: batch.branchId,
+                                            batch['reconciliation_quantity'],
+                                        branchId: batch['branch_id'],
                                         purchaseReturnId:
-                                            batch.purchaseReturnId,
+                                            batch['purchase_return_id'],
                                         purchaseReturnDetailId:
-                                            batch.purchaseReturnDetailId,
+                                            batch['purchase_return_detail_id'],
                                       ),
                                     )
                                     .toList(),

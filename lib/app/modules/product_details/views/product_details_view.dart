@@ -242,7 +242,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                           .productImages!
                                                           .isNotEmpty
                                                   ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
-                                                  : 'https://via.placeholder.com/46x46?text=No+Image',
+                                                  : Assets.pngNotFound,
                                           width: 46.w,
                                           height: 46.h,
                                           errorPlaceHolder: Assets.pngNotFound,
@@ -330,41 +330,75 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       ),
                       AppWidgets().gapH(4.h),
 
-                      // Stock availability indicator - Updated to match button logic
+
+
+
+
+                      // Price section in Alibaba style (larger, with range format)
+                      _buildPriceSection(product),
+                      SizedBox(height: 4.h),
+                      // Product Info Tags
                       Container(
-                        margin: EdgeInsets.only(bottom: 8.h),
-                        child: Row(
+                        margin: EdgeInsets.symmetric(vertical: 8.h),
+                        child: Wrap(
+                          spacing: 8.w,
+                          runSpacing: 6.h,
                           children: [
-                            Icon(
-                              Icons.inventory_2_outlined,
-                              size: 16.sp,
-                              color:
-                                  _getTotalStock() > 0
-                                      ? Colors.green
-                                      : Colors.red,
-                            ),
-                            SizedBox(width: 4.w),
-                            Text(
-                              _getTotalStock() > 0
-                                  ? 'In Stock (${_getTotalStock()} available)'
-                                  : 'Out of Stock',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color:
-                                    _getTotalStock() > 0
-                                        ? Colors.green
-                                        : Colors.red,
-                                fontWeight: FontWeight.w500,
+                            // Pack Quantity Tag
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10.w,
+                                vertical: 5.h,
+                              ),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.primaryColor.withOpacity(0.1),
+                                    AppColors.primaryColor.withOpacity(0.05),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(4.r),
+                                border: Border.all(
+                                  color: AppColors.primaryColor.withOpacity(
+                                    0.3,
+                                  ),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.inventory_2_rounded,
+                                    size: 14.sp,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    '${double.parse(widget.product
+                                        .productPrices!.packQuantity.toString
+                                      ()).toStringAsFixed(0)} ${widget
+                                        .product.category?.name} / ${widget.product.packSize?.name}',
+                                    style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
+
+
+
                           ],
                         ),
                       ),
 
-                      // Price section in Alibaba style (larger, with range format)
-                      _buildPriceSection(product),
 
-                      SizedBox(height: 4.h),
+
 
                       Row(
                         children: [
@@ -415,7 +449,37 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           ),
                         ],
                       ),
-
+                      SizedBox(height: 6.h),
+                      // Stock availability indicator - Updated to match button logic
+                      Container(
+                        margin: EdgeInsets.only(bottom: 8.h),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.inventory_2_outlined,
+                              size: 16.sp,
+                              color:
+                              _getTotalStock() > 0
+                                  ? Colors.green
+                                  : Colors.red,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              _getTotalStock() > 0
+                                  ? 'In Stock (${_getTotalStock()} available)'
+                                  : 'Out of Stock',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color:
+                                _getTotalStock() > 0
+                                    ? Colors.green
+                                    : Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(height: 16.h),
 
                       // Alibaba-style trade info row
@@ -574,6 +638,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                     _buildSpecificationRow(
                                       'Pack Quantity',
                                       '${product.packSize!.quantity} ',
+                                    ),
+                                  if (product.productPrices?.packQuantity !=
+                                      null)
+                                    _buildSpecificationRow(
+                                      'Product Pack Quantity',
+                                      '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} Units',
                                     ),
                                   if (product.packSize?.sellingPrice != null)
                                     _buildSpecificationRow(

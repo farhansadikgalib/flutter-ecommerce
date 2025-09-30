@@ -107,14 +107,15 @@ class _ProductCardState extends State<ProductCard> {
               Expanded(
                 flex: 8,
                 child: InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ProductDetailsView(product: widget.product);
-                      },
-                    ),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductDetailsView(product: widget.product);
+                          },
+                        ),
+                      ),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -203,14 +204,15 @@ class _ProductCardState extends State<ProductCard> {
               Expanded(
                 flex: 4,
                 child: InkWell(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ProductDetailsView(product: widget.product);
-                      },
-                    ),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductDetailsView(product: widget.product);
+                          },
+                        ),
+                      ),
                   child: Text(
                     getProductTitle(),
                     maxLines: 2,
@@ -248,8 +250,7 @@ class _ProductCardState extends State<ProductCard> {
                         children: [
                           Flexible(
                             child: Text(
-                              '৳${double.parse(discountPrice)
-                                  .toStringAsFixed(2)}',
+                              '৳${double.parse(discountPrice).toStringAsFixed(2)}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.sp,
@@ -292,10 +293,8 @@ class _ProductCardState extends State<ProductCard> {
               SizedBox(height: 3.h),
 
               Text(
-                '${double.parse(widget.product.productPrices!.packQuantity
-                    .toString
-                  ()).toStringAsFixed(0)} ${widget.product.category?.name} / '
-                    '${widget.product.packSize?.name}',
+                '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name} / '
+                '${widget.product.packSize?.name}',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 10.sp,
@@ -319,7 +318,7 @@ class _ProductCardState extends State<ProductCard> {
                 ),
               ),
 
-              SizedBox(height: 4.h),
+              // SizedBox(height: 4.h),
 
               // Cart Section - Fixed at bottom
               Expanded(

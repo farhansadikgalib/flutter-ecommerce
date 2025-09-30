@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final categoryWiseProductsResponse = categoryWiseProductsResponseFromJson(jsonString);
-
 import 'dart:convert';
 
 CategoryWiseProductsResponse categoryWiseProductsResponseFromJson(String str) => CategoryWiseProductsResponse.fromJson(json.decode(str));
@@ -16,12 +12,13 @@ class CategoryWiseProductsResponse {
   int? lastPage;
   String? lastPageUrl;
   List<Link>? links;
-  String? nextPageUrl;
+  dynamic nextPageUrl;
   String? path;
   int? perPage;
   dynamic prevPageUrl;
   int? to;
   int? total;
+  dynamic search;
 
   CategoryWiseProductsResponse({
     this.currentPage,
@@ -37,6 +34,7 @@ class CategoryWiseProductsResponse {
     this.prevPageUrl,
     this.to,
     this.total,
+    this.search,
   });
 
   factory CategoryWiseProductsResponse.fromJson(Map<String, dynamic> json) => CategoryWiseProductsResponse(
@@ -53,6 +51,7 @@ class CategoryWiseProductsResponse {
     prevPageUrl: json["prev_page_url"],
     to: json["to"],
     total: json["total"],
+    search: json["search"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -69,6 +68,7 @@ class CategoryWiseProductsResponse {
     "prev_page_url": prevPageUrl,
     "to": to,
     "total": total,
+    "search": search,
   };
 }
 
@@ -83,24 +83,24 @@ class CategoryWiseProduct {
   String? manufacturerId;
   String? status;
   String? createdAt;
-  String? updatedAt;
+  dynamic updatedAt;
   dynamic upcEanIsbn;
   dynamic description;
   String? batchNo;
-  String? createdBy;
-  String? updatedBy;
+  dynamic createdBy;
+  dynamic updatedBy;
   String? genericId;
   String? isEcommerceItem;
   String? isBarcoded;
   dynamic deletedAt;
   dynamic ecomCategoryId;
-  Generic? generic;
+  dynamic generic;
   Category? category;
   Supplier? supplier;
   PackSize? packSize;
   ProductPrices? productPrices;
   List<dynamic>? productImages;
-  List<StockBatch>? stockBatches;
+  List<dynamic>? stockBatches;
 
   CategoryWiseProduct({
     this.id,
@@ -155,13 +155,13 @@ class CategoryWiseProduct {
     isBarcoded: json["is_barcoded"],
     deletedAt: json["deleted_at"],
     ecomCategoryId: json["ecom_category_id"],
-    generic: json["generic"] == null ? null : Generic.fromJson(json["generic"]),
+    generic: json["generic"],
     category: json["category"] == null ? null : Category.fromJson(json["category"]),
     supplier: json["supplier"] == null ? null : Supplier.fromJson(json["supplier"]),
     packSize: json["pack_size"] == null ? null : PackSize.fromJson(json["pack_size"]),
     productPrices: json["product_prices"] == null ? null : ProductPrices.fromJson(json["product_prices"]),
     productImages: json["product_images"] == null ? [] : List<dynamic>.from(json["product_images"]!.map((x) => x)),
-    stockBatches: json["stock_batches"] == null ? [] : List<StockBatch>.from(json["stock_batches"]!.map((x) => StockBatch.fromJson(x))),
+    stockBatches: json["stock_batches"] == null ? [] : List<dynamic>.from(json["stock_batches"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -186,13 +186,13 @@ class CategoryWiseProduct {
     "is_barcoded": isBarcoded,
     "deleted_at": deletedAt,
     "ecom_category_id": ecomCategoryId,
-    "generic": generic?.toJson(),
+    "generic": generic,
     "category": category?.toJson(),
     "supplier": supplier?.toJson(),
     "pack_size": packSize?.toJson(),
     "product_prices": productPrices?.toJson(),
     "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x)),
-    "stock_batches": stockBatches == null ? [] : List<dynamic>.from(stockBatches!.map((x) => x.toJson())),
+    "stock_batches": stockBatches == null ? [] : List<dynamic>.from(stockBatches!.map((x) => x)),
   };
 }
 
@@ -204,6 +204,7 @@ class Category {
   dynamic updatedAt;
   String? status;
   dynamic deletedAt;
+  dynamic superCatId;
 
   Category({
     this.id,
@@ -213,6 +214,7 @@ class Category {
     this.updatedAt,
     this.status,
     this.deletedAt,
+    this.superCatId,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
@@ -223,6 +225,7 @@ class Category {
     updatedAt: json["updated_at"],
     status: json["status"],
     deletedAt: json["deleted_at"],
+    superCatId: json["super_cat_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -233,50 +236,7 @@ class Category {
     "updated_at": updatedAt,
     "status": status,
     "deleted_at": deletedAt,
-  };
-}
-
-class Generic {
-  int? id;
-  String? name;
-  String? category;
-  String? status;
-  dynamic createdBy;
-  dynamic updatedBy;
-  String? createdAt;
-  String? updatedAt;
-
-  Generic({
-    this.id,
-    this.name,
-    this.category,
-    this.status,
-    this.createdBy,
-    this.updatedBy,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory Generic.fromJson(Map<String, dynamic> json) => Generic(
-    id: json["id"],
-    name: json["name"],
-    category: json["category"],
-    status: json["status"],
-    createdBy: json["created_by"],
-    updatedBy: json["updated_by"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "category": category,
-    "status": status,
-    "created_by": createdBy,
-    "updated_by": updatedBy,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
+    "super_cat_id": superCatId,
   };
 }
 
@@ -291,7 +251,7 @@ class PackSize {
   String? sellingPrice;
   String? defaultUnit;
   String? createdAt;
-  String? updatedAt;
+  dynamic updatedAt;
   dynamic deletedAt;
 
   PackSize({
@@ -362,7 +322,7 @@ class ProductPrices {
   String? createdAt;
   String? updatedAt;
   dynamic deletedAt;
-  String? isEditableInSale;
+  dynamic isEditableInSale;
   String? packQuantity;
   String? ecomDiscountPercentage;
   String? ecomDiscountAmount;
@@ -456,102 +416,6 @@ class ProductPrices {
   };
 }
 
-class StockBatch {
-  int? id;
-  String? productId;
-  String? batchNo;
-  dynamic expiryDate;
-  dynamic purchaseId;
-  dynamic purchaseProductId;
-  dynamic purchaseBonusProductId;
-  dynamic receivedQuantity;
-  String? balancedQuantity;
-  String? locked;
-  String? createdAt;
-  String? updatedAt;
-  dynamic saleReturnId;
-  dynamic saleReturnProductId;
-  dynamic cost;
-  String? reconciliationId;
-  String? reconciliationProductId;
-  String? reconciliationQuantity;
-  String? branchId;
-  dynamic purchaseReturnId;
-  dynamic purchaseReturnDetailId;
-
-  StockBatch({
-    this.id,
-    this.productId,
-    this.batchNo,
-    this.expiryDate,
-    this.purchaseId,
-    this.purchaseProductId,
-    this.purchaseBonusProductId,
-    this.receivedQuantity,
-    this.balancedQuantity,
-    this.locked,
-    this.createdAt,
-    this.updatedAt,
-    this.saleReturnId,
-    this.saleReturnProductId,
-    this.cost,
-    this.reconciliationId,
-    this.reconciliationProductId,
-    this.reconciliationQuantity,
-    this.branchId,
-    this.purchaseReturnId,
-    this.purchaseReturnDetailId,
-  });
-
-  factory StockBatch.fromJson(Map<String, dynamic> json) => StockBatch(
-    id: json["id"],
-    productId: json["product_id"],
-    batchNo: json["batch_no"],
-    expiryDate: json["expiry_date"],
-    purchaseId: json["purchase_id"],
-    purchaseProductId: json["purchase_product_id"],
-    purchaseBonusProductId: json["purchase_bonus_product_id"],
-    receivedQuantity: json["received_quantity"],
-    balancedQuantity: json["balanced_quantity"],
-    locked: json["locked"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    saleReturnId: json["sale_return_id"],
-    saleReturnProductId: json["sale_return_product_id"],
-    cost: json["cost"],
-    reconciliationId: json["reconciliation_id"],
-    reconciliationProductId: json["reconciliation_product_id"],
-    reconciliationQuantity: json["reconciliation_quantity"],
-    branchId: json["branch_id"],
-    purchaseReturnId: json["purchase_return_id"],
-    purchaseReturnDetailId: json["purchase_return_detail_id"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "product_id": productId,
-    "batch_no": batchNo,
-    "expiry_date": expiryDate,
-    "purchase_id": purchaseId,
-    "purchase_product_id": purchaseProductId,
-    "purchase_bonus_product_id": purchaseBonusProductId,
-    "received_quantity": receivedQuantity,
-    "balanced_quantity": balancedQuantity,
-    "locked": locked,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "sale_return_id": saleReturnId,
-    "sale_return_product_id": saleReturnProductId,
-    "cost": cost,
-    "reconciliation_id": reconciliationId,
-    "reconciliation_product_id": reconciliationProductId,
-    "reconciliation_quantity": reconciliationQuantity,
-    "branch_id": branchId,
-    "purchase_return_id": purchaseReturnId,
-    "purchase_return_detail_id": purchaseReturnDetailId,
-  };
-}
-
 class Supplier {
   int? id;
   String? firstName;
@@ -570,7 +434,7 @@ class Supplier {
   dynamic imagePath;
   String? status;
   dynamic createdAt;
-  dynamic updatedAt;
+  String? updatedAt;
   String? type;
   String? storeAccountBalance;
   String? payAmount;
