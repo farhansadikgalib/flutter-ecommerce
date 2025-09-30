@@ -61,6 +61,8 @@ Future<void> main() async {
                 primaryColor: AppColors.primaryColor,
                 useMaterial3: false,
                 scaffoldBackgroundColor: Colors.white,
+                iconTheme: const IconThemeData(color: Color(0xff037F84)),
+                hintColor: const Color(0xff037F84),
                 textTheme: GoogleFonts.robotoTextTheme(
                   Theme.of(context).textTheme,
                 ),
@@ -88,6 +90,10 @@ Future<void> main() async {
                       width: 2,
                     ),
                   ),
+                  prefixIconColor: AppColors.primaryColor,
+                  suffixIconColor: AppColors.primaryColor,
+                  labelStyle: TextStyle(color: AppColors.primaryColor),
+                  floatingLabelStyle: TextStyle(color: AppColors.primaryColor),
                 ),
                 elevatedButtonTheme: ElevatedButtonThemeData(
                   style: ElevatedButton.styleFrom(
