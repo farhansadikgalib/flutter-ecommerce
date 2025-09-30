@@ -491,7 +491,7 @@ class HomeView extends BaseView<HomeController> {
                             ),
                           )
                           : SizedBox(
-                            height: 135.h,
+                            height: 145.h,
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
                               scrollDirection: Axis.horizontal,
