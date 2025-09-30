@@ -5,15 +5,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:ousadbazar/app/core/helper/print_log.dart';
-import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
+import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart'
+    as BestSellingModel;
 import '../../../core/helper/app_widgets.dart';
 import '../../../core/helper/debounce_helper.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/global_appbar.dart';
 import '../../../core/widget/product_card.dart';
-import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart'
-    as BestSellingModel;
-import '../../../data/remote/model/home/best_selling_product_response.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../controllers/product_category_controller.dart';
 
@@ -348,7 +346,6 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                         );
                       }
 
-
                       if (controller.categoryProducts.isEmpty) {
                         return Center(
                           child: Text(
@@ -513,58 +510,85 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                       isEditableInSale:
                                           item.productPrices!.isEditableInSale
                                               ?.toString(),
-                                  packQuantity: item.productPrices!.packQuantity,
-                                  ecomDiscountPercentage: item.productPrices!.ecomDiscountPercentage,
-                                  ecomDiscountAmount: item.productPrices!.ecomDiscountAmount,
-                                  ecomFinalSellingPrice: item.productPrices!.ecomFinalSellingPrice,
+                                      packQuantity:
+                                          item.productPrices!.packQuantity,
+                                      ecomDiscountPercentage:
+                                          item
+                                              .productPrices!
+                                              .ecomDiscountPercentage,
+                                      ecomDiscountAmount:
+                                          item
+                                              .productPrices!
+                                              .ecomDiscountAmount,
+                                      ecomFinalSellingPrice:
+                                          item
+                                              .productPrices!
+                                              .ecomFinalSellingPrice,
                                     )
                                     : null,
 
                             productLocations:
                                 null, // Different structure between models
-                            productImages: item.productImages != null
-                                ? item.productImages!
-                                .map((img) => BestSellingModel.ProductImage(
-                                id: img.id,
-                                path: img.path,
-                                productId: img.path,
-                                createdAt: img.createdAt,
-                                updatedAt: img.updatedAt,
-                                deletedAt: img.deletedAt
-                            ))
-                                .toList()
-                                : [],
+                            productImages:
+                                item.productImages != null
+                                    ? item.productImages!
+                                        .map(
+                                          (img) =>
+                                              BestSellingModel.ProductImage(
+                                                id: img['id'],
+                                                path: img['path'],
+                                                productId: img['product_id'],
+                                                createdAt: img['created_at'],
+                                                updatedAt: img['updated_at'],
+                                                deletedAt: img['deleted_at'],
+                                              ),
+                                        )
+                                        .toList()
+                                    : [],
                             stockBatches:
-                            item.stockBatches
-                                ?.map(
-                                  (batch) => BestSellingModel.StockBatch(
-                                id: batch.id,
-                                productId: batch.productId,
-                                batchNo: batch.batchNo,
-                                expiryDate: batch.expiryDate,
-                                purchaseId: batch.purchaseId,
-                                purchaseProductId: batch.purchaseProductId,
-                                purchaseBonusProductId: batch.purchaseBonusProductId,
-                                receivedQuantity: batch.receivedQuantity,
-                                balancedQuantity: batch.balancedQuantity,
-                                locked: batch.locked,
-                                createdAt: batch.createdAt,
-                                updatedAt: batch.updatedAt,
-                                saleReturnId: batch.saleReturnId,
-                                saleReturnProductId: batch.saleReturnProductId,
-                                cost: batch.cost,
-                                reconciliationId: batch.reconciliationId,
-                                reconciliationProductId: batch.reconciliationProductId,
-                                reconciliationQuantity: batch.reconciliationQuantity,
-                                branchId: batch.branchId,
-                                purchaseReturnId: batch.purchaseReturnId,
-                                purchaseReturnDetailId: batch.purchaseReturnDetailId,
-                              ),
-                            )
-                                .toList(),
+                                item.stockBatches
+                                    ?.map(
+                                      (batch) => BestSellingModel.StockBatch(
+                                        id: batch.id,
+                                        productId: batch.productId,
+                                        batchNo: batch.batchNo,
+                                        expiryDate: batch.expiryDate,
+                                        purchaseId: batch.purchaseId,
+                                        purchaseProductId:
+                                            batch.purchaseProductId,
+                                        purchaseBonusProductId:
+                                            batch.purchaseBonusProductId,
+                                        receivedQuantity:
+                                            batch.receivedQuantity,
+                                        balancedQuantity:
+                                            batch.balancedQuantity,
+                                        locked: batch.locked,
+                                        createdAt: batch.createdAt,
+                                        updatedAt: batch.updatedAt,
+                                        saleReturnId: batch.saleReturnId,
+                                        saleReturnProductId:
+                                            batch.saleReturnProductId,
+                                        cost: batch.cost,
+                                        reconciliationId:
+                                            batch.reconciliationId,
+                                        reconciliationProductId:
+                                            batch.reconciliationProductId,
+                                        reconciliationQuantity:
+                                            batch.reconciliationQuantity,
+                                        branchId: batch.branchId,
+                                        purchaseReturnId:
+                                            batch.purchaseReturnId,
+                                        purchaseReturnDetailId:
+                                            batch.purchaseReturnDetailId,
+                                      ),
+                                    )
+                                    .toList(),
                           );
-                          return ProductCard(product: product, index: index,
-                            showDiscountTag: true,);
+                          return ProductCard(
+                            product: product,
+                            index: index,
+                            showDiscountTag: true,
+                          );
                         },
                       );
                     }),

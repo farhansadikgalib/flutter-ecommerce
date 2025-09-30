@@ -1,12 +1,8 @@
 import 'dart:convert';
 
-List<SupplierResponse> supplierResponseFromJson(String str) =>
-    List<SupplierResponse>.from(
-      json.decode(str).map((x) => SupplierResponse.fromJson(x)),
-    );
+List<SupplierResponse> supplierResponseFromJson(String str) => List<SupplierResponse>.from(json.decode(str).map((x) => SupplierResponse.fromJson(x)));
 
-String supplierResponseToJson(List<SupplierResponse> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String supplierResponseToJson(List<SupplierResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class SupplierResponse {
   int? id;
@@ -32,6 +28,9 @@ class SupplierResponse {
   String? payAmount;
   dynamic deletedAt;
   String? deletedBy;
+  String? pharmaSalesQuantity;
+  String? ecommerceSalesQuantity;
+  String? totalSoldQuantity;
 
   SupplierResponse({
     this.id,
@@ -57,34 +56,39 @@ class SupplierResponse {
     this.payAmount,
     this.deletedAt,
     this.deletedBy,
+    this.pharmaSalesQuantity,
+    this.ecommerceSalesQuantity,
+    this.totalSoldQuantity,
   });
 
-  factory SupplierResponse.fromJson(Map<String, dynamic> json) =>
-      SupplierResponse(
-        id: json["id"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        address1: json["address_1"],
-        address2: json["address_2"],
-        city: json["city"],
-        stateOrProvince: json["state_or_province"],
-        zip: json["zip"],
-        country: json["country"],
-        comments: json["comments"],
-        contact: json["contact"],
-        email: json["email"],
-        companyName: json["company_name"],
-        accountNo: json["account_no"],
-        imagePath: json["image_path"],
-        status: json["status"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        type: json["type"],
-        storeAccountBalance: json["store_account_balance"],
-        payAmount: json["pay_amount"],
-        deletedAt: json["deleted_at"],
-        deletedBy: json["deleted_by"],
-      );
+  factory SupplierResponse.fromJson(Map<String, dynamic> json) => SupplierResponse(
+    id: json["id"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
+    address1: json["address_1"],
+    address2: json["address_2"],
+    city: json["city"],
+    stateOrProvince: json["state_or_province"],
+    zip: json["zip"],
+    country: json["country"],
+    comments: json["comments"],
+    contact: json["contact"],
+    email: json["email"],
+    companyName: json["company_name"],
+    accountNo: json["account_no"],
+    imagePath: json["image_path"],
+    status: json["status"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    type: json["type"],
+    storeAccountBalance: json["store_account_balance"],
+    payAmount: json["pay_amount"],
+    deletedAt: json["deleted_at"],
+    deletedBy: json["deleted_by"],
+    pharmaSalesQuantity: json["pharma_sales_quantity"],
+    ecommerceSalesQuantity: json["ecommerce_sales_quantity"],
+    totalSoldQuantity: json["total_sold_quantity"],
+  );
 
   Map<String, dynamic> toJson() => {
     "id": id,
@@ -110,5 +114,8 @@ class SupplierResponse {
     "pay_amount": payAmount,
     "deleted_at": deletedAt,
     "deleted_by": deletedBy,
+    "pharma_sales_quantity": pharmaSalesQuantity,
+    "ecommerce_sales_quantity": ecommerceSalesQuantity,
+    "total_sold_quantity": totalSoldQuantity,
   };
 }
