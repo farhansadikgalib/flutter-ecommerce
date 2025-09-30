@@ -410,24 +410,23 @@ class CartView extends BaseView<CartController> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       SizedBox(height: 4),
-
-                                      // Simple product details
+                                      // Unit price - simple
                                       Text(
-                                        '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${product.category?.name} / ${product.packSize?.name}',
+                                        'Unit: ৳${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'} X ${product.productPrices?.packQuantity != null ? double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0) : '0'}',
                                         style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: 13,
+                                          color: Colors.black,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                       SizedBox(height: 4),
 
-                                      // Unit price - simple
+                                      // Simple product details
                                       Text(
-                                        'Unit: ৳${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'}',
+                                        '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${product.category?.name} / ${product.packSize?.name}',
                                         style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: 12,
+                                          color: Colors.black,
+                                          fontSize: 13,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
