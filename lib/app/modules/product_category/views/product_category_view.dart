@@ -312,299 +312,313 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                           ),
                         );
                       }
-                      return CustomScrollView(
-                        controller: controller.categoryProductsScrollController,
-                        slivers: [
-                          SliverGrid(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 0.66,
-                                ),
-                            delegate: SliverChildBuilderDelegate((
-                              context,
-                              index,
-                            ) {
-                              final item = controller.categoryProducts[index];
-                              final product = BestSellingModel.ProductData(
-                                id: item.id,
-                                quantity: 0,
-                                addToCart: false,
-                                addToWishlist: false,
-                                name: item.name,
-                                genericId: item.genericId,
-                                categoryId: item.categoryId,
-                                supplierId: item.supplierId,
-                                pharmaSalesQuantity: null,
-                                ecommerceSalesQuantity: null,
-                                totalSoldQuantity: null,
-                                totalBalancedQuantity: null,
-                                generic:
-                                    item.generic != null
-                                        ? BestSellingModel.Generic(
-                                          id: item.generic!['id'],
-                                          name: item.generic!['name'],
-                                          category: item.generic!['category'],
-                                          status: item.generic!['status'],
-                                          createdBy:
-                                              item.generic!['created_by'],
-                                          updatedBy:
-                                              item.generic!['updated_by'],
-                                          createdAt:
-                                              item.generic!['created_at'],
-                                          updatedAt:
-                                              item.generic!['updated_at'],
-                                        )
-                                        : null,
-                                category:
-                                    item.category != null
-                                        ? BestSellingModel.Category(
-                                          id: item.category!.id,
-                                          name: item.category!.name,
-                                          shortOrder:
-                                              item.category!.shortOrder,
-                                          createdAt: item.category!.createdAt,
-                                          updatedAt: item.category!.updatedAt,
-                                          status: item.category!.status,
-                                          deletedAt: null,
-                                        )
-                                        : null,
-                                supplier:
-                                    item.supplier != null
-                                        ? BestSellingModel.Supplier(
-                                          id: item.supplier!.id,
-                                          firstName: item.supplier!.firstName,
-                                          lastName: item.supplier!.lastName,
-                                          address1: item.supplier!.address1,
-                                          address2: item.supplier!.address2,
-                                          city: item.supplier!.city,
-                                          stateOrProvince:
-                                              item.supplier!.stateOrProvince,
-                                          zip: item.supplier!.zip,
-                                          country: item.supplier!.country,
-                                          comments: item.supplier!.comments,
-                                          contact: item.supplier!.contact,
-                                          email: item.supplier!.email,
-                                          companyName:
-                                              item.supplier!.companyName,
-                                          accountNo: item.supplier!.accountNo,
-                                          imagePath: item.supplier!.imagePath,
-                                          status: item.supplier!.status,
-                                          createdAt: item.supplier!.createdAt,
-                                          updatedAt: item.supplier!.updatedAt,
-                                          type: item.supplier!.type,
-                                          storeAccountBalance:
-                                              item
-                                                  .supplier!
-                                                  .storeAccountBalance,
-                                          payAmount: item.supplier!.payAmount,
-                                          deletedAt: item.supplier!.deletedAt,
-                                          deletedBy: item.supplier!.deletedBy,
-                                        )
-                                        : null,
-                                packSize:
-                                    item.packSize != null
-                                        ? BestSellingModel.PackSize(
-                                          id: item.packSize!.id,
-                                          productId: item.packSize!.productId,
-                                          name: item.packSize!.name,
-                                          quantity: item.packSize!.quantity,
-                                          tp: item.packSize!.tp,
-                                          vatPercent:
-                                              item.packSize!.vatPercent,
-                                          vat: item.packSize!.vat,
-                                          sellingPrice:
-                                              item.packSize!.sellingPrice,
-                                          defaultUnit:
-                                              item.packSize!.defaultUnit,
-                                          createdAt: item.packSize!.createdAt,
-                                          updatedAt: item.packSize!.updatedAt,
-                                          deletedAt: item.packSize!.deletedAt,
-                                        )
-                                        : null,
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          if (controller.type == 'Suppliers') {
+                            await controller.getSupplierWiseProducts(
+                              controller.id,
+                              1,
+                            );
+                          }
+                          // Add other types as needed
+                        },
+                        color: AppColors.primaryColor,
+                        child: CustomScrollView(
+                          controller:
+                              controller.categoryProductsScrollController,
+                          slivers: [
+                            SliverGrid(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 0.66,
+                                  ),
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                final item = controller.categoryProducts[index];
+                                final product = BestSellingModel.ProductData(
+                                  id: item.id,
+                                  quantity: 0,
+                                  addToCart: false,
+                                  addToWishlist: false,
+                                  name: item.name,
+                                  genericId: item.genericId,
+                                  categoryId: item.categoryId,
+                                  supplierId: item.supplierId,
+                                  pharmaSalesQuantity: null,
+                                  ecommerceSalesQuantity: null,
+                                  totalSoldQuantity: null,
+                                  totalBalancedQuantity: null,
+                                  generic:
+                                      item.generic != null
+                                          ? BestSellingModel.Generic(
+                                            id: item.generic!['id'],
+                                            name: item.generic!['name'],
+                                            category: item.generic!['category'],
+                                            status: item.generic!['status'],
+                                            createdBy:
+                                                item.generic!['created_by'],
+                                            updatedBy:
+                                                item.generic!['updated_by'],
+                                            createdAt:
+                                                item.generic!['created_at'],
+                                            updatedAt:
+                                                item.generic!['updated_at'],
+                                          )
+                                          : null,
+                                  category:
+                                      item.category != null
+                                          ? BestSellingModel.Category(
+                                            id: item.category!.id,
+                                            name: item.category!.name,
+                                            shortOrder:
+                                                item.category!.shortOrder,
+                                            createdAt: item.category!.createdAt,
+                                            updatedAt: item.category!.updatedAt,
+                                            status: item.category!.status,
+                                            deletedAt: null,
+                                          )
+                                          : null,
+                                  supplier:
+                                      item.supplier != null
+                                          ? BestSellingModel.Supplier(
+                                            id: item.supplier!.id,
+                                            firstName: item.supplier!.firstName,
+                                            lastName: item.supplier!.lastName,
+                                            address1: item.supplier!.address1,
+                                            address2: item.supplier!.address2,
+                                            city: item.supplier!.city,
+                                            stateOrProvince:
+                                                item.supplier!.stateOrProvince,
+                                            zip: item.supplier!.zip,
+                                            country: item.supplier!.country,
+                                            comments: item.supplier!.comments,
+                                            contact: item.supplier!.contact,
+                                            email: item.supplier!.email,
+                                            companyName:
+                                                item.supplier!.companyName,
+                                            accountNo: item.supplier!.accountNo,
+                                            imagePath: item.supplier!.imagePath,
+                                            status: item.supplier!.status,
+                                            createdAt: item.supplier!.createdAt,
+                                            updatedAt: item.supplier!.updatedAt,
+                                            type: item.supplier!.type,
+                                            storeAccountBalance:
+                                                item
+                                                    .supplier!
+                                                    .storeAccountBalance,
+                                            payAmount: item.supplier!.payAmount,
+                                            deletedAt: item.supplier!.deletedAt,
+                                            deletedBy: item.supplier!.deletedBy,
+                                          )
+                                          : null,
+                                  packSize:
+                                      item.packSize != null
+                                          ? BestSellingModel.PackSize(
+                                            id: item.packSize!.id,
+                                            productId: item.packSize!.productId,
+                                            name: item.packSize!.name,
+                                            quantity: item.packSize!.quantity,
+                                            tp: item.packSize!.tp,
+                                            vatPercent:
+                                                item.packSize!.vatPercent,
+                                            vat: item.packSize!.vat,
+                                            sellingPrice:
+                                                item.packSize!.sellingPrice,
+                                            defaultUnit:
+                                                item.packSize!.defaultUnit,
+                                            createdAt: item.packSize!.createdAt,
+                                            updatedAt: item.packSize!.updatedAt,
+                                            deletedAt: item.packSize!.deletedAt,
+                                          )
+                                          : null,
 
-                                productPrices:
-                                    item.productPrices != null
-                                        ? BestSellingModel.ProductPrices(
-                                          id: item.productPrices!.id,
-                                          productId:
-                                              item.productPrices!.productId,
-                                          costPriceWithoutTax:
-                                              item
-                                                  .productPrices!
-                                                  .costPriceWithoutTax,
-                                          sellingPrice:
-                                              item
-                                                  .productPrices!
-                                                  .sellingPrice,
-                                          tradePrice:
-                                              item.productPrices!.tradePrice,
-                                          vat: item.productPrices!.vat,
-                                          wholesale:
-                                              item.productPrices!.wholesale,
-                                          wholesaleType:
-                                              item
-                                                  .productPrices!
-                                                  .wholesaleType,
-                                          promoPrice:
-                                              item.productPrices!.promoPrice,
-                                          promoStartDate:
-                                              item
-                                                  .productPrices!
-                                                  .promoStartDate,
-                                          promoEndDate:
-                                              item
-                                                  .productPrices!
-                                                  .promoEndDate,
-                                          disableFromPriceRules:
-                                              item
-                                                  .productPrices!
-                                                  .disableFromPriceRules,
-                                          allowPriceOverrideRegardlessOfPermissions:
-                                              item
-                                                  .productPrices!
-                                                  .allowPriceOverrideRegardlessOfPermissions,
-                                          pricesIncludeTax:
-                                              item
-                                                  .productPrices!
-                                                  .pricesIncludeTax,
-                                          onlyAllowItemsToBeSoldInWholeNumbers:
-                                              item
-                                                  .productPrices!
-                                                  .onlyAllowItemsToBeSoldInWholeNumbers,
-                                          changeCostPriceDuringSale:
-                                              item
-                                                  .productPrices!
-                                                  .changeCostPriceDuringSale,
-                                          overrideDefaultCommission:
-                                              item
-                                                  .productPrices!
-                                                  .overrideDefaultCommission,
-                                          overrideDefaultTax:
-                                              item
-                                                  .productPrices!
-                                                  .overrideDefaultTax,
-                                          createdAt:
-                                              item.productPrices!.createdAt,
-                                          updatedAt:
-                                              item.productPrices!.updatedAt,
-                                          deletedAt:
-                                              item.productPrices!.deletedAt,
-                                          isEditableInSale:
-                                              item
-                                                  .productPrices!
-                                                  .isEditableInSale
-                                                  ?.toString(),
-                                          packQuantity:
-                                              item
-                                                  .productPrices!
-                                                  .packQuantity,
-                                          ecomDiscountPercentage:
-                                              item
-                                                  .productPrices!
-                                                  .ecomDiscountPercentage,
-                                          ecomDiscountAmount:
-                                              item
-                                                  .productPrices!
-                                                  .ecomDiscountAmount,
-                                          ecomFinalSellingPrice:
-                                              item
-                                                  .productPrices!
-                                                  .ecomFinalSellingPrice,
-                                        )
-                                        : null,
-                                productImages:
-                                    item.productImages != null
-                                        ? item.productImages!
-                                            .map(
-                                              (img) =>
-                                                  BestSellingModel.ProductImage(
-                                                    id: img['id'],
-                                                    path: img['path'],
-                                                    productId:
-                                                        img['product_id'],
-                                                    createdAt:
-                                                        img['created_at'],
-                                                    updatedAt:
-                                                        img['updated_at'],
-                                                    deletedAt:
-                                                        img['deleted_at'],
-                                                  ),
-                                            )
-                                            .toList()
-                                        : [],
-                                stockBatches:
-                                    item.stockBatches
-                                        ?.map(
-                                          (
-                                            batch,
-                                          ) => BestSellingModel.StockBatch(
-                                            id: batch['id'],
-                                            productId: batch['product_id'],
-                                            batchNo: batch['batch_no'],
-                                            expiryDate: batch['expiry_date'],
-                                            purchaseId: batch['purchase_id'],
-                                            purchaseProductId:
-                                                batch['purchase_product_id'],
-                                            purchaseBonusProductId:
-                                                batch['purchase_bonus_product_id'],
-                                            receivedQuantity:
-                                                batch['received_quantity'],
-                                            balancedQuantity:
-                                                batch['balanced_quantity'],
-                                            locked: batch['locked'],
-                                            createdAt: batch['created_at'],
-                                            updatedAt: batch['updated_at'],
-                                            saleReturnId:
-                                                batch['sale_return_id'],
-                                            saleReturnProductId:
-                                                batch['sale_return_product_id'],
-                                            cost: batch['cost'],
-                                            reconciliationId:
-                                                batch['reconciliation_id'],
-                                            reconciliationProductId:
-                                                batch['reconciliation_product_id'],
-                                            reconciliationQuantity:
-                                                batch['reconciliation_quantity'],
-                                            branchId: batch['branch_id'],
-                                            purchaseReturnId:
-                                                batch['purchase_return_id'],
-                                            purchaseReturnDetailId:
-                                                batch['purchase_return_detail_id'],
-                                          ),
-                                        )
-                                        .toList(),
-                              );
-                              return ProductCard(
-                                product: product,
-                                index: index,
-                                showDiscountTag: true,
-                              );
-                            }, childCount: controller.categoryProducts.length),
-                          ),
+                                  productPrices:
+                                      item.productPrices != null
+                                          ? BestSellingModel.ProductPrices(
+                                            id: item.productPrices!.id,
+                                            productId:
+                                                item.productPrices!.productId,
+                                            costPriceWithoutTax:
+                                                item
+                                                    .productPrices!
+                                                    .costPriceWithoutTax,
+                                            sellingPrice:
+                                                item
+                                                    .productPrices!
+                                                    .sellingPrice,
+                                            tradePrice:
+                                                item.productPrices!.tradePrice,
+                                            vat: item.productPrices!.vat,
+                                            wholesale:
+                                                item.productPrices!.wholesale,
+                                            wholesaleType:
+                                                item
+                                                    .productPrices!
+                                                    .wholesaleType,
+                                            promoPrice:
+                                                item.productPrices!.promoPrice,
+                                            promoStartDate:
+                                                item
+                                                    .productPrices!
+                                                    .promoStartDate,
+                                            promoEndDate:
+                                                item
+                                                    .productPrices!
+                                                    .promoEndDate,
+                                            disableFromPriceRules:
+                                                item
+                                                    .productPrices!
+                                                    .disableFromPriceRules,
+                                            allowPriceOverrideRegardlessOfPermissions:
+                                                item
+                                                    .productPrices!
+                                                    .allowPriceOverrideRegardlessOfPermissions,
+                                            pricesIncludeTax:
+                                                item
+                                                    .productPrices!
+                                                    .pricesIncludeTax,
+                                            onlyAllowItemsToBeSoldInWholeNumbers:
+                                                item
+                                                    .productPrices!
+                                                    .onlyAllowItemsToBeSoldInWholeNumbers,
+                                            changeCostPriceDuringSale:
+                                                item
+                                                    .productPrices!
+                                                    .changeCostPriceDuringSale,
+                                            overrideDefaultCommission:
+                                                item
+                                                    .productPrices!
+                                                    .overrideDefaultCommission,
+                                            overrideDefaultTax:
+                                                item
+                                                    .productPrices!
+                                                    .overrideDefaultTax,
+                                            createdAt:
+                                                item.productPrices!.createdAt,
+                                            updatedAt:
+                                                item.productPrices!.updatedAt,
+                                            deletedAt:
+                                                item.productPrices!.deletedAt,
+                                            isEditableInSale:
+                                                item
+                                                    .productPrices!
+                                                    .isEditableInSale
+                                                    ?.toString(),
+                                            packQuantity:
+                                                item
+                                                    .productPrices!
+                                                    .packQuantity,
+                                            ecomDiscountPercentage:
+                                                item
+                                                    .productPrices!
+                                                    .ecomDiscountPercentage,
+                                            ecomDiscountAmount:
+                                                item
+                                                    .productPrices!
+                                                    .ecomDiscountAmount,
+                                            ecomFinalSellingPrice:
+                                                item
+                                                    .productPrices!
+                                                    .ecomFinalSellingPrice,
+                                          )
+                                          : null,
+                                  productImages:
+                                      item.productImages != null
+                                          ? item.productImages!
+                                              .map(
+                                                (img) =>
+                                                    BestSellingModel.ProductImage(
+                                                      id: img['id'],
+                                                      path: img['path'],
+                                                      productId:
+                                                          img['product_id'],
+                                                      createdAt:
+                                                          img['created_at'],
+                                                      updatedAt:
+                                                          img['updated_at'],
+                                                      deletedAt:
+                                                          img['deleted_at'],
+                                                    ),
+                                              )
+                                              .toList()
+                                          : [],
+                                  stockBatches:
+                                      item.stockBatches
+                                          ?.map(
+                                            (
+                                              batch,
+                                            ) => BestSellingModel.StockBatch(
+                                              id: batch['id'],
+                                              productId: batch['product_id'],
+                                              batchNo: batch['batch_no'],
+                                              expiryDate: batch['expiry_date'],
+                                              purchaseId: batch['purchase_id'],
+                                              purchaseProductId:
+                                                  batch['purchase_product_id'],
+                                              purchaseBonusProductId:
+                                                  batch['purchase_bonus_product_id'],
+                                              receivedQuantity:
+                                                  batch['received_quantity'],
+                                              balancedQuantity:
+                                                  batch['balanced_quantity'],
+                                              locked: batch['locked'],
+                                              createdAt: batch['created_at'],
+                                              updatedAt: batch['updated_at'],
+                                              saleReturnId:
+                                                  batch['sale_return_id'],
+                                              saleReturnProductId:
+                                                  batch['sale_return_product_id'],
+                                              cost: batch['cost'],
+                                              reconciliationId:
+                                                  batch['reconciliation_id'],
+                                              reconciliationProductId:
+                                                  batch['reconciliation_product_id'],
+                                              reconciliationQuantity:
+                                                  batch['reconciliation_quantity'],
+                                              branchId: batch['branch_id'],
+                                              purchaseReturnId:
+                                                  batch['purchase_return_id'],
+                                              purchaseReturnDetailId:
+                                                  batch['purchase_return_detail_id'],
+                                            ),
+                                          )
+                                          .toList(),
+                                );
+                                return ProductCard(
+                                  product: product,
+                                  index: index,
+                                  showDiscountTag: true,
+                                );
+                              }, childCount: controller.categoryProducts.length),
+                            ),
 
-                          // Loading Indicator (spans full width)
-                          if (controller.isPaginationLoading.value ||
-                              controller.categoryProductsCurrentPage.value <
-                                  controller.categoryProductsTotalPage.value)
-                            SliverToBoxAdapter(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 20.h),
-                                child: Center(
-                                  child: SizedBox(
-                                    width: 24.w,
-                                    height: 24.h,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 5,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        AppColors.primaryColor,
+                            // Loading Indicator (spans full width)
+                            if (controller.isPaginationLoading.value ||
+                                controller.categoryProductsCurrentPage.value <
+                                    controller.categoryProductsTotalPage.value)
+                              SliverToBoxAdapter(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                                  child: Center(
+                                    child: SizedBox(
+                                      width: 24.w,
+                                      height: 24.h,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 5,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                              AppColors.primaryColor,
+                                            ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       );
                     }),
                   ),

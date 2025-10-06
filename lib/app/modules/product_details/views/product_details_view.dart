@@ -82,74 +82,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       top: false,
       maintainBottomViewPadding: true,
       child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Container(
-          height: 50.h,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: Offset(0, -2),
-              ),
-            ],
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
-          child: Row(
-            children: [
-              // Add to Cart/Quantity buttons - Same logic as ProductCard
-              Expanded(
-                child: Obx(() {
-                  bool isInCart = Get.find<CartController>().isProductInCart(
-                    product.id!,
-                  );
-                  int quantity = Get.find<CartController>().getProductQuantity(
-                    product.id!,
-                  );
-
-                  if (isInCart && quantity > 0) {
-                    return _buildQuantitySelector(quantity);
-                  } else {
-                    return _buildAddToCartButton();
-                  }
-                }),
-              ),
-
-              SizedBox(width: 12.w),
-              /*
-                    // Wishlist button
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryColor),
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          wishlistItem.value
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color:
-                              wishlistItem.value
-                                  ? Colors.red
-                                  : AppColors.primaryColor,
-                          size: 24.sp,
-                        ),
-                        onPressed: () {
-                          Get.find<WishlistController>().addToWishlist(product);
-                          wishlistItem.value = !wishlistItem.value;
-                        },
-                      ),
-                    ),*/
-            ],
-          ),
-        ),
         body: Stack(
           children: [
             ListView(
               physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.only(bottom: 80.h),
+              padding: EdgeInsets.only(bottom: 20.h),
               children: [
                 // Product Image Carousel with improved styling
                 Container(
@@ -329,11 +266,27 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         ),
                       ),
 
+                      // Price section with Add to Cart button on the right
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(child: _buildPriceSection(product)),
+                          SizedBox(width: 16.w),
+                          Obx(() {
+                            bool isInCart = Get.find<CartController>()
+                                .isProductInCart(product.id!);
+                            int quantity = Get.find<CartController>()
+                                .getProductQuantity(product.id!);
 
-
-
-                      // Price section in Alibaba style (larger, with range format)
-                      _buildPriceSection(product),
+                            if (isInCart && quantity > 0) {
+                              return _buildQuantitySelector(quantity);
+                            } else {
+                              return _buildAddToCartButton();
+                            }
+                          }),
+                        ],
+                      ),
 
                       // Product Info Tags
                       Container(
@@ -375,10 +328,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   ),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    '${double.parse(widget.product
-                                        .productPrices!.packQuantity.toString
-                                      ()).toStringAsFixed(0)} ${widget
-                                        .product.category?.name} / ${widget.product.packSize?.name}',
+                                    '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name}\'s 1 '
+                                    '${widget.product.productPrices!.packName}',
                                     style: TextStyle(
                                       color: AppColors.primaryColor,
                                       fontSize: 11.sp,
@@ -388,13 +339,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 ],
                               ),
                             ),
-
-
-
                           ],
                         ),
                       ),
-
 
                       Row(
                         children: [
@@ -455,9 +402,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               Icons.inventory_2_outlined,
                               size: 16.sp,
                               color:
-                              _getTotalStock() > 0
-                                  ? Colors.green
-                                  : Colors.red,
+                                  _getTotalStock() > 0
+                                      ? Colors.green
+                                      : Colors.red,
                             ),
                             SizedBox(width: 4.w),
                             Text(
@@ -467,9 +414,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 color:
-                                _getTotalStock() > 0
-                                    ? Colors.green
-                                    : Colors.red,
+                                    _getTotalStock() > 0
+                                        ? Colors.green
+                                        : Colors.red,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -646,7 +593,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       'Pack Selling Price',
                                       '৳${product.packSize!.sellingPrice}',
                                     ),
-
 
                                   if (product.totalSoldQuantity != null)
                                     _buildSpecificationRow(
@@ -939,7 +885,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                               )
                                               : null,
 
-
                                       productImages:
                                           item.productImages != null
                                               ? item.productImages!
@@ -1148,13 +1093,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         backgroundColor:
             isOutOfStock ? Colors.grey[400] : AppColors.primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-        padding: EdgeInsets.symmetric(vertical: 12.h),
+        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
       ),
       onPressed:
           isOutOfStock
               ? null
               : () {
-                Get.find<CartController>().addToCart(product, quantity: 1);
+                _showQuantitySelectionDialog();
               },
       icon: Icon(
         isOutOfStock ? Icons.remove_shopping_cart : Icons.shopping_bag,
@@ -1187,8 +1132,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       );
       return totalStock;
     }
-
-
 
     // If no inventory info, return 0 to disable button instead of allowing purchases
     print('DEBUG: No stock info found, returning 0');
@@ -1236,9 +1179,18 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           IconButton(
             onPressed: () {
               final availableStock = _getTotalStock();
+              final packQuantity = int.parse(
+                product.productPrices?.packQuantity?.toString() ?? '1',
+              );
 
-              if (quantity < availableStock) {
+              if (quantity < availableStock &&
+                  (quantity + packQuantity) <= availableStock) {
                 Get.find<CartController>().increaseQuantity(product.id!);
+              } else {
+                AppWidgets().getSnackBar(
+                  title: 'Stock Limit',
+                  message: 'Cannot add more than available stock.',
+                );
               }
             },
             icon: FaIcon(
@@ -1250,6 +1202,194 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         ],
       ),
     );
+  }
+
+  void _showQuantitySelectionDialog() {
+    final int availableStock = _getTotalStock();
+    final int packQuantity = int.parse(
+      product.productPrices?.packQuantity?.toString() ?? '1',
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+          child: Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header
+                  Container(
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(12.r),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Select Quantity',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Container(
+                            padding: EdgeInsets.all(4.w),
+                            decoration: BoxDecoration(
+                              color: Colors.red[200],
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Icon(
+                              Icons.close,
+                              size: 16.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Quantity Options
+                  Container(
+                    constraints: BoxConstraints(maxHeight: 300.h),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount:
+                          _getQuantityOptions(
+                            availableStock,
+                            packQuantity,
+                          ).length,
+                      itemBuilder: (context, index) {
+                        final quantity =
+                            _getQuantityOptions(
+                              availableStock,
+                              packQuantity,
+                            )[index];
+
+                        final items = (quantity / packQuantity).ceil();
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 4.h,
+                          ),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                ),
+                                titleAlignment: ListTileTitleAlignment.center,
+                                title: Text(
+                                  '$quantity ${product.category?.name}\'s $items ${product.productPrices!.packName}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[800],
+                                  ),
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  Get.find<CartController>().addToCart(
+                                    product,
+                                    quantity: quantity,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  // Footer
+                  Container(
+                    width: Get.width,
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(12.r),
+                        bottomRight: Radius.circular(12.r),
+                      ),
+                    ),
+                    child: Text(
+                      'Available Stock: $availableStock units',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  List<int> _getQuantityOptions(int availableStock, int packQuantity) {
+    List<int> options = [];
+
+    // Generate options based on pack quantity
+    for (int i = 1; i <= 10; i++) {
+      int quantity = packQuantity * i;
+      if (quantity <= availableStock) {
+        options.add(quantity);
+      }
+    }
+
+    // If no pack-based options fit, add individual units up to available stock
+    if (options.isEmpty) {
+      for (int i = 1; i <= availableStock && i <= 20; i++) {
+        options.add(i);
+      }
+    }
+
+    return options;
   }
 
   // Price section in Alibaba style (larger, with range format)
