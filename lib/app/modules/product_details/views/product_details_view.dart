@@ -647,13 +647,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       '৳${product.packSize!.sellingPrice}',
                                     ),
 
-                                  // Additional Product Information
-                                  if (product.productInventories?.quantity !=
-                                      null)
-                                    _buildSpecificationRow(
-                                      'Available Stock',
-                                      '${product.productInventories!.quantity} units',
-                                    ),
+
                                   if (product.totalSoldQuantity != null)
                                     _buildSpecificationRow(
                                       'Total Sold',
@@ -945,8 +939,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                               )
                                               : null,
 
-                                      productLocations:
-                                          null, // Different structure between models
+
                                       productImages:
                                           item.productImages != null
                                               ? item.productImages!
@@ -1195,14 +1188,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       return totalStock;
     }
 
-    // Fallback to productInventories
-    if (product.productInventories?.quantity != null) {
-      final inventoryStock = int.parse(
-        product.productInventories!.quantity.toString(),
-      );
-      print('DEBUG: Stock from productInventories: $inventoryStock');
-      return inventoryStock;
-    }
+
 
     // If no inventory info, return 0 to disable button instead of allowing purchases
     print('DEBUG: No stock info found, returning 0');

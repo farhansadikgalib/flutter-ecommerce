@@ -1,9 +1,11 @@
 ﻿import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:any_image_view/any_image_view.dart';
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/config/app_config.dart';
+import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:ousadbazar/app/core/helper/print_log.dart';
 import 'package:ousadbazar/app/core/style/app_colors.dart';
 import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
@@ -307,8 +309,8 @@ class _ProductCardState extends State<ProductCard> {
               Expanded(
                 flex: 2,
                 child: Text(
-                  '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name} / '
-                  '${widget.product.packSize?.name}',
+                  '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name}\'s 1 '
+                  '${widget.product.productPrices?.packName.toString()}',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 10.sp,
@@ -363,7 +365,7 @@ class _ProductCardState extends State<ProductCard> {
             isOutOfStock
                 ? null
                 : () {
-                  cartController.addToCart(widget.product, quantity: 1);
+                  _showQuantitySelectionDialog();
                 },
         icon: Icon(
           isOutOfStock ? Icons.remove_shopping_cart : Icons.shopping_bag,
@@ -399,7 +401,12 @@ class _ProductCardState extends State<ProductCard> {
             child: Container(
               padding: EdgeInsets.all(4.w),
               child: FaIcon(
-                quantity == 1 ? FontAwesomeIcons.trash : FontAwesomeIcons.minus,
+                quantity ==
+                        int.parse(
+                          widget.product.productPrices!.packQuantity.toString(),
+                        )
+                    ? FontAwesomeIcons.trash
+                    : FontAwesomeIcons.minus,
                 size: 10.sp,
                 color: AppColors.primaryColor,
               ),
@@ -416,10 +423,23 @@ class _ProductCardState extends State<ProductCard> {
           InkWell(
             onTap: () {
               final availableStock = getTotalStock();
+              if (quantity < availableStock &&
+                  (quantity +
+                          int.parse(
+                            widget.product.productPrices!.packQuantity
+                                .toString(),
+                          )) <=
+                      availableStock) {
+                printLog(quantity);
+                printLog(availableStock);
 
-              if (quantity < availableStock) {
                 cartController.increaseQuantity(widget.product.id!);
                 widget.product.reactive;
+              } else {
+                AppWidgets().getSnackBar(
+                  title: 'Stock Limit',
+                  message: 'Cannot add more than available stock.',
+                );
               }
             },
             child: Container(
@@ -434,5 +454,172 @@ class _ProductCardState extends State<ProductCard> {
         ],
       ),
     );
+  }
+
+  void _showQuantitySelectionDialog() {
+    final int availableStock = getTotalStock();
+    printLog(availableStock);
+    final int packQuantity = int.parse(
+      widget.product.productPrices?.packQuantity?.toString() ?? '1',
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+          child: Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header
+                  Container(
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(12.r),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Select Quantity',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Container(
+                            padding: EdgeInsets.all(4.w),
+                            decoration: BoxDecoration(
+                              color: Colors.red[200],
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Icon(
+                              Icons.close,
+                              size: 16.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Quantity Options
+                  Container(
+                    constraints: BoxConstraints(maxHeight: 300.h),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount:
+                          _getQuantityOptions(
+                            availableStock,
+                            packQuantity,
+                          ).length,
+                      itemBuilder: (context, index) {
+                        final quantity =
+                            _getQuantityOptions(
+                              availableStock,
+                              packQuantity,
+                            )[index];
+
+                        final items = (quantity / packQuantity).ceil();
+
+                        printLog(items);
+
+                        return Center(
+                          child: ListTile(
+                            titleAlignment: ListTileTitleAlignment.center,
+                            title: Text(
+                              '$quantity ${widget.product.category?.name}\'s '
+                              '$items ${widget.product.productPrices!.packName}',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              cartController.addToCart(
+                                widget.product,
+                                quantity: quantity,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  // Footer
+                  Container(
+                    width: Get.width,
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(12.r),
+                        bottomRight: Radius.circular(12.r),
+                      ),
+                    ),
+                    child: Text(
+                      'Available Stock: $availableStock units',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  List<int> _getQuantityOptions(int availableStock, int packQuantity) {
+    List<int> options = [];
+
+    // Generate options based on pack quantity
+    for (int i = 1; i <= 10; i++) {
+      int quantity = packQuantity * i;
+      if (quantity <= availableStock) {
+        options.add(quantity);
+      }
+    }
+
+    // If no pack-based options fit, add individual units up to available stock
+    if (options.isEmpty) {
+      for (int i = 1; i <= availableStock && i <= 20; i++) {
+        options.add(i);
+      }
+    }
+
+    return options;
   }
 }

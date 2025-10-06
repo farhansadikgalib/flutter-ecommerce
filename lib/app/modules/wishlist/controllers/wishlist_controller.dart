@@ -33,11 +33,7 @@ class WishlistController extends GetxController {
           generic: product.generic,
           category: product.category,
           supplier: product.supplier,
-          productVariationAttributes: product.productVariationAttributes,
-          productVariations: product.productVariations,
           productPrices: product.productPrices,
-          productInventories: product.productInventories,
-          productLocations: product.productLocations,
           stockBatches: product.stockBatches,
         );
         wishlistItems.add(item);

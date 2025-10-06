@@ -513,9 +513,6 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                                                   .ecomFinalSellingPrice,
                                         )
                                         : null,
-
-                                productLocations:
-                                    null, // Different structure between models
                                 productImages:
                                     item.productImages != null
                                         ? item.productImages!

@@ -232,8 +232,8 @@ class CheckoutController extends BaseController {
               quantity: quantity.toString(),
               packSizeId: product.packSize?.id.toString(),
               packSizeQuantity: packQuantity.toString(),
-              totalQuantity: (quantity! * packQuantity).toString(),
-              total: (finalPrice! * quantity * packQuantity).toString(),
+              totalQuantity: (quantity!).toString(),
+              total: (finalPrice! * quantity ).toString(),
               ecomDiscountAmount: product.productPrices?.ecomDiscountAmount
                   .toString(),
               ecomDiscountPercentage: product.productPrices!

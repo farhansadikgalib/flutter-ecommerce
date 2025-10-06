@@ -46,11 +46,7 @@ class CartController extends BaseController {
           generic: product.generic,
           category: product.category,
           supplier: product.supplier,
-          productVariationAttributes: product.productVariationAttributes,
-          productVariations: product.productVariations,
           productPrices: product.productPrices,
-          productInventories: product.productInventories,
-          productLocations: product.productLocations,
           stockBatches: product.stockBatches,
         );
         allCartProducts.add(cartProduct);
@@ -97,7 +93,14 @@ class CartController extends BaseController {
     int index = allCartProducts.indexWhere((item) => item.id == productId);
     if (index != -1) {
       int currentQuantity = allCartProducts[index].quantity ?? 0;
-      updateQuantity(productId, currentQuantity + 1);
+      updateQuantity(
+        productId,
+        currentQuantity +
+            int.parse(
+              allCartProducts[index].productPrices?.packQuantity?.toString() ??
+                  '1',
+            ),
+      );
       allCartProducts.refresh();
     }
   }
@@ -107,8 +110,20 @@ class CartController extends BaseController {
     int index = allCartProducts.indexWhere((item) => item.id == productId);
     if (index != -1) {
       int currentQuantity = allCartProducts[index].quantity ?? 0;
-      if (currentQuantity > 1) {
-        updateQuantity(productId, currentQuantity - 1);
+      if (currentQuantity >
+          int.parse(
+            allCartProducts[index].productPrices?.packQuantity?.toString() ??
+                '1',
+          )) {
+        updateQuantity(
+          productId,
+          currentQuantity -
+              int.parse(
+                allCartProducts[index].productPrices?.packQuantity
+                        ?.toString() ??
+                    '1',
+              ),
+        );
       } else {
         removeFromCart(productId);
       }
@@ -199,8 +214,11 @@ class CartController extends BaseController {
     // Try to get price from packSize selling price first
     if (product.packSize?.sellingPrice != null) {
       try {
-        return double.parse(product.productPrices!.ecomFinalSellingPrice.toString()) *
-            double.parse(product.productPrices!.packQuantity.toString());
+        return double.parse(
+              product.productPrices!.ecomFinalSellingPrice.toString(),
+            );
+            // *
+            // double.parse(product.productPrices!.packQuantity.toString());
       } catch (e) {
         printLog('Error parsing packSize selling price: $e');
       }

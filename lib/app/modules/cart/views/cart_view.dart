@@ -412,7 +412,8 @@ class CartView extends BaseView<CartController> {
                                       SizedBox(height: 4),
                                       // Unit price - simple
                                       Text(
-                                        'Unit: ৳${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'} X ${product.productPrices?.packQuantity != null ? double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0) : '0'}',
+                                        // 'Unit: ৳${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'} X ${product.productPrices?.packQuantity != null ? double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0) : '0'}',
+                                        'Unit: ৳${product.productPrices?.ecomFinalSellingPrice != null ? double.parse(product.productPrices!.ecomFinalSellingPrice.toString()).toStringAsFixed(2) : '0.00'} X ${product.quantity}',
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 12,
@@ -423,7 +424,11 @@ class CartView extends BaseView<CartController> {
 
                                       // Simple product details
                                       Text(
-                                        '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${product.category?.name} / ${product.packSize?.name}',
+                                        '${double.parse(product
+                                            .productPrices!.packQuantity
+                                            .toString()).toStringAsFixed(0)} '
+                                            '${product.category?.name} 1 '
+                                            '${product.productPrices?.packName}',
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 13,
@@ -439,8 +444,9 @@ class CartView extends BaseView<CartController> {
                                           Text(
                                             '৳${(product.productPrices?.ecomFinalSellingPrice != null && product.productPrices?.packQuantity != null ? (() {
                                                   final price = double.parse(product.productPrices!.ecomFinalSellingPrice.toString());
-                                                  final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
-                                                  return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
+                                                  // final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
+                                                  // return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
+                                                  return (price * product.quantity!.toDouble()).toStringAsFixed(2);
                                                 })() : '0.00')}',
                                             style: TextStyle(
                                               color: AppColors.primaryColor,
@@ -458,8 +464,9 @@ class CartView extends BaseView<CartController> {
                                             Text(
                                               '৳${(product.productPrices?.sellingPrice != null && product.productPrices?.packQuantity != null ? (() {
                                                     final price = double.parse(product.productPrices!.sellingPrice.toString());
-                                                    final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
-                                                    return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
+                                                    // final packQuantity = double.parse(product.productPrices!.packQuantity.toString());
+                                                    // return (price * packQuantity * product.quantity!.toDouble()).toStringAsFixed(2);
+                                                    return (price * product.quantity!.toDouble()).toStringAsFixed(2);
                                                   })() : '0.00')}',
                                               style: TextStyle(
                                                 color: Colors.grey[500],
