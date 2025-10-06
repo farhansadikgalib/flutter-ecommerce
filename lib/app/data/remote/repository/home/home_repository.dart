@@ -64,10 +64,11 @@ class HomeRepository {
     return ecomCategoriesResponseFromJson(response.toString());
   }
 
-  Future<BestSellingProductResponse> getCategoryWiseProduct(String categoryId)
+  Future<BestSellingProductResponse> getCategoryWiseProduct(String
+  categoryId,int page)
   async {
     var response = await ApiClient().get(
-      ApiEndPoints.categoryWiseProduct(categoryId: categoryId.toString()),
+      ApiEndPoints.categoryWiseProduct(categoryId: categoryId.toString(), page: page),
       getBestSellingProducts,
       isHeaderRequired: true,
       isLoaderRequired: false,

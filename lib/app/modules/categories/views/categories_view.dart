@@ -196,7 +196,6 @@ class CategoriesView extends GetView<CategoriesController> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -346,21 +345,49 @@ class CategoriesView extends GetView<CategoriesController> {
         return _buildEmptyProductsState();
       }
 
-      return GridView.builder(
-        padding: EdgeInsets.all(16.w),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.6,
-        ),
-        itemCount: controller.categoryWiseProducts.length,
-        itemBuilder: (context, index) {
-          final product = controller.categoryWiseProducts[index];
-          return ProductCard(
-            product: product,
-            index: index,
-            showDiscountTag: true,
-          );
-        },
+      return CustomScrollView(
+        controller: controller.categoryProductsScrollController,
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.all(16.w),
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.6,
+              ),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final product = controller.categoryWiseProducts[index];
+                return ProductCard(
+                  product: product,
+                  index: index,
+                  showDiscountTag: true,
+                );
+              }, childCount: controller.categoryWiseProducts.length),
+            ),
+          ),
+
+          // Loading Indicator (spans full width)
+          if (controller.isPaginationLoading.value ||
+              controller.categoryProductsCurrentPage.value <
+                  controller.categoryProductsTotalPage.value)
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20.h),
+                child: Center(
+                  child: SizedBox(
+                    width: 24.w,
+                    height: 24.h,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 5,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppColors.primaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       );
     });
   }
@@ -422,8 +449,6 @@ class CategoriesView extends GetView<CategoriesController> {
                       ),
 
                       SizedBox(height: 4.h),
-
-
                     ],
                   ),
                 ),

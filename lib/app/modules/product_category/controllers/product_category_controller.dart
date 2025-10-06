@@ -21,41 +21,146 @@ class ProductCategoryController extends GetxController {
 
   final isLoading = false.obs;
 
-
-
+  // Pagination variables
+  final categoryProductsTotalPage = 0.obs;
+  final categoryProductsCurrentPage = 1.obs;
+  final isPaginationLoading = false.obs;
+  final ScrollController categoryProductsScrollController = ScrollController();
 
   @override
   void onInit() {
     super.onInit();
+    categoryProductsScrollController.addListener(_onScroll);
 
     if (type == 'Categories') {
-      getCategoryWiseProducts(id);
+      // getCategoryWiseProducts(id, 1);
     } else if (type == 'Suppliers') {
-      getSupplierWiseProducts(id);
+      getSupplierWiseProducts(id, 1);
+    }
+  }
+
+  void _onScroll() {
+    if (categoryProductsScrollController.position.pixels >=
+        categoryProductsScrollController.position.maxScrollExtent - 200) {
+      if (!isPaginationLoading.value &&
+          categoryProductsCurrentPage.value < categoryProductsTotalPage.value) {
+        categoryProductsCurrentPage.value++;
+/*        if (type == 'Categories') {
+          getCategoryWiseProducts(
+            id,
+            categoryProductsCurrentPage.value,
+            isLoadMore: true,
+          );
+        } else */
+
+          if (type == 'Suppliers') {
+          getSupplierWiseProducts(
+            id,
+            categoryProductsCurrentPage.value,
+            isLoadMore: true,
+          );
+        }
+      }
     }
   }
 
   @override
   void onClose() {
+    categoryProductsScrollController.removeListener(_onScroll);
+    categoryProductsScrollController.dispose();
     super.onClose();
   }
 
-  Future<void> getCategoryWiseProducts(int id) async {
-    isLoading.value = true;
-    var response = await CategoryRepository().getCategoryWiseProduct(id);
+ /* Future<void> getCategoryWiseProducts(
+    int id,
+    int page, {
+    bool isLoadMore = false,
+  }) async {
+    if (!isLoadMore) {
+      isLoading.value = true;
+      categoryProductsCurrentPage.value = page;
+    } else {
+      isPaginationLoading.value = true;
+    }
 
-    categoryProducts.clear();
-    categoryProducts.addAll(response.data ?? []);
-    isLoading.value = false;
-  }
+    try {
+      var response = await CategoryRepository().getCategoryWiseProduct(
+        id,
+        page,
+      );
 
-  Future<void> getSupplierWiseProducts(int id) async {
-    isLoading.value = true;
-    var response = await CategoryRepository().getSupplierWiseProduct(id);
+      if (response.data!.isNotEmpty) {
+        categoryProductsTotalPage.value = response.total!;
 
-    categoryProducts.clear();
-    categoryProducts.addAll(response.data ?? []);
-    isLoading.value = false;
+        if (isLoadMore) {
+          // Append new products to existing list
+          categoryProducts.addAll(response.data ?? []);
+        } else {
+          // Replace existing products
+          categoryProducts.clear();
+          categoryProducts.addAll(response.data ?? []);
+        }
+
+        printLog('Category Products: ${categoryProducts.length}');
+        printLog('Current Page: ${categoryProductsCurrentPage.value}');
+        printLog('Total Pages: ${categoryProductsTotalPage.value}');
+      } else {
+        if (!isLoadMore) {
+          categoryProducts.clear();
+        }
+      }
+    } catch (e) {
+      printLog('Error loading category products: $e');
+    } finally {
+      isLoading.value = false;
+      isPaginationLoading.value = false;
+    }
+  }*/
+
+  Future<void> getSupplierWiseProducts(
+    int id,
+    int page, {
+    bool isLoadMore = false,
+  }) async {
+    if (!isLoadMore) {
+      isLoading.value = true;
+      categoryProductsCurrentPage.value = page;
+    } else {
+      isPaginationLoading.value = true;
+    }
+
+    try {
+      var response = await CategoryRepository().getSupplierWiseProduct(
+        id,
+        page,
+      );
+
+      if (response.data!.isNotEmpty) {
+        categoryProductsTotalPage.value = response.total!;
+
+        if (isLoadMore) {
+          // Append new products to existing list
+          categoryProducts.addAll(response.data ?? []);
+        } else {
+          // Replace existing products
+          categoryProducts.clear();
+          categoryProducts.addAll(response.data ?? []);
+        }
+
+        printLog('Supplier Products: ${categoryProducts.length}');
+        printLog('Current Page: ${categoryProductsCurrentPage.value}');
+        printLog('Total Pages: ${categoryProductsTotalPage.value}');
+      } else {
+        if (!isLoadMore) {
+          categoryProducts.clear();
+        }
+      }
+    } catch (e) {
+      printLog('Error loading supplier products: $e');
+    } finally {
+      isLoading.value = false;
+      isPaginationLoading.value = false;
+    }
   }
 
   void filterProducts() async {
@@ -83,7 +188,6 @@ class ProductCategoryController extends GetxController {
     final selectedPriceRange =
         '${priceRange.value.start} - ${priceRange.value.end}';
     printLog(selectedPriceRange);
-    getCategoryWiseProducts(1);
+    // getCategoryWiseProducts(id, 1);
   }
-
 }

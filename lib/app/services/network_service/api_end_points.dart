@@ -17,14 +17,14 @@ class ApiEndPoints {
   static String bestSellingProduct({required int page}) =>
       "best-selling-product?page=$page&limit=30";
 
-
-  static String categoryWiseProduct({required String categoryId}) =>
-      "all-products-paginated?page=1&search=&paginate=20&supplier_id=&sort_by"
-          "=asc&ecom_category_id=$categoryId";
+  static String categoryWiseProduct({
+    required String categoryId,
+    required int page,
+  }) =>
+      "all-products-paginated?page=$page&search=&paginate=20&supplier_id=&sort_by"
+      "=asc&ecom_category_id=$categoryId";
 
   static String ecomCategories = "all-ecom-categories";
-
-
 
   //Home
 
@@ -49,9 +49,12 @@ class ApiEndPoints {
   static String categoryProductList({required int categoryId}) =>
       "product-category-wise/$categoryId";
 
-  static String supplierProductList({required int categoryId}) =>
-      "all-products-paginated?page=1&search=&paginate=20&supplier_id=$categoryId&sort_by"
-          "=asc&ecom_category_id=";
+  static String supplierProductList({
+    required int categoryId,
+    required int page,
+  }) =>
+      "all-products-paginated?page=$page&search=&paginate=20&supplier_id=$categoryId&sort_by"
+      "=asc&ecom_category_id=";
 
   //Category
 

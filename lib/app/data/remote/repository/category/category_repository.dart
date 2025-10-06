@@ -20,9 +20,10 @@ class CategoryRepository {
 
   Future<CategoryWiseProductsResponse> getSupplierWiseProduct(
     int supplierId,
+    int page,
   ) async {
     var response = await ApiClient().get(
-      ApiEndPoints.supplierProductList(categoryId: supplierId),
+      ApiEndPoints.supplierProductList(categoryId: supplierId, page: page),
       getSupplierWiseProduct,
       isHeaderRequired: false,
       isLoaderRequired: false,
