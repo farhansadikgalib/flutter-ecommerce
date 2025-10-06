@@ -61,7 +61,7 @@ class _ProductCardState extends State<ProductCard> {
     return widget.promoPrice ?? '0';
   }
 
-  /// Returns a tuple: (percent, label) where label is 'OFF' or 'UP'
+  /// Returns a tuple: (percent, label) where label is 'save' or 'UP'
   Map<String, dynamic>? getDiscountInfo() {
     final selling = double.tryParse(getOfferedPrice()) ?? 0;
     final promo = double.tryParse(getSellingPrice()) ?? 0;
@@ -70,7 +70,7 @@ class _ProductCardState extends State<ProductCard> {
     // printLog('selling: $selling, promo: $promo');
     if (selling > 0 && promo > 0 && promo != selling) {
       double percent = ((promo - selling).abs() / selling) * 100;
-      String label = promo < selling ? 'OFF' : 'UP';
+      String label = promo < selling ? 'save' : 'costlier';
       return {'percent': percent, 'label': label};
     }
     return null;
@@ -146,9 +146,9 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                             decoration: BoxDecoration(
                               color:
-                                  getDiscountInfo()!['label'] == 'OFF'
-                                      ? Colors.deepOrangeAccent
-                                      : AppColors.primaryColor,
+                                  getDiscountInfo()!['label'] == 'save'
+                                      ? Colors.green
+                                      : Colors.orange,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(8.r),
                                 bottomRight: Radius.circular(8.r),
@@ -184,7 +184,11 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                             child: Text(
                               widget.showDiscountTag
-                                  ? '${(((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1) - (double.tryParse(widget.product.productPrices!.ecomFinalSellingPrice!.toString()) ?? 0)) / ((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1)) * 100).abs().toStringAsFixed(2)}% OFF'
+                                  ? '${(((double.tryParse(widget.product
+                                  .productPrices!.sellingPrice!.toString())
+                                  ?? 1) - (double.tryParse(widget.product
+                                  .productPrices!.ecomFinalSellingPrice!
+                                  .toString()) ?? 0)) / ((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1)) * 100).abs().toStringAsFixed(2)}% OFF'
                                   : '',
                               style: TextStyle(
                                 color: Colors.white,
