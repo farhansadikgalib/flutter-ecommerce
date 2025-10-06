@@ -548,24 +548,48 @@ class _ProductCardState extends State<ProductCard> {
 
                         printLog(items);
 
-                        return Center(
-                          child: ListTile(
-                            titleAlignment: ListTileTitleAlignment.center,
-                            title: Text(
-                              '$quantity ${widget.product.category?.name}\'s '
-                              '$items ${widget.product.productPrices!.packName}',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: Offset(0, 1),
                               ),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              cartController.addToCart(
-                                widget.product,
-                                quantity: quantity,
-                              );
-                            },
+                            ],
+                          ),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 4.h,
+                          ),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                ),
+                                titleAlignment: ListTileTitleAlignment.center,
+                                title: Text(
+                                  '$quantity ${widget.product.category?.name}\'s $items ${widget.product.productPrices!.packName}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[800],
+                                  ),
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  cartController.addToCart(
+                                    widget.product,
+                                    quantity: quantity,
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -587,8 +611,8 @@ class _ProductCardState extends State<ProductCard> {
                       'Available Stock: $availableStock units',
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),
