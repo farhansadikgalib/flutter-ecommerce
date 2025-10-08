@@ -424,11 +424,24 @@ class CartView extends BaseView<CartController> {
 
                                       // Simple product details
                                       Text(
-                                        '${double.parse(product
-                                            .productPrices!.packQuantity
-                                            .toString()).toStringAsFixed(0)} '
-                                            '${product.category?.name} 1 '
-                                            '${product.productPrices?.packName}',
+                                        // '${double.parse(product
+                                        //     .productPrices!.packQuantity
+                                        //     .toString()).toStringAsFixed(0)} '
+                                        //     '${product.category?.name} 1 '
+                                        //     '${product.productPrices?.packName}',
+                                        [
+                                          product.productPrices?.ecomPackName?.name != null
+                                              ? '1 ${product.productPrices!
+                                              .ecomPackName!.name}'
+                                              : '',
+                                          double.parse(
+                                            product.productPrices!.packQuantity
+                                                .toString(),
+                                          ) >
+                                              1
+                                              ? '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${product.category?.name ?? ''}'
+                                              : '',
+                                        ].join(' '),
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 13,

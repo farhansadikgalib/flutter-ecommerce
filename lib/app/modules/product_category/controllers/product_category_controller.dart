@@ -5,6 +5,7 @@ import 'package:ousadbazar/app/data/remote/repository/category/category_reposito
 import '../../../core/helper/debounce_helper.dart';
 import '../../../core/helper/print_log.dart';
 import '../../../data/remote/model/category/categorywiseproducts_response.dart';
+import '../../../data/remote/model/home/best_selling_product_response.dart';
 
 class ProductCategoryController extends GetxController {
   final DebounceHelper debounceHelper = DebounceHelper();
@@ -17,7 +18,7 @@ class ProductCategoryController extends GetxController {
   final itemName = Get.arguments['name'];
   final id = Get.arguments['id'];
   final fromSearch = Get.arguments['type'] == 'Search' ? true : false;
-  final categoryProducts = <CategoryWiseProduct>[].obs;
+  final categoryProducts = <ProductData>[].obs;
 
   final isLoading = false.obs;
 

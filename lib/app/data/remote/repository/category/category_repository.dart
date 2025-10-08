@@ -1,4 +1,5 @@
 import 'package:ousadbazar/app/data/remote/model/category/categorywiseproducts_response.dart';
+import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:ousadbazar/app/data/remote/model/search/search_response.dart';
 
 import '../../../../services/network_service/api_client.dart';
@@ -18,7 +19,7 @@ class CategoryRepository {
     return categoryWiseProductsResponseFromJson(response.toString());
   }
 
-  Future<CategoryWiseProductsResponse> getSupplierWiseProduct(
+  Future<BestSellingProductResponse> getSupplierWiseProduct(
     int supplierId,
     int page,
   ) async {
@@ -29,7 +30,7 @@ class CategoryRepository {
       isLoaderRequired: false,
     );
 
-    return categoryWiseProductsResponseFromJson(response.toString());
+    return bestSellingProductResponseFromJson(response.toString());
   }
 
   Future<SearchResponse> getSearchItems(String query) async {

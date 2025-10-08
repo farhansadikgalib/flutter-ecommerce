@@ -184,11 +184,7 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                             child: Text(
                               widget.showDiscountTag
-                                  ? '${(((double.tryParse(widget.product
-                                  .productPrices!.sellingPrice!.toString())
-                                  ?? 1) - (double.tryParse(widget.product
-                                  .productPrices!.ecomFinalSellingPrice!
-                                  .toString()) ?? 0)) / ((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1)) * 100).abs().toStringAsFixed(2)}% OFF'
+                                  ? '${(((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1) - (double.tryParse(widget.product.productPrices!.ecomFinalSellingPrice!.toString()) ?? 0)) / ((double.tryParse(widget.product.productPrices!.sellingPrice!.toString()) ?? 1)) * 100).abs().toStringAsFixed(2)}% OFF'
                                   : '',
                               style: TextStyle(
                                 color: Colors.white,
@@ -313,8 +309,18 @@ class _ProductCardState extends State<ProductCard> {
               Expanded(
                 flex: 2,
                 child: Text(
-                  '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name}\'s 1 '
-                  '${widget.product.productPrices?.packName.toString()}',
+                  [
+                    widget.product.productPrices?.ecomPackName?.name != null
+                        ? '1 ${widget.product.productPrices!.ecomPackName!.name}'
+                        : '',
+                    double.parse(
+                              widget.product.productPrices!.packQuantity
+                                  .toString(),
+                            ) >
+                            1
+                        ? '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name ?? ''}'
+                        : '',
+                  ].join(' '),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 10.sp,
@@ -577,12 +583,21 @@ class _ProductCardState extends State<ProductCard> {
                                 ),
                                 titleAlignment: ListTileTitleAlignment.center,
                                 title: Text(
-                                  '$quantity ${widget.product.category?.name}\'s $items ${widget.product.productPrices!.packName}',
+                               [
+                                 widget.product.productPrices?.ecomPackName?.name != null
+                                   ? '1 ${widget.product.productPrices!.ecomPackName!.name}'
+                                   : '',
+                                 double.parse(widget.product.productPrices!.packQuantity.toString()) > 1
+                                   ? '$quantity ${widget.product.category?.name ?? ''}'
+                                   : '',
+                                 'Price: ৳${((double.tryParse(widget.product
+                                     .productPrices!.ecomFinalSellingPrice.toString()) ?? 0) * quantity).toStringAsFixed(2)}',
+                               ].join(' '),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey[800],
+                                    color: Colors.black,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 onTap: () {

@@ -94,7 +94,7 @@ class HomeController extends BaseController {
       isPaginationLoading.value = true;
     }
 
-    try {
+
       var response = await HomeRepository().getBestSellingProducts(
         bestSellingCurrentPage.value,
       );
@@ -122,16 +122,10 @@ class HomeController extends BaseController {
           );
         }
       }
-    } catch (e) {
-      printLog('Error loading best selling products: $e');
-      AppWidgets().getSnackBar(
-        title: 'Error',
-        message: 'Failed to load products',
-      );
-    } finally {
+
       isLoading.value = false;
       isPaginationLoading.value = false;
-    }
+
   }
 
   // Load specific page

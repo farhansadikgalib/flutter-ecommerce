@@ -1,3 +1,4 @@
+import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:ousadbazar/app/data/remote/model/product/product_details_response.dart';
 import 'package:ousadbazar/app/data/remote/model/product/product_review_response.dart';
 import 'package:ousadbazar/app/data/remote/model/product/related_product_response.dart';
@@ -28,7 +29,7 @@ class ProductRepository {
     return productReviewResponseFromJson(response.toString());
   }
 
-  Future<RelatedProductResponse> getRelatedProduct(String genericId) async {
+  Future<BestSellingProductResponse> getRelatedProduct(String genericId) async {
     var response = await ApiClient().get(
       ApiEndPoints.relatedProduct(genericId: genericId),
       getRelatedProduct,
@@ -36,6 +37,6 @@ class ProductRepository {
       isLoaderRequired: false,
     );
 
-    return relatedProductResponseFromJson(response.toString());
+    return bestSellingProductResponseFromJson(response.toString());
   }
 }
