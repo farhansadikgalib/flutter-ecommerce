@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:any_image_view/any_image_view.dart';
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +11,6 @@ import 'package:ousadbazar/app/core/config/app_config.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:ousadbazar/app/core/helper/print_log.dart';
-import 'package:ousadbazar/app/core/helper/webview_helper.dart';
 import 'package:ousadbazar/app/routes/app_pages.dart';
 import 'package:ousadbazar/generated/assets.dart';
 import '../../../core/base/base_view.dart';
@@ -78,14 +76,13 @@ class HomeView extends BaseView<HomeController> {
                   backgroundColor: Colors.white,
                   expandedHeight: 85.h,
                   automaticallyImplyLeading: false,
-                  collapsedHeight: 85.h, // Add this to ensure consistent height
+                  collapsedHeight: 85.h,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
                       margin: REdgeInsets.symmetric(
                         horizontal: 10,
                         vertical: 0,
                       ),
-
                       color: Colors.white,
                       child: SafeArea(
                         child: Column(
@@ -96,48 +93,7 @@ class HomeView extends BaseView<HomeController> {
                                   imagePath: Assets.pngLogo,
                                   height: 35.h,
                                 ),
-
                                 Spacer(),
-                                // InkWell(
-                                //   onTap: () {
-                                //     Get.toNamed(Routes.TRANSACTIONS);
-                                //   },
-                                //   child: Container(
-                                //     padding: REdgeInsets.all(2),
-                                //     decoration: BoxDecoration(
-                                //       color: AppColors.primaryColor.withOpacity(
-                                //         0.1,
-                                //       ),
-                                //       borderRadius: BorderRadius.circular(8).r,
-                                //       border: Border.all(
-                                //         color: AppColors.primaryColor,
-                                //         width: 2,
-                                //       ),
-                                //     ),
-                                //     child: Text(
-                                //       '৳ 9999 ',
-                                //       style: TextStyle(
-                                //         color: AppColors.primaryColor,
-                                //         fontWeight: FontWeight.bold,
-                                //         fontSize: 14,
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
-                                // AppWidgets().gapW8(),
-                                // IconButton(
-                                //   icon: Icon(
-                                //     FontAwesomeIcons.facebookMessenger,
-                                //     color: AppColors.primaryColor,
-                                //   ),
-                                //   onPressed: () {
-                                //     launchURL(
-                                //       'https://m.me/chaardik.chaardik.7',
-                                //       true,
-                                //     );
-                                //   },
-                                //   tooltip: 'Message us on Messenger',
-                                // ),
                               ],
                             ),
                             Skeletonizer(
@@ -145,14 +101,6 @@ class HomeView extends BaseView<HomeController> {
                               child: InkWell(
                                 onTap: () {
                                   Get.toNamed(Routes.SEARCH);
-                                  // Get.toNamed(
-                                  //   Routes.PRODUCT_CATEGORY,
-                                  //   arguments: {
-                                  //     'name': 'Search',
-                                  //     'type': 'Search',
-                                  //     'id': '0',
-                                  //   },
-                                  // );
                                 },
                                 child: Container(
                                   height: 40.h,
@@ -199,227 +147,116 @@ class HomeView extends BaseView<HomeController> {
                         enabled: controller.isLoading.value,
                         child:
                             controller.bannerImage.isNotEmpty
-                                ? Stack(
-                                  alignment: Alignment.bottomCenter,
-                                  children: [
-                                    CarouselSlider(
-                                      items:
-                                          controller.bannerImage.map((element) {
-                                            return AnyImageView(
-                                              imagePath: element,
-                                              fit: BoxFit.cover,
-                                            );
-                                          }).toList(),
-                                      options: CarouselOptions(
-                                        height: 175.h,
-                                        autoPlay: true,
-                                        aspectRatio: 1,
-                                        viewportFraction: 1,
-                                        onPageChanged: (index, reason) {
-                                          controller.currentIndex.value = index;
-                                        },
-                                      ),
+                                ? Container(
+                                  height: 180.h,
+                                  margin: EdgeInsets.symmetric(vertical: 8.h),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Stack(
+                                      children: [
+                                        CarouselSlider(
+                                          items:
+                                              controller.bannerImage.map((
+                                                element,
+                                              ) {
+                                                return AnyImageView(
+                                                  imagePath: element,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              }).toList(),
+                                          options: CarouselOptions(
+                                            height: 180.h,
+                                            autoPlay: true,
+                                            autoPlayInterval: Duration(
+                                              seconds: 4,
+                                            ),
+                                            autoPlayAnimationDuration: Duration(
+                                              milliseconds: 1000,
+                                            ),
+                                            aspectRatio: 16 / 9,
+                                            viewportFraction: 1.0,
+                                            onPageChanged: (index, reason) {
+                                              controller.currentIndex.value =
+                                                  index;
+                                            },
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 12,
+                                          left: 0,
+                                          right: 0,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: List.generate(
+                                              controller.bannerImage.length,
+                                              (index) => Container(
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal: 3,
+                                                ),
+                                                width:
+                                                    controller
+                                                                .currentIndex
+                                                                .value ==
+                                                            index
+                                                        ? 24
+                                                        : 8,
+                                                height: 8,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  color:
+                                                      controller
+                                                                  .currentIndex
+                                                                  .value ==
+                                                              index
+                                                          ? AppColors
+                                                              .primaryColor
+                                                          : Colors.white
+                                                              .withOpacity(0.5),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Positioned(
-                                      bottom: 15,
-                                      child: CarouselIndicator(
-                                        count: controller.bannerImage.length,
-                                        index: controller.currentIndex.value,
-                                        color: AppColors.secondaryColor,
-                                        activeColor: AppColors.primaryColor,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 )
                                 : Container(
-                                  height: 150.h,
-                                  width: Get.width,
-                                  color: AppColors.secondaryColor,
+                                  height: 180.h,
+                                  margin: EdgeInsets.symmetric(vertical: 8.h),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.grey[100],
+                                  ),
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.image_outlined,
+                                          color: Colors.grey[400],
+                                          size: 48,
+                                        ),
+                                        SizedBox(height: 8.h),
+                                        Text(
+                                          'No banners available',
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                       ),
-                      AppWidgets().gapH8(),
-
-                      /*            Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Categories',
-                            style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      controller.isCategoryLoading.value
-                          ? Skeletonizer(
-                            child: SizedBox(
-                              height: 125.h,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 5,
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        margin: REdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.black,
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppColors.gray.withOpacity(
-                                                0.5,
-                                              ),
-                                              blurRadius: 5,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Container(
-                                          color: AppColors.primaryColor,
-                                          height: 75.h,
-                                          width: 75.h,
-                                        ),
-                                      ),
-                                      AppWidgets().gapH(4),
-                                      Text(
-                                        'Category Title',
-                                        style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                          )
-                          : SizedBox(
-                            height: 125.h,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.categoriesData.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Get.toNamed(
-                                      Routes.PRODUCT_CATEGORY,
-                                      arguments: {
-                                        'name':
-                                            controller
-                                                .categoriesData[index]
-                                                .name,
-                                        'type': 'Categories',
-                                        'id':
-                                            controller.categoriesData[index].id,
-                                        */
-                      /*                  'name':
-                                            controller.categoriesData[index].name,
-                                        'slug':
-                                            controller.categoriesData[index].id,
-                                        'brandId': '',
-                                        'fromSearch': false,*/
-                      /*
-                                      },
-                                    );
-                                  },
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        margin: REdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.white,
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppColors.gray.withOpacity(
-                                                0.5,
-                                              ),
-                                              blurRadius: 5,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Container(
-                                          height: 75.h,
-                                          width: 75.h,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primaryColor
-                                                .withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            controller
-                                                            .categoriesData[index]
-                                                            .name !=
-                                                        null &&
-                                                    controller
-                                                        .categoriesData[index]
-                                                        .name!
-                                                        .isNotEmpty
-                                                ? controller
-                                                    .categoriesData[index]
-                                                    .name![0]
-                                                    .toUpperCase()
-                                                : '',
-                                            style: TextStyle(
-                                              fontSize: 40,
-                                              color: AppColors.primaryColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        */
-                      /*          child: AnyImageView(
-                                          imagePath:
-                                              '${AppConfig
-                                                  .imageBasePath}${controller.categoriesData[index]}',
-                                          height: 75.h,
-                                        ),*/
-                      /*
-                                      ),
-                                      AppWidgets().gapH(4),
-                                      Text(
-                                        '${controller.categoriesData[index].name}',
-                                        style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),*/
-                      AppWidgets().gapH8(),
+                      AppWidgets().gapH(16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -433,74 +270,62 @@ class HomeView extends BaseView<HomeController> {
                           ),
                         ],
                       ),
-                      AppWidgets().gapH(4),
+                      AppWidgets().gapH(8),
 
                       controller.isSupplierLoading.value
                           ? Skeletonizer(
                             child: SizedBox(
-                              height: 125.h,
+                              height: 120.h,
                               child: ListView.builder(
                                 padding: EdgeInsets.zero,
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 5,
                                 itemBuilder: (context, index) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        margin: REdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.black,
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppColors.gray.withOpacity(
-                                                0.5,
-                                              ),
-                                              blurRadius: 5,
-                                              offset: Offset(0, 3),
+                                  return Container(
+                                    margin: EdgeInsets.only(right: 12.w),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 70.h,
+                                          width: 70.h,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(
+                                              8,
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                        child: Container(
-                                          color: AppColors.primaryColor,
-                                          height: 75.h,
-                                          width: 75.h,
+                                        SizedBox(height: 8.h),
+                                        Container(
+                                          height: 10.h,
+                                          width: 50.w,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(
+                                              5,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      AppWidgets().gapH(4),
-                                      Text(
-                                        'Category Title',
-                                        style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   );
                                 },
                               ),
                             ),
                           )
                           : SizedBox(
-                            height: 145.h,
+                            height: 120.h,
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
                               scrollDirection: Axis.horizontal,
                               itemCount: controller.supplierData.length,
                               itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: EdgeInsetsGeometry.symmetric(
-                                    horizontal: 15,
-                                  ),
+                                return Container(
+                                  margin: EdgeInsets.only(right: 12.w),
                                   child: InkWell(
                                     onTap: () {
                                       Get.toNamed(
@@ -521,60 +346,85 @@ class HomeView extends BaseView<HomeController> {
                                           CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.max,
                                       children: [
-                                        controller.supplierData[index]
-                                            .imagePath  == null ?
                                         Container(
-                                          height: 75.h,
-                                          width: 75.h,
-                                          alignment: Alignment.center,
+                                          height: 70.h,
+                                          width: 70.h,
                                           decoration: BoxDecoration(
-                                            color: AppColors.primaryColor
-                                                .withOpacity(0.1),
                                             borderRadius: BorderRadius.circular(
                                               8,
                                             ),
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(
+                                                  0.1,
+                                                ),
+                                                blurRadius: 4,
+                                                offset: Offset(0, 2),
+                                              ),
+                                            ],
                                           ),
-                                          child: Text(
-                                            controller
-                                                            .supplierData[index]
-                                                            .companyName !=
-                                                        null &&
-                                                    controller
-                                                        .supplierData[index]
-                                                        .companyName!
-                                                        .isNotEmpty
-                                                ? controller
-                                                    .supplierData[index]
-                                                    .companyName!
-                                                    .toUpperCase()
-                                                : '',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: AppColors.primaryColor,
-                                              fontWeight: FontWeight.bold,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
                                             ),
+                                            child:
+                                                controller
+                                                            .supplierData[index]
+                                                            .imagePath ==
+                                                        null
+                                                    ? Container(
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors
+                                                            .primaryColor
+                                                            .withOpacity(0.1),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          controller.supplierData[index].companyName !=
+                                                                      null &&
+                                                                  controller
+                                                                      .supplierData[index]
+                                                                      .companyName!
+                                                                      .isNotEmpty
+                                                              ? controller
+                                                                  .supplierData[index]
+                                                                  .companyName![0]
+                                                                  .toUpperCase()
+                                                              : 'S',
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                            color:
+                                                                AppColors
+                                                                    .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                    : AnyImageView(
+                                                      imagePath:
+                                                          '${AppConfig.imageBasePath}${controller.supplierData[index].imagePath}',
+                                                      height: 50.h,
+                                                      width: 50.h,
+
+                                                    ),
                                           ),
-                                        ) : AnyImageView(
-                                          imagePath:
-                                              '${AppConfig.imageBasePath}${controller
-                                                  .supplierData[index].imagePath}',
-                                          height: 75.h,
-                                          width: 75.h,
                                         ),
-                                        AppWidgets().gapH(4),
+                                        SizedBox(height: 8.h),
                                         SizedBox(
-                                          width: 75.w,
+                                          width: 70.w,
                                           child: Text(
                                             '${controller.supplierData[index].companyName}',
-                                            maxLines: 4,
+                                            maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: AppColors.primaryColor,
-                                              fontWeight: FontWeight.bold,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 11,
                                             ),
                                           ),
                                         ),
@@ -586,246 +436,13 @@ class HomeView extends BaseView<HomeController> {
                             ),
                           ),
 
-                      /*          controller.isBrandLoading.value
-                      ? Skeletonizer(
-                    enabled: true,
-                    child: SizedBox(
-                      width: Get.width,
-                      height: Get.width / 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            height: Get.width / 3,
-                            width: Get.width / 4,
-                            color: AppColors.gray,
-                          ),
-                          Container(
-                            height: Get.width / 3,
-                            width: Get.width / 3,
-                            color: AppColors.gray,
-                          ),
-                          Container(
-                            height: Get.width / 3,
-                            width: Get.width / 4,
-                            color: AppColors.gray,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                      : SizedBox(
-                    height: 175.h,
-                    width: Get.width,
-                    child: Center(
-                      child: Gallery3D(
-                        width: Get.width,
-                        onClickItem: (index) {
-                          printLog('${controller.supplierData[index].companyName}');
-                          Get.toNamed(
-                            Routes.PRODUCT_CATEGORY,
-                            arguments: {
-                              'name': controller.supplierData[index].companyName,
-                              'slug': '',
-                              'brandId':
-                              controller.supplierData[index].id.toString(),
-                              'fromSearch': false,
-                            },
-                          );
-                        },
-                        itemConfig: GalleryItemConfig(
-                          width: 175.h,
-                          height: 175.h,
-                          radius: 10,
-                        ),
-                        itemBuilder: (context, index) {
-                          final brand = controller.supplierData[index];
-                          return InkWell(
-                            onTap: () {
-                              Get.toNamed(
-                                Routes.PRODUCT_CATEGORY,
-                                arguments: {
-                                  'name': brand.companyName,
-                                  'slug': brand.companyName,
-                                  'brandId': brand.id,
-                                },
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    '${AppConfig.imageBasePath}${brand.imagePath}',
-                                  ),
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        controller: Gallery3DController(
-                          itemCount: controller.supplierData.length,
-                        ),
-                      ),
-                    ),
-                  ),*/
-                      AppWidgets().gapH8(),
-                      Skeletonizer(
-                        enabled: controller.isLoading.value,
-                        child:
-                            controller.isLoading.value
-                                ? ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: 1,
-                                  itemBuilder: (context, index) {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        AppWidgets().gapH8(),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Category Title',
-                                              style: TextStyle(
-                                                color: AppColors.primaryColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            // Text(
-                                            //   'See More',
-                                            //   style: TextStyle(
-                                            //     color: AppColors.primaryColor,
-                                            //     fontSize: 16,
-                                            //     fontWeight: FontWeight.bold,
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),
-                                        DynamicHeightGridView(
-                                          crossAxisCount: 2,
-                                          itemCount: 2,
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          builder: (context, index) {
-                                            return Card(
-                                              margin: EdgeInsets.all(8.0),
-                                              child: Padding(
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      color:
-                                                          AppColors
-                                                              .secondaryColor,
-                                                      height: 125,
-                                                      width: 125,
-                                                    ),
-                                                    AppWidgets().gapH(4),
-                                                    Text(
-                                                      'Product Title',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                        fontSize: 15,
-                                                        color:
-                                                            AppColors
-                                                                .primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    AppWidgets().gapH(4),
-                                                    Text(
-                                                      "Stock 00",
-                                                      style: TextStyle(
-                                                        color:
-                                                            AppColors
-                                                                .primaryColor,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    AppWidgets().gapH(4),
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 24,
-                                                        ),
-                                                        children: <TextSpan>[
-                                                          TextSpan(
-                                                            text: '9999',
-                                                            style: TextStyle(
-                                                              fontSize: 14.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: "  99999 BDT",
-                                                            style: TextStyle(
-                                                              fontSize: 14.0,
-                                                              color:
-                                                                  AppColors
-                                                                      .primaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    AppWidgets().gapH8(),
-                                                    ElevatedButton(
-                                                      onPressed: () {},
-                                                      style: ElevatedButton.styleFrom(
-                                                        side: BorderSide(
-                                                          color:
-                                                              Colors
-                                                                  .transparent,
-                                                        ), // Set the border
-                                                        // color to grey
-                                                      ),
-                                                      child: Text(
-                                                        '+ Add to Bag',
-                                                        style: TextStyle(
-                                                          color:
-                                                              AppColors
-                                                                  .primaryColor,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                )
-                                : SizedBox(height: 16),
-                      ),
+                      AppWidgets().gapH(16),
                     ]),
                   ),
                 ),
                 // Best Selling Products Header
                 SliverPadding(
-                  padding: REdgeInsets.symmetric(horizontal: 12),
+                  padding: REdgeInsets.symmetric(horizontal: 16),
                   sliver: SliverToBoxAdapter(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -835,30 +452,22 @@ class HomeView extends BaseView<HomeController> {
                           style: TextStyle(
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                         ),
-                        // Text(
-                        //   'See More',
-                        //   style: TextStyle(
-                        //     color: AppColors.primaryColor,
-                        //     fontSize: 16,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
                 ),
                 // Best Selling Products Grid
                 SliverPadding(
-                  padding: REdgeInsets.all(12),
+                  padding: REdgeInsets.symmetric(horizontal: 16),
                   sliver: SliverGrid(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.66,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
+                      childAspectRatio: 0.7,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
                     ),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return ProductCard(
