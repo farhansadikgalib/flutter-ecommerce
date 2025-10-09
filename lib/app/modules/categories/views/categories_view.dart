@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
-import 'package:ousadbazar/app/data/remote/model/home/best_selling_product_response.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
@@ -33,32 +32,26 @@ class CategoriesView extends GetView<CategoriesController> {
               end: Alignment.bottomCenter,
             ),
           ),
-          child: Row(
+          child: Column(
             children: [
-              // Left Sidebar - Main Categories
+              // Top - Horizontal Categories List
               Container(
-                width: 100.w,
+                height: 90.h,
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.primaryColor.withOpacity(0.05),
-                      Colors.white,
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
+                      color: Colors.black.withOpacity(0.05),
                       blurRadius: 10,
-                      offset: const Offset(2, 0),
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
                 child: _buildCategorySidebar(),
               ),
 
-              // Right Side - Subcategories
+              // Bottom - Subcategories/Products Grid
               Expanded(child: _buildSubcategoriesSection()),
             ],
           ),
@@ -72,20 +65,23 @@ class CategoriesView extends GetView<CategoriesController> {
       final selectedIndex = controller.selectedCategoryIndex.value;
 
       return ListView.builder(
-        padding: EdgeInsets.symmetric(vertical: 12.h),
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(vertical: 8.h),
         itemCount: controller.ecomCategories.length,
         itemBuilder: (context, index) {
           final category = controller.ecomCategories[index];
           final isSelected = selectedIndex == index;
+          final iconSize = isSelected ? 38.r : 34.r;
 
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+            margin: EdgeInsets.symmetric(horizontal: 4.w),
             child: GestureDetector(
               onTap: () => controller.selectCategory(index),
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
+                width: 70.w,
+                padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 6.w),
                 decoration: BoxDecoration(
                   gradient:
                       isSelected
@@ -113,12 +109,13 @@ class CategoriesView extends GetView<CategoriesController> {
                           : null,
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Category Icon with animated container
+                    // Category Icon with animated container - Square shape
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
-                      width: isSelected ? 40.w : 36.w,
-                      height: isSelected ? 40.h : 36.h,
+                      width: iconSize,
+                      height: iconSize,
                       decoration: BoxDecoration(
                         gradient:
                             isSelected
@@ -135,7 +132,7 @@ class CategoriesView extends GetView<CategoriesController> {
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
-                        borderRadius: BorderRadius.circular(10.r),
+                        borderRadius: BorderRadius.circular(8.r),
                         boxShadow: [
                           BoxShadow(
                             color:
@@ -151,12 +148,12 @@ class CategoriesView extends GetView<CategoriesController> {
                           category.path != null &&
                                   category.path.toString().isNotEmpty
                               ? ClipRRect(
-                                borderRadius: BorderRadius.circular(10.r),
+                                borderRadius: BorderRadius.circular(8.r),
                                 child: AnyImageView(
                                   imagePath:
                                       '${AppConfig.imageBasePath}${category.path}',
-                                  width: isSelected ? 40.w : 36.w,
-                                  height: isSelected ? 40.h : 36.h,
+                                  width: iconSize,
+                                  height: iconSize,
                                   fit: BoxFit.cover,
                                   errorWidget: Icon(
                                     Icons.category_rounded,
@@ -164,7 +161,7 @@ class CategoriesView extends GetView<CategoriesController> {
                                         isSelected
                                             ? AppColors.primaryColor
                                             : Colors.grey[600],
-                                    size: isSelected ? 20.sp : 18.sp,
+                                    size: isSelected ? 18.sp : 16.sp,
                                   ),
                                 ),
                               )
@@ -174,17 +171,17 @@ class CategoriesView extends GetView<CategoriesController> {
                                     isSelected
                                         ? AppColors.primaryColor
                                         : Colors.grey[600],
-                                size: isSelected ? 20.sp : 18.sp,
+                                size: isSelected ? 18.sp : 16.sp,
                               ),
                     ),
 
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 4.h),
 
                     // Category Name with animated text
                     AnimatedDefaultTextStyle(
                       duration: const Duration(milliseconds: 300),
                       style: TextStyle(
-                        fontSize: isSelected ? 10.sp : 9.sp,
+                        fontSize: isSelected ? 9.sp : 8.sp,
                         fontWeight:
                             isSelected ? FontWeight.w700 : FontWeight.w500,
                         color: isSelected ? Colors.white : Colors.grey[700],
@@ -240,9 +237,9 @@ class CategoriesView extends GetView<CategoriesController> {
       padding: EdgeInsets.all(20.w),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 1.1,
-        crossAxisSpacing: 16.w,
-        mainAxisSpacing: 16.h,
+        childAspectRatio: 0.7,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
       ),
       itemCount: subcategories.length,
       itemBuilder: (context, index) {
@@ -353,7 +350,9 @@ class CategoriesView extends GetView<CategoriesController> {
             sliver: SliverGrid(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.6,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
               ),
               delegate: SliverChildBuilderDelegate((context, index) {
                 final product = controller.categoryWiseProducts[index];
@@ -399,60 +398,62 @@ class CategoriesView extends GetView<CategoriesController> {
         padding: EdgeInsets.all(16.w),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.6,
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
+          childAspectRatio: 0.7,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
         ),
         itemCount: 6,
         itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
+          return Card(
+            elevation: 2.r,
+            margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+              side: BorderSide(
+                color: AppColors.primaryColor.withValues(alpha: 0.3),
+                width: 0.5.w,
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Product Image
-                Container(
-                  height: 100.h,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(12.r),
+            child: Padding(
+              padding: EdgeInsets.all(6.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Image section
+                  Expanded(
+                    flex: 8,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Container(color: Colors.grey[300]),
                     ),
                   ),
-                ),
 
-                Padding(
-                  padding: EdgeInsets.all(8.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Product Name
-                      AppWidgets().gapH(30),
-                      // Product Description
-                      Container(
-                        width: 100.w,
-                        height: 20.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(4.r),
-                        ),
+                  Spacer(),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      width: 90.w,
+                      height: 10.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(4.r),
                       ),
-
-                      SizedBox(height: 4.h),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+
+                  SizedBox(height: 4),
+                  // Cart button section
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -520,73 +521,6 @@ class CategoriesView extends GetView<CategoriesController> {
               'This category doesn\'t have any\nproducts available right now',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDirectCategoryNavigation(dynamic category) {
-    return Center(
-      child: Container(
-        margin: EdgeInsets.all(40.w),
-        padding: EdgeInsets.all(32.w),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.white, Colors.grey[50]!],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(24.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Animated icon
-            Container(
-              width: 100.w,
-              height: 100.h,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primaryColor.withOpacity(0.1),
-                    AppColors.primaryColor.withOpacity(0.05),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(30.r),
-              ),
-              child: Icon(
-                Icons.shopping_bag_outlined,
-                color: AppColors.primaryColor,
-                size: 50.sp,
-              ),
-            ),
-
-            SizedBox(height: 24.h),
-
-            Text(
-              'Ready to Explore!',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
-              ),
-            ),
-
-            SizedBox(height: 8.h),
-
-            Text(
-              'This category has products ready\nfor you to discover',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
             ),
           ],
         ),
@@ -678,48 +612,49 @@ class CategoriesView extends GetView<CategoriesController> {
           end: Alignment.bottomCenter,
         ),
       ),
-      child: Row(
+      child: Column(
         children: [
-          // Left sidebar loading with shimmer effect
+          // Top horizontal loading categories
           Container(
-            width: 100.w,
+            height: 90.h,
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primaryColor.withOpacity(0.05),
-                  Colors.white,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 12.h),
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(vertical: 8.h),
               itemCount: 8,
               itemBuilder: (context, index) {
                 return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 12.h,
-                    horizontal: 8.w,
-                  ),
+                  width: 70.w,
+                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                  padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 6.w),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 36.w,
-                        height: 36.h,
+                        width: 34.r,
+                        height: 34.r,
                         decoration: BoxDecoration(
                           color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(10.r),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
                       ),
-                      SizedBox(height: 6.h),
+                      SizedBox(height: 4.h),
                       Container(
                         width: 50.w,
-                        height: 10.h,
+                        height: 8.h,
                         decoration: BoxDecoration(
                           color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(5.r),
+                          borderRadius: BorderRadius.circular(4.r),
                         ),
                       ),
                     ],
@@ -729,7 +664,7 @@ class CategoriesView extends GetView<CategoriesController> {
             ),
           ),
 
-          // Right side loading
+          // Bottom loading content
           Expanded(
             child: Center(
               child: Column(
