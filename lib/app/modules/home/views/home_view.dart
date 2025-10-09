@@ -104,26 +104,55 @@ class HomeView extends BaseView<HomeController> {
                                 },
                                 child: Container(
                                   height: 40.h,
-                                  padding: EdgeInsets.symmetric(horizontal: 8),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
+                                    gradient: LinearGradient(
+                                      colors: [Colors.white, Colors.grey[50]!],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.primaryColor
+                                            .withValues(alpha: 0.1),
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 5),
+                                        spreadRadius: 0,
+                                      ),
+                                      BoxShadow(
+                                        color: Colors.white.withValues(
+                                          alpha: 0.8,
+                                        ),
+                                        blurRadius: 15,
+                                        offset: const Offset(0, -2),
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
                                     border: Border.all(
-                                      color: AppColors.gray,
+                                      color: AppColors.primaryColor.withValues(
+                                        alpha: 0.1,
+                                      ),
                                       width: 1,
                                     ),
                                   ),
                                   child: Row(
                                     children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.magnifyingGlass,
-                                        color: AppColors.primaryColor,
+                                      Icon(
+                                        Icons.search_rounded,
+                                        color: AppColors.primaryColor
+                                            .withValues(alpha: 0.7),
+                                        size: 20.sp,
                                       ),
                                       AppWidgets().gapW8(),
                                       Text(
                                         'What are you looking for?',
                                         style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14.sp,
+                                          color: Colors.grey[500],
+                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                     ],
@@ -147,88 +176,94 @@ class HomeView extends BaseView<HomeController> {
                         enabled: controller.isLoading.value,
                         child:
                             controller.bannerImage.isNotEmpty
-                                ? Container(
-                                  height: 180.h,
-                                  margin: EdgeInsets.symmetric(vertical: 8.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Stack(
-                                      children: [
-                                        CarouselSlider(
-                                          items:
-                                              controller.bannerImage.map((
-                                                element,
-                                              ) {
-                                                return AnyImageView(
-                                                  imagePath: element,
-                                                  fit: BoxFit.cover,
-                                                );
-                                              }).toList(),
-                                          options: CarouselOptions(
-                                            height: 180.h,
-                                            autoPlay: true,
-                                            autoPlayInterval: Duration(
-                                              seconds: 4,
-                                            ),
-                                            autoPlayAnimationDuration: Duration(
-                                              milliseconds: 1000,
-                                            ),
-                                            aspectRatio: 16 / 9,
-                                            viewportFraction: 1.0,
-                                            onPageChanged: (index, reason) {
-                                              controller.currentIndex.value =
-                                                  index;
-                                            },
+                                ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Stack(
+                                    children: [
+                                      CarouselSlider(
+                                        items:
+                                            controller.bannerImage.map((
+                                              element,
+                                            ) {
+                                              return AnyImageView(
+                                                imagePath: element,
+                                                height: 200.h,
+                                                fit: BoxFit.fitWidth,
+                                              );
+                                            }).toList(),
+                                        options: CarouselOptions(
+                                          // height: 180.h,
+                                          autoPlay: true,
+                                          autoPlayInterval: Duration(
+                                            seconds: 4,
                                           ),
+                                          autoPlayAnimationDuration: Duration(
+                                            milliseconds: 1000,
+                                          ),
+                                          aspectRatio: 10 / 4,
+                                          viewportFraction: 1,
+                                          onPageChanged: (index, reason) {
+                                            controller.currentIndex.value =
+                                                index;
+                                          },
                                         ),
-                                        Positioned(
-                                          bottom: 12,
-                                          left: 0,
-                                          right: 0,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: List.generate(
-                                              controller.bannerImage.length,
-                                              (index) => Container(
-                                                margin: EdgeInsets.symmetric(
-                                                  horizontal: 3,
-                                                ),
-                                                width:
-                                                    controller
-                                                                .currentIndex
-                                                                .value ==
-                                                            index
-                                                        ? 24
-                                                        : 8,
-                                                height: 8,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                  color:
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 8.h,
+                                          ),
+                                          child: Center(
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: List.generate(
+                                                controller.bannerImage.length,
+                                                (index) => Container(
+                                                  margin:
+                                                      EdgeInsets.symmetric(
+                                                        horizontal: 3,
+                                                      ),
+                                                  width:
                                                       controller
                                                                   .currentIndex
                                                                   .value ==
                                                               index
-                                                          ? AppColors
-                                                              .primaryColor
-                                                          : Colors.white
-                                                              .withOpacity(0.5),
+                                                          ? 24
+                                                          : 8,
+                                                  height: 8,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          4,
+                                                        ),
+                                                    color:
+                                                        controller
+                                                                    .currentIndex
+                                                                    .value ==
+                                                                index
+                                                            ? AppColors
+                                                                .primaryColor
+                                                            : Colors.grey
+                                                                .withOpacity(
+                                                                  0.5,
+                                                                ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 )
                                 : Container(
                                   height: 180.h,
-                                  margin: EdgeInsets.symmetric(vertical: 8.h),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     color: Colors.grey[100],
@@ -409,7 +444,6 @@ class HomeView extends BaseView<HomeController> {
                                                           '${AppConfig.imageBasePath}${controller.supplierData[index].imagePath}',
                                                       height: 50.h,
                                                       width: 50.h,
-
                                                     ),
                                           ),
                                         ),
@@ -436,7 +470,7 @@ class HomeView extends BaseView<HomeController> {
                             ),
                           ),
 
-                      AppWidgets().gapH(16),
+
                     ]),
                   ),
                 ),
@@ -452,7 +486,7 @@ class HomeView extends BaseView<HomeController> {
                           style: TextStyle(
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         ),
                       ],

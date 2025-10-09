@@ -90,7 +90,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               children: [
                 // Product Image Carousel with improved styling
                 Container(
-                  height: 350.h,
+                  height: 250.h,
                   color: Colors.white,
                   child: Stack(
                     children: [
@@ -150,43 +150,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                         index,
                                       );
                                     },
-                                    child: Container(
-                                      width: 50.h,
-                                      height: 50.h,
-                                      margin: EdgeInsets.symmetric(
-                                        horizontal: 4.w,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color:
-                                              currentPage.value == index
-                                                  ? AppColors.primaryColor
-                                                  : Colors.grey[300]!,
-                                          width: 2,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          2.r,
-                                        ),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          1.r,
-                                        ),
-                                        child: AnyImageView(
-                                          imagePath:
-                                              product.productImages != null &&
-                                                      product
-                                                          .productImages!
-                                                          .isNotEmpty
-                                                  ? '${AppConfig.imageBasePath}${product.productImages![index].path}'
-                                                  : Assets.pngNotFound,
-                                          width: 46.w,
-                                          height: 46.h,
-                                          errorPlaceHolder: Assets.pngNotFound,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
+
                                   ),
                                 ),
                               ),
@@ -804,7 +768,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         backgroundColor:
             isOutOfStock ? Colors.grey[400] : AppColors.primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
       ),
       onPressed:
           isOutOfStock
@@ -815,14 +779,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       icon: Icon(
         isOutOfStock ? Icons.remove_shopping_cart : Icons.shopping_bag,
         color: Colors.white,
-        size: 18.sp,
+        size: 18
       ),
       label: Text(
         isOutOfStock ? 'Out of Stock' : 'Add to Cart',
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 16.sp,
+          fontSize: 12.sp,
         ),
       ),
     );
