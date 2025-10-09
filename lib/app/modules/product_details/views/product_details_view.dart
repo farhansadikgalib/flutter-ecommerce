@@ -292,8 +292,18 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   ),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name}\'s 1 '
-                                    '${widget.product.productPrices!.packName}',
+                                    [
+                                      widget.product.productPrices?.ecomPackName?.name != null
+                                          ? '1 ${widget.product.productPrices!.ecomPackName!.name}'
+                                          : '',
+                                      double.parse(
+                                        widget.product.productPrices!.packQuantity
+                                            .toString(),
+                                      ) >
+                                          1
+                                          ? '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name ?? ''}'
+                                          : '',
+                                    ].join(' '),
                                     style: TextStyle(
                                       color: AppColors.primaryColor,
                                       fontSize: 11.sp,
@@ -993,8 +1003,16 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 ),
                                 titleAlignment: ListTileTitleAlignment.center,
                                 title: Text(
-                                  '$quantity ${product.category?.name}\'s $items ${product.productPrices!.packName}',
-                                  textAlign: TextAlign.center,
+                                  [
+                                    widget.product.productPrices?.ecomPackName?.name != null
+                                        ? '1 ${widget.product.productPrices!.ecomPackName!.name}'
+                                        : '',
+                                    double.parse(widget.product.productPrices!.packQuantity.toString()) > 1
+                                        ? '$quantity ${widget.product.category?.name ?? ''}'
+                                        : '',
+                                    'Price: ৳${((double.tryParse(widget.product
+                                        .productPrices!.ecomFinalSellingPrice.toString()) ?? 0) * quantity).toStringAsFixed(2)}',
+                                  ].join(' '),    textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w600,
