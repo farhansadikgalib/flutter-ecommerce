@@ -313,12 +313,14 @@ class _ProductCardState extends State<ProductCard> {
                     widget.product.productPrices?.ecomPackName?.name != null
                         ? '1 ${widget.product.productPrices!.ecomPackName!.name}'
                         : '',
-                    double.parse(
-                              widget.product.productPrices!.packQuantity
-                                  .toString(),
-                            ) >
+                    (double.tryParse(
+                                  widget.product.productPrices?.packQuantity
+                                          ?.toString() ??
+                                      '0',
+                                ) ??
+                                0) >
                             1
-                        ? '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name ?? ''}'
+                        ? '${(double.tryParse(widget.product.productPrices?.packQuantity?.toString() ?? '0') ?? 0).toStringAsFixed(0)} ${widget.product.category?.name ?? ''}'
                         : '',
                   ].join(' '),
                   style: TextStyle(
@@ -412,9 +414,12 @@ class _ProductCardState extends State<ProductCard> {
               padding: EdgeInsets.all(4.w),
               child: FaIcon(
                 quantity ==
-                        int.parse(
-                          widget.product.productPrices!.packQuantity.toString(),
-                        )
+                        (int.tryParse(
+                              widget.product.productPrices?.packQuantity
+                                      ?.toString() ??
+                                  '1',
+                            ) ??
+                            1)
                     ? FontAwesomeIcons.trash
                     : FontAwesomeIcons.minus,
                 size: 10.sp,
@@ -433,13 +438,15 @@ class _ProductCardState extends State<ProductCard> {
           InkWell(
             onTap: () {
               final availableStock = getTotalStock();
+              final packQty =
+                  int.tryParse(
+                    widget.product.productPrices?.packQuantity?.toString() ??
+                        '1',
+                  ) ??
+                  1;
+
               if (quantity < availableStock &&
-                  (quantity +
-                          int.parse(
-                            widget.product.productPrices!.packQuantity
-                                .toString(),
-                          )) <=
-                      availableStock) {
+                  (quantity + packQty) <= availableStock) {
                 printLog(quantity);
                 printLog(availableStock);
 
@@ -469,9 +476,11 @@ class _ProductCardState extends State<ProductCard> {
   void _showQuantitySelectionDialog() {
     final int availableStock = getTotalStock();
     printLog(availableStock);
-    final int packQuantity = int.parse(
-      widget.product.productPrices?.packQuantity?.toString() ?? '1',
-    );
+    final int packQuantity =
+        int.tryParse(
+          widget.product.productPrices?.packQuantity?.toString() ?? '1',
+        ) ??
+        1;
 
     showDialog(
       context: context,
@@ -583,16 +592,29 @@ class _ProductCardState extends State<ProductCard> {
                                 ),
                                 titleAlignment: ListTileTitleAlignment.center,
                                 title: Text(
-                               [
-                                 widget.product.productPrices?.ecomPackName?.name != null
-                                   ? '1 ${widget.product.productPrices!.ecomPackName!.name}'
-                                   : '',
-                                 double.parse(widget.product.productPrices!.packQuantity.toString()) > 1
-                                   ? '$quantity ${widget.product.category?.name ?? ''}'
-                                   : '',
-                                 'Price: ৳${((double.tryParse(widget.product
-                                     .productPrices!.ecomFinalSellingPrice.toString()) ?? 0) * quantity).toStringAsFixed(2)}',
-                               ].join(' '),
+                                  [
+                                    widget
+                                                .product
+                                                .productPrices
+                                                ?.ecomPackName
+                                                ?.name !=
+                                            null
+                                        ? '${index + 1} ${widget.product.productPrices!.ecomPackName!.name}'
+                                        : '',
+                                    (double.tryParse(
+                                                  widget
+                                                          .product
+                                                          .productPrices
+                                                          ?.packQuantity
+                                                          ?.toString() ??
+                                                      '0',
+                                                ) ??
+                                                0) >
+                                            1
+                                        ? '$quantity ${widget.product.category?.name ?? ''}'
+                                        : '',
+                                    'Price: ৳${((double.tryParse(widget.product.productPrices?.ecomFinalSellingPrice?.toString() ?? '0') ?? 0) * quantity).toStringAsFixed(2)}',
+                                  ].join(' '),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.black,

@@ -150,7 +150,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                         index,
                                       );
                                     },
-
                                   ),
                                 ),
                               ),
@@ -293,15 +292,25 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   SizedBox(width: 4.w),
                                   Text(
                                     [
-                                      widget.product.productPrices?.ecomPackName?.name != null
+                                      widget
+                                                  .product
+                                                  .productPrices
+                                                  ?.ecomPackName
+                                                  ?.name !=
+                                              null
                                           ? '1 ${widget.product.productPrices!.ecomPackName!.name}'
                                           : '',
-                                      double.parse(
-                                        widget.product.productPrices!.packQuantity
-                                            .toString(),
-                                      ) >
-                                          1
-                                          ? '${double.parse(widget.product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} ${widget.product.category?.name ?? ''}'
+                                      (double.tryParse(
+                                                    widget
+                                                            .product
+                                                            .productPrices
+                                                            ?.packQuantity
+                                                            ?.toString() ??
+                                                        '0',
+                                                  ) ??
+                                                  0) >
+                                              1
+                                          ? '${(double.tryParse(widget.product.productPrices?.packQuantity?.toString() ?? '0') ?? 0).toStringAsFixed(0)} ${widget.product.category?.name ?? ''}'
                                           : '',
                                     ].join(' '),
                                     style: TextStyle(
@@ -560,7 +569,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       null)
                                     _buildSpecificationRow(
                                       'Product Pack Quantity',
-                                      '${double.parse(product.productPrices!.packQuantity.toString()).toStringAsFixed(0)} Units',
+                                      '${(double.tryParse(product.productPrices?.packQuantity?.toString() ?? '0') ?? 0).toStringAsFixed(0)} Units',
                                     ),
                                   if (product.packSize?.sellingPrice != null)
                                     _buildSpecificationRow(
@@ -789,7 +798,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       icon: Icon(
         isOutOfStock ? Icons.remove_shopping_cart : Icons.shopping_bag,
         color: Colors.white,
-        size: 18
+        size: 18,
       ),
       label: Text(
         isOutOfStock ? 'Out of Stock' : 'Add to Cart',
@@ -864,9 +873,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           IconButton(
             onPressed: () {
               final availableStock = _getTotalStock();
-              final packQuantity = int.parse(
-                product.productPrices?.packQuantity?.toString() ?? '1',
-              );
+              final packQuantity =
+                  int.tryParse(
+                    product.productPrices?.packQuantity?.toString() ?? '1',
+                  ) ??
+                  1;
 
               if (quantity < availableStock &&
                   (quantity + packQuantity) <= availableStock) {
@@ -891,9 +902,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   void _showQuantitySelectionDialog() {
     final int availableStock = _getTotalStock();
-    final int packQuantity = int.parse(
-      product.productPrices?.packQuantity?.toString() ?? '1',
-    );
+    final int packQuantity =
+        int.tryParse(product.productPrices?.packQuantity?.toString() ?? '1') ??
+        1;
 
     showDialog(
       context: context,
@@ -1004,15 +1015,29 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 titleAlignment: ListTileTitleAlignment.center,
                                 title: Text(
                                   [
-                                    widget.product.productPrices?.ecomPackName?.name != null
-                                        ? '1 ${widget.product.productPrices!.ecomPackName!.name}'
+                                    widget
+                                                .product
+                                                .productPrices
+                                                ?.ecomPackName
+                                                ?.name !=
+                                            null
+                                        ? '${index + 1} ${widget.product.productPrices!.ecomPackName!.name}'
                                         : '',
-                                    double.parse(widget.product.productPrices!.packQuantity.toString()) > 1
+                                    (double.tryParse(
+                                                  widget
+                                                          .product
+                                                          .productPrices
+                                                          ?.packQuantity
+                                                          ?.toString() ??
+                                                      '0',
+                                                ) ??
+                                                0) >
+                                            1
                                         ? '$quantity ${widget.product.category?.name ?? ''}'
                                         : '',
-                                    'Price: ৳${((double.tryParse(widget.product
-                                        .productPrices!.ecomFinalSellingPrice.toString()) ?? 0) * quantity).toStringAsFixed(2)}',
-                                  ].join(' '),    textAlign: TextAlign.center,
+                                    'Price: ৳${((double.tryParse(widget.product.productPrices?.ecomFinalSellingPrice?.toString() ?? '0') ?? 0) * quantity).toStringAsFixed(2)}',
+                                  ].join(' '),
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w600,

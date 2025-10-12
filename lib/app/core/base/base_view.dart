@@ -21,18 +21,16 @@ abstract class BaseView<Controller extends BaseController>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Obx(() {
-        return Scaffold(
-          //sets ios status bar color
-          backgroundColor: AppColors.white,
-          // key: controller.globalKey,
-          appBar: appBar(context),
-          floatingActionButton: floatingActionButton(),
-          bottomNavigationBar: bottomNavigationBar(context),
-          drawer: drawer(context),
-          body: pageScaffold(context),
-        );
-      }),
+      child: Scaffold(
+        //sets ios status bar color
+        backgroundColor: AppColors.white,
+        // key: controller.globalKey,
+        appBar: appBar(context),
+        floatingActionButton: floatingActionButton(),
+        bottomNavigationBar: bottomNavigationBar(context),
+        drawer: drawer(context),
+        body: pageScaffold(context),
+      ),
     );
   }
 
@@ -51,12 +49,11 @@ abstract class BaseView<Controller extends BaseController>
 
   //optional
   Widget? bottomNavigationBar(BuildContext context) {
-    return BottomAppBar(
-      child:
-          _connectionController.isInternetConnected.value
-              ? const SizedBox()
-              : connectionStatusView() ?? const SizedBox(),
-    );
+    return Obx(() {
+      return _connectionController.isInternetConnected.value
+          ? const SizedBox.shrink()
+          : BottomAppBar(child: connectionStatusView() ?? const SizedBox());
+    });
   }
 
   Widget? drawer(BuildContext context) {
