@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/base/base_controller.dart';
 import '../../../core/helper/print_log.dart';
 import '../../../data/remote/model/category/ecom_categories_response.dart';
 import '../../../data/remote/model/home/best_selling_product_response.dart';
 import '../../../data/remote/repository/home/home_repository.dart';
 
-class CategoriesController extends GetxController {
+class CategoriesController extends BaseController {
   final ecomCategories = <EcomCategoriesResponse>[].obs;
   final selectedCategoryIndex = (-1).obs;
 

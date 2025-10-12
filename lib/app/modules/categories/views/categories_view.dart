@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import '../../../core/base/base_view.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/widget/global_appbar.dart';
@@ -11,53 +12,54 @@ import '../../../core/widget/product_card.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/categories_controller.dart';
 
-class CategoriesView extends GetView<CategoriesController> {
-  const CategoriesView({super.key});
+class CategoriesView extends BaseView<CategoriesController> {
+  CategoriesView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: globalAppBar(context, 'Categories', showBackButton: false),
-      body: Obx(() {
-        if (controller.ecomCategories.isEmpty) {
-          return _buildLoadingState();
-        }
+  PreferredSizeWidget? appBar(BuildContext context) {
+    return globalAppBar(context, 'Categories', showBackButton: false);
+  }
 
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.grey[50]!, Colors.white],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+  @override
+  Widget body(BuildContext context) {
+    return Obx(() {
+      if (controller.ecomCategories.isEmpty) {
+        return _buildLoadingState();
+      }
+
+      return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.grey[50]!, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          child: Column(
-            children: [
-              // Top - Horizontal Categories List
-              Container(
-                height: 90.h,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: _buildCategorySidebar(),
+        ),
+        child: Column(
+          children: [
+            // Top - Horizontal Categories List
+            Container(
+              height: 90.h,
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
+              child: _buildCategorySidebar(),
+            ),
 
-              // Bottom - Subcategories/Products Grid
-              Expanded(child: _buildSubcategoriesSection()),
-            ],
-          ),
-        );
-      }),
-    );
+            // Bottom - Subcategories/Products Grid
+            Expanded(child: _buildSubcategoriesSection()),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildCategorySidebar() {

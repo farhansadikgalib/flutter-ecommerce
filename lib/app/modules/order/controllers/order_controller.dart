@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ousadbazar/app/core/base/base_controller.dart';
 import 'package:ousadbazar/app/core/helper/app_widgets.dart';
 import 'package:ousadbazar/app/core/helper/print_log.dart';
 import 'package:ousadbazar/app/data/remote/model/order/order_response.dart';
@@ -7,7 +8,7 @@ import '../../../data/remote/model/order/track_order_response.dart';
 import '../../../data/remote/repository/order/order_repository.dart';
 import '../views/track_order_view.dart';
 
-class OrderController extends GetxController {
+class OrderController extends BaseController {
   final isLoading = false.obs;
 
   final orderData = <AllOrdersData>[].obs;

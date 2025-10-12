@@ -1,3 +1,3 @@
-import 'package:get/get.dart';
+import 'package:ousadbazar/app/core/base/base_controller.dart';
 
-class ProfileController extends GetxController {}
+class ProfileController extends BaseController {}
