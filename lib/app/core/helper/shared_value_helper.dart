@@ -33,3 +33,30 @@ final SharedValue<bool> isOperator = SharedValue(
   value: false,
   key: "isOperator",
 );
+
+// Notification Settings
+final SharedValue<bool> notificationsEnabled = SharedValue(
+  value: true,
+  key: "notificationsEnabled",
+);
+
+final SharedValue<bool> orderNotifications = SharedValue(
+  value: true,
+  key: "orderNotifications",
+);
+
+final SharedValue<bool> promotionalNotifications = SharedValue(
+  value: true,
+  key: "promotionalNotifications",
+);
+
+final SharedValue<bool> deliveryNotifications = SharedValue(
+  value: true,
+  key: "deliveryNotifications",
+);
+
+final SharedValue<bool> newArrivalsNotifications = SharedValue(
+  value: true,
+  key: "newArrivalsNotifications",
+);
+

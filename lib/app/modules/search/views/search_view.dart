@@ -17,6 +17,7 @@ class SearchView extends GetView<SearchController> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SafeArea(
+        bottom: true,
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -109,15 +110,21 @@ class SearchView extends GetView<SearchController> {
                     ),
                     suffixIcon: Obx(() {
                       if (controller.isLoading.value) {
-                        return SizedBox(height: 0.h,width: 0.h,child:
-                        CircularProgressIndicator(
-                          padding: EdgeInsets.symmetric(horizontal:10,
-                              vertical: 10).r,
-                          strokeWidth: 4,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColors.primaryColor,
+                        return SizedBox(
+                          height: 0.h,
+                          width: 0.h,
+                          child: CircularProgressIndicator(
+                            padding:
+                                EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
+                                ).r,
+                            strokeWidth: 4,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.primaryColor,
+                            ),
                           ),
-                        ),);
+                        );
                       } else if (controller
                           .searchController
                           .value
