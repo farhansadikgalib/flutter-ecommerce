@@ -5,6 +5,7 @@ import 'package:ousadbazar/app/core/base/base_view.dart';
 import 'package:ousadbazar/app/core/helper/app_helper.dart';
 import 'package:ousadbazar/app/core/helper/shared_value_helper.dart';
 import 'package:ousadbazar/app/core/style/app_colors.dart';
+import '../../../core/helper/app_widgets.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/profile_controller.dart';
 
@@ -110,24 +111,39 @@ class ProfileView extends BaseView<ProfileController> {
               ),
               child: Column(
                 children: [
-                  _buildMenuItem(
-                    icon: Icons.person_outline,
-                    title: 'Personal Information',
-                    onTap: () => Get.toNamed('/personal-info'),
-                    isFirst: true,
-                  ),
-                  Divider(height: 1, indent: 68.w, color: Colors.grey[200]),
+                  // _buildMenuItem(
+                  //   icon: Icons.person_outline,
+                  //   title: 'Personal Information',
+                  //   onTap: () => Get.toNamed('/personal-info'),
+                  //   isFirst: true,
+                  // ),
+                  // Divider(height: 1, indent: 68.w, color: Colors.grey[200]),
                   _buildMenuItem(
                     icon: Icons.location_on_outlined,
                     title: 'My Addresses',
                     onTap: () => Get.toNamed(Routes.ADDRESS),
+                    isFirst: true,
                   ),
                   Divider(height: 1, indent: 68.w, color: Colors.grey[200]),
                   _buildMenuItem(
                     icon: Icons.payment_outlined,
                     title: 'Payment Methods',
-                    onTap: () => Get.toNamed('/payment'),
-                    isLast: true,
+                    onTap: () => AppWidgets().getSnackBar(
+                      title: 'Info',
+                      message: 'This feature is coming soon!',
+                    ),
+                  ),
+                  Divider(height: 1, indent: 68.w, color: Colors.grey[200]),
+                  GetBuilder<ProfileController>(
+                    builder: (controller) {
+                      return _buildMenuItem(
+                        icon: Icons.notifications_outlined,
+                        title: 'Notifications',
+                        subtitle: notificationsEnabled.$ ? 'Enabled' : 'Disabled',
+                        onTap: () => _showNotificationSettingsDialog(context, controller),
+                        isLast: true,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -152,16 +168,13 @@ class ProfileView extends BaseView<ProfileController> {
               child: Column(
                 children: [
                   _buildMenuItem(
-                    icon: Icons.notifications_outlined,
-                    title: 'Notifications',
-                    onTap: () => Get.toNamed('/notifications'),
-                    isFirst: true,
-                  ),
-                  Divider(height: 1, indent: 68.w, color: Colors.grey[200]),
-                  _buildMenuItem(
                     icon: Icons.help_outline,
                     title: 'Help & Support',
-                    onTap: () => Get.toNamed('/help'),
+                    onTap: () => AppWidgets().getSnackBar(
+                      title: 'Info',
+                      message: 'This feature is coming soon!',
+                    ),
+                    isFirst: true,
                   ),
                   Divider(height: 1, indent: 68.w, color: Colors.grey[200]),
                   _buildMenuItem(
@@ -186,6 +199,7 @@ class ProfileView extends BaseView<ProfileController> {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    String? subtitle,
     bool isFirst = false,
     bool isLast = false,
     bool isLogout = false,
@@ -208,13 +222,29 @@ class ProfileView extends BaseView<ProfileController> {
               Icon(icon, color: itemColor, size: 24.sp),
               SizedBox(width: 16.w),
               Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: isLogout ? FontWeight.w600 : FontWeight.w500,
-                    color: textColor,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: isLogout ? FontWeight.w600 : FontWeight.w500,
+                        color: textColor,
+                      ),
+                    ),
+                    if (subtitle != null) ...[
+                      SizedBox(height: 2.h),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: subtitle == 'Enabled' ? Colors.green[600] : Colors.grey[500],
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
               if (!isLogout)
@@ -226,6 +256,221 @@ class ProfileView extends BaseView<ProfileController> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showNotificationSettingsDialog(BuildContext context, ProfileController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GetBuilder<ProfileController>(
+          builder: (controller) {
+            return AlertDialog(
+              contentPadding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              title: Padding(
+                padding: EdgeInsets.all(20.w),
+                child: Text(
+                  'Notification Settings',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Divider(height: 1, color: Colors.grey[300]),
+
+                    // Main Toggle
+                    _buildSimpleToggleItem(
+                      title: 'Enable All Notifications',
+                      icon: Icons.notifications_active,
+                      value: notificationsEnabled.$,
+                      onChanged: (value) => controller.toggleNotifications(value),
+                      isMain: true,
+                    ),
+
+                    // Show individual toggles only when notifications are enabled
+                    if (notificationsEnabled.$) ...[
+                      Divider(height: 1, indent: 20.w, endIndent: 20.w, color: Colors.grey[200]),
+
+                      _buildSimpleToggleItem(
+                        title: 'Order Updates',
+                        icon: Icons.shopping_bag_outlined,
+                        value: orderNotifications.$,
+                        onChanged: (value) => controller.toggleOrderNotifications(value),
+                      ),
+
+                      Divider(height: 1, indent: 20.w, endIndent: 20.w, color: Colors.grey[200]),
+
+                      _buildSimpleToggleItem(
+                        title: 'Delivery Updates',
+                        icon: Icons.local_shipping_outlined,
+                        value: deliveryNotifications.$,
+                        onChanged: (value) => controller.toggleDeliveryNotifications(value),
+                      ),
+
+                      Divider(height: 1, indent: 20.w, endIndent: 20.w, color: Colors.grey[200]),
+
+                      _buildSimpleToggleItem(
+                        title: 'Promotional Offers',
+                        icon: Icons.local_offer_outlined,
+                        value: promotionalNotifications.$,
+                        onChanged: (value) => controller.togglePromotionalNotifications(value),
+                      ),
+
+                      Divider(height: 1, indent: 20.w, endIndent: 20.w, color: Colors.grey[200]),
+
+                      _buildSimpleToggleItem(
+                        title: 'New Arrivals',
+                        icon: Icons.new_releases_outlined,
+                        value: newArrivalsNotifications.$,
+                        onChanged: (value) => controller.toggleNewArrivalsNotifications(value),
+                      ),
+                    ],
+
+                    SizedBox(height: 8.h),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                  ),
+                  child: Text(
+                    'Done',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSimpleToggleItem({
+    required String title,
+    required IconData icon,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    bool isMain = false,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: value ? AppColors.primaryColor : Colors.grey[400],
+            size: 22.sp,
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: isMain ? 16.sp : 15.sp,
+                fontWeight: isMain ? FontWeight.w600 : FontWeight.w500,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: AppColors.primaryColor,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDialogNotificationToggle({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return Container(
+      padding: EdgeInsets.all(12.r),
+      decoration: BoxDecoration(
+        color: value ? AppColors.primaryColor.withOpacity(0.05) : Colors.grey[50],
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: value ? AppColors.primaryColor.withOpacity(0.2) : Colors.grey[200]!,
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8.r),
+            decoration: BoxDecoration(
+              color: value
+                  ? AppColors.primaryColor.withOpacity(0.1)
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Icon(
+              icon,
+              color: value ? AppColors.primaryColor : Colors.grey[400],
+              size: 20.sp,
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: value ? Colors.black87 : Colors.grey[700],
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: value ? Colors.grey[600] : Colors.grey[500],
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 8.w),
+          Transform.scale(
+            scale: 0.85,
+            child: Switch(
+              value: value,
+              onChanged: onChanged,
+              activeColor: Colors.white,
+              activeTrackColor: AppColors.primaryColor,
+              inactiveThumbColor: Colors.white,
+              inactiveTrackColor: Colors.grey[300],
+            ),
+          ),
+        ],
       ),
     );
   }
