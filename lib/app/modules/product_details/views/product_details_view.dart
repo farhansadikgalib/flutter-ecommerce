@@ -622,14 +622,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       SizedBox(height: 8.h),
 
                       // Products Grid
-                      Container(
-                        height: Get.height,
-                        margin: EdgeInsets.zero,
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child:
                             isRelatedProductsLoading.value
                                 ? _buildRelatedProductsShimmer()
                                 : GridView.builder(
+                                  shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(

@@ -16,6 +16,7 @@ class LoginView extends GetView<LoginController> {
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true, // Add this to handle keyboard
       body: SafeArea(
+        bottom: true,
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(

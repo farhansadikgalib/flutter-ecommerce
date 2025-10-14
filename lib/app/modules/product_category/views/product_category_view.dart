@@ -199,227 +199,240 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
           // Apply Button
         ),
 
-        body: Stack(
-          children: [
-            Padding(
-              padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Obx(() {
-                      if (controller.isLoading.isTrue) {
-                        return Skeletonizer(
-                          enabled: controller.isLoading.value,
-                          child: DynamicHeightGridView(
-                            crossAxisCount: 2,
-                            itemCount: 4,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            builder: (context, index) {
-                              return Card(
-                                margin: EdgeInsets.all(8.0),
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        color: AppColors.secondaryColor,
-                                        height: 125,
-                                        width: 125,
-                                      ),
-                                      AppWidgets().gapH(4),
-                                      Text(
-                                        'Product Title',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold,
+        body: SafeArea(
+          bottom: true,
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Obx(() {
+                        if (controller.isLoading.isTrue) {
+                          return Skeletonizer(
+                            enabled: controller.isLoading.value,
+                            child: DynamicHeightGridView(
+                              crossAxisCount: 2,
+                              itemCount: 4,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              builder: (context, index) {
+                                return Card(
+                                  margin: EdgeInsets.all(8.0),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(16.0),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          color: AppColors.secondaryColor,
+                                          height: 125,
+                                          width: 125,
                                         ),
-                                      ),
-                                      AppWidgets().gapH(4),
-                                      Text(
-                                        "Stock 00",
-                                        style: TextStyle(
-                                          color: AppColors.primaryColor,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      AppWidgets().gapH(4),
-                                      RichText(
-                                        text: TextSpan(
+                                        AppWidgets().gapH(4),
+                                        Text(
+                                          'Product Title',
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 24,
+                                            fontSize: 15,
+                                            color: AppColors.primaryColor,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: '9999',
-                                              style: TextStyle(
-                                                fontSize: 14.0,
-                                                fontWeight: FontWeight.bold,
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: "  99999 BDT",
-                                              style: TextStyle(
-                                                fontSize: 14.0,
-                                                color: AppColors.primaryColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
                                         ),
-                                      ),
-                                      AppWidgets().gapH8(),
-                                      ElevatedButton(
-                                        onPressed: () {},
-                                        style: ElevatedButton.styleFrom(
-                                          side: BorderSide(
-                                            color: Colors.transparent,
-                                          ), // Set the border
-                                          // color to grey
-                                        ),
-                                        child: Text(
-                                          '+ Add to Bag',
+                                        AppWidgets().gapH(4),
+                                        Text(
+                                          "Stock 00",
                                           style: TextStyle(
                                             color: AppColors.primaryColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-
-                      if (controller.categoryProducts.isEmpty) {
-                        return Center(
-                          child: Text(
-                            controller.fromSearch
-                                ? 'Search Now !'
-                                : 'No Products Found!',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        );
-                      }
-                      return RefreshIndicator(
-                        onRefresh: () async {
-                          if (controller.type == 'Suppliers') {
-                            await controller.getSupplierWiseProducts(
-                              controller.id,
-                              1,
-                            );
-                          }
-                          // Add other types as needed
-                        },
-                        color: AppColors.primaryColor,
-                        child: CustomScrollView(
-                          controller:
-                              controller.categoryProductsScrollController,
-                          slivers: [
-                            SliverGrid(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 0.66,
-                                  ),
-                              delegate: SliverChildBuilderDelegate((
-                                context,
-                                index,
-                              ) {
-                                final item = controller.categoryProducts[index];
-
-                                return ProductCard(
-                                  product: item,
-                                  index: index,
-                                  showDiscountTag: true,
-                                );
-                              }, childCount: controller.categoryProducts.length),
-                            ),
-
-                            // Loading Indicator (spans full width)
-                            if (controller.isPaginationLoading.value ||
-                                controller.categoryProductsCurrentPage.value <
-                                    controller.categoryProductsTotalPage.value)
-                              SliverToBoxAdapter(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 20.h),
-                                  child: Center(
-                                    child: SizedBox(
-                                      width: 24.w,
-                                      height: 24.h,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 5,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                              AppColors.primaryColor,
+                                        AppWidgets().gapH(4),
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 24,
                                             ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: '9999',
+                                                style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  decoration:
+                                                      TextDecoration
+                                                          .lineThrough,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: "  99999 BDT",
+                                                style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: AppColors.primaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        AppWidgets().gapH8(),
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            side: BorderSide(
+                                              color: Colors.transparent,
+                                            ), // Set the border
+                                            // color to grey
+                                          ),
+                                          child: Text(
+                                            '+ Add to Bag',
+                                            style: TextStyle(
+                                              color: AppColors.primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+
+                        if (controller.categoryProducts.isEmpty) {
+                          return Center(
+                            child: Text(
+                              controller.fromSearch
+                                  ? 'Search Now !'
+                                  : 'No Products Found!',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          );
+                        }
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            if (controller.type == 'Suppliers') {
+                              await controller.getSupplierWiseProducts(
+                                controller.id,
+                                1,
+                              );
+                            }
+                            // Add other types as needed
+                          },
+                          color: AppColors.primaryColor,
+                          child: CustomScrollView(
+                            controller:
+                                controller.categoryProductsScrollController,
+                            slivers: [
+                              SliverGrid(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 0.66,
+                                    ),
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final item =
+                                        controller.categoryProducts[index];
+
+                                    return ProductCard(
+                                      product: item,
+                                      index: index,
+                                      showDiscountTag: true,
+                                    );
+                                  },
+                                  childCount:
+                                      controller.categoryProducts.length,
+                                ),
+                              ),
+
+                              // Loading Indicator (spans full width)
+                              if (controller.isPaginationLoading.value ||
+                                  controller.categoryProductsCurrentPage.value <
+                                      controller
+                                          .categoryProductsTotalPage
+                                          .value)
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 20.h,
+                                    ),
+                                    child: Center(
+                                      child: SizedBox(
+                                        width: 24.w,
+                                        height: 24.h,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 5,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                AppColors.primaryColor,
+                                              ),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ),
-                ],
-              ),
-            ),
-
-            Visibility(
-              visible: false,
-              // controller.categoryProducts.isNotEmpty &&
-              //     !controller.fromSearch,
-              child: Positioned(
-                top: MediaQuery.of(context).size.height / 2 - 28,
-                child: InkWell(
-                  onTap: () {
-                    scaffoldKey.currentState?.openDrawer();
-                  },
-                  child: Container(
-                    padding: REdgeInsets.symmetric(horizontal: 12, vertical: 8),
-
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(8),
-                        bottomRight: Radius.circular(8),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.filter,
-                          color: AppColors.white,
-                          size: 16,
-                        ),
-                        AppWidgets().gapW(4),
-                        Text(
-                          'Filter',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 12.sp,
+                            ],
                           ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
+              ),
+
+              Visibility(
+                visible: false,
+                // controller.categoryProducts.isNotEmpty &&
+                //     !controller.fromSearch,
+                child: Positioned(
+                  top: MediaQuery.of(context).size.height / 2 - 28,
+                  child: InkWell(
+                    onTap: () {
+                      scaffoldKey.currentState?.openDrawer();
+                    },
+                    child: Container(
+                      padding: REdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.filter,
+                            color: AppColors.white,
+                            size: 16,
+                          ),
+                          AppWidgets().gapW(4),
+                          Text(
+                            'Filter',
+                            style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     });
