@@ -19,28 +19,31 @@ class AddressView extends GetView<AddressController> {
       return Scaffold(
         backgroundColor: Colors.grey[50],
         appBar: globalAppBar(context, 'Addresses', showBackButton: true),
-        body: Obx(() {
-          if (controller.isLoading.value) {
-            return _buildLoadingState();
-          }
+        body: SafeArea(
+          bottom: true,
+          child: Obx(() {
+            if (controller.isLoading.value) {
+              return _buildLoadingState();
+            }
 
-          if (controller.shippingAddressList.isEmpty) {
-            return _buildEmptyState();
-          }
+            if (controller.shippingAddressList.isEmpty) {
+              return _buildEmptyState();
+            }
 
-          return RefreshIndicator(
-            onRefresh: controller.getAllShippingAddress,
-            color: AppColors.primaryColor,
-            child: ListView.builder(
-              padding: EdgeInsets.all(16.w),
-              itemCount: controller.shippingAddressList.length,
-              itemBuilder: (context, index) {
-                final address = controller.shippingAddressList[index];
-                return _buildEnhancedAddressCard(address, index);
-              },
-            ),
-          );
-        }),
+            return RefreshIndicator(
+              onRefresh: controller.getAllShippingAddress,
+              color: AppColors.primaryColor,
+              child: ListView.builder(
+                padding: EdgeInsets.all(16.w),
+                itemCount: controller.shippingAddressList.length,
+                itemBuilder: (context, index) {
+                  final address = controller.shippingAddressList[index];
+                  return _buildEnhancedAddressCard(address, index);
+                },
+              ),
+            );
+          }),
+        ),
         floatingActionButton:
             controller.shippingAddressList.isEmpty
                 ? SizedBox()

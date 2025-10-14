@@ -33,6 +33,7 @@ class CheckoutView extends BaseView<CheckoutController> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
+        padding: EdgeInsets.only(bottom: 200),
         children: [
           Card(
             shape: RoundedRectangleBorder(
