@@ -18,11 +18,11 @@ dependencies:
   url_launcher:
   shared_value:
   intl:
-  any_image_view: ^1.6.0
+  any_image_view: ^1.9.0
   easy_debounce:
   font_awesome_flutter:
   flutter_spinkit:
-  skeletonizer: ^2.0.1
+  skeletonizer: ^2.1.1
   dropdown_search:
   carousel_slider:
   carousel_indicator:
