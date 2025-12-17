@@ -116,7 +116,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                         : Assets.pngNotFound,
                                 width: double.infinity,
                                 height: 350.h,
-                                errorPlaceHolder: Assets.pngNotFound,
+                                errorWidget: AnyImageView(
+                                  imagePath: Assets.pngNotFound,
+                                  fit: BoxFit.cover,
+                                ),
                                 fit: BoxFit.cover,
                               ),
                             ),
