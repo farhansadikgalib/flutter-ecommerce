@@ -1328,6 +1328,7 @@ class _FullScreenImageDialogState extends State<_FullScreenImageDialog> {
                   maxScale: 4.0,
                   child: AnyImageView(
                     imagePath: imagePath,
+                    useMemoryCache: false,
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.contain,

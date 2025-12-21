@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBW910lIwgN0uyR8t8dZ58iJt7JPuFH9kE',
-    appId: '1:1076422636293:android:f4fe969f865b9e4ec43d6c',
+    appId: '1:1076422636293:android:7b037affa032e8a9c43d6c',
     messagingSenderId: '1076422636293',
     projectId: 'ousadbazar',
     storageBucket: 'ousadbazar.firebasestorage.app',
@@ -59,10 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAznwF82fA5lz-82LH474m2lp_veJRHbdk',
-    appId: '1:1076422636293:ios:7e8483f3898354a7c43d6c',
+    appId: '1:1076422636293:ios:d6d14e58a64297a6c43d6c',
     messagingSenderId: '1076422636293',
     projectId: 'ousadbazar',
     storageBucket: 'ousadbazar.firebasestorage.app',
-    iosBundleId: 'com.ousadbazar',
+    iosBundleId: 'com.ousadbazar.bd',
   );
+
 }

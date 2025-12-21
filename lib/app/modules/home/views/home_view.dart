@@ -180,6 +180,7 @@ class HomeView extends BaseView<HomeController> {
                                               imagePath: element,
                                               height: 200.h,
                                               fit: BoxFit.fitWidth,
+                                              useMemoryCache: false,
                                             );
                                           }).toList(),
                                       options: CarouselOptions(
@@ -423,6 +424,7 @@ class HomeView extends BaseView<HomeController> {
                                                   : AnyImageView(
                                                     imagePath:
                                                         '${AppConfig.imageBasePath}${controller.supplierData[index].imagePath}',
+                                                    useMemoryCache: false,
                                                     height: 50.h,
                                                     width: 50.h,
                                                   ),

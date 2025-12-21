@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.ousadbazar"
+    namespace = "com.ousadbazar.bd"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         // Application ID - use one consistent ID
-        applicationId = "com.ousadbazar"
+        applicationId = "com.ousadbazar.bd"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = flutter.versionCode
